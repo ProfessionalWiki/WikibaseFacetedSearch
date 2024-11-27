@@ -1,0 +1,10 @@
+{
+	"name": "wikibase-faceted-search",
+	"private": true,
+	"scripts": {
+		"lint": "banana-checker i18n/"
+	},
+	"devDependencies": {
+		"grunt-banana-checker": "0.13.0"
+	}
+}

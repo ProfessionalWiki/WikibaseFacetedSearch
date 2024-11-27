@@ -1,0 +1,44 @@
+{
+	"name": "professional-wiki/wikibase-faceted-search",
+	"type": "mediawiki-extension",
+	"description": "TODO",
+	"keywords": [
+		"MediaWiki"
+	],
+	"homepage": "https://professional.wiki/en/extension/wikibase-faceted-search",
+	"license": "GPL-2.0-or-later",
+	"authors": [
+		{
+			"name": "Professional.Wiki",
+			"email": "info@Professional.Wiki",
+			"homepage": "https://Professional.Wiki"
+		}
+	],
+	"require": {
+		"php": ">=8.1",
+		"composer/installers": "^2|^1.0.1"
+	},
+	"require-dev": {
+		"phpstan/phpstan": "^2.0.1",
+		"mediawiki/mediawiki-codesniffer": "^45.0.0"
+	},
+	"autoload": {
+		"psr-4": {
+			"ProfessionalWiki\\WikibaseFacetedSearch\\": "src/"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"ProfessionalWiki\\WikibaseFacetedSearch\\Tests\\": "tests/"
+		}
+	},
+	"extra": {
+		"installer-name": "WikibaseFacetedSearch"
+	},
+	"config": {
+		"allow-plugins": {
+			"composer/installers": true,
+			"dealerdirect/phpcodesniffer-composer-installer": true
+		}
+	}
+}

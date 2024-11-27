@@ -1,0 +1,215 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    name: "PHPUnit: MW ${{ matrix.mw }}, PHP ${{ matrix.php }}"
+
+    strategy:
+      matrix:
+        include:
+          - mw: 'REL1_39'
+            php: '8.1'
+          - mw: 'REL1_41'
+            php: '8.2'
+          - mw: 'REL1_42'
+            php: '8.3'
+          - mw: 'REL1_43'
+            php: '8.3'
+          - mw: 'master'
+            php: '8.3'
+
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: mediawiki
+
+    steps:
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: mbstring, intl
+          tools: composer
+
+      - name: Cache MediaWiki
+        id: cache-mediawiki
+        uses: actions/cache@v4
+        with:
+          path: |
+            mediawiki
+            !mediawiki/extensions/
+            !mediawiki/vendor/
+          key: mw_${{ matrix.mw }}-php${{ matrix.php }}_v1
+
+      - name: Cache Composer cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.composer/cache
+          key: composer-php${{ matrix.php }}
+
+      - uses: actions/checkout@v4
+        with:
+          path: EarlyCopy
+
+      - name: Install MediaWiki
+        if: steps.cache-mediawiki.outputs.cache-hit != 'true'
+        working-directory: ~
+        run: bash EarlyCopy/.github/workflows/installMediaWiki.sh ${{ matrix.mw }} WikibaseFacetedSearch
+
+      - uses: actions/checkout@v4
+        with:
+          path: mediawiki/extensions/WikibaseFacetedSearch
+
+      - run: composer update
+
+      - name: Run update.php
+        run: php maintenance/update.php --quick
+
+      - name: Run PHPUnit
+        run: php tests/phpunit/phpunit.php -c extensions/WikibaseFacetedSearch/
+        if: matrix.mw != 'master'
+
+      - name: Run PHPUnit with code coverage
+        run: php tests/phpunit/phpunit.php -c extensions/WikibaseFacetedSearch/ --coverage-clover coverage.xml
+        if: matrix.mw == 'master'
+
+      - name: Upload code coverage
+        run: bash <(curl -s https://codecov.io/bash)
+        if: matrix.mw == 'master'
+
+      - name: Run parser tests
+        run: php tests/parser/parserTests.php --changetree "null" --file extensions/WikibaseFacetedSearch/tests/parser/*
+
+  PHPStan:
+    name: "PHPStan: MW ${{ matrix.mw }}, PHP ${{ matrix.php }}"
+
+    strategy:
+      matrix:
+        include:
+          - mw: 'REL1_39'
+            php: '8.2'
+
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: mediawiki
+
+    steps:
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: mbstring
+          tools: composer, cs2pr
+
+      - name: Cache MediaWiki
+        id: cache-mediawiki
+        uses: actions/cache@v4
+        with:
+          path: |
+            mediawiki
+            mediawiki/extensions/
+            mediawiki/vendor/
+          key: mw_${{ matrix.mw }}-php${{ matrix.php }}_v1
+
+      - name: Cache Composer cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.composer/cache
+          key: composer_static_analysis
+
+      - uses: actions/checkout@v4
+        with:
+          path: EarlyCopy
+
+      - name: Install MediaWiki
+        if: steps.cache-mediawiki.outputs.cache-hit != 'true'
+        working-directory: ~
+        run: bash EarlyCopy/.github/workflows/installMediaWiki.sh ${{ matrix.mw }} WikibaseFacetedSearch
+
+      - uses: actions/checkout@v4
+        with:
+          path: mediawiki/extensions/WikibaseFacetedSearch
+
+      - name: Composer allow-plugins
+        run: composer config --no-plugins allow-plugins.composer/installers true
+
+      - run: composer update
+
+      - name: Composer install
+        run: cd extensions/WikibaseFacetedSearch && composer install --no-progress --no-interaction --prefer-dist --optimize-autoloader
+
+      - name: PHPStan
+        run: cd extensions/WikibaseFacetedSearch && php vendor/bin/phpstan analyse --error-format=checkstyle --no-progress | cs2pr
+
+  phpcs:
+    name: "Code style: MW ${{ matrix.mw }}, PHP ${{ matrix.php }}"
+
+    strategy:
+      matrix:
+        include:
+          - mw: 'REL1_39'
+            php: '8.2'
+
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: mediawiki/extensions/WikibaseFacetedSearch
+
+    steps:
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: mbstring, intl, php-ast
+          tools: composer
+
+      - name: Cache MediaWiki
+        id: cache-mediawiki
+        uses: actions/cache@v4
+        with:
+          path: |
+            mediawiki
+            !mediawiki/extensions/
+            !mediawiki/vendor/
+          key: mw_static_analysis
+
+      - name: Cache Composer cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.composer/cache
+          key: mw_${{ matrix.mw }}-php${{ matrix.php }}_v1
+
+      - name: Install MediaWiki
+        if: steps.cache-mediawiki.outputs.cache-hit != 'true'
+        working-directory: ~
+        run: curl EarlyCopy/.github/workflows/installMediaWiki.sh | bash -s ${{ matrix.mw }} WikibaseFacetedSearch
+
+      - uses: actions/checkout@v4
+        with:
+          path: mediawiki/extensions/WikibaseFacetedSearch
+
+      - name: Composer install
+        run: composer install --no-progress --no-interaction --prefer-dist --optimize-autoloader
+
+      - run: vendor/bin/phpcs -p -s
+
+  linting:
+    name: "i18n Linting"
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm install
+      - run: npm run lint
