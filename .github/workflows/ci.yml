@@ -24,6 +24,16 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    services:
+      elasticsearch:
+        image: docker-registry.wikimedia.org/releng/cirrus-elasticsearch:7.10.2-s0 # Compatibility info at https://www.mediawiki.org/wiki/Extension:CirrusSearch
+        ports:
+          - 9200:9200
+          - 9300:9300
+        env:
+          discovery.type: single-node
+          ES_JAVA_OPTS: "-Xms512m -Xmx512m -Dlog4j2.formatMsgNoLookups=true"
+
     defaults:
       run:
         working-directory: mediawiki
@@ -69,6 +79,9 @@ jobs:
 
       - name: Run update.php
         run: php maintenance/update.php --quick
+
+      - name: Create ElasticSearch index
+        run: php extensions/CirrusSearch/maintenance/UpdateSearchIndexConfig.php
 
       - name: Run PHPUnit
         run: php tests/phpunit/phpunit.php -c extensions/WikibaseFacetedSearch/

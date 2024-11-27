@@ -22,6 +22,16 @@ $wgDevelopmentWarnings = true;
 EOT
 
 cat <<EOT >> LocalSettings.php
+wfLoadExtension( 'Elastica' );
+wfLoadExtension( 'CirrusSearch' );
+\$wgCirrusSearchServers = [ 'localhost' ];
+
+wfLoadExtension( 'WikibaseRepository', __DIR__ . '/extensions/Wikibase/extension-repo.json' );
+require_once __DIR__ . '/extensions/Wikibase/repo/ExampleSettings.php';
+
+wfLoadExtension( 'WikibaseCirrusSearch' );
+\$wgWBCSUseCirrus = true;
+
 wfLoadExtension( "$EXTENSION_NAME" );
 EOT
 
@@ -31,9 +41,18 @@ cat <<EOT >> composer.local.json
 		"merge-plugin": {
 			"merge-dev": true,
 			"include": [
+				"extensions/Elastica/composer.json",
+				"extensions/CirrusSearch/composer.json",
+				"extensions/Wikibase/composer.json",
 				"extensions/$EXTENSION_NAME/composer.json"
 			]
 		}
 	}
 }
 EOT
+
+cd extensions
+git clone https://gerrit.wikimedia.org/r/mediawiki/extensions/Elastica --depth=1  --branch=$MW_BRANCH --recurse-submodules -j8
+git clone https://gerrit.wikimedia.org/r/mediawiki/extensions/CirrusSearch --depth=1  --branch=$MW_BRANCH --recurse-submodules -j8
+git clone https://gerrit.wikimedia.org/r/mediawiki/extensions/Wikibase --depth=1 --branch=$MW_BRANCH --recurse-submodules -j8
+git clone https://gerrit.wikimedia.org/r/mediawiki/extensions/WikibaseCirrusSearch --depth=1  --branch=$MW_BRANCH --recurse-submodules -j8
