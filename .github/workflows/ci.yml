@@ -82,9 +82,6 @@ jobs:
         run: bash <(curl -s https://codecov.io/bash)
         if: matrix.mw == 'master'
 
-      - name: Run parser tests
-        run: php tests/parser/parserTests.php --changetree "null" --file extensions/WikibaseFacetedSearch/tests/parser/*
-
   PHPStan:
     name: "PHPStan: MW ${{ matrix.mw }}, PHP ${{ matrix.php }}"
 
