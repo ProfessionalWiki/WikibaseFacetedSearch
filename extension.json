@@ -13,6 +13,8 @@
 
 	"descriptionmsg": "wikibasefacetedsearch-description",
 
+	"type": "wikibase",
+
 	"requires": {
 		"MediaWiki": ">= 1.39.0"
 	},
