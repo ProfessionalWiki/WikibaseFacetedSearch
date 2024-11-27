@@ -36,6 +36,8 @@
 	},
 
 	"Hooks": {
+		"ShowSearchHitTitle": "ProfessionalWiki\\WikibaseFacetedSearch\\EntryPoints\\WikibaseFacetedSearchHooks::onShowSearchHitTitle",
+		"SpecialSearchResultsAppend": "ProfessionalWiki\\WikibaseFacetedSearch\\EntryPoints\\WikibaseFacetedSearchHooks::onSpecialSearchResultsAppend"
 	},
 
 	"config": {
