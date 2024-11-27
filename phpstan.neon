@@ -9,3 +9,4 @@ parameters:
 		- ../../includes
 		- ../../tests/phpunit
 		- ../../vendor
+		- ../../extensions/Wikibase

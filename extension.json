@@ -36,6 +36,8 @@
 	},
 
 	"Hooks": {
+		"ShowSearchHitTitle": "ProfessionalWiki\\WikibaseFacetedSearch\\EntryPoints\\WikibaseFacetedSearchHooks::onShowSearchHitTitle",
+		"SpecialSearchResultsAppend": "ProfessionalWiki\\WikibaseFacetedSearch\\EntryPoints\\WikibaseFacetedSearchHooks::onSpecialSearchResultsAppend"
 	},
 
 	"config": {
@@ -47,6 +49,15 @@
 	},
 
 	"ResourceModules": {
+		"ext.wikibase.facetedsearch.styles": {
+			"styles": [
+				"ext.wikibase.facetedsearch.less"
+			],
+			"targets": [
+				"mobile",
+				"desktop"
+			]
+		}
 	},
 
 	"RestRoutes": [
