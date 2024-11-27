@@ -38,6 +38,10 @@ class WikibaseFacetedSearchHooks {
 		string $term
 	): void {
 		// TODO: generate facets from search term
+		$output->addModuleStyles( 'ext.wikibase.facetedsearch.styles' );
+		$output->addHTML(
+			\Html::element( 'div', [ 'class' => 'wikibase-faceted-search__facets' ] )
+		);
 	}
 
 }
