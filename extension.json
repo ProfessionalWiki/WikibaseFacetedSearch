@@ -16,7 +16,12 @@
 	"type": "wikibase",
 
 	"requires": {
-		"MediaWiki": ">= 1.39.0"
+		"MediaWiki": ">= 1.39.0",
+		"extensions": {
+			"WikibaseRepository": "*",
+			"CirrusSearch": "*",
+			"WikibaseCirrusSearch": "*"
+		}
 	},
 
 	"MessagesDirs": {
