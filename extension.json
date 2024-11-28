@@ -1,10 +1,10 @@
 {
-	"name": "WikibaseFacetedSearch",
+	"name": "Wikibase Faceted Search",
 
 	"version": "0.0.0",
 
 	"author": [
-		"[https://Professional.Wiki/ Professional.Wiki]"
+		"[https://Professional.Wiki/ Professional Wiki]"
 	],
 
 	"license-name": "GPL-2.0-or-later",
