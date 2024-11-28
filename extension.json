@@ -52,10 +52,6 @@
 		"ext.wikibase.facetedsearch.styles": {
 			"styles": [
 				"ext.wikibase.facetedsearch.less"
-			],
-			"targets": [
-				"mobile",
-				"desktop"
 			]
 		}
 	},
