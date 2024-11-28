@@ -6,5 +6,5 @@
 			"Morne Alberts"
 		]
 	},
-	"wikibasefacetedsearch-description": "TODO"
+	"wikibasefacetedsearch-description": "Enhances [[Special:Search]] with faceted search capabilities. Filter results based on instance type or statement values."
 }
