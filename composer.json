@@ -1,9 +1,16 @@
 {
 	"name": "professional-wiki/wikibase-faceted-search",
 	"type": "mediawiki-extension",
-	"description": "TODO",
+	"description": "Enhances MediaWiki's search with faceted search capabilities. Filter results based on instance type or statement values",
 	"keywords": [
-		"MediaWiki"
+		"MediaWiki",
+		"Wikibase",
+		"Faceted Search",
+		"Elasticsearch",
+		"cirrussearch",
+		"search",
+		"query",
+		"haswbstatement"
 	],
 	"homepage": "https://professional.wiki/en/extension/wikibase-faceted-search",
 	"license": "GPL-2.0-or-later",
