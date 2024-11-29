@@ -4,6 +4,7 @@ declare( strict_types = 1 );
 
 namespace ProfessionalWiki\WikibaseFacetedSearch\EntryPoints;
 
+use HtmlArmor;
 use OutputPage;
 use SearchResult;
 use SpecialSearch;
@@ -18,7 +19,7 @@ class WikibaseFacetedSearchHooks {
 	 */
 	public static function onShowSearchHitTitle(
 		Title &$title,
-		?string &$titleSnippet,
+		string|HtmlArmor|null &$titleSnippet,
 		SearchResult $result,
 		array $terms,
 		SpecialSearch $specialSearch,
