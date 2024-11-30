@@ -6,6 +6,7 @@ namespace ProfessionalWiki\WikibaseFacetedSearch\Persistence;
 
 use Title;
 use Wikibase\DataModel\Entity\ItemId;
+use Wikibase\DataModel\SiteLink;
 use Wikibase\Lib\Store\SiteLinkLookup;
 
 class SiteLinkItemPageLookup implements ItemPageLookup {
@@ -17,16 +18,23 @@ class SiteLinkItemPageLookup implements ItemPageLookup {
 	}
 
 	public function getPageTitle( ItemId $itemId ): ?Title {
-		$siteLink = array_filter(
-			$this->siteLinksStore->getSiteLinksForItem( $itemId ),
-			fn( $siteLink ) => $siteLink->getSiteId() === $this->siteLinkSiteId
-		)[0] ?? null;
+		$siteLink = $this->getConfiguredSiteLink( $this->siteLinksStore->getSiteLinksForItem( $itemId ) );
 
 		if ( $siteLink === null ) {
 			return null;
 		}
 
 		return Title::newFromText( $siteLink->getPageName() );
+	}
+
+	/**
+	 * @param SiteLink[] $siteLinks
+	 */
+	private function getConfiguredSiteLink( array $siteLinks ): ?SiteLink {
+		return array_filter(
+			$siteLinks,
+			fn( $siteLink ) => $siteLink->getSiteId() === $this->siteLinkSiteId
+		)[0] ?? null;
 	}
 
 }
