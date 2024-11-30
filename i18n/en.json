@@ -6,5 +6,13 @@
 			"Morne Alberts"
 		]
 	},
-	"wikibasefacetedsearch-description": "Enhances [[Special:Search]] with faceted search capabilities. Filter results based on instance type or statement values."
+	"wikibasefacetedsearch-description": "Enhances [[Special:Search]] with faceted search capabilities. Filter results based on instance type or statement values.",
+
+	"special-wikibase-faceted-search-config": "Faceted search configuration",
+
+	"wikibase-faceted-search-config-invalid": "Your changes were not saved. They contain the following {{PLURAL:$1|error|errors}}:",
+
+	"wikibase-faceted-search-config-help-documentation": "You can [[#Documentation|view the configuration documentation]] below the edit area.",
+	"wikibase-faceted-search-config-help": "Configuration documentation",
+	"wikibase-faceted-search-config-help-example": "Full example"
 }
