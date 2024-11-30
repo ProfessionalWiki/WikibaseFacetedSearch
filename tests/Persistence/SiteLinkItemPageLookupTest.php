@@ -60,8 +60,8 @@ class SiteLinkItemPageLookupTest extends TestCase {
 	}
 
 	public function testReturnsPageWhenManySiteLinksExist(): void {
-		$this->createItemWithSiteLink( 'Q42', self::SITE_ID, 'Page for Q42' );
 		$this->createItemWithSiteLink( 'Q100', 'otherSiteId', 'Other page' );
+		$this->createItemWithSiteLink( 'Q42', self::SITE_ID, 'Page for Q42' );
 		$this->createItemWithSiteLink( 'Q200', 'anotherSiteId', 'Another page' );
 
 		$this->assertItemPageHasTitle( 'Q42', 'Page for Q42' );
