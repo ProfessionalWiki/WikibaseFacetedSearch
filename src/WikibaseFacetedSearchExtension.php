@@ -11,11 +11,10 @@ use ProfessionalWiki\WikibaseFacetedSearch\Persistence\ConfigDeserializer;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\ConfigJsonValidator;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\ConfigLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\ItemPageLookup;
+use ProfessionalWiki\WikibaseFacetedSearch\Persistence\ItemPageLookupFactory;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\PageContentConfigLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\PageContentFetcher;
-use ProfessionalWiki\WikibaseFacetedSearch\Persistence\SiteLinkItemPageLookup;
 use Title;
-use Wikibase\Repo\WikibaseRepo;
 
 class WikibaseFacetedSearchExtension {
 
@@ -31,9 +30,12 @@ class WikibaseFacetedSearchExtension {
 	}
 
 	public function getItemPageLookup(): ItemPageLookup {
-		return new SiteLinkItemPageLookup(
-			WikibaseRepo::getStore()->newSiteLinkStore(),
-			$this->getConfig()->linkTargetSitelinkSiteId ?? ''
+		return $this->newItemPageLookupFactory()->newItemPageLookup();
+	}
+
+	private function newItemPageLookupFactory(): ItemPageLookupFactory {
+		return new ItemPageLookupFactory(
+			$this->getConfig()
 		);
 	}
 
