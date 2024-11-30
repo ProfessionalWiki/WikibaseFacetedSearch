@@ -11,3 +11,21 @@ parameters:
 			identifier: parameterByRef.unusedType
 			count: 1
 			path: src/EntryPoints/WikibaseFacetedSearchHooks.php
+
+		-
+			message: '#^Parameter \#1 \$configArray of method ProfessionalWiki\\WikibaseFacetedSearch\\Persistence\\ConfigDeserializer\:\:newConfig\(\) expects array\<string, mixed\>, array\<mixed, mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Persistence/ConfigDeserializer.php
+
+		-
+			message: '#^Parameter \$linkTargetSitelinkSiteId of class ProfessionalWiki\\WikibaseFacetedSearch\\Application\\Config constructor expects string\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Persistence/ConfigDeserializer.php
+
+		-
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
+			count: 1
+			path: src/WikibaseFacetedSearchExtension.php

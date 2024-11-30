@@ -36,11 +36,28 @@
 	},
 
 	"Hooks": {
+		"AlternateEdit": "ProfessionalWiki\\WikibaseFacetedSearch\\EntryPoints\\WikibaseFacetedSearchHooks::onAlternateEdit",
+		"BeforePageDisplay": "ProfessionalWiki\\WikibaseFacetedSearch\\EntryPoints\\WikibaseFacetedSearchHooks::onBeforePageDisplay",
+		"ContentHandlerDefaultModelFor": "ProfessionalWiki\\WikibaseFacetedSearch\\EntryPoints\\WikibaseFacetedSearchHooks::onContentHandlerDefaultModelFor",
+		"EditFilter": "ProfessionalWiki\\WikibaseFacetedSearch\\EntryPoints\\WikibaseFacetedSearchHooks::onEditFilter",
+		"EditFormPreloadText": "ProfessionalWiki\\WikibaseFacetedSearch\\EntryPoints\\WikibaseFacetedSearchHooks::onEditFormPreloadText",
 		"ShowSearchHitTitle": "ProfessionalWiki\\WikibaseFacetedSearch\\EntryPoints\\WikibaseFacetedSearchHooks::onShowSearchHitTitle",
 		"SpecialSearchResultsAppend": "ProfessionalWiki\\WikibaseFacetedSearch\\EntryPoints\\WikibaseFacetedSearchHooks::onSpecialSearchResultsAppend"
 	},
 
 	"config": {
+		"WikibaseFacetedSearchEnableInWikiConfig": {
+			"description": "If it should be possible to define configuration via MediaWiki:WikibaseFacetedSearch",
+			"value": true
+		},
+		"WikibaseFacetedSearch": {
+			"description": "Config in JSON format, following the JSON Schema at schema.json. Gets combined with config defined on MediaWiki:WikibaseFacetedSearch",
+			"value": ""
+		}
+	},
+
+	"SpecialPages": {
+		"WikibaseFacetedSearchConfig": "ProfessionalWiki\\WikibaseFacetedSearch\\EntryPoints\\SpecialWikibaseFacetedSearchConfig"
 	},
 
 	"ResourceFileModulePaths": {
