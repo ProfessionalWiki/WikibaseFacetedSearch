@@ -1,55 +1,13 @@
 parameters:
 	ignoreErrors:
 		-
-			message: '#^Call to method addHTML\(\) on an unknown class OutputPage\.$#'
-			identifier: class.notFound
+			message: '#^Method ProfessionalWiki\\WikibaseFacetedSearch\\EntryPoints\\WikibaseFacetedSearchHooks\:\:rewriteLinkForNonEntityResult\(\) never assigns null to &\$titleSnippet so it can be removed from the by\-ref type\.$#'
+			identifier: parameterByRef.unusedType
 			count: 1
 			path: src/EntryPoints/WikibaseFacetedSearchHooks.php
 
 		-
-			message: '#^Call to method addModuleStyles\(\) on an unknown class OutputPage\.$#'
-			identifier: class.notFound
-			count: 1
-			path: src/EntryPoints/WikibaseFacetedSearchHooks.php
-
-		-
-			message: '#^Call to method getNamespace\(\) on an unknown class Title\.$#'
-			identifier: class.notFound
-			count: 1
-			path: src/EntryPoints/WikibaseFacetedSearchHooks.php
-
-		-
-			message: '#^Call to static method element\(\) on an unknown class Html\.$#'
-			identifier: class.notFound
-			count: 1
-			path: src/EntryPoints/WikibaseFacetedSearchHooks.php
-
-		-
-			message: '#^Constant WB_NS_ITEM not found\.$#'
-			identifier: constant.notFound
-			count: 1
-			path: src/EntryPoints/WikibaseFacetedSearchHooks.php
-
-		-
-			message: '#^Parameter \$output of method ProfessionalWiki\\WikibaseFacetedSearch\\EntryPoints\\WikibaseFacetedSearchHooks\:\:onSpecialSearchResultsAppend\(\) has invalid type OutputPage\.$#'
-			identifier: class.notFound
-			count: 1
-			path: src/EntryPoints/WikibaseFacetedSearchHooks.php
-
-		-
-			message: '#^Parameter \$specialSearch of method ProfessionalWiki\\WikibaseFacetedSearch\\EntryPoints\\WikibaseFacetedSearchHooks\:\:onShowSearchHitTitle\(\) has invalid type SpecialSearch\.$#'
-			identifier: class.notFound
-			count: 1
-			path: src/EntryPoints/WikibaseFacetedSearchHooks.php
-
-		-
-			message: '#^Parameter \$specialSearch of method ProfessionalWiki\\WikibaseFacetedSearch\\EntryPoints\\WikibaseFacetedSearchHooks\:\:onSpecialSearchResultsAppend\(\) has invalid type SpecialSearch\.$#'
-			identifier: class.notFound
-			count: 1
-			path: src/EntryPoints/WikibaseFacetedSearchHooks.php
-
-		-
-			message: '#^Parameter \$title of method ProfessionalWiki\\WikibaseFacetedSearch\\EntryPoints\\WikibaseFacetedSearchHooks\:\:onShowSearchHitTitle\(\) has invalid type Title\.$#'
-			identifier: class.notFound
+			message: '#^Method ProfessionalWiki\\WikibaseFacetedSearch\\EntryPoints\\WikibaseFacetedSearchHooks\:\:rewriteLinkForNonEntityResult\(\) never assigns string to &\$titleSnippet so it can be removed from the by\-ref type\.$#'
+			identifier: parameterByRef.unusedType
 			count: 1
 			path: src/EntryPoints/WikibaseFacetedSearchHooks.php

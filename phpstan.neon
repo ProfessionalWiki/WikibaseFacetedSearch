@@ -9,4 +9,8 @@ parameters:
 		- ../../includes
 		- ../../tests/phpunit
 		- ../../vendor
+		- ../../extensions/CirrusSearch
 		- ../../extensions/Wikibase
+		- ../../extensions/WikibaseCirrusSearch
+	bootstrapFiles:
+		- ../../includes/AutoLoader.php
