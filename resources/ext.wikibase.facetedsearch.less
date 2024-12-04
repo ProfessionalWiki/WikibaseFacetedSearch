@@ -1,6 +1,33 @@
 @import 'mediawiki.skin.variables.less';
 
-.wikibase-faceted-search__facets {
-	border: @border-width-base @border-style-base @border-color-base;
-	padding: @spacing-100;
+.searchresults {
+	float: left;
+	max-width: 50em;
+	width: 100%;
+}
+
+.wikibase-faceted-search {
+	&__facets {
+		float: left;
+		min-width: 200px;
+		max-width: 300px;
+		border: @border-width-base @border-style-base @border-color-base;
+		padding: @spacing-100;
+	}
+
+	&__facet {
+		//padding: @spacing-100;
+		margin-bottom: @spacing-100;
+
+		ul {
+			list-style: none;
+			margin: 0;
+		}
+	}
+
+	&__facet-value {
+		&.selected {
+			font-weight: bold;
+		}
+	}
 }

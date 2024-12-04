@@ -14,6 +14,7 @@ use ProfessionalWiki\WikibaseFacetedSearch\Persistence\ItemPageLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\ItemPageLookupFactory;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\PageContentConfigLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\PageContentFetcher;
+use ProfessionalWiki\WikibaseFacetedSearch\Presentation\FacetUiBuilder;
 use Title;
 
 class WikibaseFacetedSearchExtension {
@@ -76,6 +77,10 @@ class WikibaseFacetedSearchExtension {
 		return new ConfigDeserializer(
 			ConfigJsonValidator::newInstance()
 		);
+	}
+
+	public function newFacetUiBuilder(): FacetUiBuilder {
+		return new FacetUiBuilder();
 	}
 
 }

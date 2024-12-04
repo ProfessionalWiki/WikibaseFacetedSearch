@@ -4,12 +4,20 @@ declare( strict_types = 1 );
 
 namespace ProfessionalWiki\WikibaseFacetedSearch\EntryPoints;
 
+use DataValues\NumberValue;
+use DataValues\StringValue;
 use EditPage;
 use Html;
 use HtmlArmor;
 use IContextSource;
 use Language;
 use OutputPage;
+use ProfessionalWiki\WikibaseFacetedSearch\Domain\Facet\BooleanFacet;
+use ProfessionalWiki\WikibaseFacetedSearch\Domain\Facet\BooleanFacetValue;
+use ProfessionalWiki\WikibaseFacetedSearch\Domain\Facet\DataValueFacet;
+use ProfessionalWiki\WikibaseFacetedSearch\Domain\Facet\DataValueFacetValue;
+use ProfessionalWiki\WikibaseFacetedSearch\Domain\Facet\FacetList;
+use ProfessionalWiki\WikibaseFacetedSearch\Domain\Facet\FacetValueList;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\ConfigJsonValidator;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\ConfigJsonErrorFormatter;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\ExportConfigEditPageTextBuilder;
@@ -18,7 +26,9 @@ use SearchResult;
 use Skin;
 use SpecialSearch;
 use Title;
+use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\ItemId;
+use Wikibase\DataModel\Entity\NumericPropertyId;
 use Wikibase\DataModel\Term\TermFallback;
 use Wikibase\Lib\Store\LanguageFallbackLabelDescriptionLookup;
 use Wikibase\Repo\Hooks\Formatters\EntityLinkFormatter;
@@ -139,7 +149,50 @@ class WikibaseFacetedSearchHooks {
 		// TODO: generate facets from search term
 		$output->addModuleStyles( 'ext.wikibase.facetedsearch.styles' );
 		$output->addHTML(
-			Html::element( 'div', [ 'class' => 'wikibase-faceted-search__facets' ] )
+			WikibaseFacetedSearchExtension::getInstance()->newFacetUiBuilder()->createHtml(
+				self::getDemoFacets()
+			)
+		);
+	}
+
+	private static function getDemoFacets(): FacetList {
+		return new FacetList(
+			new BooleanFacet(
+				'Has Author',
+				new NumericPropertyId( 'P1' ),
+				new FacetValueList(
+					new BooleanFacetValue( 'Yes', true, 42, false ),
+					new BooleanFacetValue( 'No', false, 13, false )
+				)
+			),
+			new DataValueFacet(
+				'Author',
+				new NumericPropertyId( 'P1' ),
+				new FacetValueList(
+					new DataValueFacetValue( 'John Doe', new EntityIdValue( new ItemId( 'Q1' ) ), 11, true ),
+					new DataValueFacetValue( 'Jane Doe', new EntityIdValue( new ItemId( 'Q2' ) ), 22, false ),
+					new DataValueFacetValue( 'Foo Bar', new EntityIdValue( new ItemId( 'Q3' ) ), 33, true ),
+					new DataValueFacetValue( 'Lorem Ipsum', new EntityIdValue( new ItemId( 'Q4' ) ), 44, false )
+				)
+			),
+			new DataValueFacet(
+				'Topic',
+				new NumericPropertyId( 'P2' ),
+				new FacetValueList(
+					new DataValueFacetValue( 'Foo', new StringValue( 'Foo' ), 5, false ),
+					new DataValueFacetValue( 'Bar', new StringValue( 'Bar' ), 6, true ),
+					new DataValueFacetValue( 'Baz', new StringValue( 'Baz' ), 7, false )
+				)
+			),
+			new DataValueFacet(
+				'Year Published',
+				new NumericPropertyId( 'P3' ),
+				new FacetValueList(
+					new DataValueFacetValue( '2000', new NumberValue( 2000 ), 8, false ),
+					new DataValueFacetValue( '2010', new NumberValue( 2010 ), 9, false ),
+					new DataValueFacetValue( '2020', new NumberValue( 2020 ), 10, false )
+				)
+			),
 		);
 	}
 
