@@ -25,7 +25,7 @@
 		"php": ">=8.1",
 		"composer/installers": "^2|^1.0.1",
 		"opis/json-schema": "^2.3.0",
-		"ruflin/elastica":  "^7.3.0"
+		"ruflin/elastica":  "^7.1.0"
 	},
 	"require-dev": {
 		"phpstan/phpstan": "^2.0.1",
