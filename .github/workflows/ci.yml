@@ -83,6 +83,12 @@ jobs:
       - name: Create ElasticSearch index
         run: php extensions/CirrusSearch/maintenance/UpdateSearchIndexConfig.php
 
+      - name: Index pages
+        run: |
+          php extensions/CirrusSearch/maintenance/ForceSearchIndex.php --skipParse
+          php extensions/CirrusSearch/maintenance/ForceSearchIndex.php --skipLinks --indexOnSkip
+          php maintenance/runJobs.php
+
       - name: Run PHPUnit
         run: php tests/phpunit/phpunit.php -c extensions/WikibaseFacetedSearch/
         if: matrix.mw != 'master'
