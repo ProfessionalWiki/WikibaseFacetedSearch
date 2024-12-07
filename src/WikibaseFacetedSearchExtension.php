@@ -4,15 +4,12 @@ declare( strict_types = 1 );
 
 namespace ProfessionalWiki\WikibaseFacetedSearch;
 
-use CirrusSearch\Connection;
-use CirrusSearch\SearchConfig;
 use MediaWiki\MediaWikiServices;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\CombiningConfigLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\ConfigDeserializer;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\ConfigJsonValidator;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\ConfigLookup;
-use ProfessionalWiki\WikibaseFacetedSearch\Persistence\ElasticQueryRunner;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\ItemPageLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\ItemPageLookupFactory;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\PageContentConfigLookup;
