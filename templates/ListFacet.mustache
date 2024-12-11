@@ -1,0 +1,11 @@
+<ul class="wikibase-faceted-search__facet-items">
+	{{#items}}
+		<li class="wikibase-faceted-search__facet-item {{#selected}}wikibase-faceted-search__facet-item--selected{{/selected}}">
+			<a href="{{url}}">
+				<input type="checkbox" {{#selected}}checked{{/selected}}/>
+				<span>{{label}}</span>
+				<span>({{count}})</span>
+			</a>
+		</li>
+	{{/items}}
+</ul>
