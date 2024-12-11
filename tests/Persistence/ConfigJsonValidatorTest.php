@@ -42,4 +42,92 @@ class ConfigJsonValidatorTest extends TestCase {
 		);
 	}
 
+	public function testInvalidSiteIdFailsValidation(): void {
+		$this->assertFalse(
+			ConfigJsonValidator::newInstance()->validate( '
+{
+	"linkTargetSitelinkSiteId": 123
+}
+			' )
+		);
+	}
+
+	public function testInvalidInstanceOfIdFailsValidation(): void {
+		$this->assertFalse(
+			ConfigJsonValidator::newInstance()->validate( '
+{
+	"instanceOfId": "Q42"
+}
+			' )
+		);
+	}
+
+	public function testInvalidFacetsFailsValidation(): void {
+		$this->assertFalse(
+			ConfigJsonValidator::newInstance()->validate( '
+{
+	"facets": "invalid"
+}
+			' )
+		);
+	}
+
+	public function testInvalidFacetItemIdFailsValidation(): void {
+		$this->assertFalse(
+			ConfigJsonValidator::newInstance()->validate( '
+{
+	"facets": {
+		"P1": []
+	}
+}
+			' )
+		);
+	}
+
+	public function testInvalidFacetConfigStructureFailsValidation(): void {
+		$this->assertFalse(
+			ConfigJsonValidator::newInstance()->validate( '
+{
+	"facets": {
+		"Q1": "invalid"
+	}
+}
+			' )
+		);
+	}
+
+	public function testInvalidFacetConfigPropertyIdFailsValidation(): void {
+		$this->assertFalse(
+			ConfigJsonValidator::newInstance()->validate( '
+{
+	"facets": {
+		"Q1": [
+			{
+				"property": "Q1",
+				"type": "list"
+			}
+		]
+	}
+}
+			' )
+		);
+	}
+
+	public function testInvalidFacetConfigTypeFailsValidation(): void {
+		$this->assertFalse(
+			ConfigJsonValidator::newInstance()->validate( '
+{
+	"facets": {
+		"Q1": [
+			{
+				"property": "P1",
+				"type": 42
+			}
+		]
+	}
+}
+			' )
+		);
+	}
+
 }

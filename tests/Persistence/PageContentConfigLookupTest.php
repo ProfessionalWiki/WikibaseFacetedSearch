@@ -32,9 +32,7 @@ class PageContentConfigLookupTest extends WikibaseFacetedSearchIntegrationTest {
 		$config = $lookup->getConfig();
 
 		$this->assertEquals(
-			new Config(
-				linkTargetSitelinkSiteId: 'enwiki'
-			),
+			Valid::config(),
 			$config
 		);
 	}
