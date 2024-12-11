@@ -60,6 +60,51 @@ class ExportConfigEditPageTextBuilder {
 	</section>
 
 	<section>
+		<h2 id="InstanceOfId">Instance Of property ID</h2>
+
+		<p>
+			The property ID for the "instance of" property.
+		</p>
+
+		<p>
+			Example configuration:
+		</p>
+
+		<pre>
+{
+	"instanceOfId": "P1"
+}</pre>
+	</section>
+
+	<section>
+		<h2 id="Facets">Facets</h2>
+
+		<p>
+			The avilable facets per item type ("instance of"). Each facet is defined by a property ID and a type.
+		</p>
+
+		<p>
+			Example configuration:
+		</p>
+
+		<pre>
+{
+	"facets": {
+		"Q1": [
+			{
+				"property": "P1",
+				"type": "list"
+			},
+			{
+				"property": "P2",
+				"type": "range"
+			}
+		]
+	}
+}</pre>
+	</section>
+
+	<section>
 		<h2 id="FullExample">{$this->context->msg( 'wikibase-faceted-search-config-help-example' )->escaped()}</h2>
 
 		<pre>{$this->getExampleContents()}</pre>

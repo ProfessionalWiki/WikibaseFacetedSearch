@@ -4,6 +4,7 @@ declare( strict_types = 1 );
 
 namespace ProfessionalWiki\WikibaseFacetedSearch\Presentation;
 
+use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetType;
 use TemplateParser;
 
 class FacetUiBuilder {
@@ -27,22 +28,22 @@ class FacetUiBuilder {
 		return [
 			[
 				'label' => 'Has Author',
-				'type' => 'list',
+				'type' => FacetType::LIST->value,
 				'values-html' => $this->getListFacetHtml( $this->getExampleBooleanItems() )
 			],
 			[
 				'label' => 'Author',
-				'type' => 'list',
+				'type' => FacetType::LIST->value,
 				'values-html' => $this->getListFacetHtml( $this->getExampleListItems() )
 			],
 			[
 				'label' => 'Year',
-				'type' => 'range',
+				'type' => FacetType::RANGE->value,
 				'values-html' => $this->getRangeFacetHtml( currentMin: 1900, currentMax: 2024 )
 			],
 			[
 				'label' => 'Pages',
-				'type' => 'range',
+				'type' => FacetType::RANGE->value,
 				'values-html' => $this->getRangeFacetHtml( currentMin: 10 )
 			]
 		];
