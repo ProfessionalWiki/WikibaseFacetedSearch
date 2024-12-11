@@ -171,6 +171,8 @@ class WikibaseFacetedSearchHooks {
 			$textBuilder = new ExportConfigEditPageTextBuilder( $editPage->getContext() );
 			$editPage->editFormTextTop = $textBuilder->createTopHtml();
 			$editPage->editFormTextBottom = $textBuilder->createBottomHtml();
+
+			$editPage->getContext()->getOutput()->addModuleStyles( [ 'ext.wikibase.facetedsearch.docs.styles' ] );
 		}
 	}
 
@@ -178,7 +180,9 @@ class WikibaseFacetedSearchHooks {
 		if ( WikibaseFacetedSearchExtension::getInstance()->isConfigTitle( $title ) ) {
 			$text = trim( '
 {
-	"linkTargetSitelinkSiteId": null
+	"linkTargetSitelinkSiteId": null,
+	"instanceOfId": null,
+	"facets": {}
 }' );
 		}
 	}

@@ -1,3 +1,30 @@
 {
-	"linkTargetSitelinkSiteId": "enwiki"
+	"linkTargetSitelinkSiteId": "enwiki",
+	"instanceOfId": "P1",
+	"facets": {
+		"Q100": [
+			{
+				"property": "P100",
+				"type": "boolean"
+			},
+			{
+				"property": "P100",
+				"type": "list"
+			},
+			{
+				"property": "P200",
+				"type": "range"
+			}
+		],
+		"Q200": [
+			{
+				"property": "P100",
+				"type": "list"
+			},
+			{
+				"property": "P300",
+				"type": "range"
+			}
+		]
+	}
 }

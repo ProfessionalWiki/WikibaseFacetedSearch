@@ -6,8 +6,12 @@ namespace ProfessionalWiki\WikibaseFacetedSearch\Tests\Persistence;
 
 use PHPUnit\Framework\TestCase;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
+use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetConfig;
+use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetConfigList;
 use ProfessionalWiki\WikibaseFacetedSearch\Tests\TestDoubles\Valid;
 use ProfessionalWiki\WikibaseFacetedSearch\WikibaseFacetedSearchExtension;
+use Wikibase\DataModel\Entity\ItemId;
+use Wikibase\DataModel\Entity\NumericPropertyId;
 
 /**
  * @covers \ProfessionalWiki\WikibaseFacetedSearch\Persistence\ConfigDeserializer
@@ -17,13 +21,9 @@ class ConfigDeserializerTest extends TestCase {
 	public function testValidJsonReturnsConfig(): void {
 		$deserializer = WikibaseFacetedSearchExtension::getInstance()->newConfigDeserializer();
 
-		$config = $deserializer->deserialize( Valid::configJson() );
-
 		$this->assertEquals(
-			new Config(
-				linkTargetSitelinkSiteId: 'enwiki'
-			),
-			$config
+			Valid::config(),
+			$deserializer->deserialize( Valid::configJson() )
 		);
 	}
 
@@ -31,9 +31,38 @@ class ConfigDeserializerTest extends TestCase {
 		$deserializer = WikibaseFacetedSearchExtension::getInstance()->newConfigDeserializer();
 
 		$config = $deserializer->deserialize( '}{' );
-		$emptyConfig = new Config();
 
-		$this->assertEquals( $emptyConfig, $config );
+		$this->assertEquals( new Config(), $config );
+	}
+
+	public function testInvalidInstanceOfIdReturnsEmptyConfig(): void {
+		$deserializer = WikibaseFacetedSearchExtension::getInstance()->newConfigDeserializer();
+
+		$config = $deserializer->deserialize( '{ "instanceOfId": "Q123" }' );
+
+		$this->assertEquals( new Config(), $config );
+	}
+
+	public function testInvalidFacetsReturnsEmptyConfig(): void {
+		$deserializer = WikibaseFacetedSearchExtension::getInstance()->newConfigDeserializer();
+
+		$config = $deserializer->deserialize( '{ "facets": "foo" }' );
+
+		$this->assertEquals( new Config(), $config );
+	}
+
+	public function testInvalidFacetConfigReturnsEmptyConfig(): void {
+		$deserializer = WikibaseFacetedSearchExtension::getInstance()->newConfigDeserializer();
+
+		$config = $deserializer->deserialize( '
+{
+	"facets": {
+		"Q1": "notAnArray"
+	}
+}
+		' );
+
+		$this->assertEquals( new Config(), $config );
 	}
 
 }

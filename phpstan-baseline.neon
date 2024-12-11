@@ -19,6 +19,18 @@ parameters:
 			path: src/Persistence/ConfigDeserializer.php
 
 		-
+			message: '#^Parameter \#1 \$facets of method ProfessionalWiki\\WikibaseFacetedSearch\\Persistence\\ConfigDeserializer\:\:newFacetConfigList\(\) expects array\<string, array\<array\<string, string\>\>\>, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Persistence/ConfigDeserializer.php
+
+		-
+			message: '#^Parameter \#1 \$propertyId of method ProfessionalWiki\\WikibaseFacetedSearch\\Persistence\\ConfigDeserializer\:\:newPropertyId\(\) expects string\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Persistence/ConfigDeserializer.php
+
+		-
 			message: '#^Parameter \$linkTargetSitelinkSiteId of class ProfessionalWiki\\WikibaseFacetedSearch\\Application\\Config constructor expects string\|null, mixed given\.$#'
 			identifier: argument.type
 			count: 1

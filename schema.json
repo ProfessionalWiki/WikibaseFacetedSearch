@@ -7,6 +7,41 @@
 				"string",
 				"null"
 			]
+		},
+		"instanceOfId": {
+			"type": [
+				"string",
+				"null"
+			],
+			"pattern": "^P[1-9]\\d{0,9}$"
+		},
+		"facets": {
+			"type": "object",
+			"propertyNames": {
+				"pattern": "^Q[1-9]\\d{0,9}$"
+			},
+			"additionalProperties": {
+				"type": [
+					"array",
+					"null"
+				],
+				"items": {
+					"type": "object",
+					"properties": {
+						"property": {
+							"type": "string",
+							"pattern": "^P[1-9]\\d{0,9}$"
+						},
+						"type": {
+							"type": "string"
+						}
+					},
+					"required": [
+						"property",
+						"type"
+					]
+				}
+			}
 		}
 	}
 }
