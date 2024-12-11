@@ -39,12 +39,12 @@ class FacetUiBuilder {
 			[
 				'label' => 'Year',
 				'type' => FacetType::RANGE->value,
-				'values-html' => $this->getRangeFacetHtml( min: 1900, max: 2024 )
+				'values-html' => $this->getRangeFacetHtml( currentMin: 1900, currentMax: 2024 )
 			],
 			[
 				'label' => 'Pages',
 				'type' => FacetType::RANGE->value,
-				'values-html' => $this->getRangeFacetHtml( min: 1, max: 100 )
+				'values-html' => $this->getRangeFacetHtml( currentMin: 10 )
 			]
 		];
 	}
@@ -111,14 +111,14 @@ class FacetUiBuilder {
 		);
 	}
 
-	private function getRangeFacetHtml( int $min, int $max ): string {
+	private function getRangeFacetHtml( ?int $currentMin = null, ?int $currentMax = null ): string {
 		return $this->parser->processTemplate(
 			'RangeFacet',
 			[
 				'msg-min' => wfMessage( 'wikibase-faceted-search-facet-range-min' )->text(),
 				'msg-max' => wfMessage( 'wikibase-faceted-search-facet-range-max' )->text(),
-				'min' => $min,
-				'max' => $max,
+				'current-min' => $currentMin,
+				'current-max' => $currentMax,
 			]
 		);
 	}
