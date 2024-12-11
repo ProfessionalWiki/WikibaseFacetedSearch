@@ -139,7 +139,7 @@ class WikibaseFacetedSearchHooks {
 		// TODO: generate facets from search term
 		$output->addModuleStyles( 'ext.wikibase.facetedsearch.styles' );
 		$output->addHTML(
-			Html::element( 'div', [ 'class' => 'wikibase-faceted-search__facets' ] )
+			WikibaseFacetedSearchExtension::getInstance()->newFacetUiBuilder()->createHtml( /* TODO: FacetList */ )
 		);
 	}
 

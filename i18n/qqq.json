@@ -11,5 +11,7 @@
 	"wikibase-faceted-search-config-invalid": "Error message shown when attempting to save invalid configuration on MediaWiki:WikibaseFacetedSearch",
 	"wikibase-faceted-search-config-help-documentation": "Link to documentation displayed on \"MediaWiki:WikibaseFacetedSearch\"",
 	"wikibase-faceted-search-config-help": "Help text heading displayed on \"MediaWiki:WikibaseFacetedSearch\"",
-	"wikibase-faceted-search-config-help-example": "Help text heading displayed on \"MediaWiki:WikibaseFacetedSearch\""
+	"wikibase-faceted-search-config-help-example": "Help text heading displayed on \"MediaWiki:WikibaseFacetedSearch\"",
+	"wikibase-faceted-search-facet-range-min": "Minimum value label displayed on range facet",
+	"wikibase-faceted-search-facet-range-max": "Maximum value label displayed on range facet"
 }
