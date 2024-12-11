@@ -7,6 +7,7 @@ namespace ProfessionalWiki\WikibaseFacetedSearch\Persistence;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetConfig;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetConfigList;
+use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetType;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\NumericPropertyId;
 use Wikibase\DataModel\Entity\PropertyId;
@@ -75,7 +76,7 @@ class ConfigDeserializer {
 		return new FacetConfig(
 			itemId: new ItemId( $itemId ),
 			propertyId: new NumericPropertyId( $facetConfig['property'] ),
-			type: $facetConfig['type']
+			type: FacetType::from( $facetConfig['type'] )
 		);
 	}
 

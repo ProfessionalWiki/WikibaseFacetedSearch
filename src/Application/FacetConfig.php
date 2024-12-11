@@ -12,7 +12,7 @@ class FacetConfig {
 	public function __construct(
 		public readonly ItemId $itemId,
 		public readonly PropertyId $propertyId,
-		public readonly string $type
+		public readonly FacetType $type
 	) {
 	}
 

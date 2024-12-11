@@ -7,6 +7,7 @@ namespace ProfessionalWiki\WikibaseFacetedSearch\Tests\TestDoubles;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetConfig;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetConfigList;
+use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetType;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\NumericPropertyId;
 
@@ -48,10 +49,10 @@ class Valid {
 			linkTargetSitelinkSiteId: 'enwiki',
 			instanceOfId: new NumericPropertyId( 'P42' ),
 			facets: new FacetConfigList(
-				new FacetConfig( new ItemId( 'Q100' ), new NumericPropertyId( 'P100' ), 'boolean' ),
-				new FacetConfig( new ItemId( 'Q100' ), new NumericPropertyId( 'P100' ), 'list' ),
-				new FacetConfig( new ItemId( 'Q100' ), new NumericPropertyId( 'P200' ), 'range' ),
-				new FacetConfig( new ItemId( 'Q200' ), new NumericPropertyId( 'P300' ), 'list' )
+				new FacetConfig( new ItemId( 'Q100' ), new NumericPropertyId( 'P100' ), FacetType::BOOLEAN ),
+				new FacetConfig( new ItemId( 'Q100' ), new NumericPropertyId( 'P100' ), FacetType::LIST ),
+				new FacetConfig( new ItemId( 'Q100' ), new NumericPropertyId( 'P200' ), FacetType::RANGE ),
+				new FacetConfig( new ItemId( 'Q200' ), new NumericPropertyId( 'P300' ), FacetType::LIST )
 			)
 		);
 	}

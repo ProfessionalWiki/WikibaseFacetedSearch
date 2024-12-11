@@ -7,6 +7,7 @@ namespace ProfessionalWiki\WikibaseFacetedSearch\Tests\Application;
 use PHPUnit\Framework\TestCase;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetConfig;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetConfigList;
+use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetType;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\NumericPropertyId;
 
@@ -17,7 +18,7 @@ class FacetConfigListTest extends TestCase {
 
 	public function testFacetConfigCanBeRetrieved(): void {
 		$itemId = new ItemId( 'Q1' );
-		$facetConfig = new FacetConfig( $itemId, new NumericPropertyId( 'P1' ), 'list' );
+		$facetConfig = new FacetConfig( $itemId, new NumericPropertyId( 'P1' ), FacetType::LIST );
 
 		$facetConfigList = new FacetConfigList( $facetConfig );
 
@@ -29,8 +30,8 @@ class FacetConfigListTest extends TestCase {
 
 	public function testCanAddMultipleFacetConfigsWithTheSameItemId(): void {
 		$itemId1 = new ItemId( 'Q1' );
-		$facetConfig1 = new FacetConfig( $itemId1, new NumericPropertyId( 'P1' ), 'list' );
-		$facetConfig2 = new FacetConfig( $itemId1, new NumericPropertyId( 'P2' ), 'list' );
+		$facetConfig1 = new FacetConfig( $itemId1, new NumericPropertyId( 'P1' ), FacetType::LIST );
+		$facetConfig2 = new FacetConfig( $itemId1, new NumericPropertyId( 'P2' ), FacetType::LIST );
 
 		$facetConfigList = new FacetConfigList(
 			$facetConfig1,
@@ -45,8 +46,8 @@ class FacetConfigListTest extends TestCase {
 
 	public function testCanAddMultipleFacetConfigsWithTheSamePropertyIdForOneItemId(): void {
 		$itemId1 = new ItemId( 'Q1' );
-		$facetConfig1 = new FacetConfig( $itemId1, new NumericPropertyId( 'P1' ), 'boolean' );
-		$facetConfig2 = new FacetConfig( $itemId1, new NumericPropertyId( 'P1' ), 'list' );
+		$facetConfig1 = new FacetConfig( $itemId1, new NumericPropertyId( 'P1' ), FacetType::BOOLEAN );
+		$facetConfig2 = new FacetConfig( $itemId1, new NumericPropertyId( 'P1' ), FacetType::LIST );
 
 		$facetConfigList = new FacetConfigList(
 			$facetConfig1,
@@ -62,10 +63,10 @@ class FacetConfigListTest extends TestCase {
 	public function testCanAddMultipleFacetConfigsWithTheSamePropertyIdForDifferentItemIds(): void {
 		$itemId1 = new ItemId( 'Q1' );
 		$itemId2 = new ItemId( 'Q2' );
-		$facetConfig1 = new FacetConfig( $itemId1, new NumericPropertyId( 'P1' ), 'boolean' );
-		$facetConfig2 = new FacetConfig( $itemId1, new NumericPropertyId( 'P2' ), 'list' );
-		$facetConfig3 = new FacetConfig( $itemId2, new NumericPropertyId( 'P1' ), 'boolean' );
-		$facetConfig4 = new FacetConfig( $itemId2, new NumericPropertyId( 'P2' ), 'list' );
+		$facetConfig1 = new FacetConfig( $itemId1, new NumericPropertyId( 'P1' ), FacetType::BOOLEAN );
+		$facetConfig2 = new FacetConfig( $itemId1, new NumericPropertyId( 'P2' ), FacetType::LIST );
+		$facetConfig3 = new FacetConfig( $itemId2, new NumericPropertyId( 'P1' ), FacetType::BOOLEAN );
+		$facetConfig4 = new FacetConfig( $itemId2, new NumericPropertyId( 'P2' ), FacetType::LIST );
 
 		$facetConfigList = new FacetConfigList(
 			$facetConfig1,
@@ -88,12 +89,12 @@ class FacetConfigListTest extends TestCase {
 	public function testFacetConfigsAreRetrievedInTheAddingOrder(): void {
 		$itemId1 = new ItemId( 'Q1' );
 		$itemId2 = new ItemId( 'Q2' );
-		$facetConfig1 = new FacetConfig( $itemId1, new NumericPropertyId( 'P1' ), 'boolean' );
-		$facetConfig2 = new FacetConfig( $itemId1, new NumericPropertyId( 'P1' ), 'list' );
-		$facetConfig3 = new FacetConfig( $itemId1, new NumericPropertyId( 'P2' ), 'range' );
-		$facetConfig4 = new FacetConfig( $itemId2, new NumericPropertyId( 'P1' ), 'boolean' );
-		$facetConfig5 = new FacetConfig( $itemId2, new NumericPropertyId( 'P1' ), 'list' );
-		$facetConfig6 = new FacetConfig( $itemId2, new NumericPropertyId( 'P2' ), 'range' );
+		$facetConfig1 = new FacetConfig( $itemId1, new NumericPropertyId( 'P1' ), FacetType::BOOLEAN );
+		$facetConfig2 = new FacetConfig( $itemId1, new NumericPropertyId( 'P1' ), FacetType::LIST );
+		$facetConfig3 = new FacetConfig( $itemId1, new NumericPropertyId( 'P2' ), FacetType::RANGE );
+		$facetConfig4 = new FacetConfig( $itemId2, new NumericPropertyId( 'P1' ), FacetType::BOOLEAN );
+		$facetConfig5 = new FacetConfig( $itemId2, new NumericPropertyId( 'P1' ), FacetType::LIST );
+		$facetConfig6 = new FacetConfig( $itemId2, new NumericPropertyId( 'P2' ), FacetType::RANGE );
 
 		$facetConfigList = new FacetConfigList(
 			$facetConfig2,
