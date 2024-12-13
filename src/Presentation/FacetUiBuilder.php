@@ -5,16 +5,20 @@ declare( strict_types = 1 );
 namespace ProfessionalWiki\WikibaseFacetedSearch\Presentation;
 
 use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetType;
+use ProfessionalWiki\WikibaseFacetedSearch\Application\SearchTermParser;
 use TemplateParser;
 
 class FacetUiBuilder {
 
 	public function __construct(
-		private readonly TemplateParser $parser
+		private readonly TemplateParser $parser,
+		private readonly SearchTermParser $searchStringParser
 	) {
 	}
 
-	public function createHtml( /* TODO: FacetList */ ): string {
+	public function createHtml( string $term /* TODO: FacetList */ ): string {
+		$this->searchStringParser->parse( $term );
+
 		return $this->parser->processTemplate(
 			'Facets',
 			[ 'facets' => $this->facetsToViewModel() ]

@@ -6,6 +6,7 @@ namespace ProfessionalWiki\WikibaseFacetedSearch;
 
 use MediaWiki\MediaWikiServices;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
+use ProfessionalWiki\WikibaseFacetedSearch\Application\SearchTermParser;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\CombiningConfigLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\ConfigDeserializer;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\ConfigJsonValidator;
@@ -82,7 +83,10 @@ class WikibaseFacetedSearchExtension {
 
 	public function newFacetUiBuilder(): FacetUiBuilder {
 		return new FacetUiBuilder(
-			new TemplateParser( __DIR__ . '/../templates' )
+			new TemplateParser( __DIR__ . '/../templates' ),
+			new SearchTermParser(
+				$this->getConfig()
+			)
 		);
 	}
 
