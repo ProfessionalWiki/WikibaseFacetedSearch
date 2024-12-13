@@ -6,6 +6,7 @@ namespace ProfessionalWiki\WikibaseFacetedSearch\Presentation;
 
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetType;
+use ProfessionalWiki\WikibaseFacetedSearch\Application\SearchTermParser;
 use TemplateParser;
 use Wikibase\DataModel\Entity\ItemId;
 
@@ -13,13 +14,15 @@ class FacetUiBuilder {
 
 	public function __construct(
 		private readonly TemplateParser $parser,
-		private readonly Config $config // TODO: use
+		private readonly Config $config, // TODO: use
+		private readonly SearchTermParser $searchTermParser
 	) {
 	}
 
 	// TODO: parameter or constructor argument: values and counts (from https://github.com/ProfessionalWiki/WikibaseFacetedSearch/issues/23)
 	// TODO: parameter: selected values (from QueryStringParser https://github.com/ProfessionalWiki/WikibaseFacetedSearch/issues/31)
-	public function createHtml( ItemId $itemType ): string {
+	public function createHtml( ItemId $itemType, string $term ): string {
+		$this->searchTermParser->parse( $term );
 		$this->config->getFacetConfigForInstanceType( $itemType );
 
 		return $this->parser->processTemplate(

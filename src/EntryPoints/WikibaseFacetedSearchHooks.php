@@ -145,7 +145,7 @@ class WikibaseFacetedSearchHooks {
 		// TODO: get facet state rom search string and pass as parameter
 
 		$output->addHTML(
-			WikibaseFacetedSearchExtension::getInstance()->newFacetUiBuilder()->createHtml( $itemType )
+			WikibaseFacetedSearchExtension::getInstance()->newFacetUiBuilder()->createHtml( $itemType, $term )
 		);
 	}
 
