@@ -9,12 +9,15 @@ use TemplateParser;
 
 class FacetUiBuilder {
 
+	// TODO: facet config
 	public function __construct(
 		private readonly TemplateParser $parser
 	) {
 	}
 
-	public function createHtml( /* TODO: FacetList */ ): string {
+	// TODO: parameter: values and counts (from https://github.com/ProfessionalWiki/WikibaseFacetedSearch/issues/23)
+	// TODO: parameter: selected values (from QueryStringParser https://github.com/ProfessionalWiki/WikibaseFacetedSearch/issues/31)
+	public function createHtml(): string {
 		return $this->parser->processTemplate(
 			'Facets',
 			[ 'facets' => $this->facetsToViewModel() ]
@@ -24,7 +27,7 @@ class FacetUiBuilder {
 	/**
 	 * @return array<array<string, string>>
 	 */
-	private function facetsToViewModel( /* TODO: FacetList */ ): array {
+	private function facetsToViewModel( /* TODO: parameters */ ): array {
 		return [
 			[
 				'label' => 'Has Author',
@@ -75,7 +78,7 @@ class FacetUiBuilder {
 	private function getExampleListItems(): array {
 		return [
 			[
-				'label' => 'Alice',
+				'label' => 'Alice', // TODO: lookup of label and URL for item-id (or property-id) typed values
 				'count' => 42,
 				'url' => 'https://example.com/facet/Alice',
 				'selected' => false
