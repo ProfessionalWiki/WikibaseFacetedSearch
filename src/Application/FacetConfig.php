@@ -10,7 +10,7 @@ use Wikibase\DataModel\Entity\PropertyId;
 class FacetConfig {
 
 	public function __construct(
-		public readonly ItemId $itemId,
+		public readonly ItemId $instanceTypeId,
 		public readonly PropertyId $propertyId,
 		public readonly FacetType $type
 	) {

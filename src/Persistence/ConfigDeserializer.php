@@ -74,7 +74,7 @@ class ConfigDeserializer {
 	 */
 	private function newFacetConfig( string $itemId, array $facetConfig ): FacetConfig {
 		return new FacetConfig(
-			itemId: new ItemId( $itemId ),
+			instanceTypeId: new ItemId( $itemId ),
 			propertyId: new NumericPropertyId( $facetConfig['property'] ),
 			type: FacetType::from( $facetConfig['type'] )
 		);
