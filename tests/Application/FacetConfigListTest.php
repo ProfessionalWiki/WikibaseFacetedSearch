@@ -13,6 +13,7 @@ use Wikibase\DataModel\Entity\NumericPropertyId;
 
 /**
  * @covers \ProfessionalWiki\WikibaseFacetedSearch\Application\FacetConfigList
+ * @covers \ProfessionalWiki\WikibaseFacetedSearch\Application\FacetConfig
  */
 class FacetConfigListTest extends TestCase {
 
