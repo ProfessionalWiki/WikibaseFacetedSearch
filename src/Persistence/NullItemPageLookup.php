@@ -4,6 +4,7 @@ declare( strict_types = 1 );
 
 namespace ProfessionalWiki\WikibaseFacetedSearch\Persistence;
 
+use ProfessionalWiki\WikibaseFacetedSearch\Application\ItemPageLookup;
 use Title;
 use Wikibase\DataModel\Entity\ItemId;
 

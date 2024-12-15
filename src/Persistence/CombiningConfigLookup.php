@@ -5,6 +5,7 @@ declare( strict_types = 1 );
 namespace ProfessionalWiki\WikibaseFacetedSearch\Persistence;
 
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
+use ProfessionalWiki\WikibaseFacetedSearch\Application\ConfigLookup;
 
 /**
  * Combines these config sources, with the latter overriding the former:

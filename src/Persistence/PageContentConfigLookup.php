@@ -6,6 +6,7 @@ namespace ProfessionalWiki\WikibaseFacetedSearch\Persistence;
 
 use JsonContent;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
+use ProfessionalWiki\WikibaseFacetedSearch\Application\ConfigLookup;
 
 class PageContentConfigLookup implements ConfigLookup {
 
