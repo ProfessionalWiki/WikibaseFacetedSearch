@@ -2,7 +2,7 @@
 
 declare( strict_types = 1 );
 
-namespace ProfessionalWiki\WikibaseFacetedSearch\Tests\TestDoubles;
+namespace ProfessionalWiki\WikibaseFacetedSearch\Tests;
 
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetConfig;
@@ -21,21 +21,21 @@ class Valid {
     "facets": {
 		"Q100": [
 			{
-				"property": "P100",
+				"property": "P1",
 				"type": "boolean"
 			},
 			{
-				"property": "P100",
+				"property": "P1",
 				"type": "list"
 			},
 			{
-				"property": "P200",
+				"property": "P2",
 				"type": "range"
 			}
 		],
 		"Q200": [
 			{
-				"property": "P300",
+				"property": "P3",
 				"type": "list"
 			}
 		]
@@ -49,10 +49,10 @@ class Valid {
 			linkTargetSitelinkSiteId: 'enwiki',
 			instanceOfId: new NumericPropertyId( 'P42' ),
 			facets: new FacetConfigList(
-				new FacetConfig( new ItemId( 'Q100' ), new NumericPropertyId( 'P100' ), FacetType::BOOLEAN ),
-				new FacetConfig( new ItemId( 'Q100' ), new NumericPropertyId( 'P100' ), FacetType::LIST ),
-				new FacetConfig( new ItemId( 'Q100' ), new NumericPropertyId( 'P200' ), FacetType::RANGE ),
-				new FacetConfig( new ItemId( 'Q200' ), new NumericPropertyId( 'P300' ), FacetType::LIST )
+				new FacetConfig( new ItemId( 'Q100' ), new NumericPropertyId( 'P1' ), FacetType::BOOLEAN ),
+				new FacetConfig( new ItemId( 'Q100' ), new NumericPropertyId( 'P1' ), FacetType::LIST ),
+				new FacetConfig( new ItemId( 'Q100' ), new NumericPropertyId( 'P2' ), FacetType::RANGE ),
+				new FacetConfig( new ItemId( 'Q200' ), new NumericPropertyId( 'P3' ), FacetType::LIST )
 			)
 		);
 	}

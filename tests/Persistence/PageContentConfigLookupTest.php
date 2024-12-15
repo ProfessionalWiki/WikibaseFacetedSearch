@@ -5,7 +5,7 @@ declare( strict_types = 1 );
 namespace ProfessionalWiki\WikibaseFacetedSearch\Tests\Persistence;
 
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
-use ProfessionalWiki\WikibaseFacetedSearch\Tests\TestDoubles\Valid;
+use ProfessionalWiki\WikibaseFacetedSearch\Tests\Valid;
 use ProfessionalWiki\WikibaseFacetedSearch\Tests\WikibaseFacetedSearchIntegrationTest;
 use ProfessionalWiki\WikibaseFacetedSearch\WikibaseFacetedSearchExtension;
 

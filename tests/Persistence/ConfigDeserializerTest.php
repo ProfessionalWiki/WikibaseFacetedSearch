@@ -6,12 +6,8 @@ namespace ProfessionalWiki\WikibaseFacetedSearch\Tests\Persistence;
 
 use PHPUnit\Framework\TestCase;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
-use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetConfig;
-use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetConfigList;
-use ProfessionalWiki\WikibaseFacetedSearch\Tests\TestDoubles\Valid;
+use ProfessionalWiki\WikibaseFacetedSearch\Tests\Valid;
 use ProfessionalWiki\WikibaseFacetedSearch\WikibaseFacetedSearchExtension;
-use Wikibase\DataModel\Entity\ItemId;
-use Wikibase\DataModel\Entity\NumericPropertyId;
 
 /**
  * @covers \ProfessionalWiki\WikibaseFacetedSearch\Persistence\ConfigDeserializer

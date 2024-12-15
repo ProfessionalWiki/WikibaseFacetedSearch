@@ -4,18 +4,19 @@ declare( strict_types = 1 );
 
 namespace ProfessionalWiki\WikibaseFacetedSearch\Presentation;
 
+use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetType;
 use TemplateParser;
 
 class FacetUiBuilder {
 
-	// TODO: facet config
 	public function __construct(
-		private readonly TemplateParser $parser
+		private readonly TemplateParser $parser,
+		private readonly Config $config // TODO: use
 	) {
 	}
 
-	// TODO: parameter: values and counts (from https://github.com/ProfessionalWiki/WikibaseFacetedSearch/issues/23)
+	// TODO: parameter or constructor argument: values and counts (from https://github.com/ProfessionalWiki/WikibaseFacetedSearch/issues/23)
 	// TODO: parameter: selected values (from QueryStringParser https://github.com/ProfessionalWiki/WikibaseFacetedSearch/issues/31)
 	public function createHtml(): string {
 		return $this->parser->processTemplate(

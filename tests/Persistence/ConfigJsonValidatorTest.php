@@ -6,7 +6,7 @@ namespace ProfessionalWiki\WikibaseFacetedSearch\Tests\Persistence;
 
 use PHPUnit\Framework\TestCase;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\ConfigJsonValidator;
-use ProfessionalWiki\WikibaseFacetedSearch\Tests\TestDoubles\Valid;
+use ProfessionalWiki\WikibaseFacetedSearch\Tests\Valid;
 
 /**
  * @covers \ProfessionalWiki\WikibaseFacetedSearch\Persistence\ConfigJsonValidator

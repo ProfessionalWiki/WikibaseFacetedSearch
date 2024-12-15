@@ -4,14 +4,15 @@ declare( strict_types = 1 );
 
 namespace ProfessionalWiki\WikibaseFacetedSearch\Application;
 
+use RuntimeException;
 use Wikibase\DataModel\Entity\PropertyId;
 
 class Config {
 
 	public function __construct(
 		public readonly ?string $linkTargetSitelinkSiteId = null,
-		public readonly ?PropertyId $instanceOfId = null,
-		public readonly ?FacetConfigList $facets = null
+		private readonly ?PropertyId $instanceOfId = null,
+		private readonly ?FacetConfigList $facets = null
 	) {
 	}
 
@@ -21,6 +22,18 @@ class Config {
 			$config->instanceOfId ?? $this->instanceOfId,
 			$config->facets ?? $this->facets
 		);
+	}
+
+	public function getInstanceOfId(): PropertyId {
+		if ( $this->instanceOfId === null ) {
+			throw new RuntimeException( 'No instance of ID configured' );
+		}
+
+		return $this->instanceOfId;
+	}
+
+	public function getFacets(): FacetConfigList {
+		return $this->facets ?? new FacetConfigList();
 	}
 
 }
