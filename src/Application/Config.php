@@ -5,6 +5,7 @@ declare( strict_types = 1 );
 namespace ProfessionalWiki\WikibaseFacetedSearch\Application;
 
 use RuntimeException;
+use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 
 class Config {
@@ -32,8 +33,18 @@ class Config {
 		return $this->instanceOfId;
 	}
 
+	/**
+	 * TODO: make private?
+	 */
 	public function getFacets(): FacetConfigList {
 		return $this->facets ?? new FacetConfigList();
+	}
+
+	/**
+	 * @return FacetConfig[]
+	 */
+	public function getFacetConfigForInstanceType( ItemId $instanceTypeId ): array {
+		return $this->getFacets()->getFacetConfigForInstanceType( $instanceTypeId );
 	}
 
 }
