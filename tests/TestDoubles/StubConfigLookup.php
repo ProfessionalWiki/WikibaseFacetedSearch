@@ -5,7 +5,7 @@ declare( strict_types = 1 );
 namespace ProfessionalWiki\WikibaseFacetedSearch\Tests\TestDoubles;
 
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
-use ProfessionalWiki\WikibaseFacetedSearch\Persistence\ConfigLookup;
+use ProfessionalWiki\WikibaseFacetedSearch\Application\ConfigLookup;
 
 class StubConfigLookup implements ConfigLookup {
 

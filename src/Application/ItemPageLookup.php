@@ -2,7 +2,7 @@
 
 declare( strict_types = 1 );
 
-namespace ProfessionalWiki\WikibaseFacetedSearch\Persistence;
+namespace ProfessionalWiki\WikibaseFacetedSearch\Application;
 
 use Title;
 use Wikibase\DataModel\Entity\ItemId;
