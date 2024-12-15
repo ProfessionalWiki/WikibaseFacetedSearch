@@ -10,10 +10,16 @@ use ProfessionalWiki\WikibaseFacetedSearch\Tests\WikibaseFacetedSearchIntegratio
 use ProfessionalWiki\WikibaseFacetedSearch\WikibaseFacetedSearchExtension;
 
 /**
- * @covers \ProfessionalWiki\WikibaseFacetedSearch\Persistence\PageContentConfigLookup
  * @group Database
+ * @covers \ProfessionalWiki\WikibaseFacetedSearch\Persistence\PageContentConfigLookup
+ * @covers \ProfessionalWiki\WikibaseFacetedSearch\Persistence\PageContentFetcher
  */
 class PageContentConfigLookupTest extends WikibaseFacetedSearchIntegrationTest {
+
+	public function tearDown(): void {
+		$this->deleteConfigPage();
+		parent::tearDown();
+	}
 
 	public function testEmptyPageConfig(): void {
 		$this->editConfigPage( '{}' );
