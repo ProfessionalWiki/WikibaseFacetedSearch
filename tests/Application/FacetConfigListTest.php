@@ -25,7 +25,7 @@ class FacetConfigListTest extends TestCase {
 
 		$this->assertSame(
 			[ $facetConfig ],
-			$facetConfigList->getFacetConfigForItemId( $itemId )
+			$facetConfigList->getFacetConfigForInstanceType( $itemId )
 		);
 	}
 
@@ -41,7 +41,7 @@ class FacetConfigListTest extends TestCase {
 
 		$this->assertSame(
 			[ $facetConfig1, $facetConfig2 ],
-			$facetConfigList->getFacetConfigForItemId( $itemId1 )
+			$facetConfigList->getFacetConfigForInstanceType( $itemId1 )
 		);
 	}
 
@@ -57,7 +57,7 @@ class FacetConfigListTest extends TestCase {
 
 		$this->assertSame(
 			[ $facetConfig1, $facetConfig2 ],
-			$facetConfigList->getFacetConfigForItemId( $itemId1 )
+			$facetConfigList->getFacetConfigForInstanceType( $itemId1 )
 		);
 	}
 
@@ -78,12 +78,12 @@ class FacetConfigListTest extends TestCase {
 
 		$this->assertSame(
 			[ $facetConfig1, $facetConfig2 ],
-			$facetConfigList->getFacetConfigForItemId( $itemId1 )
+			$facetConfigList->getFacetConfigForInstanceType( $itemId1 )
 		);
 
 		$this->assertSame(
 			[ $facetConfig3, $facetConfig4 ],
-			$facetConfigList->getFacetConfigForItemId( $itemId2 )
+			$facetConfigList->getFacetConfigForInstanceType( $itemId2 )
 		);
 	}
 
@@ -108,19 +108,19 @@ class FacetConfigListTest extends TestCase {
 
 		$this->assertSame(
 			[ $facetConfig2, $facetConfig3, $facetConfig1 ],
-			$facetConfigList->getFacetConfigForItemId( $itemId1 )
+			$facetConfigList->getFacetConfigForInstanceType( $itemId1 )
 		);
 
 		$this->assertSame(
 			[ $facetConfig6, $facetConfig5, $facetConfig4 ],
-			$facetConfigList->getFacetConfigForItemId( $itemId2 )
+			$facetConfigList->getFacetConfigForInstanceType( $itemId2 )
 		);
 	}
 
 	public function testGettingFacetConfigForUnknownItemIdReturnsEmptyArray(): void {
 		$this->assertSame(
 			[],
-			( new FacetConfigList() )->getFacetConfigForItemId( new ItemId( 'Q404' ) )
+			( new FacetConfigList() )->getFacetConfigForInstanceType( new ItemId( 'Q404' ) )
 		);
 	}
 
