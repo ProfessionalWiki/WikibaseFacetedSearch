@@ -82,7 +82,8 @@ class WikibaseFacetedSearchExtension {
 
 	public function newFacetUiBuilder(): FacetUiBuilder {
 		return new FacetUiBuilder(
-			new TemplateParser( __DIR__ . '/../templates' )
+			parser: new TemplateParser( __DIR__ . '/../templates' ),
+			config: $this->getConfig()
 		);
 	}
 
