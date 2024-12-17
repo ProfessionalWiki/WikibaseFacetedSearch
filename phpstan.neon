@@ -14,3 +14,6 @@ parameters:
 		- ../../extensions/WikibaseCirrusSearch
 	bootstrapFiles:
 		- ../../includes/AutoLoader.php
+	excludePaths:
+		- src/EntryPoints/WikibaseFacetedSearchHooks.php
+		- src/Persistence/Search/Query/HasWbFacetFeature.php
