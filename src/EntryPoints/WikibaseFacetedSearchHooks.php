@@ -4,6 +4,8 @@ declare( strict_types = 1 );
 
 namespace ProfessionalWiki\WikibaseFacetedSearch\EntryPoints;
 
+use CirrusSearch\Query\KeywordFeature;
+use CirrusSearch\SearchConfig;
 use EditPage;
 use Html;
 use HtmlArmor;
@@ -11,6 +13,7 @@ use IContextSource;
 use Language;
 use OutputPage;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\ConfigJsonValidator;
+use ProfessionalWiki\WikibaseFacetedSearch\Persistence\Search\Query\HasWbFacetFeature;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\ConfigJsonErrorFormatter;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\ExportConfigEditPageTextBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\WikibaseFacetedSearchExtension;
@@ -209,6 +212,13 @@ class WikibaseFacetedSearchHooks {
 		}
 
 		return substr( $html, $jsonTablePosition );
+	}
+
+	/**
+	 * @param KeywordFeature[] &$extraFeatures
+	 */
+	public static function onCirrusSearchAddQueryFeatures( SearchConfig $config, array &$extraFeatures ): void {
+		$extraFeatures[] = new HasWbFacetFeature();
 	}
 
 }
