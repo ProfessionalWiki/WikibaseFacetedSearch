@@ -30,4 +30,11 @@ class FacetConfigList {
 		return $this->facetsPerInstanceType[$itemId->getSerialization()] ?? [];
 	}
 
+	/**
+	 * @return FacetConfig[]]
+	 */
+	public function asArray(): array {
+		return array_merge( ...array_values( $this->facetsPerInstanceType ) );
+	}
+
 }
