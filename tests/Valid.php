@@ -13,6 +13,8 @@ use Wikibase\DataModel\Entity\NumericPropertyId;
 
 class Valid {
 
+	public const ITEM_TYPE_WITH_FACETS = 'Q100';
+
 	public static function configJson(): string {
 		return '
 {
@@ -49,9 +51,9 @@ class Valid {
 			linkTargetSitelinkSiteId: 'enwiki',
 			instanceOfId: new NumericPropertyId( 'P42' ),
 			facets: new FacetConfigList(
-				new FacetConfig( new ItemId( 'Q100' ), new NumericPropertyId( 'P1' ), FacetType::BOOLEAN ),
-				new FacetConfig( new ItemId( 'Q100' ), new NumericPropertyId( 'P1' ), FacetType::LIST ),
-				new FacetConfig( new ItemId( 'Q100' ), new NumericPropertyId( 'P2' ), FacetType::RANGE ),
+				new FacetConfig( new ItemId( self::ITEM_TYPE_WITH_FACETS ), new NumericPropertyId( 'P1' ), FacetType::BOOLEAN ),
+				new FacetConfig( new ItemId( self::ITEM_TYPE_WITH_FACETS ), new NumericPropertyId( 'P1' ), FacetType::LIST ),
+				new FacetConfig( new ItemId( self::ITEM_TYPE_WITH_FACETS ), new NumericPropertyId( 'P2' ), FacetType::RANGE ),
 				new FacetConfig( new ItemId( 'Q200' ), new NumericPropertyId( 'P3' ), FacetType::LIST )
 			)
 		);

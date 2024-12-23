@@ -139,10 +139,13 @@ class WikibaseFacetedSearchHooks {
 		OutputPage $output,
 		string $term
 	): void {
-		// TODO: generate facets from search term
 		$output->addModuleStyles( 'ext.wikibase.facetedsearch.styles' );
+
+		$itemType = new ItemId( 'Q1' ); // TODO: get from search string
+		// TODO: get facet state rom search string and pass as parameter
+
 		$output->addHTML(
-			WikibaseFacetedSearchExtension::getInstance()->newFacetUiBuilder()->createHtml( /* TODO: FacetList */ )
+			WikibaseFacetedSearchExtension::getInstance()->newFacetUiBuilder()->createHtml( $itemType )
 		);
 	}
 
