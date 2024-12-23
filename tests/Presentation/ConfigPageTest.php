@@ -10,6 +10,7 @@ use ProfessionalWiki\WikibaseFacetedSearch\Tests\WikibaseFacetedSearchIntegratio
 /**
  * @group Database
  * @covers \ProfessionalWiki\WikibaseFacetedSearch\EntryPoints\WikibaseFacetedSearchHooks
+ * @covers \ProfessionalWiki\WikibaseFacetedSearch\WikibaseFacetedSearchExtension
  */
 class ConfigPageTest extends WikibaseFacetedSearchIntegrationTest {
 
