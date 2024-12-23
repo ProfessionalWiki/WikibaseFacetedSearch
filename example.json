@@ -4,25 +4,25 @@
 	"facets": {
 		"Q100": [
 			{
-				"property": "P100",
+				"property": "P1",
 				"type": "boolean"
 			},
 			{
-				"property": "P100",
+				"property": "P1",
 				"type": "list"
 			},
 			{
-				"property": "P200",
+				"property": "P2",
 				"type": "range"
 			}
 		],
 		"Q200": [
 			{
-				"property": "P100",
+				"property": "P1",
 				"type": "list"
 			},
 			{
-				"property": "P300",
+				"property": "P3",
 				"type": "range"
 			}
 		]
