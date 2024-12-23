@@ -5,10 +5,10 @@ declare( strict_types = 1 );
 namespace ProfessionalWiki\WikibaseFacetedSearch\Tests\Presentation;
 
 use PHPUnit\Framework\TestCase;
-use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\FacetUiBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Tests\Valid;
 use TemplateParser;
+use Wikibase\DataModel\Entity\ItemId;
 
 /**
  * @covers \ProfessionalWiki\WikibaseFacetedSearch\Presentation\FacetUiBuilder
@@ -16,7 +16,7 @@ use TemplateParser;
 class FacetUiBuilderTest extends TestCase {
 
 	public function testRendersWrapper(): void {
-		$html = $this->newFacetUBuilder()->createHtml();
+		$html = $this->newFacetUBuilder()->createHtml( new ItemId( Valid::ITEM_TYPE_WITH_FACETS ) );
 
 		$this->assertStringContainsString( '<div class="wikibase-faceted-search__facets">', $html );
 	}

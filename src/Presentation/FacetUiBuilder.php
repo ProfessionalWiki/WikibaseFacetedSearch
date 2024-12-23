@@ -19,9 +19,8 @@ class FacetUiBuilder {
 
 	// TODO: parameter or constructor argument: values and counts (from https://github.com/ProfessionalWiki/WikibaseFacetedSearch/issues/23)
 	// TODO: parameter: selected values (from QueryStringParser https://github.com/ProfessionalWiki/WikibaseFacetedSearch/issues/31)
-	// TODO: parameter: instance of item ID
-	public function createHtml(): string {
-		$this->config->getFacetConfigForInstanceType( new ItemId( 'Q1' ) ); // TODO: real id & use
+	public function createHtml( ItemId $itemType ): string {
+		$this->config->getFacetConfigForInstanceType( $itemType );
 
 		return $this->parser->processTemplate(
 			'Facets',
