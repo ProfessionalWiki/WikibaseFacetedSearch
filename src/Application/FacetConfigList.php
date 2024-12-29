@@ -9,25 +9,28 @@ use Wikibase\DataModel\Entity\ItemId;
 class FacetConfigList {
 
 	/**
-	 * @var array<string, FacetConfig[]>
+	 * @var FacetConfig[]
 	 */
-	private array $facetsPerInstanceType = [];
+	private array $facets;
 
-	public function __construct( FacetConfig ...$facets ) {
-		foreach ( $facets as $facet ) {
-			$this->addFacetConfig( $facet );
-		}
+	public function __construct( FacetConfig ...$facetConfigs ) {
+		$this->facets = $facetConfigs;
 	}
 
-	private function addFacetConfig( FacetConfig $facetConfig ): void {
-		$this->facetsPerInstanceType[$facetConfig->instanceTypeId->getSerialization()][] = $facetConfig;
+	public function getFacetConfigForInstanceType( ItemId $itemId ): self {
+		return new self(
+			...array_filter(
+				$this->facets,
+				fn( FacetConfig $facetConfig ) => $facetConfig->instanceTypeId->equals( $itemId )
+			)
+		);
 	}
 
 	/**
 	 * @return FacetConfig[]
 	 */
-	public function getFacetConfigForInstanceType( ItemId $itemId ): array {
-		return $this->facetsPerInstanceType[$itemId->getSerialization()] ?? [];
+	public function asArray(): array {
+		return $this->facets;
 	}
 
 }

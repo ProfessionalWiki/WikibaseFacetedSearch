@@ -33,9 +33,6 @@ class Config {
 		return $this->instanceOfId;
 	}
 
-	/**
-	 * TODO: make private?
-	 */
 	public function getFacets(): FacetConfigList {
 		return $this->facets ?? new FacetConfigList();
 	}
@@ -44,7 +41,7 @@ class Config {
 	 * @return FacetConfig[]
 	 */
 	public function getFacetConfigForInstanceType( ItemId $instanceTypeId ): array {
-		return $this->getFacets()->getFacetConfigForInstanceType( $instanceTypeId );
+		return $this->getFacets()->getFacetConfigForInstanceType( $instanceTypeId )->asArray();
 	}
 
 }
