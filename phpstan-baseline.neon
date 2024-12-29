@@ -1,16 +1,10 @@
 parameters:
 	ignoreErrors:
 		-
-			message: '#^Method ProfessionalWiki\\WikibaseFacetedSearch\\EntryPoints\\WikibaseFacetedSearchHooks\:\:rewriteLinkForNonEntityResult\(\) never assigns null to &\$titleSnippet so it can be removed from the by\-ref type\.$#'
-			identifier: parameterByRef.unusedType
+			message: '#^Method ProfessionalWiki\\WikibaseFacetedSearch\\Application\\StatementListTranslator\:\:translatePropertyStatements\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
 			count: 1
-			path: src/EntryPoints/WikibaseFacetedSearchHooks.php
-
-		-
-			message: '#^Method ProfessionalWiki\\WikibaseFacetedSearch\\EntryPoints\\WikibaseFacetedSearchHooks\:\:rewriteLinkForNonEntityResult\(\) never assigns string to &\$titleSnippet so it can be removed from the by\-ref type\.$#'
-			identifier: parameterByRef.unusedType
-			count: 1
-			path: src/EntryPoints/WikibaseFacetedSearchHooks.php
+			path: src/Application/StatementListTranslator.php
 
 		-
 			message: '#^Parameter \#1 \$configArray of method ProfessionalWiki\\WikibaseFacetedSearch\\Persistence\\ConfigDeserializer\:\:newConfig\(\) expects array\<string, mixed\>, array\<mixed, mixed\> given\.$#'
@@ -35,12 +29,6 @@ parameters:
 			identifier: argument.type
 			count: 1
 			path: src/Persistence/ConfigDeserializer.php
-
-		-
-			message: '#^Method ProfessionalWiki\\WikibaseFacetedSearch\\Persistence\\Search\\Query\\HasWbFacetFeature\:\:doApply\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/Persistence/Search/Query/HasWbFacetFeature.php
 
 		-
 			message: '#^Cannot cast mixed to string\.$#'

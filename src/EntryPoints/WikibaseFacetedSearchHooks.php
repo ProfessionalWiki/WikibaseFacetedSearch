@@ -7,12 +7,14 @@ namespace ProfessionalWiki\WikibaseFacetedSearch\EntryPoints;
 use CirrusSearch\CirrusSearch;
 use CirrusSearch\Query\KeywordFeature;
 use CirrusSearch\SearchConfig;
+use ContentHandler;
 use EditPage;
 use Html;
 use HtmlArmor;
 use IContextSource;
 use Language;
 use OutputPage;
+use ParserOutput;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\ConfigJsonValidator;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\Search\Query\HasWbFacetFeature;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\ConfigJsonErrorFormatter;
@@ -30,6 +32,7 @@ use Wikibase\Lib\Store\LanguageFallbackLabelDescriptionLookup;
 use Wikibase\Repo\Hooks\Formatters\EntityLinkFormatter;
 use Wikibase\Repo\WikibaseRepo;
 use Wikibase\Search\Elastic\EntityResult;
+use WikiPage;
 
 class WikibaseFacetedSearchHooks {
 
@@ -235,10 +238,24 @@ class WikibaseFacetedSearchHooks {
 			return;
 		}
 
-		$fields = array_merge(
-			$fields,
-			WikibaseFacetedSearchExtension::getInstance()->newSearchIndexFieldsBuilder( $engine )->createFields()
-		);
+		$fields = WikibaseFacetedSearchExtension::getInstance()->newSearchIndexFieldsBuilder( $engine )->createFields()
+			+ $fields;
+	}
+
+	public static function onSearchDataForIndex(
+		array &$fields,
+		ContentHandler $handler,
+		WikiPage $page,
+		ParserOutput $output,
+		SearchEngine $engine
+	): void {
+		if ( !( $engine instanceof CirrusSearch ) ) {
+			return;
+		}
+
+		$fields = WikibaseFacetedSearchExtension::getInstance()->newStatementListTranslator()->translateStatements(
+			WikibaseFacetedSearchExtension::getInstance()->newStatementsLookup()->getStatements( $page )
+		) + $fields;
 	}
 
 }
