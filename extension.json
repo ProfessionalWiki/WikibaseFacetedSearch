@@ -43,7 +43,8 @@
 		"EditFormPreloadText": "ProfessionalWiki\\WikibaseFacetedSearch\\EntryPoints\\WikibaseFacetedSearchHooks::onEditFormPreloadText",
 		"ShowSearchHitTitle": "ProfessionalWiki\\WikibaseFacetedSearch\\EntryPoints\\WikibaseFacetedSearchHooks::onShowSearchHitTitle",
 		"SpecialSearchResultsAppend": "ProfessionalWiki\\WikibaseFacetedSearch\\EntryPoints\\WikibaseFacetedSearchHooks::onSpecialSearchResultsAppend",
-		"CirrusSearchAddQueryFeatures":  "ProfessionalWiki\\WikibaseFacetedSearch\\EntryPoints\\WikibaseFacetedSearchHooks::onCirrusSearchAddQueryFeatures"
+		"CirrusSearchAddQueryFeatures":  "ProfessionalWiki\\WikibaseFacetedSearch\\EntryPoints\\WikibaseFacetedSearchHooks::onCirrusSearchAddQueryFeatures",
+		"SearchIndexFields": "ProfessionalWiki\\WikibaseFacetedSearch\\EntryPoints\\WikibaseFacetedSearchHooks::onSearchIndexFields"
 	},
 
 	"config": {

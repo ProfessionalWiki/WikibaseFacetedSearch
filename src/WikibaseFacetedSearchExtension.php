@@ -6,17 +6,20 @@ namespace ProfessionalWiki\WikibaseFacetedSearch;
 
 use MediaWiki\MediaWikiServices;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
+use ProfessionalWiki\WikibaseFacetedSearch\Application\ConfigLookup;
+use ProfessionalWiki\WikibaseFacetedSearch\Application\ItemPageLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\CombiningConfigLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\ConfigDeserializer;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\ConfigJsonValidator;
-use ProfessionalWiki\WikibaseFacetedSearch\Application\ConfigLookup;
-use ProfessionalWiki\WikibaseFacetedSearch\Application\ItemPageLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\ItemPageLookupFactory;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\PageContentConfigLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\PageContentFetcher;
+use ProfessionalWiki\WikibaseFacetedSearch\Persistence\Search\FacetSearchIndexFieldsBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\FacetUiBuilder;
+use SearchEngine;
 use TemplateParser;
 use Title;
+use Wikibase\Repo\WikibaseRepo;
 
 class WikibaseFacetedSearchExtension {
 
@@ -84,6 +87,14 @@ class WikibaseFacetedSearchExtension {
 		return new FacetUiBuilder(
 			parser: new TemplateParser( __DIR__ . '/../templates' ),
 			config: $this->getConfig()
+		);
+	}
+
+	public function newFacetSearchIndexFieldsBuilder( SearchEngine $engine ): FacetSearchIndexFieldsBuilder {
+		return new FacetSearchIndexFieldsBuilder(
+			engine:	$engine,
+			config: $this->getConfig(),
+			dataTypeLookup: WikibaseRepo::getPropertyDataTypeLookup()
 		);
 	}
 

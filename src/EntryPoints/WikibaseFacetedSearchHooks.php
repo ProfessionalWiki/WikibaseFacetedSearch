@@ -4,6 +4,7 @@ declare( strict_types = 1 );
 
 namespace ProfessionalWiki\WikibaseFacetedSearch\EntryPoints;
 
+use CirrusSearch\CirrusSearch;
 use CirrusSearch\Query\KeywordFeature;
 use CirrusSearch\SearchConfig;
 use EditPage;
@@ -17,6 +18,8 @@ use ProfessionalWiki\WikibaseFacetedSearch\Persistence\Search\Query\HasWbFacetFe
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\ConfigJsonErrorFormatter;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\ExportConfigEditPageTextBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\WikibaseFacetedSearchExtension;
+use SearchEngine;
+use SearchIndexField;
 use SearchResult;
 use Skin;
 use SpecialSearch;
@@ -222,6 +225,20 @@ class WikibaseFacetedSearchHooks {
 	 */
 	public static function onCirrusSearchAddQueryFeatures( SearchConfig $config, array &$extraFeatures ): void {
 		$extraFeatures[] = new HasWbFacetFeature();
+	}
+
+	/**
+	 * @param SearchIndexField[] $fields
+	 */
+	public static function onSearchIndexFields( array &$fields, SearchEngine $engine ): void {
+		if ( !( $engine instanceof CirrusSearch ) ) {
+			return;
+		}
+
+		$fields = array_merge(
+			$fields,
+			WikibaseFacetedSearchExtension::getInstance()->newFacetSearchIndexFieldsBuilder( $engine )->createFields()
+		);
 	}
 
 }
