@@ -6,8 +6,10 @@ namespace ProfessionalWiki\WikibaseFacetedSearch\Persistence\Search;
 
 use Exception;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
+use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetConfig;
 use SearchEngine;
 use SearchIndexField;
+use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Services\Lookup\PropertyDataTypeLookup;
 
 class FacetSearchIndexFieldsBuilder {
@@ -26,24 +28,27 @@ class FacetSearchIndexFieldsBuilder {
 		$fields = [];
 
 		foreach ( $this->config->getFacets()->asArray() as $facetConfig ) {
-			$name = 'wbfs_' . $facetConfig->propertyId->getSerialization();
-
-			try {
-				$dataTypeId = $this->dataTypeLookup->getDataTypeIdForProperty( $facetConfig->propertyId );
-			} catch ( Exception $e ) {
-				continue;
-			}
-
-			$fieldType = $this->getFieldTypeForDataTypeId( $dataTypeId );
+			$fieldType = $this->getFieldTypeForPropertyId( $facetConfig->propertyId );
 
 			if ( $fieldType === null ) {
 				continue;
 			}
 
+			$name = $this->getFacetFieldName( $facetConfig );
 			$fields[$name] = $this->engine->makeSearchFieldMapping( $name, $fieldType );
 		}
 
 		return $fields;
+	}
+
+	private function getFieldTypeForPropertyId( PropertyId $propertyId ): ?string {
+		try {
+			$dataTypeId = $this->dataTypeLookup->getDataTypeIdForProperty( $propertyId );
+		} catch ( Exception ) {
+			return null;
+		}
+
+		return $this->getFieldTypeForDataTypeId( $dataTypeId );
 	}
 
 	private function getFieldTypeForDataTypeId( string $dataTypeId ): ?string {
@@ -54,6 +59,10 @@ class FacetSearchIndexFieldsBuilder {
 			'wikibase-item' => SearchIndexField::INDEX_TYPE_KEYWORD,
 			default => null
 		};
+	}
+
+	private function getFacetFieldName( FacetConfig $facetConfig ): string {
+		return 'wbfs_' . $facetConfig->propertyId->getSerialization();
 	}
 
 }
