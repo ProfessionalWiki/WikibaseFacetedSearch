@@ -6,6 +6,7 @@ namespace ProfessionalWiki\WikibaseFacetedSearch\Persistence\Search;
 
 use Exception;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
+use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetConfig;
 use SearchEngine;
 use SearchIndexField;
 use Wikibase\DataModel\Services\Lookup\PropertyDataTypeLookup;
@@ -26,8 +27,6 @@ class FacetSearchIndexFieldsBuilder {
 		$fields = [];
 
 		foreach ( $this->config->getFacets()->asArray() as $facetConfig ) {
-			$name = 'wbfs_' . $facetConfig->propertyId->getSerialization();
-
 			try {
 				$dataTypeId = $this->dataTypeLookup->getDataTypeIdForProperty( $facetConfig->propertyId );
 			} catch ( Exception $e ) {
@@ -40,6 +39,7 @@ class FacetSearchIndexFieldsBuilder {
 				continue;
 			}
 
+			$name = $this->getFacetFieldName( $facetConfig );
 			$fields[$name] = $this->engine->makeSearchFieldMapping( $name, $fieldType );
 		}
 
@@ -54,6 +54,10 @@ class FacetSearchIndexFieldsBuilder {
 			'wikibase-item' => SearchIndexField::INDEX_TYPE_KEYWORD,
 			default => null
 		};
+	}
+
+	private function getFacetFieldName( FacetConfig $facetConfig ): string {
+		return 'wbfs_' . $facetConfig->propertyId->getSerialization();
 	}
 
 }
