@@ -9,6 +9,7 @@ use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetConfig;
 use SearchEngine;
 use SearchIndexField;
+use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Services\Lookup\PropertyDataTypeLookup;
 
 class FacetSearchIndexFieldsBuilder {
@@ -27,13 +28,7 @@ class FacetSearchIndexFieldsBuilder {
 		$fields = [];
 
 		foreach ( $this->config->getFacets()->asArray() as $facetConfig ) {
-			try {
-				$dataTypeId = $this->dataTypeLookup->getDataTypeIdForProperty( $facetConfig->propertyId );
-			} catch ( Exception ) {
-				continue;
-			}
-
-			$fieldType = $this->getFieldTypeForDataTypeId( $dataTypeId );
+			$fieldType = $this->getFieldTypeForPropertyId( $facetConfig->propertyId );
 
 			if ( $fieldType === null ) {
 				continue;
@@ -44,6 +39,16 @@ class FacetSearchIndexFieldsBuilder {
 		}
 
 		return $fields;
+	}
+
+	private function getFieldTypeForPropertyId( PropertyId $propertyId ): ?string {
+		try {
+			$dataTypeId = $this->dataTypeLookup->getDataTypeIdForProperty( $propertyId );
+		} catch ( Exception ) {
+			return null;
+		}
+
+		return $this->getFieldTypeForDataTypeId( $dataTypeId );
 	}
 
 	private function getFieldTypeForDataTypeId( string $dataTypeId ): ?string {
