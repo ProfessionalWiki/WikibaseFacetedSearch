@@ -29,7 +29,7 @@ class FacetSearchIndexFieldsBuilder {
 		foreach ( $this->config->getFacets()->asArray() as $facetConfig ) {
 			try {
 				$dataTypeId = $this->dataTypeLookup->getDataTypeIdForProperty( $facetConfig->propertyId );
-			} catch ( Exception $e ) {
+			} catch ( Exception ) {
 				continue;
 			}
 
