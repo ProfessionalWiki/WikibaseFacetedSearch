@@ -147,7 +147,11 @@ class FacetUiBuilder {
 
 		$html = '';
 		foreach ( $items as $item ) {
-			if ( !$item['type'] || type( $item['type'] ) !== 'string' ) {
+			if (
+				!isset( $item['type'] ) ||
+				!is_string( $item['type'] ) ||
+				!strlen($item['type'] ) > 0
+			) {
 				continue;
 			}
 
