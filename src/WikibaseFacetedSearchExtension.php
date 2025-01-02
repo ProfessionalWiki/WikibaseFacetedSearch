@@ -14,7 +14,7 @@ use ProfessionalWiki\WikibaseFacetedSearch\Persistence\ConfigJsonValidator;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\ItemPageLookupFactory;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\PageContentConfigLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\PageContentFetcher;
-use ProfessionalWiki\WikibaseFacetedSearch\Persistence\Search\FacetSearchIndexFieldsBuilder;
+use ProfessionalWiki\WikibaseFacetedSearch\Persistence\Search\SearchIndexFieldsBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\FacetUiBuilder;
 use SearchEngine;
 use TemplateParser;
@@ -90,8 +90,8 @@ class WikibaseFacetedSearchExtension {
 		);
 	}
 
-	public function newFacetSearchIndexFieldsBuilder( SearchEngine $engine ): FacetSearchIndexFieldsBuilder {
-		return new FacetSearchIndexFieldsBuilder(
+	public function newSearchIndexFieldsBuilder( SearchEngine $engine ): SearchIndexFieldsBuilder {
+		return new SearchIndexFieldsBuilder(
 			engine:	$engine,
 			config: $this->getConfig(),
 			dataTypeLookup: WikibaseRepo::getPropertyDataTypeLookup()

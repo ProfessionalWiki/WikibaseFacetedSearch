@@ -12,7 +12,7 @@ use SearchIndexField;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Services\Lookup\PropertyDataTypeLookup;
 
-class FacetSearchIndexFieldsBuilder {
+class SearchIndexFieldsBuilder {
 
 	public function __construct(
 		private readonly SearchEngine $engine,
