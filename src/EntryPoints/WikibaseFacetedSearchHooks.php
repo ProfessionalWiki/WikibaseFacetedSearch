@@ -237,7 +237,7 @@ class WikibaseFacetedSearchHooks {
 
 		$fields = array_merge(
 			$fields,
-			WikibaseFacetedSearchExtension::getInstance()->newFacetSearchIndexFieldsBuilder( $engine )->createFields()
+			WikibaseFacetedSearchExtension::getInstance()->newSearchIndexFieldsBuilder( $engine )->createFields()
 		);
 	}
 

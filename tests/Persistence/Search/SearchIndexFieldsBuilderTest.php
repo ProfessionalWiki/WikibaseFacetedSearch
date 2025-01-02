@@ -20,9 +20,9 @@ use Wikibase\DataModel\Entity\Property;
 use Wikibase\DataModel\Services\Lookup\InMemoryDataTypeLookup;
 
 /**
- * @covers \ProfessionalWiki\WikibaseFacetedSearch\Persistence\Search\FacetSearchIndexFieldsBuilder
+ * @covers \ProfessionalWiki\WikibaseFacetedSearch\Persistence\Search\SearchIndexFieldsBuilder
  */
-class FacetSearchIndexFieldsBuilderTest extends TestCase {
+class SearchIndexFieldsBuilderTest extends TestCase {
 
 	private CirrusSearch $cirrusSearch;
 
@@ -37,8 +37,8 @@ class FacetSearchIndexFieldsBuilderTest extends TestCase {
 		$this->assertSame( [], $builder->createFields() );
 	}
 
-	private function newBuilder( Config $config ): FacetSearchIndexFieldsBuilder {
-		return new FacetSearchIndexFieldsBuilder(
+	private function newBuilder( Config $config ): SearchIndexFieldsBuilder {
+		return new SearchIndexFieldsBuilder(
 			$this->cirrusSearch,
 			$config,
 			$this->newDataTypeLookup()
