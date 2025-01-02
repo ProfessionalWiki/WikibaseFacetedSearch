@@ -36,22 +36,22 @@ class FacetUiBuilder {
 			[
 				'label' => 'Has Author',
 				'type' => FacetType::LIST->value,
-				'values-html' => $this->getListFacetHtml( $this->getExampleBooleanItems() )
+				'values-html' => $this->getItemsHtml( $this->getExampleBooleanItems() )
 			],
 			[
 				'label' => 'Author',
 				'type' => FacetType::LIST->value,
-				'values-html' => $this->getListFacetHtml( $this->getExampleListItems() )
+				'values-html' => $this->getItemsHtml( $this->getExampleListItems() )
 			],
 			[
 				'label' => 'Year',
 				'type' => FacetType::RANGE->value,
-				'values-html' => $this->getRangeFacetHtml( currentMin: 1900, currentMax: 2024 )
+				'values-html' => $this->getItemsHtml( [ $this->getExampleRangeItems()[0] ] )
 			],
 			[
 				'label' => 'Pages',
 				'type' => FacetType::RANGE->value,
-				'values-html' => $this->getRangeFacetHtml( currentMin: 10 )
+				'values-html' => $this->getItemsHtml( [ $this->getExampleRangeItems()[1] ] )
 			]
 		];
 	}
@@ -62,12 +62,16 @@ class FacetUiBuilder {
 	private function getExampleBooleanItems(): array {
 		return [
 			[
+				'type' => 'Radio',
+				'name' => 'Has Author',
 				'label' => 'Yes',
 				'count' => 42,
 				'url' => 'https://example.com/facet/Yes',
 				'selected' => true
 			],
 			[
+				'type' => 'Radio',
+				'name' => 'Has Author',
 				'label' => 'No',
 				'count' => 23,
 				'url' => 'https://example.com/facet/No',
@@ -82,24 +86,28 @@ class FacetUiBuilder {
 	private function getExampleListItems(): array {
 		return [
 			[
+				'type' => 'Checkbox',
 				'label' => 'Alice', // TODO: lookup of label and URL for item-id (or property-id) typed values
 				'count' => 42,
 				'url' => 'https://example.com/facet/Alice',
 				'selected' => false
 			],
 			[
+				'type' => 'Checkbox',
 				'label' => 'Bob',
 				'count' => 23,
 				'url' => 'https://example.com/facet/Bob',
 				'selected' => true
 			],
 			[
+				'type' => 'Checkbox',
 				'label' => 'Charlie',
 				'count' => 17,
 				'url' => 'https://example.com/facet/Charlie',
 				'selected' => false
 			],
 			[
+				'type' => 'Checkbox',
 				'label' => 'David',
 				'count' => 9,
 				'url' => 'https://example.com/facet/David',
@@ -109,25 +117,46 @@ class FacetUiBuilder {
 	}
 
 	/**
-	 * @param array<array<string, mixed>> $items
+	 * @return array<array<string, mixed>>
 	 */
-	private function getListFacetHtml( array $items ): string {
-		return $this->parser->processTemplate(
-			'ListFacet',
-			[ 'items' => $items ]
-		);
-	}
-
-	private function getRangeFacetHtml( ?int $currentMin = null, ?int $currentMax = null ): string {
-		return $this->parser->processTemplate(
-			'RangeFacet',
+	private function getExampleRangeItems(): array {
+		return [
 			[
+				'type' => 'Range',
 				'msg-min' => wfMessage( 'wikibase-faceted-search-facet-range-min' )->text(),
 				'msg-max' => wfMessage( 'wikibase-faceted-search-facet-range-max' )->text(),
-				'current-min' => $currentMin,
-				'current-max' => $currentMax,
+				'current-min' => 1900,
+				'current-max' => 2024,
+			],
+			[
+				'type' => 'Range',
+				'msg-min' => wfMessage( 'wikibase-faceted-search-facet-range-min' )->text(),
+				'msg-max' => wfMessage( 'wikibase-faceted-search-facet-range-max' )->text(),
+				'current-min' => 10
 			]
-		);
+		];
+	}
+
+	/**
+	 * @param array<array<string, mixed>> $items
+	 */
+	private function getItemsHtml( array $items ): string {
+		if ( $items === [] ) {
+			return '';
+		}
+
+		$html = '';
+		foreach ( $items as $item ) {
+			if ( !$item['type'] ) {
+				continue;
+			}
+
+			$html .= $this->parser->processTemplate(
+				'FacetItem' . $item['type'],
+				$item
+			);
+		}
+		return $html;
 	}
 
 }
