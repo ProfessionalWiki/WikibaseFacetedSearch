@@ -150,7 +150,7 @@ class FacetUiBuilder {
 			if (
 				!isset( $item['type'] ) ||
 				!is_string( $item['type'] ) ||
-				!strlen($item['type'] ) > 0
+				!strlen( $item['type'] ) > 0
 			) {
 				continue;
 			}
