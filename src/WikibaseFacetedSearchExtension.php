@@ -106,15 +106,15 @@ class WikibaseFacetedSearchExtension {
 	}
 
 	public function newStatementsLookup(): StatementsLookup {
-		if ( $this->getConfig()->linkTargetSitelinkSiteId !== null ) {
-			return new SiteLinkBasedStatementsLookup(
-				linkTargetSitelinkSiteId: $this->getConfig()->linkTargetSitelinkSiteId,
-				siteLinkLookup: WikibaseRepo::getStore()->newSiteLinkStore(),
-				entityLookup: WikibaseRepo::getEntityLookup()
-			);
+		if ( $this->getConfig()->linkTargetSitelinkSiteId === null ) {
+			return new FromPageStatementsLookup();
 		}
 
-		return new FromPageStatementsLookup();
+		return new SiteLinkBasedStatementsLookup(
+			linkTargetSitelinkSiteId: $this->getConfig()->linkTargetSitelinkSiteId,
+			siteLinkLookup: WikibaseRepo::getStore()->newSiteLinkStore(),
+			entityLookup: WikibaseRepo::getEntityLookup()
+		);
 	}
 
 	public function newStatementListTranslator(): StatementListTranslator {
