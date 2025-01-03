@@ -20,7 +20,8 @@
 			{
 				"property": "P3",
 				"type": "list",
-				"combineWith": "OR",
+				"defaultCombineWith": "OR",
+				"allowCombineWithChoice": true,
 				"showNoneFilter": true,
 				"showAnyFilter": true
 			}
