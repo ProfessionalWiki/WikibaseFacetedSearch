@@ -4,6 +4,7 @@ declare( strict_types = 1 );
 
 namespace ProfessionalWiki\WikibaseFacetedSearch\Presentation;
 
+use MediaWiki\Parser\Sanitizer;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetType;
 use TemplateParser;
@@ -36,22 +37,22 @@ class FacetUiBuilder {
 			[
 				'label' => 'Has Author',
 				'type' => FacetType::LIST->value,
-				'values-html' => $this->getItemsHtml( $this->getExampleBooleanItems() )
+				'values-html' => $this->getItemsHtml( $this->getExampleBooleanItems(), 'Has Author' )
 			],
 			[
 				'label' => 'Author',
 				'type' => FacetType::LIST->value,
-				'values-html' => $this->getItemsHtml( $this->getExampleListItems() )
+				'values-html' => $this->getItemsHtml( $this->getExampleListItems(), 'Author' )
 			],
 			[
 				'label' => 'Year',
 				'type' => FacetType::RANGE->value,
-				'values-html' => $this->getItemsHtml( [ $this->getExampleRangeItems()[0] ] )
+				'values-html' => $this->getItemsHtml( [ $this->getExampleRangeItems()[0] ], 'Year' )
 			],
 			[
 				'label' => 'Pages',
 				'type' => FacetType::RANGE->value,
-				'values-html' => $this->getItemsHtml( [ $this->getExampleRangeItems()[1] ] )
+				'values-html' => $this->getItemsHtml( [ $this->getExampleRangeItems()[1] ], 'Pages' )
 			]
 		];
 	}
@@ -140,13 +141,13 @@ class FacetUiBuilder {
 	/**
 	 * @param array<array<string, mixed>> $items
 	 */
-	private function getItemsHtml( array $items ): string {
+	private function getItemsHtml( array $items, string $facetName ): string {
 		if ( $items === [] ) {
 			return '';
 		}
 
 		$html = '';
-		foreach ( $items as $item ) {
+		foreach ( $items as $i =>$item ) {
 			if (
 				!isset( $item['type'] ) ||
 				!is_string( $item['type'] ) ||
@@ -154,6 +155,8 @@ class FacetUiBuilder {
 			) {
 				continue;
 			}
+
+			$item['id'] = Sanitizer::escapeIdForAttribute( htmlspecialchars( "$facetName-$i" ) );
 
 			$html .= $this->parser->processTemplate(
 				'FacetItem' . $item['type'],
