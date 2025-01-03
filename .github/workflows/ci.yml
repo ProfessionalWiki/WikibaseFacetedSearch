@@ -17,6 +17,8 @@ jobs:
             php: '8.2'
           - mw: 'master'
             php: '8.3'
+          - mw: 'master'
+            php: '8.4'
 
     runs-on: ubuntu-latest
 
