@@ -112,7 +112,7 @@ class WikibaseFacetedSearchExtension {
 
 		return new SitelinkBasedStatementsLookup(
 			linkTargetSitelinkSiteId: $this->getConfig()->linkTargetSitelinkSiteId,
-			siteLinkLookup: WikibaseRepo::getStore()->newSiteLinkStore(),
+			sitelinkLookup: WikibaseRepo::getStore()->newSiteLinkStore(),
 			entityLookup: WikibaseRepo::getEntityLookup()
 		);
 	}
