@@ -18,7 +18,7 @@ use ParserOutput;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\ConfigJsonValidator;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\Search\Query\HasWbFacetFeature;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\ConfigJsonErrorFormatter;
-use ProfessionalWiki\WikibaseFacetedSearch\Presentation\ExportConfigEditPageTextBuilder;
+use ProfessionalWiki\WikibaseFacetedSearch\Presentation\ConfigEditPageTextBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\WikibaseFacetedSearchExtension;
 use SearchEngine;
 use SearchIndexField;
@@ -180,7 +180,7 @@ class WikibaseFacetedSearchHooks {
 		if ( WikibaseFacetedSearchExtension::getInstance()->isConfigTitle( $editPage->getTitle() ) ) {
 			$editPage->suppressIntro = true;
 
-			$textBuilder = new ExportConfigEditPageTextBuilder( $editPage->getContext() );
+			$textBuilder = new ConfigEditPageTextBuilder( $editPage->getContext() );
 			$editPage->editFormTextTop = $textBuilder->createTopHtml();
 			$editPage->editFormTextBottom = $textBuilder->createBottomHtml();
 

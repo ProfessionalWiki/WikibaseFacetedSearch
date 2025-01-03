@@ -6,7 +6,7 @@ namespace ProfessionalWiki\WikibaseFacetedSearch\Presentation;
 
 use IContextSource;
 
-class ExportConfigEditPageTextBuilder {
+class ConfigEditPageTextBuilder {
 
 	public function __construct(
 		private IContextSource $context
