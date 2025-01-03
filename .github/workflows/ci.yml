@@ -11,14 +11,10 @@ jobs:
     strategy:
       matrix:
         include:
-          - mw: 'REL1_39'
-            php: '8.1'
-          - mw: 'REL1_41'
-            php: '8.2'
           - mw: 'REL1_42'
-            php: '8.3'
+            php: '8.1'
           - mw: 'REL1_43'
-            php: '8.3'
+            php: '8.2'
           - mw: 'master'
             php: '8.3'
 
@@ -172,7 +168,7 @@ jobs:
     strategy:
       matrix:
         include:
-          - mw: 'REL1_39'
+          - mw: 'REL1_43'
             php: '8.2'
 
     runs-on: ubuntu-latest
