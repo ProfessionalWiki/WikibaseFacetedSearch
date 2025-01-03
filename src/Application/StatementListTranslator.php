@@ -18,6 +18,7 @@ class StatementListTranslator {
 	}
 
 	/**
+	 * Builds a list of values to store in the elastic search index per elastic field name (key).
 	 * @return array<string, mixed>
 	 */
 	public function translateStatements( StatementList $statements ): array {
@@ -27,7 +28,7 @@ class StatementListTranslator {
 			return [];
 		}
 
-		$propertyIds = $this->getInstanceTypePropertyIds( $instanceTypeId );
+		$propertyIds = $this->getPropertiesToIndex( $instanceTypeId );
 
 		$values = [];
 
@@ -41,7 +42,7 @@ class StatementListTranslator {
 	/**
 	 * @return PropertyId[]
 	 */
-	private function getInstanceTypePropertyIds( ItemId $instanceTypeId ): array {
+	private function getPropertiesToIndex( ItemId $instanceTypeId ): array {
 		return array_values(
 			array_map(
 				fn( FacetConfig $config ) => $config->propertyId,
