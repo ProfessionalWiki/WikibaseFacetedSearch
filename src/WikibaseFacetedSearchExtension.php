@@ -21,7 +21,7 @@ use ProfessionalWiki\WikibaseFacetedSearch\Persistence\ItemPageLookupFactory;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\PageContentConfigLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\PageContentFetcher;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\Search\SearchIndexFieldsBuilder;
-use ProfessionalWiki\WikibaseFacetedSearch\Persistence\SiteLinkBasedStatementsLookup;
+use ProfessionalWiki\WikibaseFacetedSearch\Persistence\SitelinkBasedStatementsLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\FacetUiBuilder;
 use SearchEngine;
 use TemplateParser;
@@ -107,9 +107,9 @@ class WikibaseFacetedSearchExtension {
 
 	public function newStatementsLookup(): StatementsLookup {
 		if ( $this->getConfig()->linkTargetSitelinkSiteId !== null ) {
-			return new SiteLinkBasedStatementsLookup(
+			return new SitelinkBasedStatementsLookup(
 				linkTargetSitelinkSiteId: $this->getConfig()->linkTargetSitelinkSiteId,
-				siteLinkLookup: WikibaseRepo::getStore()->newSiteLinkStore(),
+				sitelinkLookup: WikibaseRepo::getStore()->newSiteLinkStore(),
 				entityLookup: WikibaseRepo::getEntityLookup()
 			);
 		}
