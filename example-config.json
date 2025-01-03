@@ -5,10 +5,6 @@
 		"Q100": [
 			{
 				"property": "P1",
-				"type": "boolean"
-			},
-			{
-				"property": "P1",
 				"type": "list"
 			},
 			{
@@ -18,12 +14,15 @@
 		],
 		"Q200": [
 			{
-				"property": "P1",
-				"type": "list"
+				"property": "P2",
+				"type": "range"
 			},
 			{
 				"property": "P3",
-				"type": "range"
+				"type": "list",
+				"combineWith": "OR",
+				"showNoneFilter": true,
+				"showAnyFilter": true
 			}
 		]
 	}
