@@ -1,12 +1,14 @@
-<div class="wikibase-faceted-search__facets">
-	{{#facets}}
-		<div class="wikibase-faceted-search__facet">
-			<div class="wikibase-faceted-search__facet-label">
-				{{label}}
+<div class="wikibase-faceted-search">
+	<div class="wikibase-faceted-search__facets">
+		{{#facets}}
+			<div class="wikibase-faceted-search__facet cdx-field">
+				<legend class="cdx-label">
+					<span class="cdx-label__label__text">{{label}}</span>
+				</legend>
+				<div class="cdx-field__control">
+					{{{values-html}}}
+				</div>
 			</div>
-			<div class="wikibase-faceted-search__facet-values">
-				{{{values-html}}}
-			</div>
-		</div>
-	{{/facets}}
+		{{/facets}}
+	</div>
 </div>

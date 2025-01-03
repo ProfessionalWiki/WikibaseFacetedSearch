@@ -3,18 +3,17 @@
 .wikibase-faceted-search {
 	// Common
 	&__facets {
+		position: sticky;
+		top: @spacing-100;
 		border: @border-width-base @border-style-base @border-color-base;
 		padding: @spacing-100;
 	}
 
 	&__facet {
-		border: @border-width-base @border-style-base @border-color-base;
-		padding: @spacing-100;
-		margin-bottom: @spacing-100;
-	}
-
-	&__facet-label {
-		font-weight: bold;
+		+ .wikibase-faceted-search__facet {
+			border-top: @border-width-base @border-style-base @border-color-subtle;
+			padding-top: @spacing-100;
+		}
 	}
 
 	// List facet
@@ -24,8 +23,62 @@
 	}
 
 	&__facet-item {
+		&-range {
+			display: flex;
+			gap: @spacing-50;
+
+			.cdx-text-input {
+				min-width: auto;
+			}
+		}
+
 		&--selected {
 			font-weight: bold;
 		}
+	}
+
+	&__facet-label {
+		&-count {
+			margin-inline-start: @spacing-25;
+			color: @color-subtle;
+			font-size: @font-size-x-small;
+
+			&::before {
+				content: '(';
+			}
+
+			&::after {
+				content: ')';
+			}
+		}
+	}
+}
+
+// HACK: Creating a multi-column layout
+// TODO: Find a way to put .wikibase-faceted-search inside .searchresults
+.mw-body-content:has( .wikibase-faceted-search ) {
+	@media ( min-width: @min-width-breakpoint-desktop ) {
+		display: grid;
+		grid-template-areas: 'searchform searchform'
+			'results sidebar';
+		grid-template-columns: minmax( 0, auto ) 240px;
+		column-gap: @spacing-150;
+	}
+
+	.mw-search-form-wrapper {
+		grid-area: searchform;
+	}
+
+	.searchresults {
+		grid-area: results;
+	}
+
+	.wikibase-faceted-search {
+		grid-area: sidebar;
+	}
+
+	.mw-search-results-container,
+	.mw-search-results-info {
+		width: auto;
 	}
 }
