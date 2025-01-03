@@ -6,6 +6,7 @@ namespace ProfessionalWiki\WikibaseFacetedSearch\Application;
 
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\DataModel\Statement\Statement;
 use Wikibase\DataModel\Statement\StatementList;
 
 class StatementListTranslator {
@@ -52,22 +53,18 @@ class StatementListTranslator {
 	}
 
 	private function translatePropertyStatements( StatementList $statements, PropertyId $propertyId ): array {
-		$values = [];
-		$propertyStatements = $statements->getByPropertyId( $propertyId )->getBestStatements()->toArray();
-
-		foreach ( $propertyStatements as $statement ) {
-			$value = $this->statementTranslator->statementToSearchData( $statement );
-
-			if ( $value === null ) {
-				continue;
-			}
-
-			$values[] = $value;
-		}
-
 		// TODO: should empty field (all statements removed) be [] or null?
 		// https://github.com/ProfessionalWiki/WikibaseFacetedSearch/pull/51/files#r1901363923
-		return $values;
+
+		return array_filter(
+			array_map(
+				function( Statement $statement ): mixed {
+					return $this->statementTranslator->statementToSearchData( $statement );
+				},
+				$statements->getByPropertyId( $propertyId )->getBestStatements()->toArray()
+			),
+			fn( mixed $value ): bool => $value !== null
+		);
 	}
 
 	private function getFieldName( PropertyId $propertyId ): string {
