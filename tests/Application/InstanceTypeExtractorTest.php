@@ -81,20 +81,23 @@ class InstanceTypeExtractorTest extends TestCase {
 		$statement2 = $this->newInstanceTypeIdStatement( 'Q2' );
 		$statement3 = $this->newInstanceTypeIdStatement( 'Q3' );
 		$statement4 = $this->newInstanceTypeIdStatement( 'Q4' );
+		$statement5 = $this->newInstanceTypeIdStatement( 'Q5' );
 
 		$statement1->setRank( Statement::RANK_DEPRECATED );
-		$statement2->setRank( Statement::RANK_PREFERRED );
-		$statement3->setRank( Statement::RANK_NORMAL );
+		$statement2->setRank( Statement::RANK_NORMAL );
+		$statement3->setRank( Statement::RANK_PREFERRED );
 		$statement4->setRank( Statement::RANK_PREFERRED );
+		$statement5->setRank( Statement::RANK_NORMAL );
 
 		$statements = new StatementList(
 			$statement1,
 			$statement2,
 			$statement3,
-			$statement4
+			$statement4,
+			$statement5
 		);
 
-		$this->assertHasInstanceType( 'Q2', $statements );
+		$this->assertHasInstanceType( 'Q3', $statements );
 	}
 
 	public function testReturnsNullIfStatementsAreEmpty(): void {
