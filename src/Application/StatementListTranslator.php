@@ -65,6 +65,7 @@ class StatementListTranslator {
 		}
 
 		// TODO: should empty field (all statements removed) be [] or null?
+		// https://github.com/ProfessionalWiki/WikibaseFacetedSearch/pull/51/files#r1901363923
 		return $values;
 	}
 
