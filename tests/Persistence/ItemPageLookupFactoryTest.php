@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\ItemPageLookupFactory;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\NullItemPageLookup;
-use ProfessionalWiki\WikibaseFacetedSearch\Persistence\SiteLinkItemPageLookup;
+use ProfessionalWiki\WikibaseFacetedSearch\Persistence\SitelinkItemPageLookup;
 
 /**
  * @covers \ProfessionalWiki\WikibaseFacetedSearch\Persistence\ItemPageLookupFactory
@@ -23,14 +23,14 @@ class ItemPageLookupFactoryTest extends TestCase {
 		$this->assertInstanceOf( NullItemPageLookup::class, $factory->newItemPageLookup() );
 	}
 
-	public function testReturnsSiteLinkItemPageLookupWhenSiteIdIsConfigured(): void {
+	public function testReturnsSitelinkItemPageLookupWhenSiteIdIsConfigured(): void {
 		$factory = new ItemPageLookupFactory(
 			new Config(
 				linkTargetSitelinkSiteId: 'enwiki'
 			)
 		);
 
-		$this->assertInstanceOf( SiteLinkItemPageLookup::class, $factory->newItemPageLookup() );
+		$this->assertInstanceOf( SitelinkItemPageLookup::class, $factory->newItemPageLookup() );
 	}
 
 }

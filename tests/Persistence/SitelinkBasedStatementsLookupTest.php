@@ -5,7 +5,7 @@ declare( strict_types = 1 );
 namespace ProfessionalWiki\WikibaseFacetedSearch\Tests\Persistence;
 
 use DataValues\StringValue;
-use ProfessionalWiki\WikibaseFacetedSearch\Persistence\SiteLinkBasedStatementsLookup;
+use ProfessionalWiki\WikibaseFacetedSearch\Persistence\SitelinkBasedStatementsLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Tests\WikibaseFacetedSearchIntegrationTest;
 use Wikibase\DataModel\Entity\Item;
 use Wikibase\DataModel\Entity\ItemId;
@@ -19,29 +19,29 @@ use WikiPage;
 
 /**
  * @group Database
- * @covers \ProfessionalWiki\WikibaseFacetedSearch\Persistence\SiteLinkBasedStatementsLookup
+ * @covers \ProfessionalWiki\WikibaseFacetedSearch\Persistence\SitelinkBasedStatementsLookup
  */
-class SiteLinkBasedStatementsLookupTest extends WikibaseFacetedSearchIntegrationTest {
+class SitelinkBasedStatementsLookupTest extends WikibaseFacetedSearchIntegrationTest {
 
 	private const SITE_ID = 'testSiteId';
 	private const OTHER_SITE_ID = 'otherSiteId';
 	private const ANOTHER_SITE_ID = 'anotherSiteId';
 
-	private HashSiteLinkStore $siteLinkStore;
+	private HashSiteLinkStore $sitelinkStore;
 	private InMemoryEntityLookup $entityLookup;
-	private SiteLinkBasedStatementsLookup $lookup;
+	private SitelinkBasedStatementsLookup $lookup;
 
 	protected function setUp(): void {
-		$this->siteLinkStore = new HashSiteLinkStore();
+		$this->sitelinkStore = new HashSiteLinkStore();
 		$this->entityLookup = new InMemoryEntityLookup();
-		$this->lookup = new SiteLinkBasedStatementsLookup(
+		$this->lookup = new SitelinkBasedStatementsLookup(
 			self::SITE_ID,
-			$this->siteLinkStore,
+			$this->sitelinkStore,
 			$this->entityLookup
 		);
 	}
 
-	public function testPageWithoutSiteLinkReturnsNoStatements(): void {
+	public function testPageWithoutSitelinkReturnsNoStatements(): void {
 		$this->assertPageHasStatements( $this->createPage(), [] );
 	}
 
@@ -52,7 +52,7 @@ class SiteLinkBasedStatementsLookupTest extends WikibaseFacetedSearchIntegration
 		);
 	}
 
-	public function testPageWithSiteLinkToItemWithStatementsReturnsStatements(): void {
+	public function testPageWithSitelinkToItemWithStatementsReturnsStatements(): void {
 		$item = new Item(
 			id: new ItemId( 'Q1' ),
 			statements: new StatementList(
@@ -63,7 +63,7 @@ class SiteLinkBasedStatementsLookupTest extends WikibaseFacetedSearchIntegration
 		$page = $this->createPage();
 
 		$this->entityLookup->addEntity( $item );
-		$this->createSiteLink( $item, $page );
+		$this->createSitelink( $item, $page );
 
 		$this->assertPageHasStatements(
 			$page,
@@ -74,24 +74,24 @@ class SiteLinkBasedStatementsLookupTest extends WikibaseFacetedSearchIntegration
 		);
 	}
 
-	private function createSiteLink( Item $item, WikiPage $page, string $siteId = self::SITE_ID ): void {
+	private function createSitelink( Item $item, WikiPage $page, string $siteId = self::SITE_ID ): void {
 		$item->getSiteLinkList()->addNewSiteLink( $siteId, $page->getTitle()->getText() );
-		$this->siteLinkStore->saveLinksOfItem( $item );
+		$this->sitelinkStore->saveLinksOfItem( $item );
 	}
 
-	public function testPageWithSiteLinkToItemWithoutStatementsReturnsNoStatements(): void {
+	public function testPageWithSitelinkToItemWithoutStatementsReturnsNoStatements(): void {
 		$item = new Item(
 			id: new ItemId( 'Q1' )
 		);
 		$page = $this->createPage();
 
 		$this->entityLookup->addEntity( $item );
-		$this->createSiteLink( $item, $page );
+		$this->createSitelink( $item, $page );
 
 		$this->assertPageHasStatements( $page, [] );
 	}
 
-	public function testPageWithDifferentSiteLinkToItemWithStatementsReturnsNoStatements(): void {
+	public function testPageWithDifferentSitelinkToItemWithStatementsReturnsNoStatements(): void {
 		$item = new Item(
 			id: new ItemId( 'Q1' ),
 			statements: new StatementList(
@@ -103,12 +103,12 @@ class SiteLinkBasedStatementsLookupTest extends WikibaseFacetedSearchIntegration
 
 		$this->entityLookup->addEntity( $item );
 
-		$this->createSiteLink( $item, $page, self::OTHER_SITE_ID );
+		$this->createSitelink( $item, $page, self::OTHER_SITE_ID );
 
 		$this->assertPageHasStatements( $page, [] );
 	}
 
-	public function testPageWithDifferentSiteLinkToItemWithoutStatementsReturnsNoStatements(): void {
+	public function testPageWithDifferentSitelinkToItemWithoutStatementsReturnsNoStatements(): void {
 		$item = new Item(
 			id: new ItemId( 'Q1' ),
 		);
@@ -116,12 +116,12 @@ class SiteLinkBasedStatementsLookupTest extends WikibaseFacetedSearchIntegration
 
 		$this->entityLookup->addEntity( $item );
 
-		$this->createSiteLink( $item, $page, self::OTHER_SITE_ID );
+		$this->createSitelink( $item, $page, self::OTHER_SITE_ID );
 
 		$this->assertPageHasStatements( $page, [] );
 	}
 
-	public function testPageWithMultipleSiteLinksToItemsWithStatementsReturnsStatementsOfConfiguredSiteLink(): void {
+	public function testPageWithMultipleSitelinksToItemsWithStatementsReturnsStatementsOfConfiguredSitelink(): void {
 		$item1 = new Item(
 			id: new ItemId( 'Q1' ),
 			statements: new StatementList(
@@ -149,9 +149,9 @@ class SiteLinkBasedStatementsLookupTest extends WikibaseFacetedSearchIntegration
 		$this->entityLookup->addEntity( $item2 );
 		$this->entityLookup->addEntity( $item3 );
 
-		$this->createSiteLink( $item1, $page, self::OTHER_SITE_ID );
-		$this->createSiteLink( $item2, $page );
-		$this->createSiteLink( $item3, $page, self::ANOTHER_SITE_ID );
+		$this->createSitelink( $item1, $page, self::OTHER_SITE_ID );
+		$this->createSitelink( $item2, $page );
+		$this->createSitelink( $item3, $page, self::ANOTHER_SITE_ID );
 
 		$this->assertPageHasStatements(
 			$page,

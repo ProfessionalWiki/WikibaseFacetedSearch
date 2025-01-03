@@ -11,17 +11,17 @@ use Wikibase\DataModel\Statement\StatementList;
 use Wikibase\Lib\Store\SiteLinkLookup;
 use WikiPage;
 
-class SiteLinkBasedStatementsLookup implements StatementsLookup {
+class SitelinkBasedStatementsLookup implements StatementsLookup {
 
 	public function __construct(
 		private readonly string $linkTargetSitelinkSiteId,
-		private readonly SiteLinkLookup $siteLinkLookup,
+		private readonly SiteLinkLookup $sitelinkLookup,
 		private readonly EntityLookup $entityLookup
 	) {
 	}
 
 	public function getStatements( WikiPage $page ): StatementList {
-		$itemId = $this->siteLinkLookup->getItemIdForLink(
+		$itemId = $this->sitelinkLookup->getItemIdForLink(
 			$this->linkTargetSitelinkSiteId,
 			$page->getTitle()->getText()
 		);
