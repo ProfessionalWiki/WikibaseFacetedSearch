@@ -20,9 +20,9 @@
 			{
 				"property": "P3",
 				"type": "list",
-				"condition": "OR",
-				"noneFilter": true,
-				"anyFilter": true
+				"combineWith": "OR",
+				"showNoneFilter": true,
+				"showAnyFilter": true
 			}
 		]
 	}
