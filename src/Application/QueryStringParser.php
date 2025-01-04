@@ -6,7 +6,7 @@ namespace ProfessionalWiki\WikibaseFacetedSearch\Application;
 
 use Wikibase\DataModel\Entity\NumericPropertyId;
 
-final class QueryStringParser {
+class QueryStringParser {
 
 	public function parse( string $queryString ): Query {
 		$constraints = new PropertyConstraintsList();

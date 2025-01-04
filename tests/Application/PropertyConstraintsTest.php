@@ -11,7 +11,7 @@ use Wikibase\DataModel\Entity\NumericPropertyId;
 /**
  * @covers \ProfessionalWiki\WikibaseFacetedSearch\Application\PropertyConstraints
  */
-final class PropertyConstraintsTest extends TestCase {
+class PropertyConstraintsTest extends TestCase {
 
 	private const PROPERTY_ID = 'P1';
 

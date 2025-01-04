@@ -15,7 +15,7 @@ use Wikibase\DataModel\Entity\NumericPropertyId;
  * @covers \ProfessionalWiki\WikibaseFacetedSearch\Application\PropertyConstraintsList
  * @covers \ProfessionalWiki\WikibaseFacetedSearch\Application\PropertyConstraints
  */
-final class QueryTest extends TestCase {
+class QueryTest extends TestCase {
 
 	public function testPropertyConstraintsCanBeRetrieved(): void {
 		$p1Constraint = new PropertyConstraints( new NumericPropertyId( 'P1' ) );
