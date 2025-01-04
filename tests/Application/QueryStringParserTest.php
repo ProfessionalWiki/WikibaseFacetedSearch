@@ -114,7 +114,7 @@ class QueryStringParserTest extends TestCase {
 		$this->assertSame( 9001.0, $p23Constraints->getInclusiveMinimum() );
 	}
 
-	public function testHandlesQuotedStrings(): void {
+	public function testHandlesSingleQuotedString(): void {
 		$this->markTestSkipped( 'TODO' );
 
 		$parser = new QueryStringParser();
@@ -125,6 +125,21 @@ class QueryStringParserTest extends TestCase {
 		$this->assertEquals(
 			[ 'foo bar' ],
 			$constraints->getAndSelectedValues()
+		);
+		$this->assertSame( 'baz', $query->getFreeText() );
+	}
+
+	public function testHandlesOrQuotedStrings(): void {
+		$this->markTestSkipped( 'TODO' );
+
+		$parser = new QueryStringParser();
+		$query = $parser->parse( 'haswbfacet:P42="foo bar"|second|"third value" baz' );
+
+		$constraints = $query->getConstraintsForProperty( new NumericPropertyId( 'P42' ) );
+
+		$this->assertEquals(
+			[ 'foo bar', 'second', 'third value' ],
+			$constraints->getOrSelectedValues()
 		);
 		$this->assertSame( 'baz', $query->getFreeText() );
 	}
