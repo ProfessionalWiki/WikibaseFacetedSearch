@@ -10,8 +10,6 @@ use MediaWiki\Parser\Sanitizer;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetType;
 use RuntimeException;
-use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
-use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetType;
 use Wikibase\DataModel\Entity\ItemId;
 
 class FacetUiBuilder {
