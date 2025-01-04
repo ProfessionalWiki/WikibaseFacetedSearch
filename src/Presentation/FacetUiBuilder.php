@@ -8,24 +8,24 @@ use InvalidArgumentException;
 use MediaWiki\Parser\Sanitizer;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetType;
-use RuntimeException;
 use TemplateParser;
 use Wikibase\DataModel\Entity\ItemId;
 
 class FacetUiBuilder {
 
-	// TODO: Figure out what to do with radio
-	// TODO: Perhaps we should do a map for template name and FacetType
-	private const FACET_TEMPLATES = [
-		FacetType::BOOLEAN->value => 'Radio',
-		FacetType::LIST->value => 'Checkbox',
-		FacetType::RANGE->value => 'Range'
-	];
+	private array $facetTemplates = [];
 
 	public function __construct(
 		private readonly TemplateParser $parser,
 		private readonly Config $config // TODO: use
 	) {
+		// TODO: Perhaps we should do a map for template name and FacetType
+		// TODO: Should this go into FacetType?
+		$this->facetTemplates = [
+			FacetType::BOOLEAN->value => 'Radio',
+			FacetType::LIST->value => 'Checkbox',
+			FacetType::RANGE->value => 'Range'
+		];
 	}
 
 	// TODO: parameter or constructor argument: values and counts (from https://github.com/ProfessionalWiki/WikibaseFacetedSearch/issues/23)
@@ -158,12 +158,12 @@ class FacetUiBuilder {
 			return '';
 		}
 
-		if ( !array_key_exists( $type, self::FACET_TEMPLATES ) ) {
+		if ( !array_key_exists( $type, $this->facetTemplates ) ) {
 			throw new InvalidArgumentException( "Missing template for facet type: $type" );
 		}
 
 		$html = '';
-		$template = 'FacetItem' . self::FACET_TEMPLATES[$type];
+		$template = 'FacetItem' . $this->facetTemplates[$type];
 
 		foreach ( $items as $i => $item ) {
 			$item['id'] = Sanitizer::escapeIdForAttribute( htmlspecialchars( "$facetName-$i" ) );
