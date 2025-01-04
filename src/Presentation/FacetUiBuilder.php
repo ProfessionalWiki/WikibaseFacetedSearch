@@ -8,11 +8,13 @@ use InvalidArgumentException;
 use MediaWiki\Parser\Sanitizer;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetType;
+use RuntimeException;
 use TemplateParser;
 use Wikibase\DataModel\Entity\ItemId;
 
 class FacetUiBuilder {
 
+	/** @var array<string, string> */
 	private array $facetTemplates = [];
 
 	public function __construct(
