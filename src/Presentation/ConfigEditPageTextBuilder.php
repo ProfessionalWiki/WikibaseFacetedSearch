@@ -4,7 +4,7 @@ declare( strict_types = 1 );
 
 namespace ProfessionalWiki\WikibaseFacetedSearch\Presentation;
 
-use IContextSource;
+use MediaWiki\Context\IContextSource;
 
 class ConfigEditPageTextBuilder {
 

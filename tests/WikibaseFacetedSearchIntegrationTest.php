@@ -3,7 +3,7 @@
 namespace ProfessionalWiki\WikibaseFacetedSearch\Tests;
 
 use Article;
-use EditPage;
+use MediaWiki\EditPage\EditPage;
 use MediaWiki\Title\Title;
 use MediaWikiIntegrationTestCase;
 use ProfessionalWiki\WikibaseFacetedSearch\WikibaseFacetedSearchExtension;

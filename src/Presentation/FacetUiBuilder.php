@@ -5,11 +5,13 @@ declare( strict_types = 1 );
 namespace ProfessionalWiki\WikibaseFacetedSearch\Presentation;
 
 use InvalidArgumentException;
+use MediaWiki\Html\TemplateParser;
 use MediaWiki\Parser\Sanitizer;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetType;
 use RuntimeException;
-use TemplateParser;
+use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
+use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetType;
 use Wikibase\DataModel\Entity\ItemId;
 
 class FacetUiBuilder {
