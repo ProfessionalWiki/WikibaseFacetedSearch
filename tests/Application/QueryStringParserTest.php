@@ -11,7 +11,7 @@ use Wikibase\DataModel\Entity\NumericPropertyId;
 /**
  * @covers \ProfessionalWiki\WikibaseFacetedSearch\Application\QueryStringParser
  */
-final class QueryStringParserTest extends TestCase {
+class QueryStringParserTest extends TestCase {
 
 	/**
 	 * @dataProvider freeTextProvider

@@ -6,7 +6,7 @@ namespace ProfessionalWiki\WikibaseFacetedSearch\Application;
 
 use Wikibase\DataModel\Entity\PropertyId;
 
-final class Query {
+class Query {
 
 	public function __construct(
 		public readonly PropertyConstraintsList $constraints,
