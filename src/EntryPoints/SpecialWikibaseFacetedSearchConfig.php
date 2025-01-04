@@ -4,10 +4,10 @@ declare( strict_types = 1 );
 
 namespace ProfessionalWiki\WikibaseFacetedSearch\EntryPoints;
 
-use Message;
+use MediaWiki\Message\Message;
+use MediaWiki\SpecialPage\SpecialPage;
+use MediaWiki\Title\Title;
 use ProfessionalWiki\WikibaseFacetedSearch\WikibaseFacetedSearchExtension;
-use SpecialPage;
-use Title;
 
 class SpecialWikibaseFacetedSearchConfig extends SpecialPage {
 

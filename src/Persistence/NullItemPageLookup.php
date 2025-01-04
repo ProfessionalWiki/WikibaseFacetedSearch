@@ -4,8 +4,8 @@ declare( strict_types = 1 );
 
 namespace ProfessionalWiki\WikibaseFacetedSearch\Persistence;
 
+use MediaWiki\Title\Title;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\ItemPageLookup;
-use Title;
 use Wikibase\DataModel\Entity\ItemId;
 
 class NullItemPageLookup implements ItemPageLookup {

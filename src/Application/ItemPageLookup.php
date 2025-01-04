@@ -4,7 +4,7 @@ declare( strict_types = 1 );
 
 namespace ProfessionalWiki\WikibaseFacetedSearch\Application;
 
-use Title;
+use MediaWiki\Title\Title;
 use Wikibase\DataModel\Entity\ItemId;
 
 interface ItemPageLookup {

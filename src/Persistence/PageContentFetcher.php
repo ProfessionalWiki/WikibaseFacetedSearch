@@ -5,10 +5,10 @@ declare( strict_types = 1 );
 namespace ProfessionalWiki\WikibaseFacetedSearch\Persistence;
 
 use Content;
-use MalformedTitleException;
 use MediaWiki\Revision\RevisionLookup;
 use MediaWiki\Revision\SlotRecord;
-use TitleParser;
+use MediaWiki\Title\MalformedTitleException;
+use MediaWiki\Title\TitleParser;
 
 class PageContentFetcher {
 

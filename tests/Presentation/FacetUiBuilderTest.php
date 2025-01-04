@@ -4,10 +4,10 @@ declare( strict_types = 1 );
 
 namespace ProfessionalWiki\WikibaseFacetedSearch\Tests\Presentation;
 
+use MediaWiki\Html\TemplateParser;
 use PHPUnit\Framework\TestCase;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\FacetUiBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Tests\Valid;
-use TemplateParser;
 use Wikibase\DataModel\Entity\ItemId;
 
 /**
