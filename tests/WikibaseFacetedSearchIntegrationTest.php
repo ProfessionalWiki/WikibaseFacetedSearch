@@ -7,6 +7,10 @@ use EditPage;
 use MediaWiki\Title\Title;
 use MediaWikiIntegrationTestCase;
 use ProfessionalWiki\WikibaseFacetedSearch\WikibaseFacetedSearchExtension;
+use Wikibase\DataModel\Entity\Item;
+use Wikibase\DataModel\Entity\Property;
+use Wikibase\Repo\Content\ItemContent;
+use Wikibase\Repo\Content\PropertyContent;
 use WikiPage;
 
 class WikibaseFacetedSearchIntegrationTest extends MediaWikiIntegrationTestCase {
@@ -55,6 +59,26 @@ class WikibaseFacetedSearchIntegrationTest extends MediaWikiIntegrationTestCase 
 		$editPage->edit();
 
 		return $editPage->getContext()->getOutput()->getHTML();
+	}
+
+	protected function createPage( string $title = 'Test page' ): WikiPage {
+		$page = new WikiPage( Title::newFromText( $title ) );
+		$this->editPage( $page, 'Wikitext content' );
+		return $page;
+	}
+
+	protected function createItemPage( Item $item ): WikiPage {
+		$page = new WikiPage( Title::newFromText( $item->getId()->getSerialization(), WB_NS_ITEM ) );
+		$content = ItemContent::newFromItem( $item );
+		$this->editPage( $page, $content );
+		return $page;
+	}
+
+	protected function createPropertyPage( Property $property ): WikiPage {
+		$page = new WikiPage( Title::newFromText( $property->getId()->getSerialization(), WB_NS_PROPERTY ) );
+		$content = PropertyContent::newFromProperty( $property );
+		$this->editPage( $page, $content );
+		return $page;
 	}
 
 }

@@ -6,7 +6,7 @@ namespace ProfessionalWiki\WikibaseFacetedSearch\Presentation;
 
 use IContextSource;
 
-class ExportConfigEditPageTextBuilder {
+class ConfigEditPageTextBuilder {
 
 	public function __construct(
 		private IContextSource $context
@@ -114,7 +114,7 @@ HTML;
 	}
 
 	private function getExampleContents(): string {
-		$example = file_get_contents( __DIR__ . '/../../example.json' );
+		$example = file_get_contents( __DIR__ . '/../../example-config.json' );
 
 		if ( !is_string( $example ) ) {
 			return '';

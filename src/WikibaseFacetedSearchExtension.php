@@ -7,14 +7,21 @@ namespace ProfessionalWiki\WikibaseFacetedSearch;
 use MediaWiki\MediaWikiServices;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\ConfigLookup;
+use ProfessionalWiki\WikibaseFacetedSearch\Application\DataValueTranslator;
+use ProfessionalWiki\WikibaseFacetedSearch\Application\InstanceTypeExtractor;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\ItemPageLookup;
+use ProfessionalWiki\WikibaseFacetedSearch\Application\StatementListTranslator;
+use ProfessionalWiki\WikibaseFacetedSearch\Application\StatementsLookup;
+use ProfessionalWiki\WikibaseFacetedSearch\Application\StatementTranslator;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\CombiningConfigLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\ConfigDeserializer;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\ConfigJsonValidator;
+use ProfessionalWiki\WikibaseFacetedSearch\Persistence\FromPageStatementsLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\ItemPageLookupFactory;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\PageContentConfigLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\PageContentFetcher;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\Search\SearchIndexFieldsBuilder;
+use ProfessionalWiki\WikibaseFacetedSearch\Persistence\SitelinkBasedStatementsLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\FacetUiBuilder;
 use SearchEngine;
 use TemplateParser;
@@ -95,6 +102,42 @@ class WikibaseFacetedSearchExtension {
 			engine:	$engine,
 			config: $this->getConfig(),
 			dataTypeLookup: WikibaseRepo::getPropertyDataTypeLookup()
+		);
+	}
+
+	public function newStatementsLookup(): StatementsLookup {
+		if ( $this->getConfig()->linkTargetSitelinkSiteId === null ) {
+			return new FromPageStatementsLookup();
+		}
+
+		return new SitelinkBasedStatementsLookup(
+			linkTargetSitelinkSiteId: $this->getConfig()->linkTargetSitelinkSiteId,
+			sitelinkLookup: WikibaseRepo::getStore()->newSiteLinkStore(),
+			entityLookup: WikibaseRepo::getEntityLookup()
+		);
+	}
+
+	public function newStatementListTranslator(): StatementListTranslator {
+		return new StatementListTranslator(
+			statementTranslator: $this->newStatementTranslator(),
+			instanceTypeExtractor: $this->newInstanceTypeExtractor(),
+			config: $this->getConfig()
+		);
+	}
+
+	private function newStatementTranslator(): StatementTranslator {
+		return new StatementTranslator(
+			dataValueTranslator: $this->newDataValueTranslator()
+		);
+	}
+
+	private function newDataValueTranslator(): DataValueTranslator {
+		return new DataValueTranslator();
+	}
+
+	private function newInstanceTypeExtractor(): InstanceTypeExtractor {
+		return new InstanceTypeExtractor(
+			instanceType: $this->getConfig()->getInstanceOfId()
 		);
 	}
 

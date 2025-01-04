@@ -17,7 +17,7 @@ class ItemPageLookupFactory {
 
 	public function newItemPageLookup(): ItemPageLookup {
 		if ( $this->config->linkTargetSitelinkSiteId !== null ) {
-			return new SiteLinkItemPageLookup(
+			return new SitelinkItemPageLookup(
 				WikibaseRepo::getStore()->newSiteLinkStore(),
 				$this->config->linkTargetSitelinkSiteId
 			);
