@@ -70,8 +70,16 @@
 
 	"ResourceModules": {
 		"ext.wikibase.facetedsearch.styles": {
+			"class": "MediaWiki\\ResourceLoader\\CodexModule",
 			"styles": [
 				"ext.wikibase.facetedsearch.less"
+			],
+			"codexStyleOnly": true,
+			"codexComponents": [
+				"CdxCheckbox",
+				"CdxField",
+				"CdxRadio",
+				"CdxTextInput"
 			]
 		},
 		"ext.wikibase.facetedsearch.docs.styles": {

@@ -4,17 +4,30 @@ declare( strict_types = 1 );
 
 namespace ProfessionalWiki\WikibaseFacetedSearch\Presentation;
 
+use InvalidArgumentException;
 use MediaWiki\Html\TemplateParser;
+use MediaWiki\Parser\Sanitizer;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetType;
+use RuntimeException;
 use Wikibase\DataModel\Entity\ItemId;
 
 class FacetUiBuilder {
+
+	/** @var array<string, string> */
+	private array $facetTemplates = [];
 
 	public function __construct(
 		private readonly TemplateParser $parser,
 		private readonly Config $config // TODO: use
 	) {
+		// TODO: Perhaps we should do a map for template name and FacetType
+		// TODO: Should this go into FacetType?
+		$this->facetTemplates = [
+			FacetType::BOOLEAN->value => 'Radio',
+			FacetType::LIST->value => 'Checkbox',
+			FacetType::RANGE->value => 'Range'
+		];
 	}
 
 	// TODO: parameter or constructor argument: values and counts (from https://github.com/ProfessionalWiki/WikibaseFacetedSearch/issues/23)
@@ -35,23 +48,31 @@ class FacetUiBuilder {
 		return [
 			[
 				'label' => 'Has Author',
-				'type' => FacetType::LIST->value,
-				'values-html' => $this->getListFacetHtml( $this->getExampleBooleanItems() )
+				'type' => FacetType::BOOLEAN->value,
+				'values-html' => $this->getItemsHtml(
+					$this->getExampleBooleanItems(), FacetType::BOOLEAN->value, 'Has Author'
+				)
 			],
 			[
 				'label' => 'Author',
 				'type' => FacetType::LIST->value,
-				'values-html' => $this->getListFacetHtml( $this->getExampleListItems() )
+				'values-html' => $this->getItemsHtml(
+					$this->getExampleListItems(), FacetType::LIST->value, 'Author'
+				)
 			],
 			[
 				'label' => 'Year',
 				'type' => FacetType::RANGE->value,
-				'values-html' => $this->getRangeFacetHtml( currentMin: 1900, currentMax: 2024 )
+				'values-html' => $this->getItemsHtml(
+					[ $this->getExampleRangeItems()[0] ], FacetType::RANGE->value, 'Year'
+				)
 			],
 			[
 				'label' => 'Pages',
 				'type' => FacetType::RANGE->value,
-				'values-html' => $this->getRangeFacetHtml( currentMin: 10 )
+				'values-html' => $this->getItemsHtml(
+					[ $this->getExampleRangeItems()[1] ], FacetType::RANGE->value, 'Pages'
+				)
 			]
 		];
 	}
@@ -62,12 +83,16 @@ class FacetUiBuilder {
 	private function getExampleBooleanItems(): array {
 		return [
 			[
+				'type' => 'Radio',
+				'name' => 'Has Author',
 				'label' => 'Yes',
 				'count' => 42,
 				'url' => 'https://example.com/facet/Yes',
 				'selected' => true
 			],
 			[
+				'type' => 'Radio',
+				'name' => 'Has Author',
 				'label' => 'No',
 				'count' => 23,
 				'url' => 'https://example.com/facet/No',
@@ -109,25 +134,49 @@ class FacetUiBuilder {
 	}
 
 	/**
-	 * @param array<array<string, mixed>> $items
+	 * @return array<array<string, mixed>>
 	 */
-	private function getListFacetHtml( array $items ): string {
-		return $this->parser->processTemplate(
-			'ListFacet',
-			[ 'items' => $items ]
-		);
-	}
-
-	private function getRangeFacetHtml( ?int $currentMin = null, ?int $currentMax = null ): string {
-		return $this->parser->processTemplate(
-			'RangeFacet',
+	private function getExampleRangeItems(): array {
+		return [
 			[
 				'msg-min' => wfMessage( 'wikibase-faceted-search-facet-range-min' )->text(),
 				'msg-max' => wfMessage( 'wikibase-faceted-search-facet-range-max' )->text(),
-				'current-min' => $currentMin,
-				'current-max' => $currentMax,
+				'current-min' => 1900,
+				'current-max' => 2024,
+			],
+			[
+				'msg-min' => wfMessage( 'wikibase-faceted-search-facet-range-min' )->text(),
+				'msg-max' => wfMessage( 'wikibase-faceted-search-facet-range-max' )->text(),
+				'current-min' => 10
 			]
-		);
+		];
+	}
+
+	/**
+	 * @param array<array<string, mixed>> $items
+	 */
+	private function getItemsHtml( array $items, string $type, string $facetName ): string {
+		if ( $items === [] ) {
+			return '';
+		}
+
+		if ( !array_key_exists( $type, $this->facetTemplates ) ) {
+			throw new InvalidArgumentException( "Missing template for facet type: $type" );
+		}
+
+		$html = '';
+		$template = 'FacetItem' . $this->facetTemplates[$type];
+
+		foreach ( $items as $i => $item ) {
+			$item['id'] = Sanitizer::escapeIdForAttribute( htmlspecialchars( "$facetName-$i" ) );
+			try {
+				$html .= $this->parser->processTemplate( $template, $item );
+			} catch ( RuntimeException ) {
+				// ignore
+			}
+		}
+
+		return $html;
 	}
 
 }
