@@ -139,7 +139,9 @@ class WikibaseFacetedSearchHooks {
 	 * @param KeywordFeature[] &$extraFeatures
 	 */
 	public static function onCirrusSearchAddQueryFeatures( SearchConfig $config, array &$extraFeatures ): void {
-		$extraFeatures[] = new HasWbFacetFeature();
+		if ( WikibaseFacetedSearchExtension::getInstance()->getConfig()->isComplete() ) {
+			$extraFeatures[] = WikibaseFacetedSearchExtension::getInstance()->newHasWbFacetFeature();
+		}
 	}
 
 	/**
