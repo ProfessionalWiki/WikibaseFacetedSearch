@@ -9,6 +9,7 @@ use CirrusSearch\Query\Builder\QueryBuildingContext;
 use CirrusSearch\Query\FilterQueryFeature;
 use CirrusSearch\Query\SimpleKeywordFeature;
 use CirrusSearch\Search\SearchContext;
+use Elastica\Query;
 use Elastica\Query\AbstractQuery;
 
 class HasWbFacetFeature extends SimpleKeywordFeature implements FilterQueryFeature {
@@ -24,8 +25,24 @@ class HasWbFacetFeature extends SimpleKeywordFeature implements FilterQueryFeatu
 	 * @return array
 	 */
 	protected function doApply( SearchContext $context, $key, $value, $quotedValue, $negated ): array {
+		$query = null;
+
+		// Example: date: date of birth
+		if ( str_contains( $value, 'P593' ) ) {
+			$query = new Query\Range( 'wbfs_P593', [
+				'gte' => '1970-01-01'
+			] );
+		}
+		// Example: keyword: sex or gender
+		if ( str_contains( $value, 'P592' ) ) {
+			$query = new Query\Term( [
+				'wbfs_P592' => [ 'value' => 'Q57196' ] // male
+//				'wbfs_P592' => [ 'value' => 'Q57505' ] // female
+			] );
+		}
+
 		// TODO
-		return [ null, false ];
+		return [ $query, false ];
 	}
 
 	public function getFilterQuery( KeywordFeatureNode $node, QueryBuildingContext $context ): ?AbstractQuery {
