@@ -71,6 +71,7 @@ class ConfigDeserializer {
 	}
 
 	/**
+	 * TODO: defaultCombineWith, allowCombineWithChoice, showNoneFilter, showAnyFilter
 	 * @param array<string, string> $facetConfig
 	 */
 	private function newFacetConfig( string $itemId, array $facetConfig ): FacetConfig {
