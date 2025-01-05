@@ -38,7 +38,7 @@ class ConfigDeserializer {
 		return new Config(
 			linkTargetSitelinkSiteId: $configArray['linkTargetSitelinkSiteId'] ?? null,
 			instanceOfId: $this->newPropertyId( $configArray['instanceOfId'] ?? null ),
-			facets: $this->newFacetConfigList( $configArray['facets'] ?? [] )
+			facets: $this->newFacetConfigList( $configArray['instanceOfValues'] ?? [] )
 		);
 	}
 
@@ -51,17 +51,18 @@ class ConfigDeserializer {
 	}
 
 	/**
-	 * @param array<string, array<array<string, string>>> $facets
+	 * TODO: also return $itemTypeConfig['label']
+	 * @param array<string, array> $configPerItemType
 	 */
-	private function newFacetConfigList( array $facets ): ?FacetConfigList {
-		if ( $facets === [] ) {
+	private function newFacetConfigList( array $configPerItemType ): ?FacetConfigList {
+		if ( $configPerItemType === [] ) {
 			return null;
 		}
 
 		$facetConfigs = [];
 
-		foreach ( $facets as $itemId => $itemFacets ) {
-			foreach ( $itemFacets as $facet ) {
+		foreach ( $configPerItemType as $itemId => $itemTypeConfig ) {
+			foreach ( $itemTypeConfig['facets'] as $facet ) {
 				$facetConfigs[] = $this->newFacetConfig( $itemId, $facet );
 			}
 		}
