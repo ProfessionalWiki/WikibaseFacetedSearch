@@ -9,7 +9,8 @@ use MediaWiki\Context\IContextSource;
 class ConfigEditPageTextBuilder {
 
 	public function __construct(
-		private IContextSource $context
+		private readonly IContextSource $context,
+		private readonly string $exampleConfigPath
 	) {
 	}
 
@@ -114,7 +115,7 @@ HTML;
 	}
 
 	private function getExampleContents(): string {
-		$example = file_get_contents( __DIR__ . '/../../example-config.json' );
+		$example = file_get_contents( $this->exampleConfigPath );
 
 		if ( !is_string( $example ) ) {
 			return '';

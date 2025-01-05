@@ -7,7 +7,6 @@ namespace ProfessionalWiki\WikibaseFacetedSearch\Persistence;
 use Opis\JsonSchema\Errors\ErrorFormatter;
 use Opis\JsonSchema\Errors\ValidationError;
 use Opis\JsonSchema\Validator;
-use RuntimeException;
 
 class ConfigJsonValidator {
 
@@ -16,23 +15,7 @@ class ConfigJsonValidator {
 	 */
 	private array $errors = [];
 
-	public static function newInstance(): self {
-		$json = file_get_contents( __DIR__ . '/../../schema.json' );
-
-		if ( !is_string( $json ) ) {
-			throw new RuntimeException( 'Could not obtain JSON Schema' );
-		}
-
-		$schema = json_decode( $json );
-
-		if ( !is_object( $schema ) ) {
-			throw new RuntimeException( 'Failed to deserialize JSON Schema' );
-		}
-
-		return new self( $schema );
-	}
-
-	private function __construct(
+	public function __construct(
 		private readonly object $jsonSchema
 	) {
 	}
