@@ -87,8 +87,8 @@ class FacetUiBuilder {
 	}
 
 	private function getSearchQueryFromUrl(): array {
-		$parts = $this->urlUtils->parse( $this->specialSearch->getRequest()->getFullRequestURL() );
-		return wfCgiToArray( $parts['query'] );
+		$parts = $this->urlUtils->parse( $this->specialSearch->getRequest()->getFullRequestURL() ?? [] );
+		return wfCgiToArray( $parts['query'] ?? '' );
 	}
 
 	private function getFacetItemState( string $facetName, string $itemValue ): bool {
@@ -208,8 +208,8 @@ class FacetUiBuilder {
 			$item['id'] = Sanitizer::escapeIdForAttribute( htmlspecialchars( "$facetName-$i" ) );
 
 			if ( $type === FacetType::LIST->value ) {
-				$item['selected'] = $this->getFacetItemState( $facetName, $item['label'] );
-				$item['url'] = $this->getFacetItemUrl( $facetName, $item['label'], $item['selected'] );
+				$item['selected'] = $this->getFacetItemState( $facetName, (string)$item['label'] );
+				$item['url'] = $this->getFacetItemUrl( $facetName, (string)$item['label'], $item['selected'] );
 			}
 
 			try {
