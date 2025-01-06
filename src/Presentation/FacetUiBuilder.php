@@ -87,10 +87,10 @@ class FacetUiBuilder {
 	}
 
 	/**
-	 * @return array<string, string>|array
+	 * @return array<string, string>
 	 */
 	private function getSearchQueryFromUrl(): array {
-		$parts = $this->urlUtils->parse( $this->specialSearch->getRequest()->getFullRequestURL() ?? [] );
+		$parts = $this->urlUtils->parse( $this->specialSearch->getRequest()->getFullRequestURL() );
 		return wfCgiToArray( $parts['query'] ?? '' );
 	}
 
