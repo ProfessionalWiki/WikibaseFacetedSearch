@@ -1,14 +1,20 @@
 <div class="wikibase-faceted-search">
 	<div class="wikibase-faceted-search__facets">
 		{{#facets}}
-			<div class="wikibase-faceted-search__facet cdx-field">
-				<legend class="cdx-label">
-					<span class="cdx-label__label__text">{{label}}</span>
-				</legend>
-				<div class="cdx-field__control">
+			{{!
+				Codex - Accordion component
+				@see https://doc.wikimedia.org/codex/v1.14.0/components/demos/accordion.html#markup-structure
+			}}
+			<details class="wikibase-faceted-search__facet cdx-accordion" {{#expanded}}open{{/expanded}}>
+				<summary>
+					<h3 class="cdx-accordion__header">
+						<span class="cdx-accordion__header__title">{{label}}</span>
+					</h3>
+				</summary>
+				<div class="cdx-accordion__content">
 					{{{values-html}}}
 				</div>
-			</div>
+			</details>
 		{{/facets}}
 	</div>
 </div>
