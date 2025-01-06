@@ -27,6 +27,12 @@ class ConfigJsonValidatorTest extends TestCase {
 		);
 	}
 
+	public function testDefaultConfigPassesValidation(): void {
+		$this->assertTrue(
+			$this->newValidator()->validate( WikibaseFacetedSearchExtension::DEFAULT_CONFIG )
+		);
+	}
+
 	public function testValidJsonPassesValidation(): void {
 		$validator = $this->newValidator();
 		$success = $validator->validate( Valid::configJson() );

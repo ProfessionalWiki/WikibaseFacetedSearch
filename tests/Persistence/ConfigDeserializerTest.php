@@ -62,11 +62,15 @@ class ConfigDeserializerTest extends TestCase {
 	}
 
 	public function testCanDeserializeExampleConfig(): void {
+		$this->assertCanDeserialize( file_get_contents( WikibaseFacetedSearchExtension::getInstance()->getExampleConfigPath() ) );
+	}
+
+	private function assertCanDeserialize( string $configJson ): void {
 		$deserializer = WikibaseFacetedSearchExtension::getInstance()->newConfigDeserializer();
 
 		$this->assertNotEquals(
 			new Config(),
-			$deserializer->deserialize( file_get_contents( WikibaseFacetedSearchExtension::getInstance()->getExampleConfigPath() ) )
+			$deserializer->deserialize( $configJson )
 		);
 	}
 

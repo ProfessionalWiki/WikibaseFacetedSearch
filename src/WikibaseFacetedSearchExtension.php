@@ -36,7 +36,7 @@ class WikibaseFacetedSearchExtension {
 	public const DEFAULT_CONFIG = '{
 	"linkTargetSitelinkSiteId": null,
 	"instanceOfId": null,
-	"facets": {}
+	"instanceOfValues": {}
 }';
 
 	private ?Config $config;
