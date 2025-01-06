@@ -23,6 +23,17 @@
 	}
 
 	&__facet-item {
+		&-checkbox,
+		&-radio {
+			color: inherit !important;
+			text-decoration: none !important;
+			cursor: pointer;
+
+			> * {
+				pointer-events: none;
+			}
+		}
+
 		&-range {
 			display: flex;
 			gap: @spacing-50;
