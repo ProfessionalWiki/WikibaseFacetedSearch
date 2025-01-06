@@ -87,6 +87,7 @@ class FacetUiBuilder {
 		return wfCgiToArray( $parts['query'] ?? '' );
 	}
 
+	// TODO: Persist expanded state
 	private function getFacetItemState( string $queryKey, string $valueKey ): bool {
 		if ( !array_key_exists( $queryKey, $this->query ) ) {
 			return false;

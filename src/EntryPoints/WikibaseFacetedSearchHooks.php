@@ -150,10 +150,10 @@ class WikibaseFacetedSearchHooks {
 		$itemType = new ItemId( 'Q1' ); // TODO: get from search string
 		// TODO: get facet state rom search string and pass as parameter'
 
+		$url = $specialSearch->getRequest()->getFullRequestURL();
+
 		$output->addHTML(
-			WikibaseFacetedSearchExtension::getInstance()->newFacetUiBuilder(
-				$specialSearch
-			)->createHtml( $itemType )
+			WikibaseFacetedSearchExtension::getInstance()->newFacetUiBuilder( $url )->createHtml( $itemType )
 		);
 	}
 
