@@ -6,6 +6,7 @@ namespace ProfessionalWiki\WikibaseFacetedSearch\Tests\Presentation;
 
 use MediaWiki\Html\TemplateParser;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Utils\UrlUtils;
 use PHPUnit\Framework\TestCase;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\FacetUiBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Tests\Valid;
