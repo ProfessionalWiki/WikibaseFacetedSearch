@@ -42,7 +42,7 @@ class FacetUiBuilder {
 	}
 
 	/**
-	 * @return array<array<string, string>>
+	 * @return array<array<string, mixed>>
 	 */
 	private function facetsToViewModel( /* TODO: parameters */ ): array {
 		return [
@@ -51,28 +51,32 @@ class FacetUiBuilder {
 				'type' => FacetType::BOOLEAN->value,
 				'values-html' => $this->getItemsHtml(
 					$this->getExampleBooleanItems(), FacetType::BOOLEAN->value, 'Has Author'
-				)
+				),
+				'expanded' => true
 			],
 			[
 				'label' => 'Author',
 				'type' => FacetType::LIST->value,
 				'values-html' => $this->getItemsHtml(
 					$this->getExampleListItems(), FacetType::LIST->value, 'Author'
-				)
+				),
+				'expanded' => true
 			],
 			[
 				'label' => 'Year',
 				'type' => FacetType::RANGE->value,
 				'values-html' => $this->getItemsHtml(
 					[ $this->getExampleRangeItems()[0] ], FacetType::RANGE->value, 'Year'
-				)
+				),
+				'expanded' => true
 			],
 			[
 				'label' => 'Pages',
 				'type' => FacetType::RANGE->value,
 				'values-html' => $this->getItemsHtml(
 					[ $this->getExampleRangeItems()[1] ], FacetType::RANGE->value, 'Pages'
-				)
+				),
+				'expanded' => false
 			]
 		];
 	}
