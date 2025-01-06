@@ -162,12 +162,13 @@ class WikibaseFacetedSearchHooks {
 	}
 
 	public static function onEditFilter( EditPage $editPage, ?string $text, ?string $section, string &$error ): void {
+		if ( !is_string( $text ) || !WikibaseFacetedSearchExtension::getInstance()->isConfigTitle( $editPage->getTitle() ) ) {
+			return;
+		}
+
 		$validator = ConfigJsonValidator::newInstance();
 
-		if ( is_string( $text )
-			&& WikibaseFacetedSearchExtension::getInstance()->isConfigTitle( $editPage->getTitle() )
-			&& !$validator->validate( $text )
-		) {
+		if ( !$validator->validate( $text ) ) {
 			$errors = $validator->getErrors();
 			$error = Html::errorBox(
 				wfMessage( 'wikibase-faceted-search-config-invalid', count( $errors ) )->escaped() .
