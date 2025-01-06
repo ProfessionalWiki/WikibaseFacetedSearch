@@ -6,7 +6,6 @@ namespace ProfessionalWiki\WikibaseFacetedSearch\Presentation;
 
 use InvalidArgumentException;
 use MediaWiki\Html\TemplateParser;
-use MediaWiki\MediaWikiServices;
 use MediaWiki\Parser\Sanitizer;
 use MediaWiki\Specials\SpecialSearch;
 use MediaWiki\Utils\UrlUtils;
