@@ -180,7 +180,7 @@ class FacetUiBuilder {
 
 			if ( $type === FacetType::LIST->value && is_string( $item['label'] ) ) {
 				// TODO: Sync query parameter name with search query
-				$queryKey = "wbfs-$facetName";
+				$queryKey = "wbfs-$facetName-values";
 				$valueKey = $item['label'];
 				$item['selected'] = $this->getFacetItemState( $queryKey, $valueKey );
 				$item['url'] = $this->getFacetItemUrl( $queryKey, $valueKey, $item['selected'] );
