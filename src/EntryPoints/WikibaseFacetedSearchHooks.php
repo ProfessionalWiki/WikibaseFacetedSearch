@@ -168,7 +168,7 @@ class WikibaseFacetedSearchHooks {
 			return;
 		}
 
-		$validator = ConfigJsonValidator::newInstance();
+		$validator = WikibaseFacetedSearchExtension::getInstance()->newConfigJsonValidator();
 
 		if ( !$validator->validate( $text ) ) {
 			$errors = $validator->getErrors();
@@ -183,7 +183,10 @@ class WikibaseFacetedSearchHooks {
 		if ( WikibaseFacetedSearchExtension::getInstance()->isConfigTitle( $editPage->getTitle() ) ) {
 			$editPage->suppressIntro = true;
 
-			$textBuilder = new ConfigEditPageTextBuilder( $editPage->getContext() );
+			$textBuilder = new ConfigEditPageTextBuilder(
+				context: $editPage->getContext(),
+				exampleConfigPath: WikibaseFacetedSearchExtension::getInstance()->getExampleConfigPath()
+			);
 			$editPage->editFormTextTop = $textBuilder->createTopHtml();
 			$editPage->editFormTextBottom = $textBuilder->createBottomHtml();
 

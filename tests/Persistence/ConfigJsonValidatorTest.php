@@ -7,32 +7,42 @@ namespace ProfessionalWiki\WikibaseFacetedSearch\Tests\Persistence;
 use PHPUnit\Framework\TestCase;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\ConfigJsonValidator;
 use ProfessionalWiki\WikibaseFacetedSearch\Tests\Valid;
+use ProfessionalWiki\WikibaseFacetedSearch\WikibaseFacetedSearchExtension;
 
 /**
+ * This test covers the combination of ConfigJsonValidator and config-schema.json.
+ *
  * @covers \ProfessionalWiki\WikibaseFacetedSearch\Persistence\ConfigJsonValidator
+ * @covers \ProfessionalWiki\WikibaseFacetedSearch\WikibaseFacetedSearchExtension
  */
 class ConfigJsonValidatorTest extends TestCase {
 
+	private function newValidator(): ConfigJsonValidator {
+		return WikibaseFacetedSearchExtension::getInstance()->newConfigJsonValidator();
+	}
+
 	public function testEmptyJsonPassesValidation(): void {
 		$this->assertTrue(
-			ConfigJsonValidator::newInstance()->validate( '{}' )
+			$this->newValidator()->validate( '{}' )
 		);
 	}
 
 	public function testValidJsonPassesValidation(): void {
-		$this->assertTrue(
-			ConfigJsonValidator::newInstance()->validate( Valid::configJson() )
-		);
+		$validator = $this->newValidator();
+		$success = $validator->validate( Valid::configJson() );
+
+		$this->assertSame( [], $validator->getErrors() );
+		$this->assertTrue( $success );
 	}
 
 	public function testStructurallyInvalidJsonFailsValidation(): void {
 		$this->assertFalse(
-			ConfigJsonValidator::newInstance()->validate( '}{' )
+			$this->newValidator()->validate( '}{' )
 		);
 	}
 
 	public function testInvalidJsonErrorsAreAvailable(): void {
-		$validator = ConfigJsonValidator::newInstance();
+		$validator = $this->newValidator();
 
 		$validator->validate( '{ "linkTargetSitelinkSiteId": true }' );
 
@@ -44,7 +54,7 @@ class ConfigJsonValidatorTest extends TestCase {
 
 	public function testInvalidSiteIdFailsValidation(): void {
 		$this->assertFalse(
-			ConfigJsonValidator::newInstance()->validate( '
+			$this->newValidator()->validate( '
 {
 	"linkTargetSitelinkSiteId": 123
 }
@@ -54,7 +64,7 @@ class ConfigJsonValidatorTest extends TestCase {
 
 	public function testInvalidInstanceOfIdFailsValidation(): void {
 		$this->assertFalse(
-			ConfigJsonValidator::newInstance()->validate( '
+			$this->newValidator()->validate( '
 {
 	"instanceOfId": "Q42"
 }
@@ -64,7 +74,7 @@ class ConfigJsonValidatorTest extends TestCase {
 
 	public function testInvalidFacetsFailsValidation(): void {
 		$this->assertFalse(
-			ConfigJsonValidator::newInstance()->validate( '
+			$this->newValidator()->validate( '
 {
 	"facets": "invalid"
 }
@@ -72,23 +82,27 @@ class ConfigJsonValidatorTest extends TestCase {
 		);
 	}
 
-	public function testInvalidFacetItemIdFailsValidation(): void {
+	public function testInvalidTypeItemIdFailsValidation(): void {
+		// This test fails because P1 is not a valid item ID
 		$this->assertFalse(
-			ConfigJsonValidator::newInstance()->validate( '
+			$this->newValidator()->validate( '
 {
-	"facets": {
-		"P1": []
+	"instanceOfValues": {
+		"P1": {
+			"label": "Memes",
+			"facets": []
+		}
 	}
 }
 			' )
 		);
 	}
 
-	public function testInvalidFacetConfigStructureFailsValidation(): void {
+	public function testInvalidItemTypeConfigStructureFailsValidation(): void {
 		$this->assertFalse(
-			ConfigJsonValidator::newInstance()->validate( '
+			$this->newValidator()->validate( '
 {
-	"facets": {
+	"instanceOfValues": {
 		"Q1": "invalid"
 	}
 }
@@ -98,15 +112,18 @@ class ConfigJsonValidatorTest extends TestCase {
 
 	public function testInvalidFacetConfigPropertyIdFailsValidation(): void {
 		$this->assertFalse(
-			ConfigJsonValidator::newInstance()->validate( '
+			$this->newValidator()->validate( '
 {
-	"facets": {
-		"Q1": [
-			{
-				"property": "Q1",
-				"type": "list"
-			}
-		]
+	"instanceOfValues": {
+		"Q1": {
+			"label": "Memes",
+			"facets": [
+				{
+					"property": "invalid",
+					"type": "list"
+				}
+			]
+		}
 	}
 }
 			' )
@@ -115,15 +132,92 @@ class ConfigJsonValidatorTest extends TestCase {
 
 	public function testInvalidFacetConfigTypeFailsValidation(): void {
 		$this->assertFalse(
-			ConfigJsonValidator::newInstance()->validate( '
+			$this->newValidator()->validate( '
 {
-	"facets": {
-		"Q1": [
-			{
-				"property": "P1",
-				"type": 42
-			}
-		]
+	"instanceOfValues": {
+		"Q1": {
+			"label": "Memes",
+			"facets": [
+				{
+					"property": "P1",
+					"type": "invalid"
+				}
+			]
+		}
+	}
+}
+			' )
+		);
+	}
+
+	public function testExampleConfigIsValid(): void {
+		$this->assertTrue(
+			$this->newValidator()->validate(
+				file_get_contents( WikibaseFacetedSearchExtension::getInstance()->getExampleConfigPath() )
+			)
+		);
+	}
+
+	public function testInvalidFacetConfigKeyFailsValidation(): void {
+		$this->assertFalse(
+			$this->newValidator()->validate( '
+{
+	"instanceOfValues": {
+		"Q1": {
+			"label": "Memes",
+			"facets": [
+				{
+					"property": "P1",
+					"type": "list",
+					"invalid": "w/e"
+				}
+			]
+		}
+	}
+}
+			' )
+		);
+	}
+
+	public function testCanHaveOptionalFacetConfig(): void {
+		$this->assertTrue(
+			$this->newValidator()->validate( '
+{
+	"instanceOfValues": {
+		"Q1": {
+			"label": "Memes",
+			"facets": [
+				{
+					"property": "P1",
+					"type": "list",
+					"defaultCombineWith": "OR",
+					"allowCombineWithChoice": true,
+					"showNoneFilter": false,
+					"showAnyFilter": true
+				}
+			]
+		}
+	}
+}
+			' )
+		);
+	}
+
+	public function testInvalidCombineWithValueFailsValidation(): void {
+		$this->assertFalse(
+			$this->newValidator()->validate( '
+{
+	"instanceOfValues": {
+		"Q1": {
+			"label": "Memes",
+			"facets": [
+				{
+					"property": "P1",
+					"type": "list",
+					"defaultCombineWith": "invalid"
+				}
+			]
+		}
 	}
 }
 			' )

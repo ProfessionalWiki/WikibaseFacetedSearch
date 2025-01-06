@@ -24,6 +24,7 @@ use ProfessionalWiki\WikibaseFacetedSearch\Persistence\PageContentFetcher;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\Search\SearchIndexFieldsBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\SitelinkBasedStatementsLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\FacetUiBuilder;
+use RuntimeException;
 use SearchEngine;
 use TemplateParser;
 use Title;
@@ -87,7 +88,7 @@ class WikibaseFacetedSearchExtension {
 
 	public function newConfigDeserializer(): ConfigDeserializer {
 		return new ConfigDeserializer(
-			ConfigJsonValidator::newInstance()
+			validator: $this->newConfigJsonValidator()
 		);
 	}
 
@@ -142,6 +143,26 @@ class WikibaseFacetedSearchExtension {
 		return new InstanceTypeExtractor(
 			instanceType: $this->getConfig()->getInstanceOfId()
 		);
+	}
+
+	public function getExampleConfigPath(): string {
+		return __DIR__ . '/config-example.json';
+	}
+
+	public function newConfigJsonValidator(): ConfigJsonValidator {
+		$json = file_get_contents( __DIR__ . '/config-schema.json' );
+
+		if ( !is_string( $json ) ) {
+			throw new RuntimeException( 'Could not obtain JSON Schema' );
+		}
+
+		$schema = json_decode( $json );
+
+		if ( !is_object( $schema ) ) {
+			throw new RuntimeException( 'Failed to deserialize JSON Schema' );
+		}
+
+		return new ConfigJsonValidator( $schema );
 	}
 
 }

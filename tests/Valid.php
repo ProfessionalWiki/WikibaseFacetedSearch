@@ -20,27 +20,33 @@ class Valid {
 {
     "linkTargetSitelinkSiteId": "enwiki",
     "instanceOfId": "P42",
-    "facets": {
-		"Q100": [
-			{
-				"property": "P1",
-				"type": "boolean"
-			},
-			{
-				"property": "P1",
-				"type": "list"
-			},
-			{
-				"property": "P2",
-				"type": "range"
-			}
-		],
-		"Q200": [
-			{
-				"property": "P3",
-				"type": "list"
-			}
-		]
+    "instanceOfValues": {
+		"Q100": {
+			"label": "Memes",
+			"facets": [
+				{
+					"property": "P1",
+					"type": "list"
+				},
+				{
+					"property": "P1",
+					"type": "range"
+				},
+				{
+					"property": "P2",
+					"type": "range"
+				}
+			]
+		},
+		"Q200": {
+			"label": "Cat Pictures",
+			"facets": [
+				{
+					"property": "P3",
+					"type": "list"
+				}
+			]
+		}
 	}
 }
 ';
@@ -51,8 +57,8 @@ class Valid {
 			linkTargetSitelinkSiteId: 'enwiki',
 			instanceOfId: new NumericPropertyId( 'P42' ),
 			facets: new FacetConfigList(
-				new FacetConfig( new ItemId( self::ITEM_TYPE_WITH_FACETS ), new NumericPropertyId( 'P1' ), FacetType::BOOLEAN ),
 				new FacetConfig( new ItemId( self::ITEM_TYPE_WITH_FACETS ), new NumericPropertyId( 'P1' ), FacetType::LIST ),
+				new FacetConfig( new ItemId( self::ITEM_TYPE_WITH_FACETS ), new NumericPropertyId( 'P1' ), FacetType::RANGE ),
 				new FacetConfig( new ItemId( self::ITEM_TYPE_WITH_FACETS ), new NumericPropertyId( 'P2' ), FacetType::RANGE ),
 				new FacetConfig( new ItemId( 'Q200' ), new NumericPropertyId( 'P3' ), FacetType::LIST )
 			)
