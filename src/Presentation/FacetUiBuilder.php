@@ -86,19 +86,17 @@ class FacetUiBuilder {
 		return wfCgiToArray( $parts['query'] ?? '' );
 	}
 
-	private function getFacetItemState( string $facetName, string $itemValue ): bool {
-		if ( !array_key_exists( "wbfs-$facetName", $this->query ) ) {
+	private function getFacetItemState( string $queryKey, string $itemValue ): bool {
+		if ( !array_key_exists( $queryKey, $this->query ) ) {
 			return false;
 		}
 
-		return in_array( $itemValue, explode( ',', $this->query[ "wbfs-$facetName" ] ) );
+		return in_array( $itemValue, explode( ',', $this->query[$queryKey] ) );
 	}
 
 	// TODO: Find a better identifier for facetName
 	// TODO: Encode facetName and itemValue
-	private function getFacetItemUrl( string $facetName, string $itemValue, bool $selected ): string {
-		// TODO: Sync query parameter name with search query
-		$queryKey = "wbfs-$facetName";
+	private function getFacetItemUrl( string $queryKey, string $itemValue, bool $selected ): string {
 		$query = $this->query;
 
 		if ( !array_key_exists( $queryKey, $query ) ) {
@@ -183,8 +181,10 @@ class FacetUiBuilder {
 			$item['id'] = Sanitizer::escapeIdForAttribute( htmlspecialchars( "$facetName-$i" ) );
 
 			if ( $type === FacetType::LIST->value ) {
-				$item['selected'] = $this->getFacetItemState( $facetName, $item['label'] );
-				$item['url'] = $this->getFacetItemUrl( $facetName, $item['label'], $item['selected'] );
+				// TODO: Sync query parameter name with search query
+				$queryKey = "wbfs-$facetName";
+				$item['selected'] = $this->getFacetItemState( $queryKey, $item['label'] );
+				$item['url'] = $this->getFacetItemUrl( $queryKey, $item['label'], $item['selected'] );
 			}
 
 			try {
