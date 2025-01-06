@@ -180,7 +180,7 @@ class FacetUiBuilder {
 		foreach ( $items as $i => $item ) {
 			$item['id'] = Sanitizer::escapeIdForAttribute( htmlspecialchars( "$facetName-$i" ) );
 
-			if ( $type === FacetType::LIST->value ) {
+			if ( $type === FacetType::LIST->value && is_string( $item['label'] ) ) {
 				// TODO: Sync query parameter name with search query
 				$queryKey = "wbfs-$facetName";
 				$valueKey = $item['label'];
