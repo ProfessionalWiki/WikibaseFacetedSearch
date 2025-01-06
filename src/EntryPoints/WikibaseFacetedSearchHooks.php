@@ -194,12 +194,7 @@ class WikibaseFacetedSearchHooks {
 
 	public static function onEditFormPreloadText( string &$text, Title &$title ): void {
 		if ( WikibaseFacetedSearchExtension::getInstance()->isConfigTitle( $title ) ) {
-			$text = trim( '
-{
-	"linkTargetSitelinkSiteId": null,
-	"instanceOfId": null,
-	"facets": {}
-}' );
+			$text = trim( WikibaseFacetedSearchExtension::DEFAULT_CONFIG );
 		}
 	}
 

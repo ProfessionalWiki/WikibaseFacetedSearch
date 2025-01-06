@@ -33,6 +33,12 @@ class WikibaseFacetedSearchExtension {
 
 	public const CONFIG_PAGE_TITLE = 'WikibaseFacetedSearch';
 
+	public const DEFAULT_CONFIG = '{
+	"linkTargetSitelinkSiteId": null,
+	"instanceOfId": null,
+	"facets": {}
+}';
+
 	private ?Config $config;
 
 	public static function getInstance(): self {
