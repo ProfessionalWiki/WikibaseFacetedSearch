@@ -76,6 +76,7 @@
 			],
 			"codexStyleOnly": true,
 			"codexComponents": [
+				"CdxAccordion",
 				"CdxCheckbox",
 				"CdxField",
 				"CdxRadio",

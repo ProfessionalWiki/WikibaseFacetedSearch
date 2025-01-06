@@ -5,15 +5,6 @@
 	&__facets {
 		position: sticky;
 		top: @spacing-100;
-		border: @border-width-base @border-style-base @border-color-base;
-		padding: @spacing-100;
-	}
-
-	&__facet {
-		+ .wikibase-faceted-search__facet {
-			border-top: @border-width-base @border-style-base @border-color-subtle;
-			padding-top: @spacing-100;
-		}
 	}
 
 	// List facet
@@ -23,6 +14,15 @@
 	}
 
 	&__facet-item {
+    .cdx-label {
+			flex-grow: 1;
+		}
+
+		.cdx-label__label__text {
+			display: flex;
+			align-items: center;
+		}
+
 		&-link {
 			color: inherit !important;
 			text-decoration: none !important;
@@ -31,7 +31,6 @@
 			> * {
 				pointer-events: none;
 			}
-		}
 
 		&-range {
 			display: flex;
@@ -48,18 +47,14 @@
 	}
 
 	&__facet-label {
+		&-text {
+			flex-grow: 1;
+		}
+
 		&-count {
-			margin-inline-start: @spacing-25;
 			color: @color-subtle;
 			font-size: @font-size-x-small;
-
-			&::before {
-				content: '(';
-			}
-
-			&::after {
-				content: ')';
-			}
+			flex-shrink: 0;
 		}
 	}
 }
