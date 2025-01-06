@@ -100,16 +100,16 @@ class FacetUiBuilder {
 		if ( !array_key_exists( $queryKey, $query ) ) {
 			$query[$queryKey] = $valueKey;
 		} else {
-			if ( $selected === false ) {
-				$query[$queryKey] = "$query[$queryKey],$valueKey";
+			$queryValues = explode( ',', $query[$queryKey] );
+			$queryValues = array_filter( $queryValues, fn( $value ) => $value !== $valueKey );
+			if ( empty( $queryValues ) ) {
+				unset( $query[$queryKey] );
 			} else {
-				$queryValues = explode( ',', $query[$queryKey] );
-				$queryValues = array_filter( $queryValues, fn( $value ) => $value !== $valueKey );
-				if ( empty( $queryValues ) ) {
-					unset( $query[$queryKey] );
-				} else {
-					$query[$queryKey] = implode( ',', $queryValues );
+				if ( $selected === false ) {
+					$queryValues[] = $valueKey;
 				}
+				asort( $queryValues );
+				$query[$queryKey] = implode( ',', $queryValues );
 			}
 		}
 
