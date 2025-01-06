@@ -6,7 +6,10 @@ namespace ProfessionalWiki\WikibaseFacetedSearch\Presentation;
 
 use InvalidArgumentException;
 use MediaWiki\Html\TemplateParser;
+use MediaWiki\MediaWikiServices;
 use MediaWiki\Parser\Sanitizer;
+use MediaWiki\Specials\SpecialSearch;
+use MediaWiki\Utils\UrlUtils;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetType;
 use RuntimeException;
@@ -17,9 +20,14 @@ class FacetUiBuilder {
 	/** @var array<string, string> */
 	private array $facetTemplates = [];
 
+	/** @var array<string, string> */
+	private array $query = [];
+
 	public function __construct(
 		private readonly TemplateParser $parser,
-		private readonly Config $config // TODO: use
+		private readonly Config $config, // TODO: use
+		private readonly SpecialSearch $specialSearch,
+		private readonly UrlUtils $urlUtils
 	) {
 		// TODO: Perhaps we should do a map for template name and FacetType
 		// TODO: Should this go into FacetType?
@@ -34,6 +42,7 @@ class FacetUiBuilder {
 	// TODO: parameter: selected values (from QueryStringParser https://github.com/ProfessionalWiki/WikibaseFacetedSearch/issues/31)
 	public function createHtml( ItemId $itemType ): string {
 		$this->config->getFacetConfigForInstanceType( $itemType );
+		$this->query = $this->getSearchQueryFromUrl();
 
 		return $this->parser->processTemplate(
 			'Facets',
@@ -77,25 +86,61 @@ class FacetUiBuilder {
 		];
 	}
 
+	private function getSearchQueryFromUrl(): array {
+		$parts = $this->urlUtils->parse( $this->specialSearch->getRequest()->getFullRequestURL() );
+		return wfCgiToArray( $parts['query'] );
+	}
+
+	private function getFacetItemState( string $facetName, string $itemValue ): bool {
+		if ( !array_key_exists( "wbfs-$facetName", $this->query ) ) {
+			return false;
+		}
+
+		return in_array( $itemValue, explode( ',', $this->query[ "wbfs-$facetName" ] ) );
+	}
+
+	// TODO: Find a better identifier for facetName
+	// TODO: Encode facetName and itemValue
+	private function getFacetItemUrl( string $facetName, string $itemValue, bool $selected ): string {
+		// TODO: Sync query parameter name with search query
+		$queryKey = "wbfs-$facetName";
+		$query = $this->query;
+
+		if ( !array_key_exists( $queryKey, $query ) ) {
+			$query[$queryKey] = $itemValue;
+		} else {
+			if ( $selected === false ) {
+				$query[$queryKey] = "$query[$queryKey],$itemValue";
+			} else {
+				$queryValues = explode( ',', $query[$queryKey] );
+				$queryValues = array_filter( $queryValues, fn( $value ) => $value !== $itemValue );
+				if ( empty( $queryValues ) ) {
+					unset( $query[$queryKey] );
+				} else {
+					$query[$queryKey] = implode( ',', $queryValues );
+				}
+			}
+		}
+
+		$parts['query'] = wfArrayToCgi( $query );
+		return UrlUtils::assemble( $parts );
+	}
+
 	/**
 	 * @return array<array<string, mixed>>
 	 */
 	private function getExampleBooleanItems(): array {
 		return [
 			[
-				'type' => 'Radio',
 				'name' => 'Has Author',
 				'label' => 'Yes',
 				'count' => 42,
-				'url' => 'https://example.com/facet/Yes',
 				'selected' => true
 			],
 			[
-				'type' => 'Radio',
 				'name' => 'Has Author',
 				'label' => 'No',
 				'count' => 23,
-				'url' => 'https://example.com/facet/No',
 				'selected' => false
 			]
 		];
@@ -108,27 +153,19 @@ class FacetUiBuilder {
 		return [
 			[
 				'label' => 'Alice', // TODO: lookup of label and URL for item-id (or property-id) typed values
-				'count' => 42,
-				'url' => 'https://example.com/facet/Alice',
-				'selected' => false
+				'count' => 42
 			],
 			[
 				'label' => 'Bob',
-				'count' => 23,
-				'url' => 'https://example.com/facet/Bob',
-				'selected' => true
+				'count' => 23
 			],
 			[
 				'label' => 'Charlie',
-				'count' => 17,
-				'url' => 'https://example.com/facet/Charlie',
-				'selected' => false
+				'count' => 17
 			],
 			[
 				'label' => 'David',
-				'count' => 9,
-				'url' => 'https://example.com/facet/David',
-				'selected' => true
+				'count' => 9
 			]
 		];
 	}
@@ -169,6 +206,12 @@ class FacetUiBuilder {
 
 		foreach ( $items as $i => $item ) {
 			$item['id'] = Sanitizer::escapeIdForAttribute( htmlspecialchars( "$facetName-$i" ) );
+
+			if ( $type === FacetType::LIST->value ) {
+				$item['selected'] = $this->getFacetItemState( $facetName, $item['label'] );
+				$item['url'] = $this->getFacetItemUrl( $facetName, $item['label'], $item['selected'] );
+			}
+
 			try {
 				$html .= $this->parser->processTemplate( $template, $item );
 			} catch ( RuntimeException ) {

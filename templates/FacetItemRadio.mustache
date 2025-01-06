@@ -2,9 +2,9 @@
 	Codex - Radio component
 	@see https://doc.wikimedia.org/codex/main/components/demos/radio.html#markup-structure
 }}
-<div class="cdx-radio">
+<div class="wikibase-faceted-search__facet-item wikibase-faceted-search__facet-item-radio cdx-radio">
 	{{! Facet item should be a link to a new search result page }}
-	<a class="wikibase-faceted-search__facet-item wikibase-faceted-search__facet-item-radio" href="{{url}}">
+	{{#url}}<a class="wikibase-faceted-search__facet-item-link" href="{{.}}">{{/url}}
 		<div class="cdx-radio__wrapper">
 			<input
 				id="{{id}}"
@@ -23,5 +23,5 @@
 				</label>
 			</div>
 		</div>
-	</a>
+	{{#url}}</a>{{/url}}
 </div>
