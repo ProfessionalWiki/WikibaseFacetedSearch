@@ -7,13 +7,19 @@ parameters:
 			path: src/Application/StatementListTranslator.php
 
 		-
+			message: '#^Method ProfessionalWiki\\WikibaseFacetedSearch\\Persistence\\ConfigDeserializer\:\:newFacetConfigList\(\) has parameter \$configPerItemType with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Persistence/ConfigDeserializer.php
+
+		-
 			message: '#^Parameter \#1 \$configArray of method ProfessionalWiki\\WikibaseFacetedSearch\\Persistence\\ConfigDeserializer\:\:newConfig\(\) expects array\<string, mixed\>, array\<mixed, mixed\> given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/Persistence/ConfigDeserializer.php
 
 		-
-			message: '#^Parameter \#1 \$facets of method ProfessionalWiki\\WikibaseFacetedSearch\\Persistence\\ConfigDeserializer\:\:newFacetConfigList\(\) expects array\<string, array\<array\<string, string\>\>\>, mixed given\.$#'
+			message: '#^Parameter \#1 \$configPerItemType of method ProfessionalWiki\\WikibaseFacetedSearch\\Persistence\\ConfigDeserializer\:\:newFacetConfigList\(\) expects array\<string, array\>, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/Persistence/ConfigDeserializer.php

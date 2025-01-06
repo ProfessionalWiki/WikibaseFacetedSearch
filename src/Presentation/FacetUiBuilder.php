@@ -24,7 +24,6 @@ class FacetUiBuilder {
 		// TODO: Perhaps we should do a map for template name and FacetType
 		// TODO: Should this go into FacetType?
 		$this->facetTemplates = [
-			FacetType::BOOLEAN->value => 'Radio',
 			FacetType::LIST->value => 'Checkbox',
 			FacetType::RANGE->value => 'Range'
 		];
@@ -46,14 +45,6 @@ class FacetUiBuilder {
 	 */
 	private function facetsToViewModel( /* TODO: parameters */ ): array {
 		return [
-			[
-				'label' => 'Has Author',
-				'type' => FacetType::BOOLEAN->value,
-				'values-html' => $this->getItemsHtml(
-					$this->getExampleBooleanItems(), FacetType::BOOLEAN->value, 'Has Author'
-				),
-				'expanded' => true
-			],
 			[
 				'label' => 'Author',
 				'type' => FacetType::LIST->value,
@@ -77,30 +68,6 @@ class FacetUiBuilder {
 					[ $this->getExampleRangeItems()[1] ], FacetType::RANGE->value, 'Pages'
 				),
 				'expanded' => false
-			]
-		];
-	}
-
-	/**
-	 * @return array<array<string, mixed>>
-	 */
-	private function getExampleBooleanItems(): array {
-		return [
-			[
-				'type' => 'Radio',
-				'name' => 'Has Author',
-				'label' => 'Yes',
-				'count' => 42,
-				'url' => 'https://example.com/facet/Yes',
-				'selected' => true
-			],
-			[
-				'type' => 'Radio',
-				'name' => 'Has Author',
-				'label' => 'No',
-				'count' => 23,
-				'url' => 'https://example.com/facet/No',
-				'selected' => false
 			]
 		];
 	}
