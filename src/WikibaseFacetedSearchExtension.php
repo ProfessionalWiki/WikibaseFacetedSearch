@@ -96,7 +96,7 @@ class WikibaseFacetedSearchExtension {
 		return new FacetUiBuilder(
 			parser: new TemplateParser( __DIR__ . '/../templates' ),
 			config: $this->getConfig(),
-			specialSearch: $specialSearch,
+			url: $specialSearch->getRequest()->getFullRequestURL(),
 			urlUtils: MediaWikiServices::getInstance()->getUrlUtils()
 		);
 	}

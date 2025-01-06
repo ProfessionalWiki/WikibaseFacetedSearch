@@ -7,7 +7,6 @@ namespace ProfessionalWiki\WikibaseFacetedSearch\Presentation;
 use InvalidArgumentException;
 use MediaWiki\Html\TemplateParser;
 use MediaWiki\Parser\Sanitizer;
-use MediaWiki\Specials\SpecialSearch;
 use MediaWiki\Utils\UrlUtils;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetType;
@@ -25,7 +24,7 @@ class FacetUiBuilder {
 	public function __construct(
 		private readonly TemplateParser $parser,
 		private readonly Config $config, // TODO: use
-		private readonly SpecialSearch $specialSearch,
+		private readonly string $url,
 		private readonly UrlUtils $urlUtils
 	) {
 		// TODO: Perhaps we should do a map for template name and FacetType
@@ -81,7 +80,7 @@ class FacetUiBuilder {
 	 * @return array<string, string>
 	 */
 	private function getSearchQueryFromUrl(): array {
-		$parts = $this->urlUtils->parse( $this->specialSearch->getRequest()->getFullRequestURL() );
+		$parts = $this->urlUtils->parse( $this->url );
 		return wfCgiToArray( $parts['query'] ?? '' );
 	}
 
