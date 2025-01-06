@@ -122,7 +122,7 @@ class FacetUiBuilder {
 	}
 
 	/**
-	 * @return array<array<string, mixed>>
+	 * @return array<array{label: string, count: int}>
 	 */
 	private function getExampleListItems(): array {
 		return [
@@ -183,8 +183,8 @@ class FacetUiBuilder {
 			$item['id'] = Sanitizer::escapeIdForAttribute( htmlspecialchars( "$facetName-$i" ) );
 
 			if ( $type === FacetType::LIST->value ) {
-				$item['selected'] = $this->getFacetItemState( $facetName, (string)$item['label'] );
-				$item['url'] = $this->getFacetItemUrl( $facetName, (string)$item['label'], $item['selected'] );
+				$item['selected'] = $this->getFacetItemState( $facetName, $item['label'] );
+				$item['url'] = $this->getFacetItemUrl( $facetName, $item['label'], $item['selected'] );
 			}
 
 			try {
