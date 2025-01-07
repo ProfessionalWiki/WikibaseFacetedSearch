@@ -205,7 +205,7 @@ class FacetUiBuilder {
 
 		$urlParts = $this->urlParts;
 		$urlParts['query'] = wfArrayToCgi( $query );
-		return UrlUtils::assemble( $urlParts );
+		return $this->urlUtils->assemble( $urlParts );
 	}
 
 }
