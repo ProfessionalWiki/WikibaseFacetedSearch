@@ -55,8 +55,9 @@
 .mw-body-content:has( .wikibase-faceted-search ) {
 	@media ( min-width: @min-width-breakpoint-desktop ) {
 		display: grid;
+		// stylelint-disable-next-line @stylistic/declaration-colon-space-after
 		grid-template-areas:
- 'searchform searchform'
+			'searchform searchform'
 			'results sidebar';
 		grid-template-columns: minmax( 0, auto ) 240px;
 		column-gap: @spacing-150;
