@@ -14,7 +14,7 @@
 	}
 
 	&__facet-item {
-    	.cdx-label {
+		.cdx-label {
 			flex-grow: 1;
 		}
 
@@ -24,8 +24,11 @@
 		}
 
 		&-link {
+			// There are many unpredicable styles from different skins in MW
+			// stylelint-disable declaration-no-important
 			color: inherit !important;
 			text-decoration: none !important;
+			// stylelint-enable declaration-no-important
 			cursor: pointer;
 
 			> * {
