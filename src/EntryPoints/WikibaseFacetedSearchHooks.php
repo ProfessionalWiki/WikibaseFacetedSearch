@@ -153,7 +153,7 @@ class WikibaseFacetedSearchHooks {
 		$url = $specialSearch->getRequest()->getFullRequestURL();
 
 		$output->addHTML(
-			WikibaseFacetedSearchExtension::getInstance()->newFacetUiBuilder( $url )->createHtml( $itemType )
+			WikibaseFacetedSearchExtension::getInstance()->newFacetUiBuilder()->createHtml( $itemType, $url )
 		);
 	}
 

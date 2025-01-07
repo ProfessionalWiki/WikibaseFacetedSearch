@@ -30,7 +30,6 @@ class FacetUiBuilder {
 		private readonly TemplateParser $parser,
 		private readonly QueryStringParser $queryStringParser,
 		private readonly Config $config, // TODO: use
-		private readonly string $url,
 		private readonly UrlUtils $urlUtils
 	) {
 		// TODO: Perhaps we should do a map for template name and FacetType
@@ -43,9 +42,9 @@ class FacetUiBuilder {
 
 	// TODO: parameter or constructor argument: values and counts (from https://github.com/ProfessionalWiki/WikibaseFacetedSearch/issues/23)
 	// TODO: parameter: selected values (from QueryStringParser https://github.com/ProfessionalWiki/WikibaseFacetedSearch/issues/31)
-	public function createHtml( ItemId $itemType ): string {
+	public function createHtml( ItemId $itemType, string $url ): string {
 		$this->config->getFacetConfigForInstanceType( $itemType );
-		$this->urlParts = $this->urlUtils->parse( $this->url ) ?? [];
+		$this->urlParts = $this->urlUtils->parse( $url ) ?? [];
 
 		$query = $this->queryStringParser->parse( $this->getSearchQueryFromUrl()['search'] );
 		$this->constraints = $query->getConstraintsPerProperty();

@@ -92,12 +92,11 @@ class WikibaseFacetedSearchExtension {
 		);
 	}
 
-	public function newFacetUiBuilder( string $url ): FacetUiBuilder {
+	public function newFacetUiBuilder(): FacetUiBuilder {
 		return new FacetUiBuilder(
 			parser: new TemplateParser( __DIR__ . '/../templates' ),
 			queryStringParser: new QueryStringParser(),
 			config: $this->getConfig(),
-			url: $url,
 			urlUtils: MediaWikiServices::getInstance()->getUrlUtils()
 		);
 	}
