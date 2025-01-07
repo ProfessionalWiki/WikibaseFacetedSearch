@@ -112,12 +112,12 @@ class FacetUiBuilder {
 		// TODO: Support negated value
 		$facetType = 'haswbfacet';
 		// TODO: Support OR facet
-		$facetQuery = "$facetType:$propertyId=$itemId ";
+		$facetQuery = " $facetType:$propertyId=$itemId";
 
 		if ( $selected === true ) {
 			$query['search'] = str_replace( $facetQuery, '', $query['search'] );
 		} else {
-			$query['search'] = $facetQuery . $query['search'];
+			$query['search'] .= $facetQuery;
 		}
 
 		$urlParts = $this->urlParts;
