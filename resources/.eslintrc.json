@@ -1,0 +1,21 @@
+{
+	"root": true,
+	"plugins": [
+		"no-jquery"
+	],
+	"extends": [
+		"plugin:no-jquery/all",
+		"wikimedia/client",
+		"wikimedia/mediawiki"
+	],
+	"env": {
+		"browser": true
+	},
+	"globals": {
+		"exports": true
+	},
+	"parserOptions": {
+		"sourceType": "module"
+	},
+	"settings": {}
+}
