@@ -8,6 +8,7 @@ use MediaWiki\Html\TemplateParser;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Utils\UrlUtils;
 use PHPUnit\Framework\TestCase;
+use ProfessionalWiki\WikibaseFacetedSearch\Application\QueryStringParser;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\FacetUiBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Tests\Valid;
 use Wikibase\DataModel\Entity\ItemId;
@@ -29,6 +30,7 @@ class FacetUiBuilderTest extends TestCase {
 	private function newFacetUBuilder( string $url ): FacetUiBuilder {
 		return new FacetUiBuilder(
 			parser: $this->newTemplateParser(),
+			queryStringParser: $this->newQueryStringParser(),
 			config: Valid::config(),
 			url: $url,
 			urlUtils: $this->geturlUtils()
@@ -37,6 +39,10 @@ class FacetUiBuilderTest extends TestCase {
 
 	private function newTemplateParser(): TemplateParser {
 		return new TemplateParser( __DIR__ . '/../../templates' );
+	}
+
+	private function newQueryStringParser(): QueryStringParser {
+		return new QueryStringParser();
 	}
 
 	private function geturlUtils(): UrlUtils {

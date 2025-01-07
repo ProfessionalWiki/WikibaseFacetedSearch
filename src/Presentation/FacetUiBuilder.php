@@ -11,7 +11,6 @@ use MediaWiki\Utils\UrlUtils;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetType;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\PropertyConstraints;
-use ProfessionalWiki\WikibaseFacetedSearch\Application\Query;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\QueryStringParser;
 use RuntimeException;
 use Wikibase\DataModel\Entity\ItemId;
@@ -24,13 +23,12 @@ class FacetUiBuilder {
 	/** @var array<string, string> */
 	private array $urlParts = [];
 
-	private Query $query;
-
 	/** @var array<string, PropertyConstraints> */
 	private array $constraints = [];
 
 	public function __construct(
 		private readonly TemplateParser $parser,
+		private readonly QueryStringParser $queryStringParser,
 		private readonly Config $config, // TODO: use
 		private readonly string $url,
 		private readonly UrlUtils $urlUtils
@@ -48,8 +46,9 @@ class FacetUiBuilder {
 	public function createHtml( ItemId $itemType ): string {
 		$this->config->getFacetConfigForInstanceType( $itemType );
 		$this->urlParts = $this->urlUtils->parse( $this->url ) ?? [];
-		$this->query = ( new QueryStringParser() )->parse( $this->getSearchQueryFromUrl()['search'] );
-		$this->constraints = $this->query->getConstraintsPerProperty();
+
+		$query = $this->queryStringParser->parse( $this->getSearchQueryFromUrl()['search'] );
+		$this->constraints = $query->getConstraintsPerProperty();
 
 		return $this->parser->processTemplate(
 			'Facets',

@@ -5,12 +5,12 @@ declare( strict_types = 1 );
 namespace ProfessionalWiki\WikibaseFacetedSearch;
 
 use MediaWiki\MediaWikiServices;
-use MediaWiki\Specials\SpecialSearch;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\ConfigLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\DataValueTranslator;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\InstanceTypeExtractor;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\ItemPageLookup;
+use ProfessionalWiki\WikibaseFacetedSearch\Application\QueryStringParser;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\StatementListTranslator;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\StatementsLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\StatementTranslator;
@@ -95,6 +95,7 @@ class WikibaseFacetedSearchExtension {
 	public function newFacetUiBuilder( string $url ): FacetUiBuilder {
 		return new FacetUiBuilder(
 			parser: new TemplateParser( __DIR__ . '/../templates' ),
+			queryStringParser: new QueryStringParser(),
 			config: $this->getConfig(),
 			url: $url,
 			urlUtils: MediaWikiServices::getInstance()->getUrlUtils()
