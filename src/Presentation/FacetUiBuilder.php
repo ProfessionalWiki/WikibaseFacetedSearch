@@ -58,6 +58,13 @@ class FacetUiBuilder {
 	}
 
 	/**
+	 * @return array<string, string>
+	 */
+	private function getSearchQueryFromUrl(): array {
+		return wfCgiToArray( $this->urlParts['query'] ?? '' );
+	}
+
+	/**
 	 * @return array<array<string, mixed>>
 	 */
 	private function facetsToViewModel( /* TODO: parameters */ ): array {
@@ -91,38 +98,6 @@ class FacetUiBuilder {
 				'expanded' => false
 			]
 		];
-	}
-
-	/**
-	 * @return array<string, string>
-	 */
-	private function getSearchQueryFromUrl(): array {
-		return wfCgiToArray( $this->urlParts['query'] ?? '' );
-	}
-
-	private function getFacetItemState( string $propertyId, string $itemId ): bool {
-		// TODO: Persist expanded state
-		// TODO: Handles other constraint values
-		return in_array( $itemId, $this->constraints[$propertyId]->getAndSelectedValues() );
-	}
-
-	private function getFacetItemUrl( string $propertyId, string $itemId, bool $selected ): string {
-		$query = $this->getSearchQueryFromUrl();
-
-		// TODO: Support negated value
-		$facetType = 'haswbfacet';
-		// TODO: Support OR facet
-		$facetQuery = " $facetType:$propertyId=$itemId";
-
-		if ( $selected === true ) {
-			$query['search'] = str_replace( $facetQuery, '', $query['search'] );
-		} else {
-			$query['search'] .= $facetQuery;
-		}
-
-		$urlParts = $this->urlParts;
-		$urlParts['query'] = wfArrayToCgi( $query );
-		return UrlUtils::assemble( $urlParts );
 	}
 
 	/**
@@ -207,6 +182,31 @@ class FacetUiBuilder {
 		}
 
 		return $html;
+	}
+
+	private function getFacetItemState( string $propertyId, string $itemId ): bool {
+		// TODO: Persist expanded state
+		// TODO: Handles other constraint values
+		return in_array( $itemId, $this->constraints[$propertyId]->getAndSelectedValues() );
+	}
+
+	private function getFacetItemUrl( string $propertyId, string $itemId, bool $selected ): string {
+		$query = $this->getSearchQueryFromUrl();
+
+		// TODO: Support negated value
+		$facetType = 'haswbfacet';
+		// TODO: Support OR facet
+		$facetQuery = " $facetType:$propertyId=$itemId";
+
+		if ( $selected === true ) {
+			$query['search'] = str_replace( $facetQuery, '', $query['search'] );
+		} else {
+			$query['search'] .= $facetQuery;
+		}
+
+		$urlParts = $this->urlParts;
+		$urlParts['query'] = wfArrayToCgi( $query );
+		return UrlUtils::assemble( $urlParts );
 	}
 
 }
