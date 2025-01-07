@@ -21,6 +21,9 @@ class FacetUiBuilder {
 	/** @var array<string, string> */
 	private array $facetTemplates = [];
 
+	/** @var array<string, string> */
+	private array $urlParts = [];
+
 	private Query $query;
 
 	/** @var array<string, PropertyConstraints> */
@@ -44,7 +47,7 @@ class FacetUiBuilder {
 	// TODO: parameter: selected values (from QueryStringParser https://github.com/ProfessionalWiki/WikibaseFacetedSearch/issues/31)
 	public function createHtml( ItemId $itemType ): string {
 		$this->config->getFacetConfigForInstanceType( $itemType );
-
+		$this->urlParts = $this->urlUtils->parse( $this->url );
 		$this->query = ( new QueryStringParser() )->parse( $this->getSearchQueryFromUrl()['search'] );
 		$this->constraints = $this->query->getConstraintsPerProperty();
 
@@ -94,8 +97,7 @@ class FacetUiBuilder {
 	 * @return array<string, string>
 	 */
 	private function getSearchQueryFromUrl(): array {
-		$parts = $this->urlUtils->parse( $this->url );
-		return wfCgiToArray( $parts['query'] ?? '' );
+		return wfCgiToArray( $this->urlParts['query'] ?? '' );
 	}
 
 	private function getFacetItemState( string $propertyId, string $itemId ): bool {
@@ -105,8 +107,7 @@ class FacetUiBuilder {
 	}
 
 	private function getFacetItemUrl( string $propertyId, string $itemId, bool $selected ): string {
-		$parts = $this->urlUtils->parse( $this->url );
-		$query = wfCgiToArray( $parts['query'] );
+		$query = $this->getSearchQueryFromUrl();
 
 		// TODO: Support negated value
 		$facetType = 'haswbfacet';
@@ -119,8 +120,9 @@ class FacetUiBuilder {
 			$query['search'] = $facetQuery . $query['search'];
 		}
 
-		$parts['query'] = wfArrayToCgi( $query );
-		return UrlUtils::assemble( $parts );
+		$urlParts = $this->urlParts;
+		$urlParts['query'] = wfArrayToCgi( $query );
+		return UrlUtils::assemble( $urlParts );
 	}
 
 	// TODO: Derive label from itemId
@@ -191,7 +193,8 @@ class FacetUiBuilder {
 		foreach ( $items as $i => $item ) {
 			$item['id'] = Sanitizer::escapeIdForAttribute( htmlspecialchars( "$propertyId-$i" ) );
 
-			if ( $type === FacetType::LIST->value && is_string( $item['label'] ) ) {
+			// $item['itemId'] is always a string but PHPStan does not know that
+			if ( $type === FacetType::LIST->value && is_string( $item['itemId'] ) ) {
 				$item['selected'] = $hasConstraints ? $this->getFacetItemState( $propertyId, $item['itemId'] ) : false;
 				$item['url'] = $this->getFacetItemUrl( $propertyId, $item['itemId'], $item['selected'] );
 			}
