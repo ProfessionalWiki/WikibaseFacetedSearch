@@ -47,7 +47,7 @@ class FacetUiBuilder {
 	// TODO: parameter: selected values (from QueryStringParser https://github.com/ProfessionalWiki/WikibaseFacetedSearch/issues/31)
 	public function createHtml( ItemId $itemType ): string {
 		$this->config->getFacetConfigForInstanceType( $itemType );
-		$this->urlParts = $this->urlUtils->parse( $this->url );
+		$this->urlParts = $this->urlUtils->parse( $this->url ) ?? [];
 		$this->query = ( new QueryStringParser() )->parse( $this->getSearchQueryFromUrl()['search'] );
 		$this->constraints = $this->query->getConstraintsPerProperty();
 
@@ -57,11 +57,11 @@ class FacetUiBuilder {
 		);
 	}
 
-	// TODO: Derive label from propertyId
 	/**
 	 * @return array<array<string, mixed>>
 	 */
 	private function facetsToViewModel( /* TODO: parameters */ ): array {
+		// TODO: Derive label from propertyId
 		return [
 			[
 				'label' => 'Author',
@@ -125,11 +125,11 @@ class FacetUiBuilder {
 		return UrlUtils::assemble( $urlParts );
 	}
 
-	// TODO: Derive label from itemId
 	/**
 	 * @return array<array{label: string, count: int}>
 	 */
 	private function getExampleListItems(): array {
+		// TODO: Derive label from itemId
 		return [
 			[
 				'label' => 'Alice', // TODO: lookup of label and URL for item-id (or property-id) typed values,
