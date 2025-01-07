@@ -4,10 +4,10 @@
 	"additionalProperties": false,
 	"properties": {
 		"linkTargetSitelinkSiteId": {
-			"type": ["string", "null"]
+			"type": [ "string", "null" ]
 		},
 		"instanceOfId": {
-			"type": ["string", "null"],
+			"type": [ "string", "null" ],
 			"pattern": "^P[1-9]\\d{0,9}$"
 		},
 		"instanceOfValues": {
@@ -18,7 +18,7 @@
 			"additionalProperties": {
 				"type": "object",
 				"additionalProperties": false,
-				"required": ["label", "facets"],
+				"required": [ "label", "facets" ],
 				"properties": {
 					"label": {
 						"type": "string"
@@ -28,7 +28,7 @@
 						"items": {
 							"type": "object",
 							"additionalProperties": false,
-							"required": ["property", "type"],
+							"required": [ "property", "type" ],
 							"properties": {
 								"property": {
 									"type": "string",
@@ -36,11 +36,11 @@
 								},
 								"type": {
 									"type": "string",
-									"enum": ["list", "range"]
+									"enum": [ "list", "range" ]
 								},
 								"defaultCombineWith": {
 									"type": "string",
-									"enum": ["OR", "AND"]
+									"enum": [ "OR", "AND" ]
 								},
 								"allowCombineWithChoice": {
 									"type": "boolean"
