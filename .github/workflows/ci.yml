@@ -230,10 +230,10 @@ jobs:
         run: npm install
 
       - name: Lint i18n
-        run: npm lint:i18n
+        run: npm run lint:i18n
 
       - name: Lint styles
-        run: npm lint:styles
+        run: npm run lint:styles
 
       - name: Lint JS
-        run: npm lint:js
+        run: npm run lint:js
