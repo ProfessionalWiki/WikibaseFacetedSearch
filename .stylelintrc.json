@@ -3,5 +3,8 @@
 		"stylelint-config-wikimedia/support-modern",
 		"stylelint-config-wikimedia/mediawiki"
 	],
-	"rules": {}
+	"rules": {
+		"selector-class-pattern": null,
+		"selector-max-id": null
+	}
 }
