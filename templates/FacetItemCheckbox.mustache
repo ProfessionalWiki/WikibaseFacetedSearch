@@ -2,7 +2,10 @@
 	Codex - Checkbox component
 	@see https://doc.wikimedia.org/codex/v1.14.0/components/demos/checkbox.html#markup-structure
 }}
-<div class="wikibase-faceted-search__facet-item wikibase-faceted-search__facet-item-checkbox cdx-checkbox">
+<div
+	class="wikibase-faceted-search__facet-item wikibase-faceted-search__facet-item-checkbox cdx-checkbox"
+	data-item-id="{{itemId}}" 
+>
 	{{! Facet item should be a link to a new search result page }}
 	{{#url}}<a class="wikibase-faceted-search__facet-item-link" href="{{.}}">{{/url}}
 		<div class="cdx-checkbox__wrapper">

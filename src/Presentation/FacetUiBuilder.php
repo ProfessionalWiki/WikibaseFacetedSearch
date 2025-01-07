@@ -10,6 +10,9 @@ use MediaWiki\Parser\Sanitizer;
 use MediaWiki\Utils\UrlUtils;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetType;
+use ProfessionalWiki\WikibaseFacetedSearch\Application\PropertyConstraints;
+use ProfessionalWiki\WikibaseFacetedSearch\Application\Query;
+use ProfessionalWiki\WikibaseFacetedSearch\Application\QueryStringParser;
 use RuntimeException;
 use Wikibase\DataModel\Entity\ItemId;
 
@@ -18,8 +21,10 @@ class FacetUiBuilder {
 	/** @var array<string, string> */
 	private array $facetTemplates = [];
 
-	/** @var array<string, string> */
-	private array $query = [];
+	private Query $query;
+
+	/** @var array<string, PropertyConstraints> */
+	private array $constraints = [];
 
 	public function __construct(
 		private readonly TemplateParser $parser,
@@ -39,7 +44,9 @@ class FacetUiBuilder {
 	// TODO: parameter: selected values (from QueryStringParser https://github.com/ProfessionalWiki/WikibaseFacetedSearch/issues/31)
 	public function createHtml( ItemId $itemType ): string {
 		$this->config->getFacetConfigForInstanceType( $itemType );
-		$this->query = $this->getSearchQueryFromUrl();
+
+		$this->query = ( new QueryStringParser() )->parse( $this->getSearchQueryFromUrl()['search'] );
+		$this->constraints = $this->query->getConstraintsPerProperty();
 
 		return $this->parser->processTemplate(
 			'Facets',
@@ -47,6 +54,7 @@ class FacetUiBuilder {
 		);
 	}
 
+	// TODO: Derive label from propertyId
 	/**
 	 * @return array<array<string, mixed>>
 	 */
@@ -54,25 +62,28 @@ class FacetUiBuilder {
 		return [
 			[
 				'label' => 'Author',
+				'propertyId' => 'P100',
 				'type' => FacetType::LIST->value,
 				'values-html' => $this->getItemsHtml(
-					$this->getExampleListItems(), FacetType::LIST->value, 'Author'
+					$this->getExampleListItems(), FacetType::LIST->value, 'P100'
 				),
 				'expanded' => true
 			],
 			[
 				'label' => 'Year',
+				'propertyId' => 'P200',
 				'type' => FacetType::RANGE->value,
 				'values-html' => $this->getItemsHtml(
-					[ $this->getExampleRangeItems()[0] ], FacetType::RANGE->value, 'Year'
+					[ $this->getExampleRangeItems()[0] ], FacetType::RANGE->value, 'P200'
 				),
 				'expanded' => true
 			],
 			[
 				'label' => 'Pages',
+				'propertyId' => 'P300',
 				'type' => FacetType::RANGE->value,
 				'values-html' => $this->getItemsHtml(
-					[ $this->getExampleRangeItems()[1] ], FacetType::RANGE->value, 'Pages'
+					[ $this->getExampleRangeItems()[1] ], FacetType::RANGE->value, 'P300'
 				),
 				'expanded' => false
 			]
@@ -87,59 +98,55 @@ class FacetUiBuilder {
 		return wfCgiToArray( $parts['query'] ?? '' );
 	}
 
-	// TODO: Persist expanded state
-	private function getFacetItemState( string $queryKey, string $valueKey ): bool {
-		if ( !array_key_exists( $queryKey, $this->query ) ) {
-			return false;
-		}
-
-		return in_array( $valueKey, explode( ',', $this->query[$queryKey] ) );
+	private function getFacetItemState( string $propertyId, string $itemId ): bool {
+		// TODO: Persist expanded state
+		// TODO: Handles other constraint values
+		return in_array( $itemId, $this->constraints[$propertyId]->getAndSelectedValues() );
 	}
 
-	// TODO: Find a better identifier for facetName
-	// TODO: Encode facetName and itemValue
-	private function getFacetItemUrl( string $queryKey, string $valueKey, bool $selected ): string {
-		$query = $this->query;
+	private function getFacetItemUrl( string $propertyId, string $itemId, bool $selected ): string {
+		$parts = $this->urlUtils->parse( $this->url );
+		$query = wfCgiToArray( $parts['query'] );
 
-		if ( !array_key_exists( $queryKey, $query ) ) {
-			$query[$queryKey] = $valueKey;
+		// TODO: Support negated value
+		$facetType = 'haswbfacet';
+		// TODO: Support OR facet
+		$facetQuery = "$facetType:$propertyId=$itemId ";
+
+		if ( $selected === true ) {
+			$query['search'] = str_replace( $facetQuery, '', $query['search'] );
 		} else {
-			$queryValues = explode( ',', $query[$queryKey] );
-			$queryValues = array_filter( $queryValues, fn( $value ) => $value !== $valueKey );
-			if ( empty( $queryValues ) ) {
-				unset( $query[$queryKey] );
-			} else {
-				if ( $selected === false ) {
-					$queryValues[] = $valueKey;
-				}
-				asort( $queryValues );
-				$query[$queryKey] = implode( ',', $queryValues );
-			}
+			$query['search'] = $facetQuery . $query['search'];
 		}
 
 		$parts['query'] = wfArrayToCgi( $query );
 		return UrlUtils::assemble( $parts );
 	}
 
+	// TODO: Derive label from itemId
 	/**
 	 * @return array<array{label: string, count: int}>
 	 */
 	private function getExampleListItems(): array {
 		return [
 			[
-				'label' => 'Alice', // TODO: lookup of label and URL for item-id (or property-id) typed values
+				'label' => 'Alice', // TODO: lookup of label and URL for item-id (or property-id) typed values,
+				'itemId' => 'Q100',
 				'count' => 42
 			],
 			[
 				'label' => 'Bob',
+				'itemId' => 'Q200',
 				'count' => 23
 			],
 			[
 				'label' => 'Charlie',
+				'itemId' => 'Q300',
 				'count' => 17
 			],
 			[
 				'label' => 'David',
+				'itemId' => 'Q400',
 				'count' => 9
 			]
 		];
@@ -167,7 +174,7 @@ class FacetUiBuilder {
 	/**
 	 * @param array<array<string, mixed>> $items
 	 */
-	private function getItemsHtml( array $items, string $type, string $facetName ): string {
+	private function getItemsHtml( array $items, string $type, string $propertyId ): string {
 		if ( $items === [] ) {
 			return '';
 		}
@@ -176,18 +183,17 @@ class FacetUiBuilder {
 			throw new InvalidArgumentException( "Missing template for facet type: $type" );
 		}
 
+		$hasConstraints = array_key_exists( $propertyId, $this->constraints );
+
 		$html = '';
 		$template = 'FacetItem' . $this->facetTemplates[$type];
 
 		foreach ( $items as $i => $item ) {
-			$item['id'] = Sanitizer::escapeIdForAttribute( htmlspecialchars( "$facetName-$i" ) );
+			$item['id'] = Sanitizer::escapeIdForAttribute( htmlspecialchars( "$propertyId-$i" ) );
 
 			if ( $type === FacetType::LIST->value && is_string( $item['label'] ) ) {
-				// TODO: Sync query parameter name with search query
-				$queryKey = "wbfs-$facetName-values";
-				$valueKey = $item['label'];
-				$item['selected'] = $this->getFacetItemState( $queryKey, $valueKey );
-				$item['url'] = $this->getFacetItemUrl( $queryKey, $valueKey, $item['selected'] );
+				$item['selected'] = $hasConstraints ? $this->getFacetItemState( $propertyId, $item['itemId'] ) : false;
+				$item['url'] = $this->getFacetItemUrl( $propertyId, $item['itemId'], $item['selected'] );
 			}
 
 			try {
