@@ -36,7 +36,7 @@ class SearchUrlBuilderTest extends TestCase {
 		);
 
 		$facetQueryToRemove = 'haswbfacet:P100=Q100';
-		$urlBuilder->setUrlParts( "$url+$facetQueryToRemove" );
+		$urlBuilder->setUrlParts( $url . '+' . urlencode( $facetQueryToRemove ) );
 		$urlBuilder->setUrlQuery();
 		$this->assertEquals( $url, $urlBuilder->buildUrl( $facetQueryToRemove ) );
 	}
