@@ -31,7 +31,7 @@ class SearchUrlBuilder {
 	}
 
 	public function setUrlQuery(): void {
-		$this->urlQuery = wfCgiToArray( $this->urlParts['query'] ?? '' ) ?? [];
+		$this->urlQuery = wfCgiToArray( (string)$this->urlParts['query'] );
 	}
 
 	/**

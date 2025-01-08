@@ -30,7 +30,10 @@ class SearchUrlBuilderTest extends TestCase {
 		$this->assertEquals( $url, $urlBuilder->buildUrl() );
 
 		$facetQueryToAdd = 'haswbfacet:P200=Q200';
-		$this->assertEquals( "$url+$facetQueryToAdd", $urlBuilder->buildUrl( $facetQueryToAdd ) );
+		$this->assertEquals(
+			$url . '+' . urlencode( $facetQueryToAdd ),
+			$urlBuilder->buildUrl( $facetQueryToAdd )
+		);
 
 		$facetQueryToRemove = 'haswbfacet:P100=Q100';
 		$urlBuilder->setUrlParts( "$url+$facetQueryToRemove" );
