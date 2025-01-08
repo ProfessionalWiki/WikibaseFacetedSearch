@@ -7,11 +7,11 @@ namespace ProfessionalWiki\WikibaseFacetedSearch\Presentation;
 use InvalidArgumentException;
 use MediaWiki\Html\TemplateParser;
 use MediaWiki\Parser\Sanitizer;
-use MediaWiki\Utils\UrlUtils;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetType;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\PropertyConstraints;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\QueryStringParser;
+use ProfessionalWiki\WikibaseFacetedSearch\Application\SearchUrlBuilder;
 use RuntimeException;
 use Wikibase\DataModel\Entity\ItemId;
 
@@ -20,17 +20,14 @@ class FacetUiBuilder {
 	/** @var array<string, string> */
 	private array $facetTemplates = [];
 
-	/** @var array<string, string> */
-	private array $urlParts = [];
-
 	/** @var array<string, PropertyConstraints> */
 	private array $constraints = [];
 
 	public function __construct(
 		private readonly TemplateParser $parser,
 		private readonly QueryStringParser $queryStringParser,
+		private readonly SearchUrlBuilder $searchUrlBuilder,
 		private readonly Config $config, // TODO: use
-		private readonly UrlUtils $urlUtils
 	) {
 		// TODO: Perhaps we should do a map for template name and FacetType
 		// TODO: Should this go into FacetType?
@@ -44,22 +41,17 @@ class FacetUiBuilder {
 	// TODO: parameter: selected values (from QueryStringParser https://github.com/ProfessionalWiki/WikibaseFacetedSearch/issues/31)
 	public function createHtml( ItemId $itemType, string $url ): string {
 		$this->config->getFacetConfigForInstanceType( $itemType );
-		$this->urlParts = $this->urlUtils->parse( $url ) ?? [];
 
-		$query = $this->queryStringParser->parse( $this->getSearchQueryFromUrl()['search'] );
+		$this->searchUrlBuilder->setUrlParts( $url );
+		$this->searchUrlBuilder->setUrlQuery();
+
+		$query = $this->queryStringParser->parse( $this->searchUrlBuilder->getUrlQuery()['search'] );
 		$this->constraints = $query->getConstraintsPerProperty();
 
 		return $this->parser->processTemplate(
 			'Facets',
 			[ 'facets' => $this->facetsToViewModel() ]
 		);
-	}
-
-	/**
-	 * @return array<string, string>
-	 */
-	private function getSearchQueryFromUrl(): array {
-		return wfCgiToArray( $this->urlParts['query'] ?? '' );
 	}
 
 	/**
@@ -169,7 +161,7 @@ class FacetUiBuilder {
 			// $item['itemId'] is always a string but PHPStan does not know that
 			if ( $type === FacetType::LIST->value && is_string( $item['itemId'] ) ) {
 				$item['selected'] = $hasConstraints ? $this->getFacetItemState( $propertyId, $item['itemId'] ) : false;
-				$item['url'] = $this->getFacetItemUrl( $propertyId, $item['itemId'], $item['selected'] );
+				$item['url'] = $this->getFacetItemUrl( $propertyId, $item['itemId'] );
 			}
 
 			try {
@@ -188,23 +180,13 @@ class FacetUiBuilder {
 		return in_array( $itemId, $this->constraints[$propertyId]->getAndSelectedValues() );
 	}
 
-	private function getFacetItemUrl( string $propertyId, string $itemId, bool $selected ): string {
-		$query = $this->getSearchQueryFromUrl();
-
+	private function getFacetItemUrl( string $propertyId, string $itemId ): string {
 		// TODO: Support negated value
 		$facetType = 'haswbfacet';
 		// TODO: Support OR facet
-		$facetQuery = " $facetType:$propertyId=$itemId";
+		$facetQuery = "$facetType:$propertyId=$itemId";
 
-		if ( $selected === true ) {
-			$query['search'] = str_replace( $facetQuery, '', $query['search'] );
-		} else {
-			$query['search'] .= $facetQuery;
-		}
-
-		$urlParts = $this->urlParts;
-		$urlParts['query'] = wfArrayToCgi( $query );
-		return $this->urlUtils->assemble( $urlParts );
+		return $this->searchUrlBuilder->buildUrl( $facetQuery );
 	}
 
 }

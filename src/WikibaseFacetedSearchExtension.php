@@ -11,6 +11,7 @@ use ProfessionalWiki\WikibaseFacetedSearch\Application\DataValueTranslator;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\InstanceTypeExtractor;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\ItemPageLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\QueryStringParser;
+use ProfessionalWiki\WikibaseFacetedSearch\Application\SearchUrlBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\StatementListTranslator;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\StatementsLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\StatementTranslator;
@@ -96,8 +97,8 @@ class WikibaseFacetedSearchExtension {
 		return new FacetUiBuilder(
 			parser: new TemplateParser( __DIR__ . '/../templates' ),
 			queryStringParser: new QueryStringParser(),
-			config: $this->getConfig(),
-			urlUtils: MediaWikiServices::getInstance()->getUrlUtils()
+			searchUrlBuilder: $this->newSearchUrlBuilder(),
+			config: $this->getConfig()
 		);
 	}
 
@@ -106,6 +107,12 @@ class WikibaseFacetedSearchExtension {
 			engine:	$engine,
 			config: $this->getConfig(),
 			dataTypeLookup: WikibaseRepo::getPropertyDataTypeLookup()
+		);
+	}
+
+	public function newSearchUrlBuilder(): SearchUrlBuilder {
+		return new SearchUrlBuilder(
+			urlUtils: MediaWikiServices::getInstance()->getUrlUtils()
 		);
 	}
 
