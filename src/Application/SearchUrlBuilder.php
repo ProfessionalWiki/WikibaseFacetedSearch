@@ -42,7 +42,7 @@ class SearchUrlBuilder {
 	}
 
 	// TODO: Use PropertyId for $propertyId
-	public function buildUrl( $facetQuery = '' ): string {
+	public function buildUrl( string $facetQuery = '' ): string {
 		if ( $facetQuery === '' ) {
 			return $this->urlUtils->assemble( $this->urlParts );
 		}

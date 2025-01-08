@@ -5,8 +5,10 @@ declare( strict_types = 1 );
 namespace ProfessionalWiki\WikibaseFacetedSearch\Tests\Presentation;
 
 use MediaWiki\Html\TemplateParser;
+use MediaWiki\MediaWikiServices;
 use PHPUnit\Framework\TestCase;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\QueryStringParser;
+use ProfessionalWiki\WikibaseFacetedSearch\Application\SearchUrlBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\FacetUiBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Tests\Valid;
 use Wikibase\DataModel\Entity\ItemId;
@@ -30,6 +32,7 @@ class FacetUiBuilderTest extends TestCase {
 		return new FacetUiBuilder(
 			parser: $this->newTemplateParser(),
 			queryStringParser: $this->newQueryStringParser(),
+			searchUrlBuilder: $this->newSearchUrlBuilder(),
 			config: Valid::config()
 		);
 	}
@@ -40,6 +43,12 @@ class FacetUiBuilderTest extends TestCase {
 
 	private function newQueryStringParser(): QueryStringParser {
 		return new QueryStringParser();
+	}
+
+	private function newSearchUrlBuilder(): SearchUrlBuilder {
+		return new SearchUrlBuilder(
+			urlUtils: MediaWikiServices::getInstance()->getUrlUtils()
+		);
 	}
 
 }

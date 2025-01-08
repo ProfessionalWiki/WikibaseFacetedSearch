@@ -7,7 +7,7 @@ namespace ProfessionalWiki\WikibaseFacetedSearch\Tests\Application;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Utils\UrlUtils;
 use PHPUnit\Framework\TestCase;
-use ProfessionalWiki\WikibaseFacetedSearch\Presentation\SearchUrlBuilder;
+use ProfessionalWiki\WikibaseFacetedSearch\Application\SearchUrlBuilder;
 
 /**
  * @covers \ProfessionalWiki\WikibaseFacetedSearch\Application\SearchUrlBuilder
