@@ -75,7 +75,7 @@
 				"ext.wikibase.facetedsearch.less"
 			],
 			"skinStyles": {
-				"chameleon": [ 
+				"chameleon": [
 					"ext.wikibase.facetedsearch.chameleon.less"
 				]
 			},
