@@ -1,4 +1,13 @@
 <div class="wikibase-faceted-search">
+	<details class="wikibase-faceted-search__header">
+		<summary class="cdx-button cdx-button--size-large">
+			<span
+				class="wikibase-faceted-search__icon wikibase-faceted-search__icon--filter cdx-button__icon"
+				aria-hidden="true"
+			></span>
+			{{msg-filters}}
+		</summary>
+	</details>
 	<div class="wikibase-faceted-search__facets">
 		{{#facets}}
 			{{!
@@ -7,9 +16,9 @@
 			}}
 			<details class="wikibase-faceted-search__facet cdx-accordion" {{#expanded}}open{{/expanded}}>
 				<summary>
-					<h3 class="cdx-accordion__header">
+					<div class="cdx-accordion__header">
 						<span class="cdx-accordion__header__title">{{label}}</span>
-					</h3>
+					</div>
 				</summary>
 				<div class="cdx-accordion__content">
 					{{{values-html}}}
