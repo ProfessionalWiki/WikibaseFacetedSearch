@@ -74,9 +74,15 @@
 			"styles": [
 				"ext.wikibase.facetedsearch.less"
 			],
+			"skinStyles": {
+				"chameleon": [
+					"ext.wikibase.facetedsearch.chameleon.less"
+				]
+			},
 			"codexStyleOnly": true,
 			"codexComponents": [
 				"CdxAccordion",
+				"CdxButton",
 				"CdxCheckbox",
 				"CdxField",
 				"CdxRadio",

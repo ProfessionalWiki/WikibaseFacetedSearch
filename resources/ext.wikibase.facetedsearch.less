@@ -1,10 +1,84 @@
 @import 'mediawiki.skin.variables.less';
 
 .wikibase-faceted-search {
+	margin-bottom: @spacing-100;
+
+	&__icon {
+		// Needed the specificity to override cdx-mixin-css-icon mixin
+		&.wikibase-faceted-search__icon {
+			// Icon should always stay in sync with the current text color
+			background-color: currentcolor;
+		}
+
+		&--filter {
+			.cdx-mixin-css-icon( @cdx-icon-funnel );
+		}
+	}
+
+	// Header that is also used as collapse button in mobile
+	&__header {
+		display: none;
+
+		@media ( max-width: @max-width-breakpoint-tablet ) {
+			display: block;
+		}
+
+		// Style as a ToggleButton
+		// Because we are not using a <button> element, we have to
+		// insert the background, hover, and active states manually
+		> summary {
+			display: flex;
+			align-items: center;
+			max-width: none;
+			background-color: @background-color-interactive-subtle;
+			border-color: @border-color-base;
+			user-select: none;
+
+			&:hover {
+				// TODO: Use @background-color-interactive-subtle--hover when available in Codex
+				background-color: @background-color-base;
+				cursor: pointer;
+			}
+
+			&:active {
+				// TODO: Use @background-color-interactive-subtle--active when available in Codex
+				background-color: @background-color-interactive;
+				// TODO: Use @border-color-interactive--active when available in Codex
+				border-color: @border-color-interactive;
+				box-shadow: none;
+			}
+		}
+
+		&[ open ] > summary {
+			border-bottom-left-radius: 0;
+			border-bottom-right-radius: 0;
+			background-color: @background-color-progressive;
+			border-color: transparent;
+			color: @color-inverted-fixed;
+		}
+	}
+
 	// Common
 	&__facets {
 		position: sticky;
 		top: @spacing-100;
+
+		// Default to collapsed state in tablet
+		@media ( max-width: @max-width-breakpoint-tablet ) {
+			display: none;
+
+			.wikibase-faceted-search__header[ open ] + & {
+				display: block;
+				border-style: solid;
+				border-width: 1px;
+				border-color: @border-color-base;
+				margin-bottom: -1px;
+
+				.wikibase-faceted-search__facet:last-child {
+					border-bottom: 0;
+				}
+			}
+		}
 	}
 
 	// List facet
@@ -29,6 +103,7 @@
 
 			.cdx-text-input {
 				min-width: auto;
+				flex-grow: 1;
 			}
 		}
 
@@ -48,13 +123,30 @@
 			flex-shrink: 0;
 		}
 	}
+
+	.cdx-accordion {
+		&__content {
+			font-size: inherit;
+		}
+
+		.cdx-accordion__header {
+			font-size: inherit;
+			font-weight: @font-weight-bold;
+		}
+	}
 }
 
 // HACK: Creating a multi-column layout
 // TODO: Find a way to put .wikibase-faceted-search inside .searchresults
 .mw-body-content:has( .wikibase-faceted-search ) {
+	display: grid;
+	// stylelint-disable-next-line @stylistic/declaration-colon-space-after
+	grid-template-areas:
+		'searchform'
+		'sidebar'
+		'results';
+
 	@media ( min-width: @min-width-breakpoint-desktop ) {
-		display: grid;
 		// stylelint-disable-next-line @stylistic/declaration-colon-space-after
 		grid-template-areas:
 			'searchform searchform'

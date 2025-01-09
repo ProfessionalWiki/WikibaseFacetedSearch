@@ -36,7 +36,10 @@ class FacetUiBuilder {
 
 		return $this->parser->processTemplate(
 			'Facets',
-			[ 'facets' => $this->facetsToViewModel() ]
+			[
+				'msg-filters' => wfMessage( 'wikibase-faceted-search-filters' )->text(),
+				'facets' => $this->facetsToViewModel()
+			]
 		);
 	}
 
