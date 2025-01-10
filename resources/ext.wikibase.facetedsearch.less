@@ -15,6 +15,16 @@
 		}
 	}
 
+	&__cdx-button-link {
+		color: @color-base;
+
+		&:hover,
+		&:active,
+		&:visited {
+			color: @color-base;
+		}
+	}
+
 	// Use this class when we are not using a <button> element for cdx-button
 	// Because cdx-button styles rely on the :enabled and :disabled pseudo-classes,
 	// we have to insert the background, hover, and active states manually
@@ -82,6 +92,19 @@
 					border-bottom: 0;
 				}
 			}
+		}
+	}
+
+	&__facet-toggle {
+		margin-bottom: @spacing-100;
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		border-radius: @border-radius-base;
+		overflow: hidden;
+
+		.cdx-button {
+			border-radius: 0;
+			width: 100%;
 		}
 	}
 

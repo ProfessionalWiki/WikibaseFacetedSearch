@@ -54,7 +54,8 @@ class FacetUiBuilder {
 				'values-html' => $this->getItemsHtml(
 					$this->getExampleListItems(), FacetType::LIST->value, 'Author'
 				),
-				'expanded' => true
+				'expanded' => true,
+				'hasToggle' => true
 			],
 			[
 				'label' => 'Year',
@@ -62,7 +63,8 @@ class FacetUiBuilder {
 				'values-html' => $this->getItemsHtml(
 					[ $this->getExampleRangeItems()[0] ], FacetType::RANGE->value, 'Year'
 				),
-				'expanded' => true
+				'expanded' => true,
+				'hasToggle' => false
 			],
 			[
 				'label' => 'Pages',
@@ -70,7 +72,8 @@ class FacetUiBuilder {
 				'values-html' => $this->getItemsHtml(
 					[ $this->getExampleRangeItems()[1] ], FacetType::RANGE->value, 'Pages'
 				),
-				'expanded' => false
+				'expanded' => false,
+				'hasToggle' => false
 			]
 		];
 	}
