@@ -62,8 +62,8 @@ class ConfigDeserializer {
 		$facetConfigs = [];
 
 		foreach ( $configPerItemType as $itemId => $itemTypeConfig ) {
-			foreach ( $itemTypeConfig['facets'] as $facet ) {
-				$facetConfigs[] = $this->newFacetConfig( $itemId, $facet );
+			foreach ( $itemTypeConfig['facets'] ?? [] as $propertyId => $facetConfig ) {
+				$facetConfigs[] = $this->newFacetConfig( $itemId, $propertyId, $facetConfig );
 			}
 		}
 
@@ -72,12 +72,12 @@ class ConfigDeserializer {
 
 	/**
 	 * TODO: defaultCombineWith, allowCombineWithChoice, showNoneFilter, showAnyFilter
-	 * @param array<string, string> $facetConfig
+	 * @param array<string, mixed> $facetConfig
 	 */
-	private function newFacetConfig( string $itemId, array $facetConfig ): FacetConfig {
+	private function newFacetConfig( string $itemId, string $propertyId, array $facetConfig ): FacetConfig {
 		return new FacetConfig(
 			instanceTypeId: new ItemId( $itemId ),
-			propertyId: new NumericPropertyId( $facetConfig['property'] ),
+			propertyId: new NumericPropertyId( $propertyId ),
 			type: FacetType::from( $facetConfig['type'] )
 		);
 	}

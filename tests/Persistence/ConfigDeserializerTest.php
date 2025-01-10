@@ -42,7 +42,7 @@ class ConfigDeserializerTest extends TestCase {
 	public function testInvalidFacetsReturnsEmptyConfig(): void {
 		$deserializer = WikibaseFacetedSearchExtension::getInstance()->newConfigDeserializer();
 
-		$config = $deserializer->deserialize( '{ "facets": "foo" }' );
+		$config = $deserializer->deserialize( '{ "instanceOfValues": "foo" }' );
 
 		$this->assertEquals( new Config(), $config );
 	}
@@ -52,7 +52,7 @@ class ConfigDeserializerTest extends TestCase {
 
 		$config = $deserializer->deserialize( '
 {
-	"facets": {
+	"instanceOfValues": {
 		"Q1": "notAnArray"
 	}
 }

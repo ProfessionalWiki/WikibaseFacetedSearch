@@ -24,16 +24,15 @@
 						"type": "string"
 					},
 					"facets": {
-						"type": "array",
-						"items": {
+						"type": "object",
+						"propertyNames": {
+							"pattern": "^P[1-9]\\d{0,9}$"
+						},
+						"additionalProperties": {
 							"type": "object",
 							"additionalProperties": false,
-							"required": [ "property", "type" ],
+							"required": [ "type" ],
 							"properties": {
-								"property": {
-									"type": "string",
-									"pattern": "^P[1-9]\\d{0,9}$"
-								},
 								"type": {
 									"type": "string",
 									"enum": [ "list", "range" ]

@@ -123,12 +123,11 @@ class ConfigJsonValidatorTest extends TestCase {
 	"instanceOfValues": {
 		"Q1": {
 			"label": "Memes",
-			"facets": [
-				{
-					"property": "invalid",
+			"facets": {
+				"invalid": {
 					"type": "list"
 				}
-			]
+			}
 		}
 	}
 }
@@ -143,12 +142,11 @@ class ConfigJsonValidatorTest extends TestCase {
 	"instanceOfValues": {
 		"Q1": {
 			"label": "Memes",
-			"facets": [
-				{
-					"property": "P1",
+			"facets": {
+				"P1": {
 					"type": "invalid"
 				}
-			]
+			}
 		}
 	}
 }
@@ -171,13 +169,12 @@ class ConfigJsonValidatorTest extends TestCase {
 	"instanceOfValues": {
 		"Q1": {
 			"label": "Memes",
-			"facets": [
-				{
-					"property": "P1",
+			"facets": {
+				"P1": {
 					"type": "list",
 					"invalid": "w/e"
 				}
-			]
+			}
 		}
 	}
 }
@@ -192,16 +189,15 @@ class ConfigJsonValidatorTest extends TestCase {
 	"instanceOfValues": {
 		"Q1": {
 			"label": "Memes",
-			"facets": [
-				{
-					"property": "P1",
+			"facets": {
+				"P1": {
 					"type": "list",
 					"defaultCombineWith": "OR",
 					"allowCombineWithChoice": true,
 					"showNoneFilter": false,
 					"showAnyFilter": true
 				}
-			]
+			}
 		}
 	}
 }
@@ -216,13 +212,12 @@ class ConfigJsonValidatorTest extends TestCase {
 	"instanceOfValues": {
 		"Q1": {
 			"label": "Memes",
-			"facets": [
-				{
-					"property": "P1",
+			"facets": {
+				"P1": {
 					"type": "list",
 					"defaultCombineWith": "invalid"
 				}
-			]
+			}
 		}
 	}
 }
