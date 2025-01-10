@@ -42,8 +42,7 @@ class FacetUiBuilder {
 	public function createHtml( ItemId $itemType, string $url ): string {
 		$this->config->getFacetConfigForInstanceType( $itemType );
 
-		$this->searchUrlBuilder->setUrlParts( $url );
-		$this->searchUrlBuilder->setUrlQuery();
+		$this->searchUrlBuilder->setUrl( $url );
 
 		$query = $this->queryStringParser->parse( $this->searchUrlBuilder->getUrlQuery()['search'] );
 		$this->constraints = $query->getConstraintsPerProperty();

@@ -19,8 +19,9 @@ class SearchUrlBuilder {
 	) {
 	}
 
-	public function setUrlParts( string $url ): void {
+	public function setUrl( string $url ): void {
 		$this->urlParts = $this->urlUtils->parse( $url ) ?? [];
+		$this->urlQuery = wfCgiToArray( (string)$this->urlParts['query'] );
 	}
 
 	/**
@@ -28,10 +29,6 @@ class SearchUrlBuilder {
 	 */
 	public function getUrlParts(): array {
 		return $this->urlParts;
-	}
-
-	public function setUrlQuery(): void {
-		$this->urlQuery = wfCgiToArray( (string)$this->urlParts['query'] );
 	}
 
 	/**

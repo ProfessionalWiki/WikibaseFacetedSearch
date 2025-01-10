@@ -24,8 +24,7 @@ class SearchUrlBuilderTest extends TestCase {
 		$url = 'https://example.org/w/index.php?search=foo';
 
 		$urlBuilder = $this->newSearchUrlBuilder();
-		$urlBuilder->setUrlParts( $url );
-		$urlBuilder->setUrlQuery();
+		$urlBuilder->setUrl( $url );
 
 		$this->assertEquals( $url, $urlBuilder->buildUrl() );
 
@@ -36,8 +35,7 @@ class SearchUrlBuilderTest extends TestCase {
 		);
 
 		$facetQueryToRemove = 'haswbfacet:P100=Q100';
-		$urlBuilder->setUrlParts( $url . '+' . urlencode( $facetQueryToRemove ) );
-		$urlBuilder->setUrlQuery();
+		$urlBuilder->setUrl( $url . '+' . urlencode( $facetQueryToRemove ) );
 		$this->assertEquals( $url, $urlBuilder->buildUrl( $facetQueryToRemove ) );
 	}
 
