@@ -38,6 +38,8 @@ class FacetUiBuilder {
 			'Facets',
 			[
 				'msg-filters' => wfMessage( 'wikibase-faceted-search-filters' )->text(),
+				'msg-and' => wfMessage( 'wikibase-faceted-search-and' )->text(),
+				'msg-or' => wfMessage( 'wikibase-faceted-search-or' )->text(),
 				'facets' => $this->facetsToViewModel()
 			]
 		);
