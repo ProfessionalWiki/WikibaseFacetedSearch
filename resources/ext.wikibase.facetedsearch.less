@@ -5,13 +5,23 @@
 
 	&__icon {
 		// Needed the specificity to override cdx-mixin-css-icon mixin
-		&.wikibase-faceted-search__icon {
+		&.wikibase-faceted-search__icon.wikibase-faceted-search__icon.wikibase-faceted-search__icon {
 			// Icon should always stay in sync with the current text color
 			background-color: currentcolor;
 		}
 
 		&--filter {
 			.cdx-mixin-css-icon( @cdx-icon-funnel );
+		}
+	}
+
+	&__cdx-button-link {
+		color: @color-base;
+
+		&:hover,
+		&:active,
+		&:visited {
+			color: @color-base;
 		}
 	}
 
@@ -24,29 +34,11 @@
 		}
 
 		// Style as a ToggleButton
-		// Because we are not using a <button> element, we have to
-		// insert the background, hover, and active states manually
 		> summary {
 			display: flex;
 			align-items: center;
 			max-width: none;
-			background-color: @background-color-interactive-subtle;
-			border-color: @border-color-base;
 			user-select: none;
-
-			&:hover {
-				// TODO: Use @background-color-interactive-subtle--hover when available in Codex
-				background-color: @background-color-base;
-				cursor: pointer;
-			}
-
-			&:active {
-				// TODO: Use @background-color-interactive-subtle--active when available in Codex
-				background-color: @background-color-interactive;
-				// TODO: Use @border-color-interactive--active when available in Codex
-				border-color: @border-color-interactive;
-				box-shadow: none;
-			}
 		}
 
 		&[ open ] > summary {
@@ -78,6 +70,19 @@
 					border-bottom: 0;
 				}
 			}
+		}
+	}
+
+	&__facet-toggle {
+		margin-bottom: @spacing-100;
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		border-radius: @border-radius-base;
+		overflow: hidden;
+
+		.cdx-button {
+			border-radius: 0;
+			width: 100%;
 		}
 	}
 
