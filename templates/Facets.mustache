@@ -1,24 +1,14 @@
 <div class="wikibase-faceted-search">
+	<details class="wikibase-faceted-search__header">
+		<summary class="cdx-button cdx-button--size-large cdx-button--fake-button cdx-button--fake-button--enabled">
+			<span
+				class="wikibase-faceted-search__icon wikibase-faceted-search__icon--filter cdx-button__icon"
+				aria-hidden="true"
+			></span>
+			{{msg-filters}}
+		</summary>
+	</details>
 	<div class="wikibase-faceted-search__facets">
-		{{#facets}}
-			{{!
-				Codex - Accordion component
-				@see https://doc.wikimedia.org/codex/v1.14.0/components/demos/accordion.html#markup-structure
-			}}
-			<details
-				class="wikibase-faceted-search__facet cdx-accordion"
-				data-property-id="{{propertyId}}"
-				{{#expanded}}open{{/expanded}}
-			>
-				<summary>
-					<h3 class="cdx-accordion__header">
-						<span class="cdx-accordion__header__title">{{label}}</span>
-					</h3>
-				</summary>
-				<div class="cdx-accordion__content">
-					{{{values-html}}}
-				</div>
-			</details>
-		{{/facets}}
+		{{#facets}}{{>Facet}}{{/facets}}
 	</div>
 </div>

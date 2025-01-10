@@ -2,9 +2,16 @@
 	"name": "wikibase-faceted-search",
 	"private": true,
 	"scripts": {
-		"lint": "banana-checker i18n/"
+		"lint": "npm -s run lint:js && npm -s run lint:styles && npm -s run lint:i18n",
+		"lint:fix:js": "npm -s run lint:js -- --fix",
+		"lint:fix:styles": "npm -s run lint:styles -- --fix",
+		"lint:js": "eslint --cache .",
+		"lint:styles": "stylelint \"**/*.{less,css}\"",
+		"lint:i18n": "banana-checker i18n/"
 	},
 	"devDependencies": {
-		"grunt-banana-checker": "0.13.0"
+		"eslint-config-wikimedia": "0.28.2",
+		"grunt-banana-checker": "0.13.0",
+		"stylelint-config-wikimedia": "0.18.0"
 	}
 }

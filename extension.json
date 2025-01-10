@@ -43,7 +43,7 @@
 		"EditFormPreloadText": "ProfessionalWiki\\WikibaseFacetedSearch\\EntryPoints\\WikibaseFacetedSearchHooks::onEditFormPreloadText",
 		"ShowSearchHitTitle": "ProfessionalWiki\\WikibaseFacetedSearch\\EntryPoints\\WikibaseFacetedSearchHooks::onShowSearchHitTitle",
 		"SpecialSearchResultsAppend": "ProfessionalWiki\\WikibaseFacetedSearch\\EntryPoints\\WikibaseFacetedSearchHooks::onSpecialSearchResultsAppend",
-		"CirrusSearchAddQueryFeatures":  "ProfessionalWiki\\WikibaseFacetedSearch\\EntryPoints\\WikibaseFacetedSearchHooks::onCirrusSearchAddQueryFeatures",
+		"CirrusSearchAddQueryFeatures": "ProfessionalWiki\\WikibaseFacetedSearch\\EntryPoints\\WikibaseFacetedSearchHooks::onCirrusSearchAddQueryFeatures",
 		"SearchIndexFields": "ProfessionalWiki\\WikibaseFacetedSearch\\EntryPoints\\WikibaseFacetedSearchHooks::onSearchIndexFields",
 		"SearchDataForIndex": "ProfessionalWiki\\WikibaseFacetedSearch\\EntryPoints\\WikibaseFacetedSearchHooks::onSearchDataForIndex"
 	},
@@ -74,9 +74,15 @@
 			"styles": [
 				"ext.wikibase.facetedsearch.less"
 			],
+			"skinStyles": {
+				"chameleon": [
+					"ext.wikibase.facetedsearch.chameleon.less"
+				]
+			},
 			"codexStyleOnly": true,
 			"codexComponents": [
 				"CdxAccordion",
+				"CdxButton",
 				"CdxCheckbox",
 				"CdxField",
 				"CdxRadio",

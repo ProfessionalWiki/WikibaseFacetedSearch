@@ -49,7 +49,12 @@ class FacetUiBuilder {
 
 		return $this->parser->processTemplate(
 			'Facets',
-			[ 'facets' => $this->facetsToViewModel() ]
+			[
+				'msg-filters' => wfMessage( 'wikibase-faceted-search-filters' )->text(),
+				'msg-and' => wfMessage( 'wikibase-faceted-search-and' )->text(),
+				'msg-or' => wfMessage( 'wikibase-faceted-search-or' )->text(),
+				'facets' => $this->facetsToViewModel()
+			]
 		);
 	}
 
@@ -66,7 +71,8 @@ class FacetUiBuilder {
 				'values-html' => $this->getItemsHtml(
 					$this->getExampleListItems(), FacetType::LIST->value, 'P100'
 				),
-				'expanded' => true
+				'expanded' => true,
+				'hasToggle' => true
 			],
 			[
 				'label' => 'Year',
@@ -75,7 +81,8 @@ class FacetUiBuilder {
 				'values-html' => $this->getItemsHtml(
 					[ $this->getExampleRangeItems()[0] ], FacetType::RANGE->value, 'P200'
 				),
-				'expanded' => true
+				'expanded' => true,
+				'hasToggle' => false
 			],
 			[
 				'label' => 'Pages',
@@ -84,7 +91,8 @@ class FacetUiBuilder {
 				'values-html' => $this->getItemsHtml(
 					[ $this->getExampleRangeItems()[1] ], FacetType::RANGE->value, 'P300'
 				),
-				'expanded' => false
+				'expanded' => false,
+				'hasToggle' => false
 			]
 		];
 	}

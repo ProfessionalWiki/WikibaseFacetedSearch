@@ -216,7 +216,7 @@ jobs:
       - run: vendor/bin/phpcs -p -s
 
   linting:
-    name: "i18n Linting"
+    name: "Linting"
 
     runs-on: ubuntu-latest
 
@@ -225,5 +225,15 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - run: npm install
-      - run: npm run lint
+
+      - name: Setup NPM dependencies
+        run: npm install
+
+      - name: Lint i18n
+        run: npm run lint:i18n
+
+      - name: Lint styles
+        run: npm run lint:styles
+
+      - name: Lint JS
+        run: npm run lint:js
