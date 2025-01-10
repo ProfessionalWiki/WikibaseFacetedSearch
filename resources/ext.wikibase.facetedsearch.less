@@ -15,6 +15,28 @@
 		}
 	}
 
+	// Use this class when we are not using a <button> element for cdx-button
+	// Because cdx-button styles rely on the :enabled and :disabled pseudo-classes,
+	// we have to insert the background, hover, and active states manually
+	&__cdx-button {
+		background-color: @background-color-interactive-subtle;
+		border-color: @border-color-base;
+
+		&:hover {
+			// TODO: Use @background-color-interactive-subtle--hover when available in Codex
+			background-color: @background-color-base;
+			cursor: pointer;
+		}
+
+		&:active {
+			// TODO: Use @background-color-interactive-subtle--active when available in Codex
+			background-color: @background-color-interactive;
+			// TODO: Use @border-color-interactive--active when available in Codex
+			border-color: @border-color-interactive;
+			box-shadow: none;
+		}
+	}
+
 	// Header that is also used as collapse button in mobile
 	&__header {
 		display: none;
@@ -24,29 +46,11 @@
 		}
 
 		// Style as a ToggleButton
-		// Because we are not using a <button> element, we have to
-		// insert the background, hover, and active states manually
 		> summary {
 			display: flex;
 			align-items: center;
 			max-width: none;
-			background-color: @background-color-interactive-subtle;
-			border-color: @border-color-base;
 			user-select: none;
-
-			&:hover {
-				// TODO: Use @background-color-interactive-subtle--hover when available in Codex
-				background-color: @background-color-base;
-				cursor: pointer;
-			}
-
-			&:active {
-				// TODO: Use @background-color-interactive-subtle--active when available in Codex
-				background-color: @background-color-interactive;
-				// TODO: Use @border-color-interactive--active when available in Codex
-				border-color: @border-color-interactive;
-				box-shadow: none;
-			}
 		}
 
 		&[ open ] > summary {
