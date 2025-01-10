@@ -4,33 +4,29 @@
 	"instanceOfValues": {
 		"Q100": {
 			"label": "Memes",
-			"facets": [
-				{
-					"property": "P1",
+			"facets": {
+				"P1": {
 					"type": "list"
 				},
-				{
-					"property": "P2",
+				"P2": {
 					"type": "range"
 				}
-			]
+			}
 		},
 		"Q200": {
 			"label": "Cat Pictures",
-			"facets": [
-				{
-					"property": "P2",
+			"facets": {
+				"P2": {
 					"type": "range"
 				},
-				{
-					"property": "P3",
+				"P3": {
 					"type": "list",
 					"defaultCombineWith": "OR",
 					"allowCombineWithChoice": true,
 					"showNoneFilter": true,
 					"showAnyFilter": true
 				}
-			]
+			}
 		}
 	}
 }
