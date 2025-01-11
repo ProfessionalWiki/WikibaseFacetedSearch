@@ -8,6 +8,7 @@ use MediaWiki\MediaWikiServices;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\ConfigLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\DataValueTranslator;
+use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetType;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\InstanceTypeExtractor;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\ItemPageLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\QueryStringParser;
@@ -15,6 +16,7 @@ use ProfessionalWiki\WikibaseFacetedSearch\Application\SearchUrlBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\StatementListTranslator;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\StatementsLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\StatementTranslator;
+use ProfessionalWiki\WikibaseFacetedSearch\Application\ValueCounter;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\CombiningConfigLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\ConfigDeserializer;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\ConfigJsonValidator;
@@ -24,7 +26,11 @@ use ProfessionalWiki\WikibaseFacetedSearch\Persistence\PageContentConfigLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\PageContentFetcher;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\Search\SearchIndexFieldsBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\SitelinkBasedStatementsLookup;
-use ProfessionalWiki\WikibaseFacetedSearch\Presentation\FacetUiBuilder;
+use ProfessionalWiki\WikibaseFacetedSearch\Presentation\DelegatingFacetHtmlBuilder;
+use ProfessionalWiki\WikibaseFacetedSearch\Presentation\FacetHtmlBuilder;
+use ProfessionalWiki\WikibaseFacetedSearch\Presentation\ListFacetHtmlBuilder;
+use ProfessionalWiki\WikibaseFacetedSearch\Presentation\RangeFacetHtmlBuilder;
+use ProfessionalWiki\WikibaseFacetedSearch\Presentation\UiBuilder;
 use RuntimeException;
 use SearchEngine;
 use TemplateParser;
@@ -99,13 +105,8 @@ class WikibaseFacetedSearchExtension {
 		);
 	}
 
-	public function newFacetUiBuilder(): FacetUiBuilder {
-		return new FacetUiBuilder(
-			parser: new TemplateParser( __DIR__ . '/../templates' ),
-			queryStringParser: new QueryStringParser(),
-			searchUrlBuilder: $this->newSearchUrlBuilder(),
-			config: $this->getConfig()
-		);
+	private function getTemplateParser(): TemplateParser {
+		return new TemplateParser( __DIR__ . '/../templates' );
 	}
 
 	public function newSearchIndexFieldsBuilder( SearchEngine $engine ): SearchIndexFieldsBuilder {
@@ -176,6 +177,43 @@ class WikibaseFacetedSearchExtension {
 		}
 
 		return new ConfigJsonValidator( $schema );
+	}
+
+	public function getUiBuilder(): UiBuilder {
+		return new UiBuilder(
+			config: $this->getConfig(),
+			facetHtmlBuilder: $this->getFacetHtmlBuilder(),
+			templateParser: $this->getTemplateParser(),
+			queryStringParser: $this->getQueryStringParser()
+		);
+	}
+
+	private function getFacetHtmlBuilder(): FacetHtmlBuilder {
+		$delegator = new DelegatingFacetHtmlBuilder();
+		$delegator->addBuilder( FacetType::LIST, $this->newListFacetHtmlBuilder() );
+		$delegator->addBuilder( FacetType::RANGE, $this->newRangeFacetHtmlBuilder() );
+		return $delegator;
+	}
+
+	private function newListFacetHtmlBuilder(): FacetHtmlBuilder {
+		return new ListFacetHtmlBuilder(
+			parser: $this->getTemplateParser(),
+			valueCounter: $this->getValueCounter()
+		);
+	}
+
+	private function getValueCounter(): ValueCounter {
+		return new ValueCounter();
+	}
+
+	private function newRangeFacetHtmlBuilder(): FacetHtmlBuilder {
+		return new RangeFacetHtmlBuilder(
+			parser: $this->getTemplateParser()
+		);
+	}
+
+	private function getQueryStringParser(): QueryStringParser {
+		return new QueryStringParser();
 	}
 
 }
