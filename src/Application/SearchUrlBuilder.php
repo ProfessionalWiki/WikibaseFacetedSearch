@@ -27,13 +27,6 @@ class SearchUrlBuilder {
 	/**
 	 * @return array<string, string>
 	 */
-	public function getUrlParts(): array {
-		return $this->urlParts;
-	}
-
-	/**
-	 * @return array<string, string>
-	 */
 	public function getUrlQuery(): array {
 		return $this->urlQuery;
 	}
