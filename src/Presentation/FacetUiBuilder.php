@@ -17,9 +17,6 @@ use Wikibase\DataModel\Entity\ItemId;
 
 class FacetUiBuilder {
 
-	/** @var array<string, string> */
-	private array $facetTemplates = [];
-
 	/** @var array<string, PropertyConstraints> */
 	private array $constraints = [];
 
@@ -29,12 +26,6 @@ class FacetUiBuilder {
 		private readonly SearchUrlBuilder $searchUrlBuilder,
 		private readonly Config $config, // TODO: use
 	) {
-		// TODO: Perhaps we should do a map for template name and FacetType
-		// TODO: Should this go into FacetType?
-		$this->facetTemplates = [
-			FacetType::LIST->value => 'Checkbox',
-			FacetType::RANGE->value => 'Range'
-		];
 	}
 
 	// TODO: parameter or constructor argument: values and counts (from https://github.com/ProfessionalWiki/WikibaseFacetedSearch/issues/23)
@@ -69,7 +60,9 @@ class FacetUiBuilder {
 				'propertyId' => 'P100',
 				'type' => FacetType::LIST->value,
 				'values-html' => $this->getItemsHtml(
-					$this->getExampleListItems(), FacetType::LIST->value, 'P100'
+					$this->getExampleListItems(),
+					FacetType::LIST,
+					'P100'
 				),
 				'expanded' => true,
 				'hasToggle' => true
@@ -79,7 +72,9 @@ class FacetUiBuilder {
 				'propertyId' => 'P200',
 				'type' => FacetType::RANGE->value,
 				'values-html' => $this->getItemsHtml(
-					[ $this->getExampleRangeItems()[0] ], FacetType::RANGE->value, 'P200'
+					[ $this->getExampleRangeItems()[0] ],
+					FacetType::RANGE,
+					'P200'
 				),
 				'expanded' => true,
 				'hasToggle' => false
@@ -89,7 +84,9 @@ class FacetUiBuilder {
 				'propertyId' => 'P300',
 				'type' => FacetType::RANGE->value,
 				'values-html' => $this->getItemsHtml(
-					[ $this->getExampleRangeItems()[1] ], FacetType::RANGE->value, 'P300'
+					[ $this->getExampleRangeItems()[1] ],
+					FacetType::RANGE,
+					'P300'
 				),
 				'expanded' => false,
 				'hasToggle' => false
@@ -148,37 +145,42 @@ class FacetUiBuilder {
 	/**
 	 * @param array<array<string, mixed>> $items
 	 */
-	private function getItemsHtml( array $items, string $type, string $propertyId ): string {
+	private function getItemsHtml( array $items, FacetType $type, string $propertyId ): string {
 		if ( $items === [] ) {
 			return '';
-		}
-
-		if ( !array_key_exists( $type, $this->facetTemplates ) ) {
-			throw new InvalidArgumentException( "Missing template for facet type: $type" );
 		}
 
 		$hasConstraints = array_key_exists( $propertyId, $this->constraints );
 
 		$html = '';
-		$template = 'FacetItem' . $this->facetTemplates[$type];
 
 		foreach ( $items as $i => $item ) {
 			$item['id'] = Sanitizer::escapeIdForAttribute( htmlspecialchars( "$propertyId-$i" ) );
 
 			// $item['itemId'] is always a string but PHPStan does not know that
-			if ( $type === FacetType::LIST->value && is_string( $item['itemId'] ) ) {
+			if ( $type === FacetType::LIST && is_string( $item['itemId'] ) ) {
 				$item['selected'] = $hasConstraints ? $this->getFacetItemState( $propertyId, $item['itemId'] ) : false;
 				$item['url'] = $this->getFacetItemUrl( $propertyId, $item['itemId'] );
 			}
 
 			try {
-				$html .= $this->parser->processTemplate( $template, $item );
+				$html .= $this->parser->processTemplate(
+					$this->facetTypeToTemplateName( $type ),
+					$item
+				);
 			} catch ( RuntimeException ) {
 				// ignore
 			}
 		}
 
 		return $html;
+	}
+
+	private function facetTypeToTemplateName( FacetType $type ): string {
+		return match ( $type ) {
+			FacetType::LIST => 'FacetItemCheckbox',
+			FacetType::RANGE => 'FacetItemRange',
+		};
 	}
 
 	private function getFacetItemState( string $propertyId, string $itemId ): bool {
