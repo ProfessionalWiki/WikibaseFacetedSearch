@@ -22,6 +22,9 @@ class UiBuilder {
 	) {
 	}
 
+	/**
+	 * TODO: add integration tests
+	 */
 	public function createHtml( string $currentUrl ): string {
 		return $this->renderTemplate(
 			$this->buildFacetsViewModel(
