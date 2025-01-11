@@ -45,6 +45,7 @@ class PropertyConstraints {
 	}
 
 	/**
+	 * TODO: is this always string?
 	 * @return string[]
 	 */
 	public function getAndSelectedValues(): array {
@@ -52,6 +53,7 @@ class PropertyConstraints {
 	}
 
 	/**
+	 * TODO: is this always string?
 	 * @return string[]
 	 */
 	public function getOrSelectedValues(): array {

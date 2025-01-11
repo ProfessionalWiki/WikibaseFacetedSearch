@@ -12,7 +12,8 @@ class FacetConfig {
 	public function __construct(
 		public readonly ItemId $instanceTypeId,
 		public readonly PropertyId $propertyId,
-		public readonly FacetType $type
+		public readonly FacetType $type,
+		// TODO: type specific config array
 	) {
 	}
 

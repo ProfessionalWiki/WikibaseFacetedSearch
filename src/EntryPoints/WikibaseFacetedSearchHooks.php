@@ -17,10 +17,9 @@ use MediaWiki\Output\OutputPage;
 use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Specials\SpecialSearch;
 use MediaWiki\Title\Title;
-use ProfessionalWiki\WikibaseFacetedSearch\Persistence\ConfigJsonValidator;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\Search\Query\HasWbFacetFeature;
-use ProfessionalWiki\WikibaseFacetedSearch\Presentation\ConfigJsonErrorFormatter;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\ConfigEditPageTextBuilder;
+use ProfessionalWiki\WikibaseFacetedSearch\Presentation\ConfigJsonErrorFormatter;
 use ProfessionalWiki\WikibaseFacetedSearch\WikibaseFacetedSearchExtension;
 use SearchEngine;
 use SearchIndexField;
@@ -147,13 +146,10 @@ class WikibaseFacetedSearchHooks {
 	): void {
 		$output->addModuleStyles( 'ext.wikibase.facetedsearch.styles' );
 
-		$itemType = new ItemId( 'Q1' ); // TODO: get from search string
-		// TODO: get facet state rom search string and pass as parameter'
-
-		$url = $specialSearch->getRequest()->getFullRequestURL();
-
 		$output->addHTML(
-			WikibaseFacetedSearchExtension::getInstance()->newFacetUiBuilder()->createHtml( $itemType, $url )
+			WikibaseFacetedSearchExtension::getInstance()->getUiBuilder()->createHtml(
+				currentUrl: $specialSearch->getRequest()->getFullRequestURL()
+			)
 		);
 	}
 
