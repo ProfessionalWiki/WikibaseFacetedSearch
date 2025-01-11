@@ -2,7 +2,11 @@
 	Codex - Accordion component
 	@see https://doc.wikimedia.org/codex/v1.14.0/components/demos/accordion.html#markup-structure
 }}
-<details class="wikibase-faceted-search__facet cdx-accordion" {{#expanded}}open{{/expanded}}>
+<details
+	class="wikibase-faceted-search__facet cdx-accordion"
+	{{#expanded}}open{{/expanded}}
+	data-property-id="{{propertyId}}"
+>
 	<summary>
 		<div class="cdx-accordion__header">
 			<span class="cdx-accordion__header__title">{{label}}</span>

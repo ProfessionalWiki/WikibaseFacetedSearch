@@ -9,6 +9,9 @@ use MediaWiki\Html\TemplateParser;
 use MediaWiki\Parser\Sanitizer;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetType;
+use ProfessionalWiki\WikibaseFacetedSearch\Application\PropertyConstraints;
+use ProfessionalWiki\WikibaseFacetedSearch\Application\QueryStringParser;
+use ProfessionalWiki\WikibaseFacetedSearch\Application\SearchUrlBuilder;
 use RuntimeException;
 use Wikibase\DataModel\Entity\ItemId;
 
@@ -17,9 +20,14 @@ class FacetUiBuilder {
 	/** @var array<string, string> */
 	private array $facetTemplates = [];
 
+	/** @var array<string, PropertyConstraints> */
+	private array $constraints = [];
+
 	public function __construct(
 		private readonly TemplateParser $parser,
-		private readonly Config $config // TODO: use
+		private readonly QueryStringParser $queryStringParser,
+		private readonly SearchUrlBuilder $searchUrlBuilder,
+		private readonly Config $config, // TODO: use
 	) {
 		// TODO: Perhaps we should do a map for template name and FacetType
 		// TODO: Should this go into FacetType?
@@ -31,8 +39,13 @@ class FacetUiBuilder {
 
 	// TODO: parameter or constructor argument: values and counts (from https://github.com/ProfessionalWiki/WikibaseFacetedSearch/issues/23)
 	// TODO: parameter: selected values (from QueryStringParser https://github.com/ProfessionalWiki/WikibaseFacetedSearch/issues/31)
-	public function createHtml( ItemId $itemType ): string {
+	public function createHtml( ItemId $itemType, string $url ): string {
 		$this->config->getFacetConfigForInstanceType( $itemType );
+
+		$this->searchUrlBuilder->setUrl( $url );
+
+		$query = $this->queryStringParser->parse( $this->searchUrlBuilder->getUrlQuery()['search'] );
+		$this->constraints = $query->getConstraintsPerProperty();
 
 		return $this->parser->processTemplate(
 			'Facets',
@@ -49,30 +62,34 @@ class FacetUiBuilder {
 	 * @return array<array<string, mixed>>
 	 */
 	private function facetsToViewModel( /* TODO: parameters */ ): array {
+		// TODO: Derive label from propertyId
 		return [
 			[
 				'label' => 'Author',
+				'propertyId' => 'P100',
 				'type' => FacetType::LIST->value,
 				'values-html' => $this->getItemsHtml(
-					$this->getExampleListItems(), FacetType::LIST->value, 'Author'
+					$this->getExampleListItems(), FacetType::LIST->value, 'P100'
 				),
 				'expanded' => true,
 				'hasToggle' => true
 			],
 			[
 				'label' => 'Year',
+				'propertyId' => 'P200',
 				'type' => FacetType::RANGE->value,
 				'values-html' => $this->getItemsHtml(
-					[ $this->getExampleRangeItems()[0] ], FacetType::RANGE->value, 'Year'
+					[ $this->getExampleRangeItems()[0] ], FacetType::RANGE->value, 'P200'
 				),
 				'expanded' => true,
 				'hasToggle' => false
 			],
 			[
 				'label' => 'Pages',
+				'propertyId' => 'P300',
 				'type' => FacetType::RANGE->value,
 				'values-html' => $this->getItemsHtml(
-					[ $this->getExampleRangeItems()[1] ], FacetType::RANGE->value, 'Pages'
+					[ $this->getExampleRangeItems()[1] ], FacetType::RANGE->value, 'P300'
 				),
 				'expanded' => false,
 				'hasToggle' => false
@@ -81,33 +98,30 @@ class FacetUiBuilder {
 	}
 
 	/**
-	 * @return array<array<string, mixed>>
+	 * @return array<array{label: string, count: int}>
 	 */
 	private function getExampleListItems(): array {
+		// TODO: Derive label from itemId
 		return [
 			[
-				'label' => 'Alice', // TODO: lookup of label and URL for item-id (or property-id) typed values
-				'count' => 42,
-				'url' => 'https://example.com/facet/Alice',
-				'selected' => false
+				'label' => 'Alice', // TODO: lookup of label and URL for item-id (or property-id) typed values,
+				'itemId' => 'Q100',
+				'count' => 42
 			],
 			[
 				'label' => 'Bob',
-				'count' => 23,
-				'url' => 'https://example.com/facet/Bob',
-				'selected' => true
+				'itemId' => 'Q200',
+				'count' => 23
 			],
 			[
 				'label' => 'Charlie',
-				'count' => 17,
-				'url' => 'https://example.com/facet/Charlie',
-				'selected' => false
+				'itemId' => 'Q300',
+				'count' => 17
 			],
 			[
 				'label' => 'David',
-				'count' => 9,
-				'url' => 'https://example.com/facet/David',
-				'selected' => true
+				'itemId' => 'Q400',
+				'count' => 9
 			]
 		];
 	}
@@ -134,7 +148,7 @@ class FacetUiBuilder {
 	/**
 	 * @param array<array<string, mixed>> $items
 	 */
-	private function getItemsHtml( array $items, string $type, string $facetName ): string {
+	private function getItemsHtml( array $items, string $type, string $propertyId ): string {
 		if ( $items === [] ) {
 			return '';
 		}
@@ -143,11 +157,20 @@ class FacetUiBuilder {
 			throw new InvalidArgumentException( "Missing template for facet type: $type" );
 		}
 
+		$hasConstraints = array_key_exists( $propertyId, $this->constraints );
+
 		$html = '';
 		$template = 'FacetItem' . $this->facetTemplates[$type];
 
 		foreach ( $items as $i => $item ) {
-			$item['id'] = Sanitizer::escapeIdForAttribute( htmlspecialchars( "$facetName-$i" ) );
+			$item['id'] = Sanitizer::escapeIdForAttribute( htmlspecialchars( "$propertyId-$i" ) );
+
+			// $item['itemId'] is always a string but PHPStan does not know that
+			if ( $type === FacetType::LIST->value && is_string( $item['itemId'] ) ) {
+				$item['selected'] = $hasConstraints ? $this->getFacetItemState( $propertyId, $item['itemId'] ) : false;
+				$item['url'] = $this->getFacetItemUrl( $propertyId, $item['itemId'] );
+			}
+
 			try {
 				$html .= $this->parser->processTemplate( $template, $item );
 			} catch ( RuntimeException ) {
@@ -156,6 +179,21 @@ class FacetUiBuilder {
 		}
 
 		return $html;
+	}
+
+	private function getFacetItemState( string $propertyId, string $itemId ): bool {
+		// TODO: Persist expanded state
+		// TODO: Handles other constraint values
+		return in_array( $itemId, $this->constraints[$propertyId]->getAndSelectedValues() );
+	}
+
+	private function getFacetItemUrl( string $propertyId, string $itemId ): string {
+		// TODO: Support negated value
+		$facetType = 'haswbfacet';
+		// TODO: Support OR facet
+		$facetQuery = "$facetType:$propertyId=$itemId";
+
+		return $this->searchUrlBuilder->buildUrl( $facetQuery );
 	}
 
 }
