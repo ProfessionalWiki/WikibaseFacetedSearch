@@ -22,6 +22,10 @@ class ListFacetHtmlBuilder implements FacetHtmlBuilder {
 	) {
 	}
 
+	/**
+	 * TODO: add integration smoke test
+	 * TODO: add unit tests for the logic. Likley requires some refactoring, ie making the view model accessible
+	 */
 	public function buildHtml( FacetConfig $config, PropertyConstraints $state ): string {
 		return $this->parser->processTemplate(
 			'ListFacet',

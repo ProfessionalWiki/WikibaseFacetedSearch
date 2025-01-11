@@ -18,6 +18,9 @@ class RangeFacetHtmlBuilder implements FacetHtmlBuilder {
 	) {
 	}
 
+	/**
+	 * TODO: add smoke integration test
+	 */
 	public function buildHtml( FacetConfig $config, PropertyConstraints $state ): string {
 		return $this->parser->processTemplate(
 			'RangeFacet',
