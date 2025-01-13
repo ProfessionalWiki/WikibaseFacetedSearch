@@ -27,11 +27,13 @@ class ListFacetHtmlBuilder implements FacetHtmlBuilder {
 	 * TODO: add unit tests for the logic. Likley requires some refactoring, ie making the view model accessible
 	 */
 	public function buildHtml( FacetConfig $config, PropertyConstraints $state ): string {
+		$combineWithAnd = true; // TODO: use state and config allowCombineWithChoice and defaultCombineWith
+
 		return $this->parser->processTemplate(
 			'ListFacet',
 			[
-				'hasToggle' => true, // TODO: use config allowCombineWithChoice and defaultCombineWith
-				'checkboxes' => $this->buildCheckboxesViewModel( $config, $state ),
+				'toggle' => $this->buildToggleViewModel( $config, $combineWithAnd ),
+				'checkboxes' => $this->buildCheckboxesViewModel( $config, $state, $combineWithAnd ),
 				'msg-and' => wfMessage( 'wikibase-faceted-search-and' )->text(),
 				'msg-or' => wfMessage( 'wikibase-faceted-search-or' )->text(),
 				// TODO: act on config: showNoneFilter
@@ -40,8 +42,16 @@ class ListFacetHtmlBuilder implements FacetHtmlBuilder {
 		);
 	}
 
-	private function buildCheckboxesViewModel( FacetConfig $config, PropertyConstraints $state ): array {
-		$combineWithAnd = true; // TODO: use state and config allowCombineWithChoice and defaultCombineWith
+	private function buildToggleViewModel( FacetConfig $config, bool $combineWithAnd ): array {
+		return [
+			'andSelected' => $combineWithAnd,
+			'andDisabled' => false,
+			'orSelected' => !$combineWithAnd,
+			'orDisabled' => true,
+		];
+	}
+
+	private function buildCheckboxesViewModel( FacetConfig $config, PropertyConstraints $state, bool $combineWithAnd ): array {
 		$selectedValues = $combineWithAnd ? $state->getAndSelectedValues() : $state->getOrSelectedValues();
 
 		$checkboxes = [];
