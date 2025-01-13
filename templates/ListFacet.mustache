@@ -1,21 +1,25 @@
 {{#toggle}}
 	<div class="wikibase-faceted-search__facet-toggle">
-		<a class="wikibase-faceted-search__cdx-button-link" href="">
-			<button 
-				class="cdx-button {{#andSelected}}cdx-button--action-progressive cdx-button--weight-primary{{/andSelected}}"
-				{{#andDisabled}}disabled{{/andDisabled}}
-			>
-				{{msg-and}}
-			</button>
-		</a>
-		<a class="wikibase-faceted-search__cdx-button-link" href="">
-			<button
-				class="cdx-button {{#orSelected}}cdx-button--action-progressive cdx-button--weight-primary{{/orSelected}}"
-				{{#orDisabled}}disabled{{/orDisabled}}
-			>
-				{{msg-or}}
-			</button>
-		</a>
+		{{#and}}
+			<a class="wikibase-faceted-search__cdx-button-link" href="">
+				<button 
+					class="cdx-button {{#selected}}cdx-button--action-progressive cdx-button--weight-primary{{/selected}}"
+					{{#disabled}}disabled{{/disabled}}
+				>
+					{{label}}
+				</button>
+			</a>
+		{{/and}}
+		{{#or}}
+			<a class="wikibase-faceted-search__cdx-button-link" href="">
+				<button
+					class="cdx-button {{#selected}}cdx-button--action-progressive cdx-button--weight-primary{{/selected}}"
+					{{#disabled}}disabled{{/disabled}}
+				>
+					{{label}}
+				</button>
+			</a>
+		{{/or}}
 	</div>
 {{/toggle}}
 

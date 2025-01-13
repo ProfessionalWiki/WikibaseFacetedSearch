@@ -34,8 +34,6 @@ class ListFacetHtmlBuilder implements FacetHtmlBuilder {
 			[
 				'toggle' => $this->buildToggleViewModel( $config, $state, $combineWithAnd ),
 				'checkboxes' => $this->buildCheckboxesViewModel( $config, $state, $combineWithAnd ),
-				'msg-and' => wfMessage( 'wikibase-faceted-search-and' )->text(),
-				'msg-or' => wfMessage( 'wikibase-faceted-search-or' )->text(),
 				// TODO: act on config: showNoneFilter
 				// TODO: act on config: showAnyFilter
 			]
@@ -43,16 +41,22 @@ class ListFacetHtmlBuilder implements FacetHtmlBuilder {
 	}
 
 	/**
-	 * @return array<string, bool>
+	 * @return array<array<string, mixed>>
 	 */
 	private function buildToggleViewModel( FacetConfig $config, PropertyConstraints $state, bool $combineWithAnd ): array {
 		$disabled = true; // TODO: use state and config allowCombineWithChoice
 
 		return [
-			'andSelected' => $combineWithAnd,
-			'andDisabled' => $combineWithAnd ? false : $disabled,
-			'orSelected' => !$combineWithAnd,
-			'orDisabled' => !$combineWithAnd ? false : $disabled,
+			'and' => [
+				'label' => wfMessage( 'wikibase-faceted-search-and' )->text(),
+				'selected' => $combineWithAnd,
+				'disabled' => $combineWithAnd ? false : $disabled
+			],
+			'or' => [
+				'label' => wfMessage( 'wikibase-faceted-search-or' )->text(),
+				'selected' => !$combineWithAnd,
+				'disabled' => !$combineWithAnd ? false : $disabled
+			]
 		];
 	}
 
