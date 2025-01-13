@@ -27,7 +27,7 @@ class ListFacetHtmlBuilder implements FacetHtmlBuilder {
 	 * TODO: add unit tests for the logic. Likley requires some refactoring, ie making the view model accessible
 	 */
 	public function buildHtml( FacetConfig $config, PropertyConstraints $state ): string {
-		$combineWithAnd = true; // TODO: use state and config allowCombineWithChoice and defaultCombineWith
+		$combineWithAnd = true; // TODO: use state and config defaultCombineWith
 
 		return $this->parser->processTemplate(
 			'ListFacet',
@@ -43,11 +43,13 @@ class ListFacetHtmlBuilder implements FacetHtmlBuilder {
 	}
 
 	private function buildToggleViewModel( FacetConfig $config, bool $combineWithAnd ): array {
+		$disabled = true; // TODO: use state and config allowCombineWithChoice
+
 		return [
 			'andSelected' => $combineWithAnd,
-			'andDisabled' => false,
+			'andDisabled' => $combineWithAnd ? false : $disabled,
 			'orSelected' => !$combineWithAnd,
-			'orDisabled' => true,
+			'orDisabled' => !$combineWithAnd ? false : $disabled,
 		];
 	}
 
