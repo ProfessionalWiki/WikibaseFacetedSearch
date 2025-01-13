@@ -12,7 +12,6 @@ use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetType;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\InstanceTypeExtractor;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\ItemPageLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\QueryStringParser;
-use ProfessionalWiki\WikibaseFacetedSearch\Application\SearchUrlBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\StatementListTranslator;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\StatementsLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\StatementTranslator;
@@ -114,12 +113,6 @@ class WikibaseFacetedSearchExtension {
 			engine:	$engine,
 			config: $this->getConfig(),
 			dataTypeLookup: WikibaseRepo::getPropertyDataTypeLookup()
-		);
-	}
-
-	public function newSearchUrlBuilder(): SearchUrlBuilder {
-		return new SearchUrlBuilder(
-			urlUtils: MediaWikiServices::getInstance()->getUrlUtils()
 		);
 	}
 
