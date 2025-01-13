@@ -50,11 +50,15 @@ class ListFacetHtmlBuilder implements FacetHtmlBuilder {
 			'and' => [
 				'label' => wfMessage( 'wikibase-faceted-search-and' )->text(),
 				'selected' => $combineWithAnd,
+				// TODO: Remove the ignore when dynamic value for $combineWithAnd is implemented
+				// @phpstan-ignore ternary.alwaysTrue
 				'disabled' => $combineWithAnd === true ? false : $disabled
 			],
 			'or' => [
 				'label' => wfMessage( 'wikibase-faceted-search-or' )->text(),
 				'selected' => !$combineWithAnd,
+				// TODO: Remove the ignore when dynamic value for $combineWithAnd is implemented
+				// @phpstan-ignore ternary.alwaysTrue
 				'disabled' => $combineWithAnd === false ? false : $disabled
 			]
 		];
