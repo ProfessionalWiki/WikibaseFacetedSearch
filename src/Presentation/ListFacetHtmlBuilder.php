@@ -50,12 +50,12 @@ class ListFacetHtmlBuilder implements FacetHtmlBuilder {
 			'and' => [
 				'label' => wfMessage( 'wikibase-faceted-search-and' )->text(),
 				'selected' => $combineWithAnd,
-				'disabled' => !$combineWithAnd && $disabled
+				'disabled' => !$combineWithAnd || $disabled
 			],
 			'or' => [
 				'label' => wfMessage( 'wikibase-faceted-search-or' )->text(),
 				'selected' => !$combineWithAnd,
-				'disabled' => $combineWithAnd && $disabled
+				'disabled' => $combineWithAnd || $disabled
 			]
 		];
 	}
