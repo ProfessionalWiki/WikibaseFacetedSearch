@@ -89,6 +89,11 @@
 				"CdxTextInput"
 			]
 		},
+		"ext.wikibase.facetedsearch": {
+			"packageFiles": [
+				"ext.wikibase.facetedsearch.js"
+			]
+		},
 		"ext.wikibase.facetedsearch.docs.styles": {
 			"styles": [
 				"ext.wikibase.facetedsearch.docs.less"
