@@ -25,11 +25,11 @@ class UiBuilder {
 	/**
 	 * TODO: add integration tests
 	 */
-	public function createHtml( string $currentUrl ): string {
+	public function createHtml( string $searchQuery ): string {
 		return $this->renderTemplate(
 			$this->buildFacetsViewModel(
 				itemType: new ItemId( 'Q5976449' ), // TODO: get from search string
-				query: $this->parseQuery( $currentUrl )
+				query: $this->parseQuery( $searchQuery )
 			)
 		);
 	}
@@ -44,8 +44,8 @@ class UiBuilder {
 		);
 	}
 
-	private function parseQuery( string $url ): Query {
-		return $this->queryStringParser->parse( $url ); // TODO: give it only the query, which is what it expects
+	private function parseQuery( string $searchQuery ): Query {
+		return $this->queryStringParser->parse( $searchQuery );
 	}
 
 	private function buildFacetsViewModel( ItemId $itemType, Query $query ): array {
