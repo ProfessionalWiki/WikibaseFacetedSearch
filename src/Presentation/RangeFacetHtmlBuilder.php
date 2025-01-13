@@ -22,13 +22,18 @@ class RangeFacetHtmlBuilder implements FacetHtmlBuilder {
 	 * TODO: add smoke integration test
 	 */
 	public function buildHtml( FacetConfig $config, PropertyConstraints $state ): string {
+		$currentMin = $state->getInclusiveMinimum();
+		$currentMax = $state->getInclusiveMaximum();
+
 		return $this->parser->processTemplate(
 			'RangeFacet',
 			[
 				'msg-min' => wfMessage( 'wikibase-faceted-search-facet-range-min' )->text(),
 				'msg-max' => wfMessage( 'wikibase-faceted-search-facet-range-max' )->text(),
-				'current-min' => $state->getInclusiveMinimum(),
-				'current-max' => $state->getInclusiveMaximum(),
+				'msg-apply' => wfMessage( 'wikibase-faceted-search-facet-apply' )->text(),
+				'current-min' => $currentMin,
+				'current-max' => $currentMax,
+				'disabled' => $currentMin === null || $currentMax === null
 			]
 		);
 	}
