@@ -42,6 +42,9 @@ class ListFacetHtmlBuilder implements FacetHtmlBuilder {
 		);
 	}
 
+	/**
+	 * @return array<string, bool>
+	 */
 	private function buildToggleViewModel( FacetConfig $config, PropertyConstraints $state, bool $combineWithAnd ): array {
 		$disabled = true; // TODO: use state and config allowCombineWithChoice
 
