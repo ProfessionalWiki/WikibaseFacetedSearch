@@ -32,8 +32,7 @@ class RangeFacetHtmlBuilder implements FacetHtmlBuilder {
 				'msg-max' => wfMessage( 'wikibase-faceted-search-facet-range-max' )->text(),
 				'msg-apply' => wfMessage( 'wikibase-faceted-search-facet-apply' )->text(),
 				'current-min' => $currentMin,
-				'current-max' => $currentMax,
-				'disabled' => $currentMin === null || $currentMax === null
+				'current-max' => $currentMax
 			]
 		);
 	}
