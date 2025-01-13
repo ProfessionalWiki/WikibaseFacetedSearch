@@ -148,7 +148,7 @@ class WikibaseFacetedSearchHooks {
 
 		$output->addHTML(
 			WikibaseFacetedSearchExtension::getInstance()->getUiBuilder()->createHtml(
-				currentUrl: $specialSearch->getRequest()->getFullRequestURL()
+				searchQuery: $term
 			)
 		);
 	}
