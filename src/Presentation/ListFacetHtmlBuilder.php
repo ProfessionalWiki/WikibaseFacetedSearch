@@ -51,8 +51,6 @@ class ListFacetHtmlBuilder implements FacetHtmlBuilder {
 				'label' => $valueCount->value,
 				'count' => $valueCount->count, // FIXME: count is now showing in the UI for some reason
 				'checked' => in_array( $valueCount->value, $selectedValues ), // TODO: test with multiple types of values
-				'link' => 'TODO', // TODO: remove link. Perhaps add some data-attribute (though currently "label" already gets the value)
-
 				// TODO: can't we escape this in the template?
 				// https://github.com/ProfessionalWiki/WikibaseFacetedSearch/pull/95#discussion_r1912980729
 				'id' => Sanitizer::escapeIdForAttribute( htmlspecialchars( $state->propertyId->getSerialization() . "-$i" ) ),
