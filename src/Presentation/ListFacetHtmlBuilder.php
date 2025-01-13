@@ -44,18 +44,18 @@ class ListFacetHtmlBuilder implements FacetHtmlBuilder {
 	 * @return array<array<string, mixed>>
 	 */
 	private function buildToggleViewModel( FacetConfig $config, PropertyConstraints $state, bool $combineWithAnd ): array {
-		$disabled = true; // TODO: use state and config allowCombineWithChoice
+		// $disabled = true; // TODO: use state and config allowCombineWithChoice
 
 		return [
 			'and' => [
 				'label' => wfMessage( 'wikibase-faceted-search-and' )->text(),
 				'selected' => $combineWithAnd,
-				'disabled' => !$combineWithAnd && $disabled
+				'disabled' => false //!$combineWithAnd && $disabled
 			],
 			'or' => [
 				'label' => wfMessage( 'wikibase-faceted-search-or' )->text(),
 				'selected' => !$combineWithAnd,
-				'disabled' => $combineWithAnd && $disabled
+				'disabled' => true // $combineWithAnd && $disabled
 			]
 		];
 	}
