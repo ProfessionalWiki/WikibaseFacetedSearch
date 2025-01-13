@@ -54,6 +54,7 @@ class ListFacetHtmlBuilder implements FacetHtmlBuilder {
 				'link' => 'TODO', // TODO: link values (probably need new collaborator for URL stuff, see SearchUrlBuilder)
 
 				// TODO: can't we escape this in the template?
+				// https://github.com/ProfessionalWiki/WikibaseFacetedSearch/pull/95#discussion_r1912980729
 				'id' => Sanitizer::escapeIdForAttribute( htmlspecialchars( $state->propertyId->getSerialization() . "-$i" ) ),
 			];
 		}
