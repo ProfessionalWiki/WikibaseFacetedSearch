@@ -32,7 +32,7 @@ class ListFacetHtmlBuilder implements FacetHtmlBuilder {
 		return $this->parser->processTemplate(
 			'ListFacet',
 			[
-				'toggle' => $this->buildToggleViewModel( $config, $combineWithAnd ),
+				'toggle' => $this->buildToggleViewModel( $config, $state, $combineWithAnd ),
 				'checkboxes' => $this->buildCheckboxesViewModel( $config, $state, $combineWithAnd ),
 				'msg-and' => wfMessage( 'wikibase-faceted-search-and' )->text(),
 				'msg-or' => wfMessage( 'wikibase-faceted-search-or' )->text(),
