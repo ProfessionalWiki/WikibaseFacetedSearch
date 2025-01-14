@@ -20,15 +20,47 @@ function init() {
  * @param {Event} event - The change event from the checkbox.
  */
 function onCheckboxItemChange( event ) {
-	const checkbox = event.currentTarget;
-	const queryType = 'haswbfacet';
-	const valueId = checkbox.dataset.valueId;
-	const facet = checkbox.closest( '.wikibase-faceted-search__facet' );
-	const propertyId = facet.dataset.propertyId;
+	const facet = event.currentTarget.closest( '.wikibase-faceted-search__facet' );
+	submitSearchForm( buildQueryString( input.value, facet ) );
+}
 
-	// TODO: Implement support for inverse queries
-	// TODO: Implement support for OR queries
-	submitSearchForm( `${ queryType }:${ propertyId }=${ valueId }` );
+function buildQueryString( oldQuery, facet ) {
+	if ( !facet ) {
+		return oldQuery;
+	}
+
+	const propertyId = facet.dataset.propertyId;
+	if ( !propertyId ) {
+		return oldQuery;
+	}
+
+	let queries = oldQuery.split( /\s+/ );
+	const patternToRemove = new RegExp( `^(haswbfacet|\\-haswbfacet):${ propertyId }(=|>=|<=)` );
+	queries = queries.filter( ( item ) => !patternToRemove.test( item ) );
+
+	const facetItems = facet.querySelectorAll( '.wikibase-faceted-search__facet-item' );
+	if ( !facetItems ) {
+		return oldQuery;
+	}
+
+	facetItems.forEach( ( facetItem ) => {
+		const value = facetItem.dataset.valueId;
+		if ( !value ) {
+			return;
+		}
+
+		// TODO: Support range facets
+		const checkbox = facetItem.querySelector( '.cdx-checkbox__input' );
+		if ( !checkbox || !checkbox.checked ) {
+			return;
+		}
+
+		// TODO: Implement support for inverse queries
+		// TODO: Implement support for OR queries
+		queries.push( `haswbfacet:${ propertyId }=${ value }` );
+	} );
+
+	return queries.join( ' ' );
 }
 
 /**
@@ -37,15 +69,7 @@ function onCheckboxItemChange( event ) {
  * @param {string} query The query to add to/remove from the search form.
  */
 function submitSearchForm( query ) {
-	// Check if the query is already in the search input field
-	if ( input.value.indexOf( query ) > -1 ) {
-		// If it is, remove it from the query
-		input.value = input.value.replace( query, '' ).trim();
-	} else {
-		// If it's not, append it to the query
-		input.value += ` ${ query }`;
-	}
-
+	input.value = query;
 	// Submit the search form
 	input.form.submit();
 }
