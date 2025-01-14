@@ -24,6 +24,14 @@ function onCheckboxItemChange( event ) {
 	submitSearchForm( buildQueryString( input.value, facet ) );
 }
 
+/**
+ * Builds a new query string from the given old query and facet.
+ *
+ * @param {string} oldQuery The original query string.
+ * @param {HTMLElement} facet The facet element.
+ *
+ * @return {string} The new query string.
+ */
 function buildQueryString( oldQuery, facet ) {
 	if ( !facet ) {
 		return oldQuery;
@@ -34,29 +42,20 @@ function buildQueryString( oldQuery, facet ) {
 		return oldQuery;
 	}
 
-	let queries = oldQuery.split( /\s+/ );
-	const patternToRemove = new RegExp( `^(haswbfacet|\\-haswbfacet):${ propertyId }(=|>=|<=)` );
-	queries = queries.filter( ( item ) => !patternToRemove.test( item ) );
+	// Remove existing facet filters for the same property ID
+	const queries = oldQuery.split( /\s+/ ).filter(
+		( item ) => !new RegExp( `^(haswbfacet|\\-haswbfacet):${ propertyId }(=|>=|<=)` ).test( item )
+	);
 
-	const facetItems = facet.querySelectorAll( '.wikibase-faceted-search__facet-item' );
-	if ( !facetItems ) {
-		return oldQuery;
-	}
-
-	facetItems.forEach( ( facetItem ) => {
+	// Add selected facet items to the query string
+	[ ...facet.querySelectorAll( '.wikibase-faceted-search__facet-item' ) ].forEach( ( facetItem ) => {
 		const value = facetItem.dataset.valueId;
-		if ( !value ) {
-			return;
-		}
-
-		// TODO: Support range facets
 		const checkbox = facetItem.querySelector( '.cdx-checkbox__input' );
-		if ( !checkbox || !checkbox.checked ) {
+		if ( !value || !checkbox ) {
 			return;
 		}
-
-		// TODO: Implement support for inverse queries
-		// TODO: Implement support for OR queries
+		// TODO: Support range facet and other operators
+		// TODO: Support OR values
 		queries.push( `haswbfacet:${ propertyId }=${ value }` );
 	} );
 
