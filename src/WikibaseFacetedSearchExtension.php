@@ -104,7 +104,7 @@ class WikibaseFacetedSearchExtension {
 		);
 	}
 
-	private function getTemplateParser(): TemplateParser {
+	public function getTemplateParser(): TemplateParser {
 		return new TemplateParser( __DIR__ . '/../templates' );
 	}
 

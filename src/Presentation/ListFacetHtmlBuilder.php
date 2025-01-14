@@ -24,20 +24,27 @@ class ListFacetHtmlBuilder implements FacetHtmlBuilder {
 
 	/**
 	 * TODO: add integration smoke test
-	 * TODO: add unit tests for the logic. Likley requires some refactoring, ie making the view model accessible
+	 * TODO: add unit tests for the logic
 	 */
 	public function buildHtml( FacetConfig $config, PropertyConstraints $state ): string {
-		$combineWithAnd = true; // TODO: use state and config defaultCombineWith
-
 		return $this->parser->processTemplate(
 			'ListFacet',
-			[
-				'toggle' => $this->buildToggleViewModel( $config, $state, $combineWithAnd ),
-				'checkboxes' => $this->buildCheckboxesViewModel( $config, $state, $combineWithAnd ),
-				// TODO: act on config: showNoneFilter
-				// TODO: act on config: showAnyFilter
-			]
+			$this->buildViewModel( $config, $state )
 		);
+	}
+
+	/**
+	 * @return array<string, mixed>
+	 */
+	public function buildViewModel( FacetConfig $config, PropertyConstraints $state ): array {
+		$combineWithAnd = true; // TODO: use state and config defaultCombineWith
+
+		return [
+			'toggle' => $this->buildToggleViewModel( $config, $state, $combineWithAnd ),
+			'checkboxes' => $this->buildCheckboxesViewModel( $config, $state, $combineWithAnd ),
+			// TODO: act on config: showNoneFilter
+			// TODO: act on config: showAnyFilter
+		];
 	}
 
 	/**
