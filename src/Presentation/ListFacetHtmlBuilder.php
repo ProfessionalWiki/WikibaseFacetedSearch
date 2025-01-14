@@ -22,10 +22,6 @@ class ListFacetHtmlBuilder implements FacetHtmlBuilder {
 	) {
 	}
 
-	/**
-	 * TODO: add integration smoke test
-	 * TODO: add unit tests for the logic
-	 */
 	public function buildHtml( FacetConfig $config, PropertyConstraints $state ): string {
 		return $this->parser->processTemplate(
 			'ListFacet',
