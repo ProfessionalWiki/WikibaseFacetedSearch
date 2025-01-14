@@ -51,7 +51,7 @@ function buildQueryString( oldQuery, facet ) {
 	[ ...facet.querySelectorAll( '.wikibase-faceted-search__facet-item' ) ].forEach( ( facetItem ) => {
 		const value = facetItem.dataset.valueId;
 		const checkbox = facetItem.querySelector( '.cdx-checkbox__input' );
-		if ( !value || !checkbox ) {
+		if ( !value || !checkbox || !checkbox.checked ) {
 			return;
 		}
 		// TODO: Support range facet and other operators
