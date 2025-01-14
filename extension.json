@@ -85,7 +85,6 @@
 				"CdxButton",
 				"CdxCheckbox",
 				"CdxField",
-				"CdxRadio",
 				"CdxTextInput"
 			]
 		},
