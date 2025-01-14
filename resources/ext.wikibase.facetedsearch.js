@@ -45,10 +45,7 @@ function buildQueryString( oldQuery, facet ) {
 		return oldQuery;
 	}
 
-	// Remove existing facet filters for the same property ID
-	const queries = oldQuery.split( /\s+/ ).filter(
-		( item ) => !new RegExp( `^(haswbfacet|\\-haswbfacet):${ propertyId }(=|>=|<=)` ).test( item )
-	);
+	const queries = getFilteredQueries( oldQuery, propertyId );
 
 	// Add selected facet items to the query string
 	[ ...facet.querySelectorAll( '.wikibase-faceted-search__facet-item' ) ].forEach( ( facetItem ) => {
@@ -62,6 +59,20 @@ function buildQueryString( oldQuery, facet ) {
 	} );
 
 	return queries.join( ' ' );
+}
+
+/**
+ * Filters out queries that already include the given property ID
+ *
+ * @param {string} query The query string to filter.
+ * @param {string} propertyId The property ID to filter out.
+ *
+ * @return {string[]} The filtered queries.
+ */
+function getFilteredQueries( query, propertyId ) {
+	return query.split( /\s+/ ).filter(
+		( item ) => !new RegExp( `^(haswbfacet|\\-haswbfacet):${ propertyId }(=|>=|<=)` ).test( item )
+	);
 }
 
 /**
