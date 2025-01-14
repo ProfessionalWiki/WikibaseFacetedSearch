@@ -75,7 +75,7 @@ class ListFacetHtmlBuilder implements FacetHtmlBuilder {
 		foreach ( $this->getValuesAndCounts( $config ) as $i => $valueCount ) {
 			$checkboxes[] = [
 				'label' => $valueCount->value,
-				'count' => $valueCount->count, // FIXME: count is now showing in the UI for some reason
+				'count' => $valueCount->count,
 				'checked' => in_array( $valueCount->value, $selectedValues ), // TODO: test with multiple types of values
 				'value-id' => $valueCount->value,
 				// TODO: can't we escape this in the template?

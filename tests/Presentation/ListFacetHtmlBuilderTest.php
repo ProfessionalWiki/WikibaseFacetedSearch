@@ -46,15 +46,8 @@ class ListFacetHtmlBuilderTest extends TestCase {
 		);
 	}
 
-	public function testCreatesCheckboxesViewModel(): void {
-		$viewModel = $this->newListFacetHtmlBuilder()->buildViewModel(
-			config: new FacetConfig(
-				instanceTypeId: new ItemId( 'Q123' ),
-				propertyId: new NumericPropertyId( 'P42' ),
-				type: FacetType::LIST
-			),
-			state: new PropertyConstraints( propertyId: new NumericPropertyId( 'P42' ) )
-		);
+	public function testCheckboxesViewModelContainsAllValues(): void {
+		$viewModel = $this->buildViewModel();
 
 		$this->assertArrayHasKey( 'checkboxes', $viewModel );
 		$this->assertIsArray( $viewModel['checkboxes'] );
@@ -62,6 +55,25 @@ class ListFacetHtmlBuilderTest extends TestCase {
 		$this->assertSame( StubValueCounter::SECOND_VALUE, $viewModel['checkboxes'][1]['label'] );
 		$this->assertSame( StubValueCounter::THIRD_VALUE, $viewModel['checkboxes'][2]['label'] );
 		$this->assertCount( 3, $viewModel['checkboxes'] );
+	}
+
+	private function buildViewModel(): array {
+		return $this->newListFacetHtmlBuilder()->buildViewModel(
+			config: new FacetConfig(
+				instanceTypeId: new ItemId( 'Q123' ),
+				propertyId: new NumericPropertyId( 'P42' ),
+				type: FacetType::LIST
+			),
+			state: new PropertyConstraints( propertyId: new NumericPropertyId( 'P42' ) )
+		);
+	}
+
+	public function testCheckboxesViewModelContainsAllCounts(): void {
+		$viewModel = $this->buildViewModel();
+
+		$this->assertSame( StubValueCounter::FIRST_COUNT, $viewModel['checkboxes'][0]['count'] );
+		$this->assertSame( StubValueCounter::SECOND_COUNT, $viewModel['checkboxes'][1]['count'] );
+		$this->assertSame( StubValueCounter::THIRD_COUNT, $viewModel['checkboxes'][2]['count'] );
 	}
 
 }
