@@ -6,31 +6,34 @@ namespace ProfessionalWiki\WikibaseFacetedSearch\Tests\Persistence;
 
 use PHPUnit\Framework\TestCase;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
-use ProfessionalWiki\WikibaseFacetedSearch\Persistence\ItemPageLookupFactory;
-use ProfessionalWiki\WikibaseFacetedSearch\Persistence\NullItemPageLookup;
-use ProfessionalWiki\WikibaseFacetedSearch\Persistence\SitelinkItemPageLookup;
+use ProfessionalWiki\WikibaseFacetedSearch\Persistence\PageItemLookupFactory;
+use ProfessionalWiki\WikibaseFacetedSearch\Persistence\NullPageItemLookup;
+use ProfessionalWiki\WikibaseFacetedSearch\Persistence\SitelinkPageItemLookup;
+use Wikibase\Lib\Store\HashSiteLinkStore;
 
 /**
- * @covers \ProfessionalWiki\WikibaseFacetedSearch\Persistence\ItemPageLookupFactory
+ * @covers \ProfessionalWiki\WikibaseFacetedSearch\Persistence\PageItemLookupFactory
  */
 class ItemPageLookupFactoryTest extends TestCase {
 
 	public function testReturnsNullItemPageLookupWhenNoSiteIdIsConfigured(): void {
-		$factory = new ItemPageLookupFactory(
-			new Config()
+		$factory = new PageItemLookupFactory(
+			config: new Config(),
+			sitelinkLookup: new HashSiteLinkStore()
 		);
 
-		$this->assertInstanceOf( NullItemPageLookup::class, $factory->newItemPageLookup() );
+		$this->assertInstanceOf( NullPageItemLookup::class, $factory->newPageItemLookup() );
 	}
 
 	public function testReturnsSitelinkItemPageLookupWhenSiteIdIsConfigured(): void {
-		$factory = new ItemPageLookupFactory(
+		$factory = new PageItemLookupFactory(
 			new Config(
 				linkTargetSitelinkSiteId: 'enwiki'
-			)
+			),
+			sitelinkLookup: new HashSiteLinkStore()
 		);
 
-		$this->assertInstanceOf( SitelinkItemPageLookup::class, $factory->newItemPageLookup() );
+		$this->assertInstanceOf( SitelinkPageItemLookup::class, $factory->newPageItemLookup() );
 	}
 
 }

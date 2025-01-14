@@ -9,10 +9,8 @@ use CirrusSearch\Query\KeywordFeature;
 use CirrusSearch\SearchConfig;
 use HtmlArmor;
 use MediaWiki\Content\ContentHandler;
-use MediaWiki\Context\IContextSource;
 use MediaWiki\EditPage\EditPage;
 use MediaWiki\Html\Html;
-use MediaWiki\Language\Language;
 use MediaWiki\Output\OutputPage;
 use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Specials\SpecialSearch;
@@ -25,12 +23,6 @@ use SearchEngine;
 use SearchIndexField;
 use SearchResult;
 use Skin;
-use Wikibase\DataModel\Entity\ItemId;
-use Wikibase\DataModel\Term\TermFallback;
-use Wikibase\Lib\Store\LanguageFallbackLabelDescriptionLookup;
-use Wikibase\Repo\Hooks\Formatters\EntityLinkFormatter;
-use Wikibase\Repo\WikibaseRepo;
-use Wikibase\Search\Elastic\EntityResult;
 use WikiPage;
 
 class WikibaseFacetedSearchHooks {
@@ -49,94 +41,16 @@ class WikibaseFacetedSearchHooks {
 		array &$query,
 		array &$attributes
 	): void {
-		$itemId = self::getItemId( $title );
+		$itemId = WikibaseFacetedSearchExtension::getInstance()->getPageItemLookup()->getItemId( $result->getTitle() );
 
 		if ( $itemId === null ) {
 			return;
 		}
 
-		$pageTitle = self::getItemPage( $itemId );
-
-		if ( $pageTitle === null ) {
-			return;
-		}
-
-		$title = $pageTitle;
-
-		if ( !( $result instanceof EntityResult ) ) {
-			self::rewriteLinkForNonEntityResult(
-				self::newLabelDescriptionLookup( $specialSearch->getContext() ),
-				self::newLinkFormatter( $specialSearch->getLanguage() ),
-				$itemId,
-				$titleSnippet,
-				$attributes
-			);
-		}
-	}
-
-	private static function getItemId( Title $title ): ?ItemId {
-		$entityId = WikibaseRepo::getEntityIdLookup()->getEntityIdForTitle( $title );
-
-		if ( $entityId instanceof ItemId ) {
-			return $entityId;
-		}
-
-		return null;
-	}
-
-	private static function getItemPage( ItemId $itemId ): ?Title {
-		return WikibaseFacetedSearchExtension::getInstance()->getItemPageLookup()->getPageTitle( $itemId );
-	}
-
-	private static function newLinkFormatter( Language $language ): EntityLinkFormatter {
-		return WikibaseRepo::getEntityLinkFormatterFactory()->getDefaultLinkFormatter( $language );
-	}
-
-	private static function newLabelDescriptionLookup( IContextSource $context ): LanguageFallbackLabelDescriptionLookup {
-		return new LanguageFallbackLabelDescriptionLookup(
-			WikibaseRepo::getTermLookup(),
-			WikibaseRepo::getLanguageFallbackChainFactory()->newFromContext( $context )
-		);
-	}
-
-	/**
-	 * @param string[] $attributes
-	 */
-	private static function rewriteLinkForNonEntityResult(
-		LanguageFallbackLabelDescriptionLookup $labelDescriptionLookup,
-		EntityLinkFormatter $linkFormatter,
-		ItemId $itemId,
-		string|HtmlArmor|null &$titleSnippet,
-		array &$attributes
-	): void {
-		$labelData = self::termFallbackToTermData(
-			$labelDescriptionLookup->getLabel( $itemId )
-		);
-		$descriptionData = self::termFallbackToTermData(
-			$labelDescriptionLookup->getDescription( $itemId )
-		);
-
-		$titleSnippet = new HtmlArmor( $linkFormatter->getHtml( $itemId, $labelData ) );
-
-		$attributes['title'] = $linkFormatter->getTitleAttribute(
-			$itemId,
-			$labelData,
-			$descriptionData
-		);
-	}
-
-	/**
-	 * @return string[]|null
-	 */
-	private static function termFallbackToTermData( ?TermFallback $term = null ): ?array {
-		if ( $term ) {
-			return [
-				'value' => $term->getText(),
-				'language' => $term->getActualLanguageCode(),
-			];
-		}
-
-		return null;
+		$titleSnippet = WikibaseFacetedSearchExtension::getInstance()
+			->newLabelDescriptionLookup( $specialSearch->getLanguage() )
+			->getLabel( $itemId )
+			?->getText() ?? $titleSnippet;
 	}
 
 	public static function onSpecialSearchResultsAppend(

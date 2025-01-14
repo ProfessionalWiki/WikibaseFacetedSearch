@@ -7,8 +7,8 @@ namespace ProfessionalWiki\WikibaseFacetedSearch\Application;
 use MediaWiki\Title\Title;
 use Wikibase\DataModel\Entity\ItemId;
 
-interface ItemPageLookup {
+interface PageItemLookup {
 
-	public function getPageTitle( ItemId $itemId ): ?Title;
+	public function getItemId( Title $title ): ?ItemId;
 
 }
