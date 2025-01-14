@@ -1,4 +1,4 @@
-let input;
+let specialSearchInput;
 
 /**
  * Main entry point for the JavaScript code.
@@ -9,7 +9,7 @@ function init() {
 		return;
 	}
 
-	input = document.querySelector( '#searchText > input' );
+	specialSearchInput = document.querySelector( '#searchText > input' );
 
 	facets.addEventListener( 'change', onFacetsChange );
 }
@@ -23,7 +23,7 @@ function onFacetsChange( event ) {
 	const facet = event.target.closest( '.wikibase-faceted-search__facet' );
 	// TODO: Support range facets
 	if ( event.target.classList.contains( 'cdx-checkbox__input' ) ) {
-		submitSearchForm( buildQueryString( input.value, facet ) );
+		submitSearchForm( buildQueryString( specialSearchInput.value, facet ) );
 	}
 }
 
@@ -81,9 +81,9 @@ function getFilteredQueries( query, propertyId ) {
  * @param {string} query The query to add to/remove from the search form.
  */
 function submitSearchForm( query ) {
-	input.value = query;
+	specialSearchInput.value = query;
 	// Submit the search form
-	input.form.submit();
+	specialSearchInput.form.submit();
 }
 
 init();
