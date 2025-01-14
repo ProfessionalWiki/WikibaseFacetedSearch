@@ -44,4 +44,8 @@ class Config {
 		return $this->getFacets()->getFacetConfigForInstanceType( $instanceTypeId )->asArray();
 	}
 
+	public function getConfigForProperty( ItemId $instanceTypeId, PropertyId $propertyId ): ?FacetConfig {
+		return $this->getFacets()->getFacetConfigForInstanceType( $instanceTypeId )->getConfigForProperty( $propertyId );
+	}
+
 }

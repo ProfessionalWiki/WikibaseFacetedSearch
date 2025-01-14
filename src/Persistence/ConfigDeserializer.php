@@ -71,14 +71,17 @@ class ConfigDeserializer {
 	}
 
 	/**
-	 * TODO: defaultCombineWith, allowCombineWithChoice, showNoneFilter, showAnyFilter
 	 * @param array<string, mixed> $facetConfig
 	 */
 	private function newFacetConfig( string $itemId, string $propertyId, array $facetConfig ): FacetConfig {
+		$typeSpecificConfig = $facetConfig;
+		unset( $typeSpecificConfig['type'] );
+
 		return new FacetConfig(
 			instanceTypeId: new ItemId( $itemId ),
 			propertyId: new NumericPropertyId( $propertyId ),
-			type: FacetType::from( $facetConfig['type'] )
+			type: FacetType::from( $facetConfig['type'] ),
+			typeSpecificConfig: $typeSpecificConfig
 		);
 	}
 

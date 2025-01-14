@@ -9,11 +9,14 @@ use Wikibase\DataModel\Entity\PropertyId;
 
 class FacetConfig {
 
+	/**
+	 * @param array<string, mixed> $typeSpecificConfig
+	 */
 	public function __construct(
 		public readonly ItemId $instanceTypeId,
 		public readonly PropertyId $propertyId,
 		public readonly FacetType $type,
-		// TODO: type specific config array
+		public readonly array $typeSpecificConfig = [],
 	) {
 	}
 

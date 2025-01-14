@@ -6,16 +6,21 @@ namespace ProfessionalWiki\WikibaseFacetedSearch\Tests\Persistence;
 
 use PHPUnit\Framework\TestCase;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
+use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetConfigList;
+use ProfessionalWiki\WikibaseFacetedSearch\Persistence\ConfigDeserializer;
 use ProfessionalWiki\WikibaseFacetedSearch\Tests\Valid;
 use ProfessionalWiki\WikibaseFacetedSearch\WikibaseFacetedSearchExtension;
+use Wikibase\DataModel\Entity\ItemId;
+use Wikibase\DataModel\Entity\NumericPropertyId;
 
 /**
  * @covers \ProfessionalWiki\WikibaseFacetedSearch\Persistence\ConfigDeserializer
+ * @covers \ProfessionalWiki\WikibaseFacetedSearch\WikibaseFacetedSearchExtension
  */
 class ConfigDeserializerTest extends TestCase {
 
 	public function testValidJsonReturnsConfig(): void {
-		$deserializer = WikibaseFacetedSearchExtension::getInstance()->newConfigDeserializer();
+		$deserializer = $this->newDeserializer();
 
 		$this->assertEquals(
 			Valid::config(),
@@ -23,8 +28,12 @@ class ConfigDeserializerTest extends TestCase {
 		);
 	}
 
+	private function newDeserializer(): ConfigDeserializer {
+		return WikibaseFacetedSearchExtension::getInstance()->newConfigDeserializer();
+	}
+
 	public function testInvalidJsonReturnsEmptyConfig(): void {
-		$deserializer = WikibaseFacetedSearchExtension::getInstance()->newConfigDeserializer();
+		$deserializer = $this->newDeserializer();
 
 		$config = $deserializer->deserialize( '}{' );
 
@@ -32,7 +41,7 @@ class ConfigDeserializerTest extends TestCase {
 	}
 
 	public function testInvalidInstanceOfIdReturnsEmptyConfig(): void {
-		$deserializer = WikibaseFacetedSearchExtension::getInstance()->newConfigDeserializer();
+		$deserializer = $this->newDeserializer();
 
 		$config = $deserializer->deserialize( '{ "instanceOfId": "Q123" }' );
 
@@ -40,7 +49,7 @@ class ConfigDeserializerTest extends TestCase {
 	}
 
 	public function testInvalidFacetsReturnsEmptyConfig(): void {
-		$deserializer = WikibaseFacetedSearchExtension::getInstance()->newConfigDeserializer();
+		$deserializer = $this->newDeserializer();
 
 		$config = $deserializer->deserialize( '{ "instanceOfValues": "foo" }' );
 
@@ -48,7 +57,7 @@ class ConfigDeserializerTest extends TestCase {
 	}
 
 	public function testInvalidFacetConfigReturnsEmptyConfig(): void {
-		$deserializer = WikibaseFacetedSearchExtension::getInstance()->newConfigDeserializer();
+		$deserializer = $this->newDeserializer();
 
 		$config = $deserializer->deserialize( '
 {
@@ -66,11 +75,77 @@ class ConfigDeserializerTest extends TestCase {
 	}
 
 	private function assertCanDeserialize( string $configJson ): void {
-		$deserializer = WikibaseFacetedSearchExtension::getInstance()->newConfigDeserializer();
+		$deserializer = $this->newDeserializer();
 
 		$this->assertNotEquals(
 			new Config(),
 			$deserializer->deserialize( $configJson )
+		);
+	}
+
+	public function testDeserializesTypeSpecificConfig(): void {
+		$deserializer = $this->newDeserializer();
+
+		$config = $deserializer->deserialize( '{
+	"instanceOfValues": {
+		"Q200": {
+			"label": "Cat Pictures",
+			"facets": {
+				"P2": {
+					"type": "list"
+				},
+				"P3": {
+					"type": "list",
+					"defaultCombineWith": "OR",
+					"allowCombineWithChoice": true,
+					"showNoneFilter": true,
+					"showAnyFilter": true
+				},
+				"P4": {
+					"type": "list",
+					"defaultCombineWith": "AND"
+				}
+			}
+		}
+	}
+}
+' );
+
+		$this->assertSame(
+			[
+				'defaultCombineWith' => 'OR',
+				'allowCombineWithChoice' => true,
+				'showNoneFilter' => true,
+				'showAnyFilter' => true,
+			],
+			$config->getConfigForProperty( new ItemId( 'Q200' ), new NumericPropertyId( 'P3' ) )->typeSpecificConfig
+		);
+	}
+
+	public function testDefaultsToEmptyTypeSpecificConfig(): void {
+		$deserializer = $this->newDeserializer();
+
+		$config = $deserializer->deserialize( '{
+	"instanceOfValues": {
+		"Q200": {
+			"label": "Cat Pictures",
+			"facets": {
+				"P2": {
+					"type": "list"
+				},
+				"P4": {
+					"type": "list",
+					"defaultCombineWith": "AND"
+				}
+			}
+		}
+	}
+}
+' );
+
+		$this->assertSame(
+			[],
+			$config->getConfigForProperty( new ItemId( 'Q200' ), new NumericPropertyId( 'P2' ) )->typeSpecificConfig
 		);
 	}
 
