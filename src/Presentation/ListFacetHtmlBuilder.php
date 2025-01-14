@@ -5,7 +5,6 @@ declare( strict_types = 1 );
 namespace ProfessionalWiki\WikibaseFacetedSearch\Presentation;
 
 use MediaWiki\Html\TemplateParser;
-use MediaWiki\Parser\Sanitizer;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetConfig;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\PropertyConstraints;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\ValueCount;
@@ -74,9 +73,7 @@ class ListFacetHtmlBuilder implements FacetHtmlBuilder {
 				'count' => $valueCount->count,
 				'checked' => in_array( $valueCount->value, $selectedValues ), // TODO: test with multiple types of values
 				'value' => $valueCount->value,
-				// TODO: can't we escape this in the template?
-				// https://github.com/ProfessionalWiki/WikibaseFacetedSearch/pull/95#discussion_r1912980729
-				'id' => Sanitizer::escapeIdForAttribute( htmlspecialchars( $state->propertyId->getSerialization() . "-$i" ) ),
+				'id' => $state->propertyId->getSerialization() . "-$i",
 			];
 		}
 
