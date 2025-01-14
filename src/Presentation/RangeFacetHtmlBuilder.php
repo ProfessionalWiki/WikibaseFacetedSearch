@@ -27,8 +27,9 @@ class RangeFacetHtmlBuilder implements FacetHtmlBuilder {
 			[
 				'msg-min' => wfMessage( 'wikibase-faceted-search-facet-range-min' )->text(),
 				'msg-max' => wfMessage( 'wikibase-faceted-search-facet-range-max' )->text(),
+				'msg-apply' => wfMessage( 'wikibase-faceted-search-facet-apply' )->text(),
 				'current-min' => $state->getInclusiveMinimum(),
-				'current-max' => $state->getInclusiveMaximum(),
+				'current-max' => $state->getInclusiveMaximum()
 			]
 		);
 	}

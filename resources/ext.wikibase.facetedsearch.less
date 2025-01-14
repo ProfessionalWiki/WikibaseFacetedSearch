@@ -10,6 +10,10 @@
 			background-color: currentcolor;
 		}
 
+		&--check {
+			.cdx-mixin-css-icon( @cdx-icon-check );
+		}
+
 		&--filter {
 			.cdx-mixin-css-icon( @cdx-icon-funnel );
 		}
@@ -93,12 +97,32 @@
 		}
 
 		&-range {
-			display: flex;
+			display: grid;
 			gap: @spacing-50;
+			// stylelint-disable-next-line @stylistic/declaration-colon-space-after
+			grid-template-areas:
+				'min max'
+				'apply apply';
+
+			&-min {
+				grid-area: min;
+			}
+
+			&-max {
+				grid-area: max;
+			}
+
+			&-apply {
+				grid-area: apply;
+
+				// Need the specificity to override cdx-button
+				&.cdx-button {
+					max-width: none;
+				}
+			}
 
 			.cdx-text-input {
-				min-width: auto;
-				flex-grow: 1;
+				min-width: auto; // remove min-width set by cdx-text-input
 			}
 		}
 

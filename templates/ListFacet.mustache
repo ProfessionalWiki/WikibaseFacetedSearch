@@ -1,13 +1,23 @@
-{{#hasToggle}}
+{{#toggle}}
 	<div class="wikibase-faceted-search__facet-toggle">
-		<button class="cdx-button cdx-button--action-progressive cdx-button--weight-primary">
-			{{msg-and}}
-		</button>
-		<button class="cdx-button">
-			{{msg-or}}
-		</button>
+  {{#and}}
+    <button 
+      class="cdx-button {{#selected}}cdx-button--action-progressive cdx-button--weight-primary{{/selected}}"
+      {{#disabled}}disabled{{/disabled}}
+    >
+      {{label}}
+    </button>
+  {{/and}}
+  {{#or}}
+    <button
+      class="cdx-button {{#selected}}cdx-button--action-progressive cdx-button--weight-primary{{/selected}}"
+      {{#disabled}}disabled{{/disabled}}
+    >
+      {{label}}
+    </button>
+  {{/or}}
 	</div>
-{{/hasToggle}}
+{{/toggle}}
 
 {{#checkboxes}}
 	<div

@@ -21,6 +21,8 @@
 	"wikibase-faceted-search-and": "And",
 	"wikibase-faceted-search-or": "Or",
 
+	"wikibase-faceted-search-facet-apply": "Apply",
+
 	"wikibase-faceted-search-facet-range-min": "Minimum",
 	"wikibase-faceted-search-facet-range-max": "Maximum"
 }

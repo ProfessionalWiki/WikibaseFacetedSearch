@@ -27,21 +27,40 @@ class ListFacetHtmlBuilder implements FacetHtmlBuilder {
 	 * TODO: add unit tests for the logic. Likley requires some refactoring, ie making the view model accessible
 	 */
 	public function buildHtml( FacetConfig $config, PropertyConstraints $state ): string {
+		$combineWithAnd = true; // TODO: use state and config defaultCombineWith
+
 		return $this->parser->processTemplate(
 			'ListFacet',
 			[
-				'hasToggle' => true, // TODO: use config allowCombineWithChoice and defaultCombineWith
-				'checkboxes' => $this->buildCheckboxesViewModel( $config, $state ),
-				'msg-and' => wfMessage( 'wikibase-faceted-search-and' )->text(),
-				'msg-or' => wfMessage( 'wikibase-faceted-search-or' )->text(),
+				'toggle' => $this->buildToggleViewModel( $config, $state, $combineWithAnd ),
+				'checkboxes' => $this->buildCheckboxesViewModel( $config, $state, $combineWithAnd ),
 				// TODO: act on config: showNoneFilter
 				// TODO: act on config: showAnyFilter
 			]
 		);
 	}
 
-	private function buildCheckboxesViewModel( FacetConfig $config, PropertyConstraints $state ): array {
-		$combineWithAnd = true; // TODO: use state and config allowCombineWithChoice and defaultCombineWith
+	/**
+	 * @return array<array<string, mixed>>
+	 */
+	private function buildToggleViewModel( FacetConfig $config, PropertyConstraints $state, bool $combineWithAnd ): array {
+		// $disabled = true; // TODO: use state and config allowCombineWithChoice
+
+		return [
+			'and' => [
+				'label' => wfMessage( 'wikibase-faceted-search-and' )->text(),
+				'selected' => $combineWithAnd,
+				'disabled' => !$combineWithAnd // && $disabled
+			],
+			'or' => [
+				'label' => wfMessage( 'wikibase-faceted-search-or' )->text(),
+				'selected' => !$combineWithAnd,
+				'disabled' => $combineWithAnd // && $disabled
+			]
+		];
+	}
+
+	private function buildCheckboxesViewModel( FacetConfig $config, PropertyConstraints $state, bool $combineWithAnd ): array {
 		$selectedValues = $combineWithAnd ? $state->getAndSelectedValues() : $state->getOrSelectedValues();
 
 		$checkboxes = [];

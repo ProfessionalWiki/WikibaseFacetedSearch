@@ -3,7 +3,7 @@
 		Codex - TextInput component
 		@see https://doc.wikimedia.org/codex/v1.14.0/components/demos/text-input.html#markup-structure
 	}}
-	<div class="cdx-text-input">
+	<div class="wikibase-faceted-search__facet-item-range-min cdx-text-input">
 		<input
 			class="cdx-text-input__input"
 			type="text"
@@ -11,7 +11,7 @@
 			value="{{current-min}}"
 		/>
 	</div>
-	<div class="cdx-text-input">
+	<div class="wikibase-faceted-search__facet-item-range-max cdx-text-input">
 		<input
 			class="cdx-text-input__input"
 			type="text"
@@ -19,4 +19,15 @@
 			value="{{current-max}}"
 		/>
 	</div>
+	{{!
+		Codex - Button component
+		@see https://doc.wikimedia.org/codex/main/components/demos/button.html#markup-structure
+	}}
+	<button class="wikibase-faceted-search__facet-item-range-apply cdx-button" disabled>
+		<span
+			class="wikibase-faceted-search__icon wikibase-faceted-search__icon--check cdx-button__icon"
+			aria-hidden="true"
+		></span>
+		{{msg-apply}}
+	</button>
 </div>
