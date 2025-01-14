@@ -4,24 +4,27 @@ let input;
  * Main entry point for the JavaScript code.
  */
 function init() {
-	const checkboxItems = document.querySelectorAll( '.wikibase-faceted-search__facet-item-checkbox' );
-	if ( !checkboxItems ) {
+	const facets = document.querySelector( '.wikibase-faceted-search__facets' );
+	if ( !facets ) {
 		return;
 	}
 
 	input = document.querySelector( '#searchText > input' );
 
-	checkboxItems.forEach( ( item ) => item.addEventListener( 'change', onCheckboxItemChange ) );
+	facets.addEventListener( 'change', onFacetsChange );
 }
 
 /**
- * Handles the change event for a checkbox item in the faceted search.
+ * Handles the change event for any input elements in the facets.
  *
- * @param {Event} event - The change event from the checkbox.
+ * @param {Event} event
  */
-function onCheckboxItemChange( event ) {
-	const facet = event.currentTarget.closest( '.wikibase-faceted-search__facet' );
-	submitSearchForm( buildQueryString( input.value, facet ) );
+function onFacetsChange( event ) {
+	const facet = event.target.closest( '.wikibase-faceted-search__facet' );
+	// TODO: Support range facets
+	if ( event.target.classList.contains( 'cdx-checkbox__input' ) ) {
+		submitSearchForm( buildQueryString( input.value, facet ) );
+	}
 }
 
 /**
@@ -54,7 +57,7 @@ function buildQueryString( oldQuery, facet ) {
 		if ( !value || !checkbox || !checkbox.checked ) {
 			return;
 		}
-		// TODO: Support range facet and other operators
+		// TODO: Support other operators
 		// TODO: Support OR values
 		queries.push( `haswbfacet:${ propertyId }=${ value }` );
 	} );
