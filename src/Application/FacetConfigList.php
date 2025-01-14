@@ -5,6 +5,7 @@ declare( strict_types = 1 );
 namespace ProfessionalWiki\WikibaseFacetedSearch\Application;
 
 use Wikibase\DataModel\Entity\ItemId;
+use Wikibase\DataModel\Entity\PropertyId;
 
 class FacetConfigList {
 
@@ -31,6 +32,16 @@ class FacetConfigList {
 	 */
 	public function asArray(): array {
 		return $this->facets;
+	}
+
+	public function getConfigForProperty( PropertyId $propertyId ): ?FacetConfig {
+		foreach ( $this->facets as $facetConfig ) {
+			if ( $facetConfig->propertyId->equals( $propertyId ) ) {
+				return $facetConfig;
+			}
+		}
+
+		return null;
 	}
 
 }
