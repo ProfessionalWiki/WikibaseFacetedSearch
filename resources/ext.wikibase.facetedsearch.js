@@ -52,14 +52,13 @@ function buildQueryString( oldQuery, facet ) {
 
 	// Add selected facet items to the query string
 	[ ...facet.querySelectorAll( '.wikibase-faceted-search__facet-item' ) ].forEach( ( facetItem ) => {
-		const value = facetItem.dataset.valueId;
 		const checkbox = facetItem.querySelector( '.cdx-checkbox__input' );
-		if ( !value || !checkbox || !checkbox.checked ) {
+		if ( !checkbox || !checkbox.checked || !checkbox.value ) {
 			return;
 		}
 		// TODO: Support other operators
 		// TODO: Support OR values
-		queries.push( `haswbfacet:${ propertyId }=${ value }` );
+		queries.push( `haswbfacet:${ propertyId }=${ checkbox.value }` );
 	} );
 
 	return queries.join( ' ' );
