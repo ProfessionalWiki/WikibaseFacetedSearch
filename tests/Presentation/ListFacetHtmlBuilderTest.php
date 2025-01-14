@@ -24,11 +24,7 @@ class ListFacetHtmlBuilderTest extends TestCase {
 
 	public function testRendersTemplate(): void {
 		$html = $this->newListFacetHtmlBuilder()->buildHtml(
-			config: new FacetConfig(
-				instanceTypeId: new ItemId( 'Q123' ),
-				propertyId: new NumericPropertyId( self::FACET_PROPERTY_ID ),
-				type: FacetType::LIST
-			),
+			config: $this->newFacetConfig(),
 			state: $this->newPropertyConstraints()
 		);
 
@@ -63,14 +59,19 @@ class ListFacetHtmlBuilderTest extends TestCase {
 		$this->assertCount( 3, $viewModel['checkboxes'] );
 	}
 
-	private function buildViewModel( ?PropertyConstraints $constraints = null ): array {
+	private function buildViewModel( ?PropertyConstraints $constraints = null, array $typeSpecificConfig = [] ): array {
 		return $this->newListFacetHtmlBuilder()->buildViewModel(
-			config: new FacetConfig(
-				instanceTypeId: new ItemId( 'Q123' ),
-				propertyId: new NumericPropertyId( self::FACET_PROPERTY_ID ),
-				type: FacetType::LIST
-			),
+			config: $this->newFacetConfig( $typeSpecificConfig ),
 			state: $constraints ?? $this->newPropertyConstraints()
+		);
+	}
+
+	private function newFacetConfig( array $typeSpecificConfig = [] ): FacetConfig {
+		return new FacetConfig(
+			instanceTypeId: new ItemId( 'Q123' ),
+			propertyId: new NumericPropertyId( self::FACET_PROPERTY_ID ),
+			type: FacetType::LIST,
+			typeSpecificConfig: $typeSpecificConfig
 		);
 	}
 
@@ -96,19 +97,120 @@ class ListFacetHtmlBuilderTest extends TestCase {
 	}
 
 	public function testOnlyCheckboxesForValuesInThePropertyConstraintsAreChecked_orCase(): void {
-		$this->markTestSkipped( 'TODO: implement OR' );
-
 		$viewModel = $this->buildViewModel(
 			constraints: $this->newPropertyConstraints()->withOrValues(
 				'mismatch',
 				StubValueCounter::SECOND_VALUE,
 				'another mismatch'
-			)
+			),
+			typeSpecificConfig: [ 'defaultCombineWith' => 'OR' ]
 		);
 
 		$this->assertFalse( $viewModel['checkboxes'][0]['checked'] );
 		$this->assertTrue( $viewModel['checkboxes'][1]['checked'] );
 		$this->assertFalse( $viewModel['checkboxes'][2]['checked'] );
+	}
+
+	public function testAndIsDisabledWhenOrIsSelectedAndChoiceIsDisabled(): void {
+		$viewModel = $this->buildViewModel(
+			constraints: $this->newPropertyConstraints(),
+			typeSpecificConfig: [ 'allowCombineWithChoice' => false, 'defaultCombineWith' => 'OR' ]
+		);
+
+		$this->assertTrue( $viewModel['toggle']['and']['disabled'] );
+		$this->assertFalse( $viewModel['toggle']['or']['disabled'] );
+	}
+
+	public function testOrIsDisabledWhenOrIsSelectedAndChoiceIsDisabled(): void {
+		$viewModel = $this->buildViewModel(
+			constraints: $this->newPropertyConstraints(),
+			typeSpecificConfig: [ 'allowCombineWithChoice' => false, 'defaultCombineWith' => 'AND' ]
+		);
+
+		$this->assertFalse( $viewModel['toggle']['and']['disabled'] );
+		$this->assertTrue( $viewModel['toggle']['or']['disabled'] );
+	}
+
+	public function testToggleIsFullyEnabledWhenChoiceIsAllowed(): void {
+		$viewModel = $this->buildViewModel(
+			constraints: $this->newPropertyConstraints(),
+			typeSpecificConfig: [ 'allowCombineWithChoice' => true ]
+		);
+
+		$this->assertFalse( $viewModel['toggle']['and']['disabled'] );
+		$this->assertFalse( $viewModel['toggle']['or']['disabled'] );
+	}
+
+	public function testShouldCombineWithAndByDefault(): void {
+		$this->assertTrue(
+			$this->newListFacetHtmlBuilder()->shouldCombineWithAnd(
+				$this->newFacetConfig(),
+				$this->newPropertyConstraints()
+			)
+		);
+	}
+
+	public function testShouldCombineWithOrWhenConfiguredAsDefault(): void {
+		$this->assertFalse(
+			$this->newListFacetHtmlBuilder()->shouldCombineWithAnd(
+				$this->newFacetConfig( [ 'defaultCombineWith' => 'OR' ] ),
+				$this->newPropertyConstraints()
+			)
+		);
+	}
+
+	public function testShouldCombineWithAndWhenSpecifiedByConstraintsAndAllowed(): void {
+		$this->assertTrue(
+			$this->newListFacetHtmlBuilder()->shouldCombineWithAnd(
+				$this->newFacetConfig( [ 'defaultCombineWith' => 'OR', 'allowCombineWithChoice' => true ] ),
+				$this->newPropertyConstraints()->withAdditionalAndValue( 'a' )->withAdditionalAndValue( 'b' )
+			)
+		);
+	}
+
+	public function testShouldCombineWithConfiguredDefaultOrWhenConstraintIsNotAllowed(): void {
+		$this->assertFalse(
+			$this->newListFacetHtmlBuilder()->shouldCombineWithAnd(
+				$this->newFacetConfig( [ 'defaultCombineWith' => 'OR', 'allowCombineWithChoice' => false ] ),
+				$this->newPropertyConstraints()->withAdditionalAndValue( 'a' )->withAdditionalAndValue( 'b' )
+			)
+		);
+	}
+
+	public function testShouldCombineWithConfiguredDefaultAndWhenConstraintIsNotAllowed(): void {
+		$this->assertTrue(
+			$this->newListFacetHtmlBuilder()->shouldCombineWithAnd(
+				$this->newFacetConfig( [ 'defaultCombineWith' => 'AND', 'allowCombineWithChoice' => false ] ),
+				$this->newPropertyConstraints()->withOrValues( 'a', 'b' )
+			)
+		);
+	}
+
+	public function testShouldCombineWithOrWhenSpecifiedByConstraintsAndAllowed(): void {
+		$this->assertFalse(
+			$this->newListFacetHtmlBuilder()->shouldCombineWithAnd(
+				$this->newFacetConfig( [ 'defaultCombineWith' => 'AND', 'allowCombineWithChoice' => true ] ),
+				$this->newPropertyConstraints()->withOrValues( 'a', 'b' )
+			)
+		);
+	}
+
+	public function testOrIsSelectedWhenDefault(): void {
+		$viewModel = $this->buildViewModel(
+			typeSpecificConfig: [ 'defaultCombineWith' => 'OR' ]
+		);
+
+		$this->assertFalse( $viewModel['toggle']['and']['selected'] );
+		$this->assertTrue( $viewModel['toggle']['or']['selected'] );
+	}
+
+	public function testAndIsSelectedWhenDefault(): void {
+		$viewModel = $this->buildViewModel(
+			typeSpecificConfig: [ 'defaultCombineWith' => 'AND' ]
+		);
+
+		$this->assertTrue( $viewModel['toggle']['and']['selected'] );
+		$this->assertFalse( $viewModel['toggle']['or']['selected'] );
 	}
 
 }
