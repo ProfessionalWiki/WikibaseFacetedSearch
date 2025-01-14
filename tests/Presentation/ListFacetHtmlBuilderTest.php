@@ -16,6 +16,7 @@ use Wikibase\DataModel\Entity\NumericPropertyId;
 
 /**
  * @covers \ProfessionalWiki\WikibaseFacetedSearch\Presentation\ListFacetHtmlBuilder
+ * @covers \ProfessionalWiki\WikibaseFacetedSearch\WikibaseFacetedSearchExtension
  */
 class ListFacetHtmlBuilderTest extends TestCase {
 
@@ -43,6 +44,24 @@ class ListFacetHtmlBuilderTest extends TestCase {
 			parser: WikibaseFacetedSearchExtension::getInstance()->getTemplateParser(),
 			valueCounter: new StubValueCounter()
 		);
+	}
+
+	public function testCreatesCheckboxesViewModel(): void {
+		$viewModel = $this->newListFacetHtmlBuilder()->buildViewModel(
+			config: new FacetConfig(
+				instanceTypeId: new ItemId( 'Q123' ),
+				propertyId: new NumericPropertyId( 'P42' ),
+				type: FacetType::LIST
+			),
+			state: new PropertyConstraints( propertyId: new NumericPropertyId( 'P42' ) )
+		);
+
+		$this->assertArrayHasKey( 'checkboxes', $viewModel );
+		$this->assertIsArray( $viewModel['checkboxes'] );
+		$this->assertSame( StubValueCounter::FIRST_VALUE, $viewModel['checkboxes'][0]['label'] );
+		$this->assertSame( StubValueCounter::SECOND_VALUE, $viewModel['checkboxes'][1]['label'] );
+		$this->assertSame( StubValueCounter::THIRD_VALUE, $viewModel['checkboxes'][2]['label'] );
+		$this->assertCount( 3, $viewModel['checkboxes'] );
 	}
 
 }
