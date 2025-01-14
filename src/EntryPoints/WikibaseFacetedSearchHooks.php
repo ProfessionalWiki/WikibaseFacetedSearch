@@ -145,6 +145,7 @@ class WikibaseFacetedSearchHooks {
 		string $term
 	): void {
 		$output->addModuleStyles( 'ext.wikibase.facetedsearch.styles' );
+		$output->addModules( 'ext.wikibase.facetedsearch' );
 
 		$output->addHTML(
 			WikibaseFacetedSearchExtension::getInstance()->getUiBuilder()->createHtml(

@@ -22,16 +22,14 @@
 {{#checkboxes}}
 	<div
 		class="wikibase-faceted-search__facet-item wikibase-faceted-search__facet-item-checkbox cdx-checkbox"
-		data-value-id="{{value-id}}"
 	>
 		<div class="cdx-checkbox__wrapper">
 			<input
 				id="{{id}}"
 				class="cdx-checkbox__input"
 				type="checkbox"
+				value="{{value}}"
 				{{#checked}}checked{{/checked}}
-				{{! Prevent input from being interacted by keyboard}}
-				tabindex="-1"
 			/>
 			<span class="cdx-checkbox__icon"></span>
 			<div class="cdx-checkbox__label cdx-label">
