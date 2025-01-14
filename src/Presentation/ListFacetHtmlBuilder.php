@@ -22,22 +22,25 @@ class ListFacetHtmlBuilder implements FacetHtmlBuilder {
 	) {
 	}
 
-	/**
-	 * TODO: add integration smoke test
-	 * TODO: add unit tests for the logic. Likley requires some refactoring, ie making the view model accessible
-	 */
 	public function buildHtml( FacetConfig $config, PropertyConstraints $state ): string {
-		$combineWithAnd = true; // TODO: use state and config defaultCombineWith
-
 		return $this->parser->processTemplate(
 			'ListFacet',
-			[
-				'toggle' => $this->buildToggleViewModel( $config, $state, $combineWithAnd ),
-				'checkboxes' => $this->buildCheckboxesViewModel( $config, $state, $combineWithAnd ),
-				// TODO: act on config: showNoneFilter
-				// TODO: act on config: showAnyFilter
-			]
+			$this->buildViewModel( $config, $state )
 		);
+	}
+
+	/**
+	 * @return array<string, mixed>
+	 */
+	public function buildViewModel( FacetConfig $config, PropertyConstraints $state ): array {
+		$combineWithAnd = true; // TODO: use state and config defaultCombineWith
+
+		return [
+			'toggle' => $this->buildToggleViewModel( $config, $state, $combineWithAnd ),
+			'checkboxes' => $this->buildCheckboxesViewModel( $config, $state, $combineWithAnd ),
+			// TODO: act on config: showNoneFilter
+			// TODO: act on config: showAnyFilter
+		];
 	}
 
 	/**
@@ -68,7 +71,7 @@ class ListFacetHtmlBuilder implements FacetHtmlBuilder {
 		foreach ( $this->getValuesAndCounts( $config ) as $i => $valueCount ) {
 			$checkboxes[] = [
 				'label' => $valueCount->value,
-				'count' => $valueCount->count, // FIXME: count is now showing in the UI for some reason
+				'count' => $valueCount->count,
 				'checked' => in_array( $valueCount->value, $selectedValues ), // TODO: test with multiple types of values
 				'value-id' => $valueCount->value,
 				// TODO: can't we escape this in the template?
