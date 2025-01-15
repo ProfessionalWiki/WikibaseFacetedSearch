@@ -30,6 +30,7 @@ use ProfessionalWiki\WikibaseFacetedSearch\Presentation\FacetHtmlBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\ListFacetHtmlBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\RangeFacetHtmlBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\UiBuilder;
+use ProfessionalWiki\WikibaseFacetedSearch\Tests\TestDoubles\StubValueCounter;
 use RuntimeException;
 use SearchEngine;
 use TemplateParser;
@@ -196,7 +197,7 @@ class WikibaseFacetedSearchExtension {
 	}
 
 	private function getValueCounter(): ValueCounter {
-		return new ValueCounter();
+		return new StubValueCounter();
 	}
 
 	private function newRangeFacetHtmlBuilder(): FacetHtmlBuilder {
