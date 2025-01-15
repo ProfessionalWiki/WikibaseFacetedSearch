@@ -18,6 +18,8 @@ class ListFacetHtmlBuilder implements FacetHtmlBuilder {
 
 	private const CONFIG_KEY_ALLOW_COMBINE_WITH_CHOICE = 'allowCombineWithChoice';
 	private const CONFIG_KEY_DEFAULT_COMBINE_WITH = 'defaultCombineWith';
+	private const CONFIG_VALUE_COMBINE_WITH_AND = 'AND';
+	private const CONFIG_VALUE_COMBINE_WITH_OR = 'OR';
 
 	private const COMBINE_WITH_AND_BY_DEFAULT = true; // Maybe this gets turned into (constructor-injected) config
 
@@ -59,11 +61,11 @@ class ListFacetHtmlBuilder implements FacetHtmlBuilder {
 			}
 		}
 
-		if ( ( $config->typeSpecificConfig[self::CONFIG_KEY_DEFAULT_COMBINE_WITH] ?? null ) === 'OR' ) {
+		if ( ( $config->typeSpecificConfig[self::CONFIG_KEY_DEFAULT_COMBINE_WITH] ?? null ) === self::CONFIG_VALUE_COMBINE_WITH_OR ) {
 			return false;
 		}
 
-		if ( ( $config->typeSpecificConfig[self::CONFIG_KEY_DEFAULT_COMBINE_WITH] ?? null ) === 'AND' ) {
+		if ( ( $config->typeSpecificConfig[self::CONFIG_KEY_DEFAULT_COMBINE_WITH] ?? null ) === self::CONFIG_VALUE_COMBINE_WITH_AND ) {
 			return true;
 		}
 
