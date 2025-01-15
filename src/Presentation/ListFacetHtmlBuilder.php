@@ -37,8 +37,8 @@ class ListFacetHtmlBuilder implements FacetHtmlBuilder {
 		return [
 			'toggle' => $this->buildToggleViewModel( $config, $state, $combineWithAnd ),
 			'checkboxes' => $this->buildCheckboxesViewModel( $config, $state, $combineWithAnd ),
-			// TODO: act on config: showNoneFilter
-			// TODO: act on config: showAnyFilter
+			// TODO: act on config: showNoneFilter https://github.com/ProfessionalWiki/WikibaseFacetedSearch/issues/117
+			// TODO: act on config: showAnyFilter https://github.com/ProfessionalWiki/WikibaseFacetedSearch/issues/119
 		];
 	}
 
