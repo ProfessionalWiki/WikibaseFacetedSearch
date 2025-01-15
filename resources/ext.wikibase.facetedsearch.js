@@ -42,7 +42,7 @@ function onFacetsInput( event ) {
 /**
  * Handles the input event for a list facet.
  *
- * @param {HTMLElement} facet - The facet element.
+ * @param {HTMLDivElement} facet - The facet element.
  * @param {string} propertyId - The ID of the property on the facet.
  */
 function onListFacetInput( facet, propertyId ) {
@@ -53,7 +53,7 @@ function onListFacetInput( facet, propertyId ) {
 /**
  * Handles the input event for a range facet.
  *
- * @param {HTMLElement} facet - The facet element.
+ * @param {HTMLDivElement} facet - The facet element.
  * @param {string} propertyId - The ID of the property on the facet.
  */
 function onRangeFacetInput( facet, propertyId ) {
