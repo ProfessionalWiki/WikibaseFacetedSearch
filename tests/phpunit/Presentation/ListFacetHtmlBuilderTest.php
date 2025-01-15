@@ -121,7 +121,7 @@ class ListFacetHtmlBuilderTest extends TestCase {
 		$this->assertFalse( $viewModel['toggle']['or']['disabled'] );
 	}
 
-	public function testOrIsDisabledWhenOrIsSelectedAndChoiceIsDisabled(): void {
+	public function testOrIsDisabledWhenAndIsSelectedAndChoiceIsDisabled(): void {
 		$viewModel = $this->buildViewModel(
 			constraints: $this->newPropertyConstraints(),
 			typeSpecificConfig: [ 'allowCombineWithChoice' => false, 'defaultCombineWith' => 'AND' ]
