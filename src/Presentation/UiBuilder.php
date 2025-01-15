@@ -58,7 +58,7 @@ class UiBuilder {
 		return [
 			[
 				'label' => wfMessage( 'wikibase-faceted-search-instance-type-all' )->text(),
-				'value' => '-1',
+				'value' => '',
 				'selected' => 'true'
 			],
 			[
