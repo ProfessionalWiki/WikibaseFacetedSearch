@@ -93,6 +93,16 @@ jobs:
         run: php tests/phpunit/phpunit.php -c extensions/WikibaseFacetedSearch/ --coverage-clover coverage.xml
         if: matrix.mw == 'master'
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Setup NPM dependencies
+        run: npm install
+
+      - name: Run Jest with code coverage
+        run: npm run test:unit
+
       - name: Upload code coverage
         uses: codecov/codecov-action@v5
         with:
