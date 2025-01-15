@@ -1,7 +1,27 @@
 @import 'mediawiki.skin.variables.less';
 
 .wikibase-faceted-search {
-	margin-bottom: @spacing-100;
+	&__topbar,
+	&__sidebar {
+		margin-bottom: @spacing-100;
+	}
+
+	&__topbar {
+		overflow-x: auto;
+	}
+
+	&__sidebar {
+		.cdx-accordion {
+			&__content {
+				font-size: inherit;
+			}
+	
+			.cdx-accordion__header {
+				font-size: inherit;
+				font-weight: @font-weight-bold;
+			}
+		}
+	}
 
 	&__icon {
 		// Needed the specificity to override cdx-mixin-css-icon mixin
@@ -142,26 +162,16 @@
 			flex-shrink: 0;
 		}
 	}
-
-	.cdx-accordion {
-		&__content {
-			font-size: inherit;
-		}
-
-		.cdx-accordion__header {
-			font-size: inherit;
-			font-weight: @font-weight-bold;
-		}
-	}
 }
 
 // HACK: Creating a multi-column layout
 // TODO: Find a way to put .wikibase-faceted-search inside .searchresults
-.mw-body-content:has( .wikibase-faceted-search ) {
+.mw-body-content:has( .wikibase-faceted-search__sidebar ) {
 	display: grid;
 	// stylelint-disable-next-line @stylistic/declaration-colon-space-after
 	grid-template-areas:
 		'searchform'
+		'topbar'
 		'sidebar'
 		'results';
 
@@ -169,6 +179,7 @@
 		// stylelint-disable-next-line @stylistic/declaration-colon-space-after
 		grid-template-areas:
 			'searchform searchform'
+			'topbar topbar'
 			'results sidebar';
 		grid-template-columns: minmax( 0, auto ) 240px;
 		column-gap: @spacing-150;
@@ -183,7 +194,13 @@
 	}
 
 	.wikibase-faceted-search {
-		grid-area: sidebar;
+		&__topbar {
+			grid-area: topbar;
+		}
+
+		&__sidebar {
+			grid-area: sidebar;
+		}
 	}
 
 	.mw-search-results-container,

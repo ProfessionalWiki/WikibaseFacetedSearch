@@ -36,8 +36,9 @@ class UiBuilder {
 
 	private function renderTemplate( array $facetsViewModel ): string {
 		return $this->templateParser->processTemplate(
-			'Facets',
+			'Layout',
 			[
+				'instances' => $this->buildInstancesViewModel(),
 				'facets' => $facetsViewModel,
 				'msg-filters' => wfMessage( 'wikibase-faceted-search-filters' )->text(),
 			]
@@ -46,6 +47,31 @@ class UiBuilder {
 
 	private function parseQuery( string $searchQuery ): Query {
 		return $this->queryStringParser->parse( $searchQuery );
+	}
+
+	/**
+	 * @return array<array<string, string>>
+	 */
+	private function buildInstancesViewModel(): array {
+		// TODO: Get instances from config
+		// TODO: Get currently selected instance from query
+		return [
+			[
+				'label' => wfMessage( 'wikibase-faceted-search-instance-type-all' )->text(),
+				'value' => '-1',
+				'selected' => 'true'
+			],
+			[
+				'label' => 'Memes',
+				'value' => 'Q100',
+				'selected' => 'false'
+			],
+			[
+				'label' => 'Cat Pictures',
+				'value' => 'Q200',
+				'selected' => 'false'
+			]
+		];
 	}
 
 	private function buildFacetsViewModel( ItemId $itemType, Query $query ): array {
