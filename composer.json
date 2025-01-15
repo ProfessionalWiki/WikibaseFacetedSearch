@@ -39,7 +39,7 @@
 	},
 	"autoload-dev": {
 		"psr-4": {
-			"ProfessionalWiki\\WikibaseFacetedSearch\\Tests\\": "tests/"
+			"ProfessionalWiki\\WikibaseFacetedSearch\\Tests\\": "tests/phpunit/"
 		}
 	},
 	"extra": {
