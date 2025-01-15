@@ -21,9 +21,12 @@ function init() {
  */
 function onFacetsInput( event ) {
 	const input = event.target;
-	const facet = input.closest( '.wikibase-faceted-search__facet' );
+	if ( !input ) {
+		return;
+	}
 
-	if ( !facet || !input ) {
+	const facet = input.closest( '.wikibase-faceted-search__facet' );
+	if ( !facet ) {
 		return;
 	}
 
