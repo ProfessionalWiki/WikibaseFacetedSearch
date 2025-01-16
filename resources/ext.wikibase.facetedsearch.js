@@ -70,7 +70,7 @@ function onInstancesClick( event, instanceId ) {
  * @param {string} propertyId - The ID of the property on the facet.
  */
 function onListFacetInput( facet, propertyId ) {
-	const newQueries = getListFacetQueries( facet, propertyId );
+	const newQueries = getListFacetQuerySegments( facet, propertyId );
 	submitSearchForm( buildQueryString( specialSearchInput.value, newQueries, propertyId ) );
 }
 
@@ -96,7 +96,7 @@ function onRangeFacetInput( facet, propertyId ) {
 
 	applyButton.disabled = false;
 	applyButton.addEventListener( 'click', () => {
-		const newQueries = getRangeFacetQueries( minInput, maxInput, propertyId );
+		const newQueries = getRangeFacetQuerySegments( minInput.value, maxInput.value, propertyId );
 		submitSearchForm(
 			buildQueryString( specialSearchInput.value, newQueries, propertyId )
 		);
@@ -108,10 +108,10 @@ function onRangeFacetInput( facet, propertyId ) {
  *
  * @param {HTMLDivElement} facet
  * @param {string} propertyId
- * @return {string[]} List of queries that can be used in a search URL.
+ * @return {string[]}
  */
-function getListFacetQueries( facet, propertyId ) {
-	const queries = [];
+function getListFacetQuerySegments( facet, propertyId ) {
+	const segments = [];
 	[ ...facet.querySelectorAll( '.wikibase-faceted-search__facet-item' ) ].forEach( ( facetItem ) => {
 		const checkbox = facetItem.querySelector( '.cdx-checkbox__input' );
 		if ( !checkbox || !checkbox.checked || !checkbox.value ) {
@@ -119,29 +119,29 @@ function getListFacetQueries( facet, propertyId ) {
 		}
 		// TODO: Support other operators
 		// TODO: Support OR values
-		queries.push( `haswbfacet:${ propertyId }=${ checkbox.value }` );
+		segments.push( `haswbfacet:${ propertyId }=${ checkbox.value }` );
 	} );
-	return queries;
+	return segments;
 }
 
 /**
  * Constructs an array of range facet queries based on the provided minimum
  * and maximum input values.
  *
- * @param {HTMLInputElement} minInput - The input element for the minimum range value.
- * @param {HTMLInputElement} maxInput - The input element for the maximum range value.
- * @param {string} propertyId - The ID of the property on the facet
- * @return {string[]} An array of query strings representing the range constraints.
+ * @param {string} min
+ * @param {string} max
+ * @param {string} propertyId
+ * @return {string[]}
  */
-function getRangeFacetQueries( minInput, maxInput, propertyId ) {
-	const queries = [];
-	if ( minInput.value !== '' ) {
-		queries.push( `haswbfacet:${ propertyId }>=${ minInput.value }` );
+function getRangeFacetQuerySegments( min, max, propertyId ) {
+	const segments = [];
+	if ( min !== '' ) {
+		segments.push( `haswbfacet:${ propertyId }>=${ min }` );
 	}
-	if ( maxInput.value !== '' ) {
-		queries.push( `haswbfacet:${ propertyId }<=${ maxInput.value }` );
+	if ( max !== '' ) {
+		segments.push( `haswbfacet:${ propertyId }<=${ max }` );
 	}
-	return queries;
+	return segments;
 }
 
 /**
