@@ -73,6 +73,16 @@ function onRangeFacetInput( facet, propertyId ) {
 		return;
 	}
 
+	minInput.max = maxInput.value || '';
+	maxInput.min = minInput.value || '';
+	updateErrorState( minInput );
+	updateErrorState( maxInput );
+
+	if ( minInput.validity.valid === false || maxInput.validity.valid === false ) {
+		applyButton.disabled = true;
+		return;
+	}
+
 	applyButton.disabled = false;
 	applyButton.addEventListener( 'click', () => {
 		const newQueries = getRangeFacetQuerySegments( minInput.value, maxInput.value, propertyId );
@@ -80,6 +90,19 @@ function onRangeFacetInput( facet, propertyId ) {
 			buildQueryString( specialSearchInput.value, newQueries, propertyId )
 		);
 	} );
+}
+
+/**
+ * Updates the error state of a Codex text input.
+ *
+ * @param {HTMLInputElement} input
+ */
+function updateErrorState( input ) {
+	if ( input.validity.valid === false ) {
+		input.parentElement.classList.add( 'cdx-text-input--status-error' );
+	} else {
+		input.parentElement.classList.remove( 'cdx-text-input--status-error' );
+	}
 }
 
 /**
