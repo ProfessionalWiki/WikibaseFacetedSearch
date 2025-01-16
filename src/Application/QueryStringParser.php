@@ -52,6 +52,10 @@ class QueryStringParser {
 			|| str_starts_with( $part, '-haswbfacet:' );
 	}
 
+	/**
+	 * @param array<string, NumericPropertyId|ItemId> $instance
+	 * @return array<string, NumericPropertyId|ItemId>
+	 */
 	private function handleInstancePart( string $part, array &$instance ): array {
 		$part = substr( $part, strlen( 'haswbstatement:' ) );
 		[ $propertyIdString, $itemIdString ] = explode( '=', $part, 2 );

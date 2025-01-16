@@ -9,6 +9,9 @@ use Wikibase\DataModel\Entity\PropertyId;
 
 class Query {
 
+	/**
+	 * @param array<string, NumericPropertyId|ItemId>|array $instance
+	 */
 	public function __construct(
 		public readonly PropertyConstraintsList $constraints,
 		private readonly string $freeText = '',
