@@ -6,6 +6,7 @@ namespace ProfessionalWiki\WikibaseFacetedSearch\Tests\Application;
 
 use PHPUnit\Framework\TestCase;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\QueryStringParser;
+use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\NumericPropertyId;
 
 /**
@@ -47,6 +48,17 @@ class QueryStringParserTest extends TestCase {
 		$constraints = $query->getConstraintsForProperty( new NumericPropertyId( 'P42' ) );
 
 		$this->assertTrue( $constraints->hasNoValue() );
+	}
+
+	public function testParsesInstance(): void {
+		$parser = new QueryStringParser();
+		$query = $parser->parse( 'haswbstatement:P42=Q68' );
+
+		$propertyId = new NumericPropertyId( 'P42' );
+		$itemId = new ItemId( 'Q68' );
+
+		$this->assertEquals( $propertyId, $query->getInstancePropertyId() );
+		$this->assertEquals( $itemId, $query->getInstanceItemId() );
 	}
 
 	public function testParsesAndValues(): void {
