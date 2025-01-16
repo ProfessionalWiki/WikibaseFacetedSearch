@@ -32,7 +32,7 @@
 
 	"AutoloadNamespaces": {
 		"ProfessionalWiki\\WikibaseFacetedSearch\\": "src/",
-		"ProfessionalWiki\\WikibaseFacetedSearch\\Tests\\": "tests/"
+		"ProfessionalWiki\\WikibaseFacetedSearch\\Tests\\": "tests/phpunit/"
 	},
 
 	"Hooks": {
