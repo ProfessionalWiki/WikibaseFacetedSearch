@@ -4,6 +4,7 @@ declare( strict_types = 1 );
 
 namespace ProfessionalWiki\WikibaseFacetedSearch\Application;
 
+use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\NumericPropertyId;
 
 class QueryStringParser {
@@ -11,10 +12,13 @@ class QueryStringParser {
 	public function parse( string $queryString ): Query {
 		$constraints = new PropertyConstraintsList();
 		$freeText = [];
+		$instance = [];
 
 		foreach ( $this->splitQueryString( $queryString ) as $part ) {
 			if ( $this->isFacetPart( $part ) ) {
 				$constraints = $constraints->withConstraint( $this->handleFacetPart( $part, $constraints ) );
+			} elseif ( $this->isInstancePart( $part ) ) {
+				$instance = $this->handleInstancePart( $part, $instance );
 			}
 			else {
 				$freeText[] = $part;
@@ -23,7 +27,8 @@ class QueryStringParser {
 
 		return new Query(
 			$constraints,
-			implode( ' ', $freeText )
+			implode( ' ', $freeText ),
+			$instance
 		);
 	}
 
@@ -38,9 +43,27 @@ class QueryStringParser {
 		);
 	}
 
+	private function isInstancePart( string $part ): bool {
+		return str_starts_with( $part, 'haswbstatement:' );
+	}
+
 	private function isFacetPart( string $part ): bool {
 		return str_starts_with( $part, 'haswbfacet:' )
 			|| str_starts_with( $part, '-haswbfacet:' );
+	}
+
+	private function handleInstancePart( string $part, array &$instance ): array {
+		$part = substr( $part, strlen( 'haswbstatement:' ) );
+		[ $propertyIdString, $itemIdString ] = explode( '=', $part, 2 );
+
+		if ( $propertyIdString === '' || $itemIdString === '' ) {
+			return [];
+		}
+
+		$instance['propertyId'] = new NumericPropertyId( $propertyIdString );
+		$instance['itemId'] = new ItemId( $itemIdString ); // TODO: Support non-item id values
+
+		return $instance;
 	}
 
 	private function handleFacetPart( string $part, PropertyConstraintsList $constraintsList ): PropertyConstraints {

@@ -2,12 +2,12 @@
 	Codex - Tabs component
 	@see https://doc.wikimedia.org/codex/v1.14.0/components/demos/tabs.html#markup-structure
 }}
-<div class="cdx-tabs">
+<div class="wikibase-faceted-search__instances cdx-tabs" data-instance-id="{{instanceId}}">
 	<div class="cdx-tabs__header">
 		<div class="cdx-tabs__list" tabindex="-1">
 			{{#instances}}
 				<button
-					class="cdx-tabs__list__item"
+					class="wikibase-faceted-search__instance cdx-tabs__list__item"
 					aria-selected="{{selected}}"
 					value="{{value}}"
 				>

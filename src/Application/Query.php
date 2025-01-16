@@ -4,13 +4,15 @@ declare( strict_types = 1 );
 
 namespace ProfessionalWiki\WikibaseFacetedSearch\Application;
 
+use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 
 class Query {
 
 	public function __construct(
 		public readonly PropertyConstraintsList $constraints,
-		private readonly string $freeText = ''
+		private readonly string $freeText = '',
+		private readonly array $instance = []
 	) {
 	}
 
@@ -27,6 +29,14 @@ class Query {
 
 	public function getFreeText(): string {
 		return $this->freeText;
+	}
+
+	public function getInstancePropertyId(): ?PropertyId {
+		return $this->instance['propertyId'] ?? null;
+	}
+
+	public function getInstanceItemId(): ?ItemId {
+		return $this->instance['itemId'] ?? null;
 	}
 
 }
