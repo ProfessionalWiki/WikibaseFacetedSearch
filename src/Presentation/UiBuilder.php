@@ -10,6 +10,7 @@ use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetConfig;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\PropertyConstraints;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Query;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\QueryStringParser;
+use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Entity\ItemId;
 
 class UiBuilder {
@@ -26,19 +27,26 @@ class UiBuilder {
 	 * TODO: add integration tests
 	 */
 	public function createHtml( string $searchQuery ): string {
+		$query = $this->parseQuery( $searchQuery );
+		$itemType = $query->getInstanceItemTypes()[0] ?? null;
+
 		return $this->renderTemplate(
+			$this->buildInstancesViewModel(
+				itemType: $itemType
+			),
 			$this->buildFacetsViewModel(
-				itemType: new ItemId( 'Q5976449' ), // TODO: get from search string
-				query: $this->parseQuery( $searchQuery )
+				itemType: $itemType,
+				query: $query
 			)
 		);
 	}
 
-	private function renderTemplate( array $facetsViewModel ): string {
+	private function renderTemplate( array $instancesViewModel, array $facetsViewModel ): string {
 		return $this->templateParser->processTemplate(
 			'Layout',
 			[
-				'instances' => $this->buildInstancesViewModel(),
+				'instanceId' => 'P1460', // TODO: Link to config
+				'instances' => $instancesViewModel,
 				'facets' => $facetsViewModel,
 				'msg-filters' => wfMessage( 'wikibase-faceted-search-filters' )->text(),
 			]
@@ -52,29 +60,42 @@ class UiBuilder {
 	/**
 	 * @return array<array<string, string>>
 	 */
-	private function buildInstancesViewModel(): array {
-		// TODO: Get instances from config
-		// TODO: Get currently selected instance from query
-		return [
+	private function buildInstancesViewModel( ?ItemId $itemType ): array {
+		$instances = [
 			[
 				'label' => wfMessage( 'wikibase-faceted-search-instance-type-all' )->text(),
-				'value' => '',
-				'selected' => 'true'
-			],
-			[
-				'label' => 'Memes',
-				'value' => 'Q100',
-				'selected' => 'false'
-			],
-			[
-				'label' => 'Cat Pictures',
-				'value' => 'Q200',
-				'selected' => 'false'
+				'value' => ''
 			]
 		];
+
+		// TODO: Get instances from config
+		$instancesExample = [
+			[
+				'label' => 'People',
+				'value' => 'Q5976445'
+			],
+			[
+				'label' => 'Documents',
+				'value' => 'Q5976449'
+			]
+		];
+
+		$instances = array_merge( $instances, $instancesExample );
+
+		$itemTypeId = $itemType ? $itemType->getSerialization() : '';
+		$instances = array_map( function( array $instance ) use ( $itemTypeId )	 {
+			$instance['selected'] = $instance['value'] === $itemTypeId ? 'true' : 'false';
+			return $instance;
+		}, $instances );
+
+		return $instances;
 	}
 
-	private function buildFacetsViewModel( ItemId $itemType, Query $query ): array {
+	private function buildFacetsViewModel( ?ItemId $itemType, Query $query ): array {
+		if ( $itemType === null ) {
+			return [];
+		}
+
 		$facets = [];
 
 		foreach ( $this->config->getFacetConfigForInstanceType( $itemType ) as $facetConfig ) {

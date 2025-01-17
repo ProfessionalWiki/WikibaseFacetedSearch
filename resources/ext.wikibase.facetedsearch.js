@@ -4,14 +4,19 @@ let specialSearchInput;
  * Main entry point for the JavaScript code.
  */
 function init() {
-	const facets = document.querySelector( '.wikibase-faceted-search__facets' );
-	if ( !facets ) {
+	specialSearchInput = document.querySelector( '#searchText > input' );
+	if ( !specialSearchInput ) {
 		return;
 	}
 
-	specialSearchInput = document.querySelector( '#searchText > input' );
-
-	facets.addEventListener( 'input', onFacetsInput );
+	const facets = document.querySelector( '.wikibase-faceted-search__facets' );
+	const instances = document.querySelector( '.wikibase-faceted-search__instances' );
+	if ( facets ) {
+		facets.addEventListener( 'input', onFacetsInput );
+	}
+	if ( instances ) {
+		instances.addEventListener( 'click', ( event ) => onInstancesClick( event, instances.dataset.instanceId ) );
+	}
 }
 
 /**
@@ -40,6 +45,22 @@ function onFacetsInput( event ) {
 	} else if ( input.classList.contains( 'cdx-text-input__input' ) ) {
 		onRangeFacetInput( facet, propertyId );
 	}
+}
+
+function onInstancesClick( event, instanceId ) {
+	if ( !event.target ) {
+		return;
+	}
+
+	const instance = event.target.closest( '.wikibase-faceted-search__instance' );
+	if ( !instance ) {
+		return;
+	}
+
+	submitSearchForm( buildQueryString(
+		specialSearchInput.value,
+		[ instance.value ? `haswbstatement:${ instanceId }=${ instance.value }` : '' ]
+	) );
 }
 
 /**
@@ -149,11 +170,11 @@ function getRangeFacetQuerySegments( min, max, propertyId ) {
 /**
  * Builds a new query string from the given old query and facet.
  *
- * @param {string} oldQuery The original query string.
- * @param {Array} newQueries The new queries to add.
- * @param {string} propertyId The property ID to filter out.
+ * @param {string} oldQuery
+ * @param {Array} newQueries
+ * @param {?string} propertyId
  *
- * @return {string} The new query string.
+ * @return {string}
  */
 function buildQueryString( oldQuery, newQueries, propertyId ) {
 	const queries = getFilteredQueries( oldQuery, propertyId );
@@ -162,16 +183,18 @@ function buildQueryString( oldQuery, newQueries, propertyId ) {
 }
 
 /**
- * Filters out queries that already include the given property ID
+ * Filters out wbfs queries that already include the given property ID
+ * Remove all wbfs queries if no property ID is given
  *
- * @param {string} query The query string to filter.
- * @param {string} propertyId The property ID to filter out.
+ * @param {string} query
+ * @param {?string} propertyId
  *
- * @return {string[]} The filtered queries.
+ * @return {string[]}
  */
 function getFilteredQueries( query, propertyId ) {
+	const propertyIdPattern = propertyId || 'P\\d+';
 	return query.split( /\s+/ ).filter(
-		( item ) => !new RegExp( `^(haswbfacet|\\-haswbfacet):${ propertyId }(=|>=|<=)` ).test( item )
+		( item ) => !( new RegExp( `^(haswbfacet|\\-haswbfacet|haswbstatement):${ propertyIdPattern }(=|>=|<=)` ) ).test( item )
 	);
 }
 
@@ -181,7 +204,7 @@ function getFilteredQueries( query, propertyId ) {
  * @param {string} query The query to add to/remove from the search form.
  */
 function submitSearchForm( query ) {
-	specialSearchInput.value = query;
+	specialSearchInput.value = query.trim();
 	// Submit the search form
 	specialSearchInput.form.submit();
 }

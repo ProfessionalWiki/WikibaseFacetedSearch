@@ -207,7 +207,9 @@ class WikibaseFacetedSearchExtension {
 	}
 
 	private function getQueryStringParser(): QueryStringParser {
-		return new QueryStringParser();
+		return new QueryStringParser(
+			instanceType: $this->getConfig()->getInstanceOfId()
+		);
 	}
 
 }

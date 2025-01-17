@@ -5,7 +5,9 @@ declare( strict_types = 1 );
 namespace ProfessionalWiki\WikibaseFacetedSearch\Tests\Application;
 
 use PHPUnit\Framework\TestCase;
+use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\QueryStringParser;
+use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\NumericPropertyId;
 
 /**
@@ -13,13 +15,15 @@ use Wikibase\DataModel\Entity\NumericPropertyId;
  */
 class QueryStringParserTest extends TestCase {
 
+	private const INSTANCE_TYPE_ID = 'P90';
+
 	/**
 	 * @dataProvider freeTextProvider
 	 */
 	public function testParsesFreeText( string $queryString, string $expectedFreeText ): void {
 		$this->assertSame(
 			$expectedFreeText,
-			( new QueryStringParser() )->parse( $queryString )->getFreeText()
+			( $this->newQueryStringParser() )->parse( $queryString )->getFreeText()
 		);
 	}
 
@@ -32,7 +36,7 @@ class QueryStringParserTest extends TestCase {
 	}
 
 	public function testParsesExistenceConstraint(): void {
-		$parser = new QueryStringParser();
+		$parser = $this->newQueryStringParser();
 		$query = $parser->parse( 'haswbfacet:P42' );
 
 		$constraints = $query->getConstraintsForProperty( new NumericPropertyId( 'P42' ) );
@@ -41,7 +45,7 @@ class QueryStringParserTest extends TestCase {
 	}
 
 	public function testParsesNonExistenceConstraint(): void {
-		$parser = new QueryStringParser();
+		$parser = $this->newQueryStringParser();
 		$query = $parser->parse( '-haswbfacet:P42' );
 
 		$constraints = $query->getConstraintsForProperty( new NumericPropertyId( 'P42' ) );
@@ -49,8 +53,37 @@ class QueryStringParserTest extends TestCase {
 		$this->assertTrue( $constraints->hasNoValue() );
 	}
 
+	public function testParsesItemTypes(): void {
+		$parser = $this->newQueryStringParser();
+		$query = $parser->parse( 'haswbstatement:' . self::INSTANCE_TYPE_ID . '=Q68' );
+
+		$itemTypes = [
+			new ItemId( 'Q68' )
+		];
+
+		$this->assertEquals( $itemTypes, $query->getInstanceItemTypes() );
+	}
+
+	public function testParsesNonExistenceItemTypes(): void {
+		$parser = $this->newQueryStringParser();
+		$query = $parser->parse( 'haswbfacet:P42' );
+
+		$this->assertEquals( [], $query->getInstanceItemTypes() );
+	}
+
+	public function testIgnoresHaswbstatementForNonInstanceOfIdProperties(): void {
+		$parser = $this->newQueryStringParser();
+		$query = $parser->parse( 'haswbstatement:P1=wrongId haswbstatement:' . self::INSTANCE_TYPE_ID . '=Q68 haswbstatement:P2=alsoWrong' );
+
+		$itemTypes = [
+			new ItemId( 'Q68' )
+		];
+
+		$this->assertEquals( $itemTypes, $query->getInstanceItemTypes() );
+	}
+
 	public function testParsesAndValues(): void {
-		$parser = new QueryStringParser();
+		$parser = $this->newQueryStringParser();
 		$query = $parser->parse( 'haswbfacet:P42=foo haswbfacet:P42=bar' );
 
 		$constraints = $query->getConstraintsForProperty( new NumericPropertyId( 'P42' ) );
@@ -62,7 +95,7 @@ class QueryStringParserTest extends TestCase {
 	}
 
 	public function testParsesOrValues(): void {
-		$parser = new QueryStringParser();
+		$parser = $this->newQueryStringParser();
 		$query = $parser->parse( 'haswbfacet:P42=foo|bar|baz' );
 
 		$constraints = $query->getConstraintsForProperty( new NumericPropertyId( 'P42' ) );
@@ -74,7 +107,7 @@ class QueryStringParserTest extends TestCase {
 	}
 
 	public function testParsesMinimum(): void {
-		$parser = new QueryStringParser();
+		$parser = $this->newQueryStringParser();
 		$query = $parser->parse( 'haswbfacet:P42>=42' );
 
 		$constraints = $query->getConstraintsForProperty( new NumericPropertyId( 'P42' ) );
@@ -83,7 +116,7 @@ class QueryStringParserTest extends TestCase {
 	}
 
 	public function testParsesMaximum(): void {
-		$parser = new QueryStringParser();
+		$parser = $this->newQueryStringParser();
 		$query = $parser->parse( 'haswbfacet:P42<=9001' );
 
 		$constraints = $query->getConstraintsForProperty( new NumericPropertyId( 'P42' ) );
@@ -92,7 +125,7 @@ class QueryStringParserTest extends TestCase {
 	}
 
 	public function testParsesRange(): void {
-		$parser = new QueryStringParser();
+		$parser = $this->newQueryStringParser();
 		$query = $parser->parse( 'haswbfacet:P42>=42 haswbfacet:P1=unrelated haswbfacet:P42<=9001' );
 
 		$constraints = $query->getConstraintsForProperty( new NumericPropertyId( 'P42' ) );
@@ -102,7 +135,7 @@ class QueryStringParserTest extends TestCase {
 	}
 
 	public function testHandlesMixedConstraintsAndFreeText(): void {
-		$parser = new QueryStringParser();
+		$parser = $this->newQueryStringParser();
 		$query = $parser->parse( 'kittens haswbfacet:P42=cute cats haswbfacet:P23>=9001' );
 
 		$this->assertSame( 'kittens cats', $query->getFreeText() );
@@ -117,7 +150,7 @@ class QueryStringParserTest extends TestCase {
 	public function testHandlesSingleQuotedString(): void {
 		$this->markTestSkipped( 'TODO' );
 
-		$parser = new QueryStringParser();
+		$parser = $this->newQueryStringParser();
 		$query = $parser->parse( 'haswbfacet:P42="foo bar" baz' );
 
 		$constraints = $query->getConstraintsForProperty( new NumericPropertyId( 'P42' ) );
@@ -132,7 +165,7 @@ class QueryStringParserTest extends TestCase {
 	public function testHandlesOrQuotedStrings(): void {
 		$this->markTestSkipped( 'TODO' );
 
-		$parser = new QueryStringParser();
+		$parser = $this->newQueryStringParser();
 		$query = $parser->parse( 'haswbfacet:P42="foo bar"|second|"third value" baz' );
 
 		$constraints = $query->getConstraintsForProperty( new NumericPropertyId( 'P42' ) );
@@ -142,6 +175,18 @@ class QueryStringParserTest extends TestCase {
 			$constraints->getOrSelectedValues()
 		);
 		$this->assertSame( 'baz', $query->getFreeText() );
+	}
+
+	private function newQueryStringParser(): QueryStringParser {
+		return new QueryStringParser(
+			instanceType: $this->newConfig()->getInstanceOfId()
+		);
+	}
+
+	private function newConfig(): Config {
+		return new Config(
+			instanceOfId: new NumericPropertyId( self::INSTANCE_TYPE_ID )
+		);
 	}
 
 }

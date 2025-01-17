@@ -4,17 +4,28 @@ declare( strict_types = 1 );
 
 namespace ProfessionalWiki\WikibaseFacetedSearch\Application;
 
+use InvalidArgumentException;
+use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\NumericPropertyId;
+use Wikibase\DataModel\Entity\PropertyId;
 
 class QueryStringParser {
+
+	public function __construct(
+		private readonly PropertyId $instanceType
+	) {
+	}
 
 	public function parse( string $queryString ): Query {
 		$constraints = new PropertyConstraintsList();
 		$freeText = [];
+		$itemTypes = [];
 
 		foreach ( $this->splitQueryString( $queryString ) as $part ) {
 			if ( $this->isFacetPart( $part ) ) {
 				$constraints = $constraints->withConstraint( $this->handleFacetPart( $part, $constraints ) );
+			} elseif ( $this->isInstancePart( $part ) ) {
+				$itemTypes = $this->handleInstancePart( $part, $itemTypes );
 			}
 			else {
 				$freeText[] = $part;
@@ -23,7 +34,8 @@ class QueryStringParser {
 
 		return new Query(
 			$constraints,
-			implode( ' ', $freeText )
+			implode( ' ', $freeText ),
+			$itemTypes
 		);
 	}
 
@@ -38,9 +50,34 @@ class QueryStringParser {
 		);
 	}
 
+	private function isInstancePart( string $part ): bool {
+		return str_starts_with( $part, 'haswbstatement:' . $this->instanceType->getSerialization() );
+	}
+
 	private function isFacetPart( string $part ): bool {
 		return str_starts_with( $part, 'haswbfacet:' )
 			|| str_starts_with( $part, '-haswbfacet:' );
+	}
+
+	/**
+	 * @param ItemId[] $itemTypes
+	 * @return ItemId[]
+	 */
+	private function handleInstancePart( string $part, array &$itemTypes ): array {
+		$part = substr( $part, strlen( 'haswbstatement:' ) );
+		$itemTypeStr = explode( '=', $part, 2 )[1] ?? '';
+
+		if ( $itemTypeStr === '' ) {
+			return $itemTypes;
+		}
+
+		try {
+			$itemTypes[] = new ItemId( $itemTypeStr );
+		} catch ( InvalidArgumentException ) {
+			return $itemTypes;
+		}
+
+		return $itemTypes;
 	}
 
 	private function handleFacetPart( string $part, PropertyConstraintsList $constraintsList ): PropertyConstraints {
