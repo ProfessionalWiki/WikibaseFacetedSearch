@@ -140,7 +140,7 @@ class WikibaseFacetedSearchExtension {
 	public function newStatementListTranslator(): StatementListTranslator {
 		return new StatementListTranslator(
 			statementTranslator: $this->newStatementTranslator(),
-			instanceTypeExtractor: $this->newInstanceTypeExtractor(),
+			itemTypeExtractor: $this->newItemTypeExtractor(),
 			config: $this->getConfig()
 		);
 	}
@@ -155,7 +155,7 @@ class WikibaseFacetedSearchExtension {
 		return new DataValueTranslator();
 	}
 
-	private function newInstanceTypeExtractor(): ItemTypeExtractor {
+	private function newItemTypeExtractor(): ItemTypeExtractor {
 		return new ItemTypeExtractor(
 			instanceOfId: $this->getConfig()->getInstanceOfId()
 		);

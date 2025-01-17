@@ -25,7 +25,7 @@ class FacetConfigListTest extends TestCase {
 
 		$this->assertSame(
 			[ $facetConfig ],
-			$facetConfigList->getFacetConfigForInstanceType( $itemId )->asArray()
+			$facetConfigList->getFacetConfigForItemType( $itemId )->asArray()
 		);
 	}
 
@@ -41,7 +41,7 @@ class FacetConfigListTest extends TestCase {
 
 		$this->assertSame(
 			[ $facetConfig1, $facetConfig2 ],
-			$facetConfigList->getFacetConfigForInstanceType( $itemId1 )->asArray()
+			$facetConfigList->getFacetConfigForItemType( $itemId1 )->asArray()
 		);
 	}
 
@@ -57,7 +57,7 @@ class FacetConfigListTest extends TestCase {
 
 		$this->assertSame(
 			[ $facetConfig1, $facetConfig2 ],
-			$facetConfigList->getFacetConfigForInstanceType( $itemId1 )->asArray()
+			$facetConfigList->getFacetConfigForItemType( $itemId1 )->asArray()
 		);
 	}
 
@@ -78,12 +78,12 @@ class FacetConfigListTest extends TestCase {
 
 		$this->assertSame(
 			[ $facetConfig1, $facetConfig2 ],
-			$facetConfigList->getFacetConfigForInstanceType( $itemId1 )->asArray()
+			$facetConfigList->getFacetConfigForItemType( $itemId1 )->asArray()
 		);
 
 		$this->assertSame(
 			[ $facetConfig3, $facetConfig4 ],
-			$facetConfigList->getFacetConfigForInstanceType( $itemId2 )->asArray()
+			$facetConfigList->getFacetConfigForItemType( $itemId2 )->asArray()
 		);
 	}
 
@@ -108,19 +108,19 @@ class FacetConfigListTest extends TestCase {
 
 		$this->assertSame(
 			[ $facetConfig2, $facetConfig3, $facetConfig1 ],
-			$facetConfigList->getFacetConfigForInstanceType( $itemId1 )->asArray()
+			$facetConfigList->getFacetConfigForItemType( $itemId1 )->asArray()
 		);
 
 		$this->assertSame(
 			[ $facetConfig6, $facetConfig5, $facetConfig4 ],
-			$facetConfigList->getFacetConfigForInstanceType( $itemId2 )->asArray()
+			$facetConfigList->getFacetConfigForItemType( $itemId2 )->asArray()
 		);
 	}
 
 	public function testGettingFacetConfigForUnknownItemIdReturnsEmptyArray(): void {
 		$this->assertSame(
 			[],
-			( new FacetConfigList() )->getFacetConfigForInstanceType( new ItemId( 'Q404' ) )->asArray()
+			( new FacetConfigList() )->getFacetConfigForItemType( new ItemId( 'Q404' ) )->asArray()
 		);
 	}
 

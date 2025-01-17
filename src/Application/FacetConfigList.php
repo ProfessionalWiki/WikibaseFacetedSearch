@@ -18,11 +18,11 @@ class FacetConfigList {
 		$this->facets = $facetConfigs;
 	}
 
-	public function getFacetConfigForInstanceType( ItemId $itemId ): self {
+	public function getFacetConfigForItemType( ItemId $itemId ): self {
 		return new self(
 			...array_filter(
 				$this->facets,
-				fn( FacetConfig $facetConfig ) => $facetConfig->instanceTypeId->equals( $itemId )
+				fn( FacetConfig $facetConfig ) => $facetConfig->itemTypeId->equals( $itemId )
 			)
 		);
 	}

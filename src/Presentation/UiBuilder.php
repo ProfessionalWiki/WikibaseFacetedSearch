@@ -98,7 +98,7 @@ class UiBuilder {
 
 		$facets = [];
 
-		foreach ( $this->config->getFacetConfigForInstanceType( $itemType ) as $facetConfig ) {
+		foreach ( $this->config->getFacetConfigForItemType( $itemType ) as $facetConfig ) {
 			$facets[] = $this->buildFacetViewModel(
 				$facetConfig,
 				$query->getConstraintsForProperty( $facetConfig->propertyId ) ?? new PropertyConstraints( $facetConfig->propertyId )

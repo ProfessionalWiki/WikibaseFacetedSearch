@@ -18,13 +18,13 @@ class ItemTypeExtractor {
 	}
 
 	public function getItemType( StatementList $statements ): ?ItemId {
-		$instanceTypeStatements = $statements->getByPropertyId( $this->instanceOfId )->getBestStatements();
+		$itemTypeStatements = $statements->getByPropertyId( $this->instanceOfId )->getBestStatements();
 
-		if ( $instanceTypeStatements->isEmpty() ) {
+		if ( $itemTypeStatements->isEmpty() ) {
 			return null;
 		}
 
-		$firstMainSnak = $this->getFirstMainSnak( $instanceTypeStatements );
+		$firstMainSnak = $this->getFirstMainSnak( $itemTypeStatements );
 
 		if ( $firstMainSnak === null ) {
 			return null;
