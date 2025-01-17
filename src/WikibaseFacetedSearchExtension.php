@@ -11,8 +11,8 @@ use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\ConfigLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\DataValueTranslator;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetType;
-use ProfessionalWiki\WikibaseFacetedSearch\Application\InstanceTypeExtractor;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\PageItemLookup;
+use ProfessionalWiki\WikibaseFacetedSearch\Application\ItemTypeExtractor;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\QueryStringParser;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\StatementListTranslator;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\StatementsLookup;
@@ -155,9 +155,9 @@ class WikibaseFacetedSearchExtension {
 		return new DataValueTranslator();
 	}
 
-	private function newInstanceTypeExtractor(): InstanceTypeExtractor {
-		return new InstanceTypeExtractor(
-			instanceType: $this->getConfig()->getInstanceOfId()
+	private function newInstanceTypeExtractor(): ItemTypeExtractor {
+		return new ItemTypeExtractor(
+			instanceOfId: $this->getConfig()->getInstanceOfId()
 		);
 	}
 

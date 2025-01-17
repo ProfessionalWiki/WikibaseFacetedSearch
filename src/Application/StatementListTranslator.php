@@ -13,7 +13,7 @@ class StatementListTranslator {
 
 	public function __construct(
 		private readonly StatementTranslator $statementTranslator,
-		private readonly InstanceTypeExtractor $instanceTypeExtractor,
+		private readonly ItemTypeExtractor $instanceTypeExtractor,
 		private readonly Config $config
 	) {
 	}
@@ -23,7 +23,7 @@ class StatementListTranslator {
 	 * @return array<string, mixed>
 	 */
 	public function translateStatements( StatementList $statements ): array {
-		$instanceTypeId = $this->instanceTypeExtractor->getInstanceTypeId( $statements );
+		$instanceTypeId = $this->instanceTypeExtractor->getItemType( $statements );
 
 		if ( $instanceTypeId === null ) {
 			return [];
