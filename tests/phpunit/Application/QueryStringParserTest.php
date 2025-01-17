@@ -64,6 +64,24 @@ class QueryStringParserTest extends TestCase {
 		$this->assertEquals( $itemTypes, $query->getInstanceItemTypes() );
 	}
 
+	public function testParsesNonExistenceItemTypes(): void {
+		$parser = $this->newQueryStringParser();
+		$query = $parser->parse( 'haswbfacet:P42' );
+
+		$this->assertEquals( [], $query->getInstanceItemTypes() );
+	}
+
+	public function testIgnoresHaswbstatementForNonInstanceOfIdProperties(): void {
+		$parser = $this->newQueryStringParser();
+		$query = $parser->parse( 'haswbstatement:P1=wrongId haswbstatement:' . self::INSTANCE_TYPE_ID . '=Q68 haswbstatement:P2=alsoWrong' );
+
+		$itemTypes = [
+			new ItemId( 'Q68' )
+		];
+
+		$this->assertEquals( $itemTypes, $query->getInstanceItemTypes() );
+	}
+
 	public function testParsesAndValues(): void {
 		$parser = $this->newQueryStringParser();
 		$query = $parser->parse( 'haswbfacet:P42=foo haswbfacet:P42=bar' );
@@ -161,9 +179,13 @@ class QueryStringParserTest extends TestCase {
 
 	private function newQueryStringParser(): QueryStringParser {
 		return new QueryStringParser(
-			instanceType: ( new Config(
-				instanceOfId: new NumericPropertyId( self::INSTANCE_TYPE_ID )
-			) )->getInstanceOfId()
+			instanceType: $this->newConfig()->getInstanceOfId()
+		);
+	}
+
+	private function newConfig(): Config {
+		return new Config(
+			instanceOfId: new NumericPropertyId( self::INSTANCE_TYPE_ID )
 		);
 	}
 

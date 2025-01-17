@@ -8,6 +8,9 @@ use Wikibase\DataModel\Entity\PropertyId;
 
 class Query {
 
+	/**
+	 * @param ItemId[] $itemTypes
+	 */
 	public function __construct(
 		public readonly PropertyConstraintsList $constraints,
 		private readonly string $freeText = '',
