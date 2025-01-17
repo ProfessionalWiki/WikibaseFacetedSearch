@@ -160,9 +160,9 @@ class QueryStringParserTest extends TestCase {
 
 	private function newQueryStringParser(): QueryStringParser {
 		return new QueryStringParser(
-			instanceType: new Config(
+			instanceType: ( new Config(
 				instanceOfId: new NumericPropertyId( INSTANCE_TYPE_ID )
-			)->getInstanceOfId()
+			) )->getInstanceOfId()
 		);
 	}
 
