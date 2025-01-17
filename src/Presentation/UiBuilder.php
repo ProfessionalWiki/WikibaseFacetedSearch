@@ -28,15 +28,14 @@ class UiBuilder {
 	 */
 	public function createHtml( string $searchQuery ): string {
 		$query = $this->parseQuery( $searchQuery );
-		$instanceItemId = $query->getInstanceItemId();
+		$itemType = $query->getInstanceItemTypes()[0] ?? null;
 
 		return $this->renderTemplate(
 			$this->buildInstancesViewModel(
-				instancePropertyId: $query->getInstancePropertyId(),
-				instanceItemId: $instanceItemId
+				itemType: $itemType
 			),
 			$this->buildFacetsViewModel(
-				instanceItemId: $instanceItemId,
+				itemType: $itemType,
 				query: $query
 			)
 		);
@@ -61,7 +60,7 @@ class UiBuilder {
 	/**
 	 * @return array<array<string, string>>
 	 */
-	private function buildInstancesViewModel( ?PropertyId $instancePropertyId, ?ItemId $instanceItemId ): array {
+	private function buildInstancesViewModel( ?ItemId $itemType ): array {
 		$instances = [
 			[
 				'label' => wfMessage( 'wikibase-faceted-search-instance-type-all' )->text(),
@@ -83,24 +82,23 @@ class UiBuilder {
 
 		$instances = array_merge( $instances, $instancesExample );
 
-		$instanceItemIdStr = $instanceItemId ? $instanceItemId->getSerialization() : '';
-		$instances = array_map( function( array $instance ) use ( $instanceItemIdStr )	 {
-			$instance['selected'] = $instance['value'] === $instanceItemIdStr ? 'true' : 'false';
+		$itemTypeId = $itemType ? $itemType->getSerialization() : '';
+		$instances = array_map( function( array $instance ) use ( $itemTypeId )	 {
+			$instance['selected'] = $instance['value'] === $itemTypeId ? 'true' : 'false';
 			return $instance;
 		}, $instances );
 
-		// TODO: Get currently selected instance from query
 		return $instances;
 	}
 
-	private function buildFacetsViewModel( ?ItemId $instanceItemId, Query $query ): array {
-		if ( $instanceItemId === null ) {
+	private function buildFacetsViewModel( ?ItemId $itemType, Query $query ): array {
+		if ( $itemType === null ) {
 			return [];
 		}
 
 		$facets = [];
 
-		foreach ( $this->config->getFacetConfigForInstanceType( $instanceItemId ) as $facetConfig ) {
+		foreach ( $this->config->getFacetConfigForInstanceType( $itemType ) as $facetConfig ) {
 			$facets[] = $this->buildFacetViewModel(
 				$facetConfig,
 				$query->getConstraintsForProperty( $facetConfig->propertyId ) ?? new PropertyConstraints( $facetConfig->propertyId )

@@ -7,19 +7,25 @@ namespace ProfessionalWiki\WikibaseFacetedSearch\Application;
 use InvalidArgumentException;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\NumericPropertyId;
+use Wikibase\DataModel\Entity\PropertyId;
 
 class QueryStringParser {
+
+	public function __construct(
+		private readonly PropertyId $instanceType
+	) {
+	}
 
 	public function parse( string $queryString ): Query {
 		$constraints = new PropertyConstraintsList();
 		$freeText = [];
-		$instance = [];
+		$itemTypes = [];
 
 		foreach ( $this->splitQueryString( $queryString ) as $part ) {
 			if ( $this->isFacetPart( $part ) ) {
 				$constraints = $constraints->withConstraint( $this->handleFacetPart( $part, $constraints ) );
 			} elseif ( $this->isInstancePart( $part ) ) {
-				$instance = $this->handleInstancePart( $part, $instance );
+				$itemTypes = $this->handleInstancePart( $part, $itemTypes );
 			}
 			else {
 				$freeText[] = $part;
@@ -29,7 +35,7 @@ class QueryStringParser {
 		return new Query(
 			$constraints,
 			implode( ' ', $freeText ),
-			$instance
+			$itemTypes
 		);
 	}
 
@@ -45,7 +51,7 @@ class QueryStringParser {
 	}
 
 	private function isInstancePart( string $part ): bool {
-		return str_starts_with( $part, 'haswbstatement:' );
+		return str_starts_with( $part, 'haswbstatement:' . $this->instanceType->getSerialization() );
 	}
 
 	private function isFacetPart( string $part ): bool {
@@ -54,25 +60,24 @@ class QueryStringParser {
 	}
 
 	/**
-	 * @param array<string, NumericPropertyId|ItemId> $instance
-	 * @return array<string, NumericPropertyId|ItemId>
+	 * @param ItemId[] $itemTypes
+	 * @return ItemId[]
 	 */
-	private function handleInstancePart( string $part, array &$instance ): array {
+	private function handleInstancePart( string $part, array &$itemTypes ): array {
 		$part = substr( $part, strlen( 'haswbstatement:' ) );
-		[ $propertyIdString, $itemIdString ] = explode( '=', $part, 2 );
+		$itemTypeStr = explode( '=', $part, 2 )[1] ?? '';
 
-		if ( $propertyIdString === '' || $itemIdString === '' ) {
-			return [];
+		if ( $itemTypeStr === '' ) {
+			return $itemTypes;
 		}
 
 		try {
-			$instance['propertyId'] = new NumericPropertyId( $propertyIdString );
-			$instance['itemId'] = new ItemId( $itemIdString );
+			$itemTypes[] = new ItemId( $itemTypeStr );
 		} catch ( InvalidArgumentException ) {
-			return [];
+			return $itemTypes;
 		}
 
-		return $instance;
+		return $itemTypes;
 	}
 
 	private function handleFacetPart( string $part, PropertyConstraintsList $constraintsList ): PropertyConstraints {

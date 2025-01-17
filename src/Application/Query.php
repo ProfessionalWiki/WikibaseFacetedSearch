@@ -15,7 +15,7 @@ class Query {
 	public function __construct(
 		public readonly PropertyConstraintsList $constraints,
 		private readonly string $freeText = '',
-		private readonly array $instance = []
+		private readonly array $itemTypes = []
 	) {
 	}
 
@@ -34,12 +34,8 @@ class Query {
 		return $this->freeText;
 	}
 
-	public function getInstancePropertyId(): ?PropertyId {
-		return $this->instance['propertyId'] ?? null;
-	}
-
-	public function getInstanceItemId(): ?ItemId {
-		return $this->instance['itemId'] ?? null;
+	public function getInstanceItemTypes(): array {
+		return $this->itemTypes;
 	}
 
 }
