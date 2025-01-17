@@ -4,14 +4,10 @@ declare( strict_types = 1 );
 
 namespace ProfessionalWiki\WikibaseFacetedSearch\Application;
 
-use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 
 class Query {
 
-	/**
-	 * @param array<string, NumericPropertyId|ItemId>|array $instance
-	 */
 	public function __construct(
 		public readonly PropertyConstraintsList $constraints,
 		private readonly string $freeText = '',
