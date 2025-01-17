@@ -4,6 +4,7 @@ declare( strict_types = 1 );
 
 namespace ProfessionalWiki\WikibaseFacetedSearch\Application;
 
+use InvalidArgumentException;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\NumericPropertyId;
 
@@ -64,8 +65,12 @@ class QueryStringParser {
 			return [];
 		}
 
-		$instance['propertyId'] = new NumericPropertyId( $propertyIdString );
-		$instance['itemId'] = new ItemId( $itemIdString ); // TODO: Support non-item id values
+		try {
+			$instance['propertyId'] = new NumericPropertyId( $propertyIdString );
+			$instance['itemId'] = new ItemId( $itemIdString );
+		} catch ( InvalidArgumentException ) {
+			return [];
+		}
 
 		return $instance;
 	}
