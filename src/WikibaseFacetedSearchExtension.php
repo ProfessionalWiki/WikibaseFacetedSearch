@@ -5,6 +5,7 @@ declare( strict_types = 1 );
 namespace ProfessionalWiki\WikibaseFacetedSearch;
 
 use MediaWiki\Language\Language;
+use CirrusSearch\CirrusSearch;
 use MediaWiki\MediaWikiServices;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\ConfigLookup;
@@ -116,7 +117,7 @@ class WikibaseFacetedSearchExtension {
 		return new TemplateParser( __DIR__ . '/../templates' );
 	}
 
-	public function newSearchIndexFieldsBuilder( SearchEngine $engine ): SearchIndexFieldsBuilder {
+	public function newSearchIndexFieldsBuilder( CirrusSearch $engine ): SearchIndexFieldsBuilder {
 		return new SearchIndexFieldsBuilder(
 			engine:	$engine,
 			config: $this->getConfig(),
@@ -214,7 +215,9 @@ class WikibaseFacetedSearchExtension {
 	}
 
 	private function getQueryStringParser(): QueryStringParser {
-		return new QueryStringParser();
+		return new QueryStringParser(
+			instanceType: $this->getConfig()->getInstanceOfId()
+		);
 	}
 
 	public function newLabelDescriptionLookup( Language $language ): FallbackLabelDescriptionLookup {

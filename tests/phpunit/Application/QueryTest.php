@@ -8,6 +8,7 @@ use PHPUnit\Framework\TestCase;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\PropertyConstraints;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\PropertyConstraintsList;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Query;
+use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\NumericPropertyId;
 
 /**
@@ -66,6 +67,17 @@ class QueryTest extends TestCase {
 			$p1ConstraintB,
 			$query->getConstraintsForProperty( new NumericPropertyId( 'P1' ) )
 		);
+	}
+
+	public function testItemTypeanBeRetrieved(): void {
+		$p1Constraint = new PropertyConstraints( new NumericPropertyId( 'P1' ) );
+		$itemTypes = [
+			new ItemId( 'Q68' )
+		];
+
+		$query = new Query( new PropertyConstraintsList( $p1Constraint ), '', $itemTypes );
+
+		$this->assertEquals( $itemTypes, $query->getInstanceItemTypes() );
 	}
 
 }
