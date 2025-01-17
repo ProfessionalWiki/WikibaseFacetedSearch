@@ -16,6 +16,8 @@ parameters:
 		- ../../includes/AutoLoader.php
 	excludePaths:
 		- src/EntryPoints/WikibaseFacetedSearchHooks.php
+		- src/Persistence/Search/AggregatableKeywordIndexField.php
+		- src/Persistence/Search/SearchIndexFieldsBuilder.php
 		- src/Persistence/Search/Query/HasWbFacetFeature.php
 	reportUnmatchedIgnoredErrors: false
 	ignoreErrors:
