@@ -12,7 +12,7 @@ use Wikibase\DataModel\Entity\PropertyId;
 class QueryStringParser {
 
 	public function __construct(
-		private readonly PropertyId $instanceType
+		private readonly PropertyId $instanceOfId
 	) {
 	}
 
@@ -24,8 +24,8 @@ class QueryStringParser {
 		foreach ( $this->splitQueryString( $queryString ) as $part ) {
 			if ( $this->isFacetPart( $part ) ) {
 				$constraints = $constraints->withConstraint( $this->handleFacetPart( $part, $constraints ) );
-			} elseif ( $this->isInstancePart( $part ) ) {
-				$itemTypes = $this->handleInstancePart( $part, $itemTypes );
+			} elseif ( $this->isInstanceOfPart( $part ) ) {
+				$itemTypes = $this->extractItemTypes( $part, $itemTypes );
 			}
 			else {
 				$freeText[] = $part;
@@ -50,8 +50,8 @@ class QueryStringParser {
 		);
 	}
 
-	private function isInstancePart( string $part ): bool {
-		return str_starts_with( $part, 'haswbstatement:' . $this->instanceType->getSerialization() );
+	private function isInstanceOfPart( string $part ): bool {
+		return str_starts_with( $part, 'haswbstatement:' . $this->instanceOfId->getSerialization() );
 	}
 
 	private function isFacetPart( string $part ): bool {
@@ -63,7 +63,7 @@ class QueryStringParser {
 	 * @param ItemId[] $itemTypes
 	 * @return ItemId[]
 	 */
-	private function handleInstancePart( string $part, array &$itemTypes ): array {
+	private function extractItemTypes( string $part, array &$itemTypes ): array {
 		$part = substr( $part, strlen( 'haswbstatement:' ) );
 		$itemTypeStr = explode( '=', $part, 2 )[1] ?? '';
 

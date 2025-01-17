@@ -34,7 +34,10 @@ class Query {
 		return $this->freeText;
 	}
 
-	public function getInstanceItemTypes(): array {
+	/**
+	 * @return ItemId[]
+	 */
+	public function getItemTypes(): array {
 		return $this->itemTypes;
 	}
 

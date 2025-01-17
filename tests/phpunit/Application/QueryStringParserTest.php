@@ -61,14 +61,14 @@ class QueryStringParserTest extends TestCase {
 			new ItemId( 'Q68' )
 		];
 
-		$this->assertEquals( $itemTypes, $query->getInstanceItemTypes() );
+		$this->assertEquals( $itemTypes, $query->getItemTypes() );
 	}
 
 	public function testParsesNonExistenceItemTypes(): void {
 		$parser = $this->newQueryStringParser();
 		$query = $parser->parse( 'haswbfacet:P42' );
 
-		$this->assertEquals( [], $query->getInstanceItemTypes() );
+		$this->assertEquals( [], $query->getItemTypes() );
 	}
 
 	public function testIgnoresHaswbstatementForNonInstanceOfIdProperties(): void {
@@ -79,7 +79,7 @@ class QueryStringParserTest extends TestCase {
 			new ItemId( 'Q68' )
 		];
 
-		$this->assertEquals( $itemTypes, $query->getInstanceItemTypes() );
+		$this->assertEquals( $itemTypes, $query->getItemTypes() );
 	}
 
 	public function testParsesAndValues(): void {
@@ -179,7 +179,7 @@ class QueryStringParserTest extends TestCase {
 
 	private function newQueryStringParser(): QueryStringParser {
 		return new QueryStringParser(
-			instanceType: $this->newConfig()->getInstanceOfId()
+			instanceOfId: $this->newConfig()->getInstanceOfId()
 		);
 	}
 

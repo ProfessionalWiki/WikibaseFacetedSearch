@@ -77,7 +77,7 @@ class QueryTest extends TestCase {
 
 		$query = new Query( new PropertyConstraintsList( $p1Constraint ), '', $itemTypes );
 
-		$this->assertEquals( $itemTypes, $query->getInstanceItemTypes() );
+		$this->assertEquals( $itemTypes, $query->getItemTypes() );
 	}
 
 }

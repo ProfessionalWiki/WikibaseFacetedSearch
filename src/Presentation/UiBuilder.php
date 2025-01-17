@@ -28,7 +28,7 @@ class UiBuilder {
 	 */
 	public function createHtml( string $searchQuery ): string {
 		$query = $this->parseQuery( $searchQuery );
-		$itemType = $query->getInstanceItemTypes()[0] ?? null;
+		$itemType = $query->getItemTypes()[0] ?? null;
 
 		return $this->renderTemplate(
 			$this->buildInstancesViewModel(
