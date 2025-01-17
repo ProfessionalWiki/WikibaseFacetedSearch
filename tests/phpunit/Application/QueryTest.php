@@ -69,21 +69,15 @@ class QueryTest extends TestCase {
 		);
 	}
 
-	public function testInstanceCanBeRetrieved(): void {
+	public function testItemTypeanBeRetrieved(): void {
 		$p1Constraint = new PropertyConstraints( new NumericPropertyId( 'P1' ) );
-
-		$propertyId = new NumericPropertyId( 'P42' );
-		$itemId = new ItemId( 'Q68' );
-
-		$instance = [
-			'propertyId' => $propertyId,
-			'itemId' => $itemId
+		$itemTypes = [
+			new ItemId( 'Q68' )
 		];
 
-		$query = new Query( new PropertyConstraintsList( $p1Constraint ), '', $instance );
+		$query = new Query( new PropertyConstraintsList( $p1Constraint ), '', $itemTypes );
 
-		$this->assertEquals( $propertyId, $query->getInstancePropertyId() );
-		$this->assertEquals( $itemId, $query->getInstanceItemId() );
+		$this->assertEquals( $itemTypes, $query->getInstanceItemTypes() );
 	}
 
 }
