@@ -6,24 +6,24 @@ namespace ProfessionalWiki\WikibaseFacetedSearch\Tests\Persistence;
 
 use MediaWiki\Title\Title;
 use PHPUnit\Framework\TestCase;
-use ProfessionalWiki\WikibaseFacetedSearch\Persistence\SitelinkItemPageLookup;
+use ProfessionalWiki\WikibaseFacetedSearch\Persistence\SitelinkPageItemLookup;
 use Wikibase\DataModel\Entity\Item;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\Lib\Store\HashSiteLinkStore;
 
 /**
- * @covers \ProfessionalWiki\WikibaseFacetedSearch\Persistence\SitelinkItemPageLookup
+ * @covers \ProfessionalWiki\WikibaseFacetedSearch\Persistence\SitelinkPageItemLookup
  */
 class SitelinkItemPageLookupTest extends TestCase {
 
 	private const SITE_ID = 'testSiteId';
 
 	private HashSiteLinkStore $sitelinkStore;
-	private SitelinkItemPageLookup $lookup;
+	private SitelinkPageItemLookup $lookup;
 
 	protected function setUp(): void {
 		$this->sitelinkStore = new HashSiteLinkStore();
-		$this->lookup = new SitelinkItemPageLookup(
+		$this->lookup = new SitelinkPageItemLookup(
 			$this->sitelinkStore,
 			self::SITE_ID
 		);
@@ -32,7 +32,7 @@ class SitelinkItemPageLookupTest extends TestCase {
 	public function testReturnsPageWhenSitelinkExists(): void {
 		$this->createItemWithSitelink( 'Q42', self::SITE_ID, 'Page for Q42' );
 
-		$this->assertItemPageHasTitle( 'Q42', 'Page for Q42' );
+		$this->assertPageHasItem( 'Page for Q42', 'Q42' );
 	}
 
 	private function createItemWithSitelink( string $itemId, string $siteId, string $pageName ): void {
@@ -41,22 +41,22 @@ class SitelinkItemPageLookupTest extends TestCase {
 		$this->sitelinkStore->saveLinksOfItem( $item );
 	}
 
-	private function assertItemPageHasTitle( string $itemId, $pageTitle ): void {
+	private function assertPageHasItem( $pageTitle, string $itemId ): void {
 		$this->assertEquals(
-			Title::newFromText( $pageTitle ),
-			$this->lookup->getPageTitle( new ItemId( $itemId ) )
+			$itemId,
+			$this->lookup->getItemId( Title::newFromText( $pageTitle ) )?->getSerialization()
 		);
 	}
 
 	public function testReturnsNullWhenNoSitelinksExist(): void {
-		$this->assertNull( $this->lookup->getPageTitle( new ItemId( 'Q404' ) ) );
+		$this->assertNull( $this->lookup->getItemId( Title::newFromText( 'Foo' ) ) );
 	}
 
 	public function testReturnsNullWhenOnlyOtherSitelinksExist(): void {
 		$this->createItemWithSitelink( 'Q100', 'otherSiteId', 'Other page' );
 		$this->createItemWithSitelink( 'Q200', 'anotherSiteId', 'Another page' );
 
-		$this->assertNull( $this->lookup->getPageTitle( new ItemId( 'Q42' ) ) );
+		$this->assertNull( $this->lookup->getItemId( Title::newFromText( 'Page without sitelink' ) ) );
 	}
 
 	public function testReturnsPageWhenManySitelinksExist(): void {
@@ -64,7 +64,7 @@ class SitelinkItemPageLookupTest extends TestCase {
 		$this->createItemWithSitelink( 'Q42', self::SITE_ID, 'Page for Q42' );
 		$this->createItemWithSitelink( 'Q200', 'anotherSiteId', 'Another page' );
 
-		$this->assertItemPageHasTitle( 'Q42', 'Page for Q42' );
+		$this->assertPageHasItem( 'Page for Q42', 'Q42' );
 	}
 
 }

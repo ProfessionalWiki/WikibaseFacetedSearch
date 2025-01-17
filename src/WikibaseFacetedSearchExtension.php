@@ -4,6 +4,7 @@ declare( strict_types = 1 );
 
 namespace ProfessionalWiki\WikibaseFacetedSearch;
 
+use MediaWiki\Language\Language;
 use CirrusSearch\CirrusSearch;
 use MediaWiki\MediaWikiServices;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
@@ -11,7 +12,7 @@ use ProfessionalWiki\WikibaseFacetedSearch\Application\ConfigLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\DataValueTranslator;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetType;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\InstanceTypeExtractor;
-use ProfessionalWiki\WikibaseFacetedSearch\Application\ItemPageLookup;
+use ProfessionalWiki\WikibaseFacetedSearch\Application\PageItemLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\QueryStringParser;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\StatementListTranslator;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\StatementsLookup;
@@ -21,7 +22,7 @@ use ProfessionalWiki\WikibaseFacetedSearch\Persistence\CombiningConfigLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\ConfigDeserializer;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\ConfigJsonValidator;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\FromPageStatementsLookup;
-use ProfessionalWiki\WikibaseFacetedSearch\Persistence\ItemPageLookupFactory;
+use ProfessionalWiki\WikibaseFacetedSearch\Persistence\PageItemLookupFactory;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\PageContentConfigLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\PageContentFetcher;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\Search\SearchIndexFieldsBuilder;
@@ -35,6 +36,8 @@ use RuntimeException;
 use SearchEngine;
 use TemplateParser;
 use Title;
+use Wikibase\Lib\Store\FallbackLabelDescriptionLookup;
+use Wikibase\Lib\Store\SiteLinkStore;
 use Wikibase\Repo\WikibaseRepo;
 
 class WikibaseFacetedSearchExtension {
@@ -56,14 +59,19 @@ class WikibaseFacetedSearchExtension {
 		return $instance;
 	}
 
-	public function getItemPageLookup(): ItemPageLookup {
-		return $this->newItemPageLookupFactory()->newItemPageLookup();
+	public function getPageItemLookup(): PageItemLookup {
+		return $this->newPageItemLookupFactory()->newPageItemLookup();
 	}
 
-	private function newItemPageLookupFactory(): ItemPageLookupFactory {
-		return new ItemPageLookupFactory(
-			$this->getConfig()
+	private function newPageItemLookupFactory(): PageItemLookupFactory {
+		return new PageItemLookupFactory(
+			config: $this->getConfig(),
+			sitelinkLookup: $this->getSiteLinkStore()
 		);
+	}
+
+	private function getSiteLinkStore(): SiteLinkStore {
+		return WikibaseRepo::getStore()->newSiteLinkStore();
 	}
 
 	public function isConfigTitle( Title $title ): bool {
@@ -210,6 +218,10 @@ class WikibaseFacetedSearchExtension {
 		return new QueryStringParser(
 			instanceType: $this->getConfig()->getInstanceOfId()
 		);
+	}
+
+	public function newLabelDescriptionLookup( Language $language ): FallbackLabelDescriptionLookup {
+		return WikibaseRepo::getFallbackLabelDescriptionLookupFactory()->newLabelDescriptionLookup( $language );
 	}
 
 }
