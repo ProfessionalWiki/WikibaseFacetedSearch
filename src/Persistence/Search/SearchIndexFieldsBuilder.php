@@ -4,10 +4,10 @@ declare( strict_types = 1 );
 
 namespace ProfessionalWiki\WikibaseFacetedSearch\Persistence\Search;
 
+use CirrusSearch\CirrusSearch;
 use Exception;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetConfig;
-use SearchEngine;
 use SearchIndexField;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Services\Lookup\PropertyDataTypeLookup;
@@ -15,7 +15,7 @@ use Wikibase\DataModel\Services\Lookup\PropertyDataTypeLookup;
 class SearchIndexFieldsBuilder {
 
 	public function __construct(
-		private readonly SearchEngine $engine,
+		private readonly CirrusSearch $engine,
 		private readonly Config $config,
 		private readonly PropertyDataTypeLookup $dataTypeLookup
 	) {
@@ -35,7 +35,7 @@ class SearchIndexFieldsBuilder {
 			}
 
 			$name = $this->getFacetFieldName( $facetConfig );
-			$fields[$name] = $this->engine->makeSearchFieldMapping( $name, $fieldType );
+			$fields[$name] = $this->makeSearchFieldMapping( $name, $fieldType );
 		}
 
 		return $fields;
@@ -63,6 +63,14 @@ class SearchIndexFieldsBuilder {
 
 	private function getFacetFieldName( FacetConfig $facetConfig ): string {
 		return 'wbfs_' . $facetConfig->propertyId->getSerialization();
+	}
+
+	private function makeSearchFieldMapping( string $name, string $fieldType ): SearchIndexField {
+		if ( $fieldType === SearchIndexField::INDEX_TYPE_KEYWORD ) {
+			return new AggregatableKeywordIndexField( $name, $fieldType, $this->engine->getConfig() );
+		}
+
+		return $this->engine->makeSearchFieldMapping( $name, $fieldType );
 	}
 
 }

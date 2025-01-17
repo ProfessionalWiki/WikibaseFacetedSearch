@@ -6,7 +6,6 @@ namespace ProfessionalWiki\WikibaseFacetedSearch\Persistence\Search;
 
 use CirrusSearch\CirrusSearch;
 use CirrusSearch\Search\DatetimeIndexField;
-use CirrusSearch\Search\KeywordIndexField;
 use CirrusSearch\Search\NumberIndexField;
 use PHPUnit\Framework\TestCase;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
@@ -81,9 +80,9 @@ class SearchIndexFieldsBuilderTest extends TestCase {
 		$this->assertEquals(
 			[
 				'wbfs_P100' => new NumberIndexField( 'wbfs_P100', SearchIndexField::INDEX_TYPE_NUMBER, $this->cirrusSearch->getConfig() ),
-				'wbfs_P200' => new KeywordIndexField( 'wbfs_P200', SearchIndexField::INDEX_TYPE_KEYWORD, $this->cirrusSearch->getConfig() ),
+				'wbfs_P200' => new AggregatableKeywordIndexField( 'wbfs_P200', SearchIndexField::INDEX_TYPE_KEYWORD, $this->cirrusSearch->getConfig() ),
 				'wbfs_P300' => new DatetimeIndexField( 'wbfs_P300', SearchIndexField::INDEX_TYPE_DATETIME, $this->cirrusSearch->getConfig() ),
-				'wbfs_P400' => new KeywordIndexField( 'wbfs_P400', SearchIndexField::INDEX_TYPE_KEYWORD, $this->cirrusSearch->getConfig() )
+				'wbfs_P400' => new AggregatableKeywordIndexField( 'wbfs_P400', SearchIndexField::INDEX_TYPE_KEYWORD, $this->cirrusSearch->getConfig() )
 			],
 			$builder->createFields()
 		);
@@ -115,7 +114,7 @@ class SearchIndexFieldsBuilderTest extends TestCase {
 		$this->assertEquals(
 			[
 				'wbfs_P100' => new NumberIndexField( 'wbfs_P100', SearchIndexField::INDEX_TYPE_NUMBER, $this->cirrusSearch->getConfig() ),
-				'wbfs_P200' => new KeywordIndexField( 'wbfs_P200', SearchIndexField::INDEX_TYPE_KEYWORD, $this->cirrusSearch->getConfig() )
+				'wbfs_P200' => new AggregatableKeywordIndexField( 'wbfs_P200', SearchIndexField::INDEX_TYPE_KEYWORD, $this->cirrusSearch->getConfig() )
 			],
 			$builder->createFields()
 		);
