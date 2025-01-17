@@ -78,7 +78,7 @@ function onRangeFacetInput( facet, propertyId ) {
 	updateErrorState( minInput );
 	updateErrorState( maxInput );
 
-	if ( minInput.validity.valid === false || maxInput.validity.valid === false ) {
+	if ( !minInput.validity.valid || !maxInput.validity.valid ) {
 		applyButton.disabled = true;
 		return;
 	}
@@ -98,7 +98,7 @@ function onRangeFacetInput( facet, propertyId ) {
  * @param {HTMLInputElement} input
  */
 function updateErrorState( input ) {
-	if ( input.validity.valid === false ) {
+	if ( !input.validity.valid ) {
 		input.parentElement.classList.add( 'cdx-text-input--status-error' );
 	} else {
 		input.parentElement.classList.remove( 'cdx-text-input--status-error' );
