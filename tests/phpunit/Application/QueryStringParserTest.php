@@ -5,7 +5,6 @@ declare( strict_types = 1 );
 namespace ProfessionalWiki\WikibaseFacetedSearch\Tests\Application;
 
 use PHPUnit\Framework\TestCase;
-use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\QueryStringParser;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\NumericPropertyId;
@@ -14,8 +13,6 @@ use Wikibase\DataModel\Entity\NumericPropertyId;
  * @covers \ProfessionalWiki\WikibaseFacetedSearch\Application\QueryStringParser
  */
 class QueryStringParserTest extends TestCase {
-
-	private const INSTANCE_TYPE_ID = 'P90';
 
 	/**
 	 * @dataProvider freeTextProvider
@@ -53,9 +50,16 @@ class QueryStringParserTest extends TestCase {
 		$this->assertTrue( $constraints->hasNoValue() );
 	}
 
-	public function testParsesItemTypes(): void {
-		$parser = $this->newQueryStringParser();
-		$query = $parser->parse( 'haswbstatement:' . self::INSTANCE_TYPE_ID . '=Q68' );
+	public function testParsesNonExistenceItemTypes(): void {
+		$parser = $this->newQueryStringParser( instanceOfId: 'P32' );
+		$query = $parser->parse( 'haswbfacet:P404' );
+
+		$this->assertEquals( [], $query->getItemTypes() );
+	}
+
+	public function testParsesSingleItemType(): void {
+		$parser = $this->newQueryStringParser( instanceOfId: 'P32' );
+		$query = $parser->parse( 'unrelated haswbstatement:P32=Q68 unrelated' );
 
 		$itemTypes = [
 			new ItemId( 'Q68' )
@@ -64,16 +68,33 @@ class QueryStringParserTest extends TestCase {
 		$this->assertEquals( $itemTypes, $query->getItemTypes() );
 	}
 
-	public function testParsesNonExistenceItemTypes(): void {
-		$parser = $this->newQueryStringParser();
-		$query = $parser->parse( 'haswbfacet:P42' );
+	public function testParsesMultipleItemTypes(): void {
+		$parser = $this->newQueryStringParser( instanceOfId: 'P32' );
+		$query = $parser->parse( 'unrelated haswbstatement:P32=Q68 haswbstatement:P32=Q67 unrelated haswbstatement:P32=Q69 unrelated' );
 
-		$this->assertEquals( [], $query->getItemTypes() );
+		$itemTypes = [
+			new ItemId( 'Q68' ),
+			new ItemId( 'Q67' ),
+			new ItemId( 'Q69' ),
+		];
+
+		$this->assertEquals( $itemTypes, $query->getItemTypes() );
 	}
 
 	public function testIgnoresHaswbstatementForNonInstanceOfIdProperties(): void {
-		$parser = $this->newQueryStringParser();
-		$query = $parser->parse( 'haswbstatement:P1=wrongId haswbstatement:' . self::INSTANCE_TYPE_ID . '=Q68 haswbstatement:P2=alsoWrong' );
+		$parser = $this->newQueryStringParser( instanceOfId: 'P32' );
+		$query = $parser->parse( 'haswbstatement:P1=wrongId haswbstatement:P32=Q68 haswbstatement:P2=alsoWrong' );
+
+		$itemTypes = [
+			new ItemId( 'Q68' )
+		];
+
+		$this->assertEquals( $itemTypes, $query->getItemTypes() );
+	}
+
+	public function testIgnoresInvalidItemTypes(): void {
+		$parser = $this->newQueryStringParser( instanceOfId: 'P32' );
+		$query = $parser->parse( 'haswbstatement:P32=invalid haswbstatement:P32=Q68 haswbstatement:P32=wrong' );
 
 		$itemTypes = [
 			new ItemId( 'Q68' )
@@ -177,15 +198,9 @@ class QueryStringParserTest extends TestCase {
 		$this->assertSame( 'baz', $query->getFreeText() );
 	}
 
-	private function newQueryStringParser(): QueryStringParser {
+	private function newQueryStringParser( ?string $instanceOfId = 'P11111' ): QueryStringParser {
 		return new QueryStringParser(
-			instanceOfId: $this->newConfig()->getInstanceOfId()
-		);
-	}
-
-	private function newConfig(): Config {
-		return new Config(
-			instanceOfId: new NumericPropertyId( self::INSTANCE_TYPE_ID )
+			instanceOfId: new NumericPropertyId( $instanceOfId )
 		);
 	}
 
