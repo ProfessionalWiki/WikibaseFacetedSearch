@@ -68,7 +68,7 @@ class ListFacetHtmlBuilderTest extends TestCase {
 
 	private function newFacetConfig( array $typeSpecificConfig = [] ): FacetConfig {
 		return new FacetConfig(
-			instanceTypeId: new ItemId( 'Q123' ),
+			itemTypeId: new ItemId( 'Q123' ),
 			propertyId: new NumericPropertyId( self::FACET_PROPERTY_ID ),
 			type: FacetType::LIST,
 			typeSpecificConfig: $typeSpecificConfig

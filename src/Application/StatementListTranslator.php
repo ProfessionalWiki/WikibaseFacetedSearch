@@ -13,7 +13,7 @@ class StatementListTranslator {
 
 	public function __construct(
 		private readonly StatementTranslator $statementTranslator,
-		private readonly InstanceTypeExtractor $instanceTypeExtractor,
+		private readonly ItemTypeExtractor $itemTypeExtractor,
 		private readonly Config $config
 	) {
 	}
@@ -23,13 +23,13 @@ class StatementListTranslator {
 	 * @return array<string, mixed>
 	 */
 	public function translateStatements( StatementList $statements ): array {
-		$instanceTypeId = $this->instanceTypeExtractor->getInstanceTypeId( $statements );
+		$itemType = $this->itemTypeExtractor->getItemType( $statements );
 
-		if ( $instanceTypeId === null ) {
+		if ( $itemType === null ) {
 			return [];
 		}
 
-		$propertyIds = $this->getPropertiesToIndex( $instanceTypeId );
+		$propertyIds = $this->getPropertiesToIndex( $itemType );
 
 		$values = [];
 
@@ -43,11 +43,11 @@ class StatementListTranslator {
 	/**
 	 * @return PropertyId[]
 	 */
-	private function getPropertiesToIndex( ItemId $instanceTypeId ): array {
+	private function getPropertiesToIndex( ItemId $itemType ): array {
 		return array_values(
 			array_map(
 				fn( FacetConfig $config ) => $config->propertyId,
-				$this->config->getFacetConfigForInstanceType( $instanceTypeId )
+				$this->config->getFacetConfigForItemType( $itemType )
 			)
 		);
 	}

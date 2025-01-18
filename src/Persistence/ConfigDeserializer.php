@@ -78,7 +78,7 @@ class ConfigDeserializer {
 		unset( $typeSpecificConfig['type'] );
 
 		return new FacetConfig(
-			instanceTypeId: new ItemId( $itemId ),
+			itemTypeId: new ItemId( $itemId ),
 			propertyId: new NumericPropertyId( $propertyId ),
 			type: FacetType::from( $facetConfig['type'] ),
 			typeSpecificConfig: $typeSpecificConfig

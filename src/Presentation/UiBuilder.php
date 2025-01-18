@@ -28,7 +28,7 @@ class UiBuilder {
 	 */
 	public function createHtml( string $searchQuery ): string {
 		$query = $this->parseQuery( $searchQuery );
-		$itemType = $query->getInstanceItemTypes()[0] ?? null;
+		$itemType = $query->getItemTypes()[0] ?? null;
 
 		return $this->renderTemplate(
 			$this->buildInstancesViewModel(
@@ -98,7 +98,7 @@ class UiBuilder {
 
 		$facets = [];
 
-		foreach ( $this->config->getFacetConfigForInstanceType( $itemType ) as $facetConfig ) {
+		foreach ( $this->config->getFacetConfigForItemType( $itemType ) as $facetConfig ) {
 			$facets[] = $this->buildFacetViewModel(
 				$facetConfig,
 				$query->getConstraintsForProperty( $facetConfig->propertyId ) ?? new PropertyConstraints( $facetConfig->propertyId )

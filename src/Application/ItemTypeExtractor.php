@@ -10,21 +10,21 @@ use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Snak\PropertyValueSnak;
 use Wikibase\DataModel\Statement\StatementList;
 
-class InstanceTypeExtractor {
+class ItemTypeExtractor {
 
 	public function __construct(
-		private readonly PropertyId $instanceType
+		private readonly PropertyId $instanceOfId
 	) {
 	}
 
-	public function getInstanceTypeId( StatementList $statements ): ?ItemId {
-		$instanceTypeStatements = $statements->getByPropertyId( $this->instanceType )->getBestStatements();
+	public function getItemType( StatementList $statements ): ?ItemId {
+		$itemTypeStatements = $statements->getByPropertyId( $this->instanceOfId )->getBestStatements();
 
-		if ( $instanceTypeStatements->isEmpty() ) {
+		if ( $itemTypeStatements->isEmpty() ) {
 			return null;
 		}
 
-		$firstMainSnak = $this->getFirstMainSnak( $instanceTypeStatements );
+		$firstMainSnak = $this->getFirstMainSnak( $itemTypeStatements );
 
 		if ( $firstMainSnak === null ) {
 			return null;

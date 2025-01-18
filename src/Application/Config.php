@@ -40,12 +40,12 @@ class Config {
 	/**
 	 * @return FacetConfig[]
 	 */
-	public function getFacetConfigForInstanceType( ItemId $instanceTypeId ): array {
-		return $this->getFacets()->getFacetConfigForInstanceType( $instanceTypeId )->asArray();
+	public function getFacetConfigForItemType( ItemId $itemTypeId ): array {
+		return $this->getFacets()->getFacetConfigForItemType( $itemTypeId )->asArray();
 	}
 
-	public function getConfigForProperty( ItemId $instanceTypeId, PropertyId $propertyId ): ?FacetConfig {
-		return $this->getFacets()->getFacetConfigForInstanceType( $instanceTypeId )->getConfigForProperty( $propertyId );
+	public function getConfigForProperty( ItemId $itemTypeId, PropertyId $propertyId ): ?FacetConfig {
+		return $this->getFacets()->getFacetConfigForItemType( $itemTypeId )->getConfigForProperty( $propertyId );
 	}
 
 }
