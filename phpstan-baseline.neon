@@ -1,18 +1,6 @@
 parameters:
 	ignoreErrors:
 		-
-			message: '#^Method ProfessionalWiki\\WikibaseFacetedSearch\\Application\\StatementListTranslator\:\:translatePropertyStatements\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/Application/StatementListTranslator.php
-
-		-
-			message: '#^Method ProfessionalWiki\\WikibaseFacetedSearch\\Persistence\\ConfigDeserializer\:\:newFacetConfigList\(\) has parameter \$configPerItemType with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/Persistence/ConfigDeserializer.php
-
-		-
 			message: '#^Parameter \#1 \$configArray of method ProfessionalWiki\\WikibaseFacetedSearch\\Persistence\\ConfigDeserializer\:\:newConfig\(\) expects array\<string, mixed\>, array\<mixed, mixed\> given\.$#'
 			identifier: argument.type
 			count: 1
@@ -41,36 +29,6 @@ parameters:
 			identifier: argument.type
 			count: 1
 			path: src/Persistence/ConfigDeserializer.php
-
-		-
-			message: '#^Method ProfessionalWiki\\WikibaseFacetedSearch\\Presentation\\ListFacetHtmlBuilder\:\:buildCheckboxesViewModel\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/Presentation/ListFacetHtmlBuilder.php
-
-		-
-			message: '#^Method ProfessionalWiki\\WikibaseFacetedSearch\\Presentation\\UiBuilder\:\:buildFacetViewModel\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/Presentation/UiBuilder.php
-
-		-
-			message: '#^Method ProfessionalWiki\\WikibaseFacetedSearch\\Presentation\\UiBuilder\:\:buildFacetsViewModel\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/Presentation/UiBuilder.php
-
-		-
-			message: '#^Method ProfessionalWiki\\WikibaseFacetedSearch\\Presentation\\UiBuilder\:\:renderTemplate\(\) has parameter \$facetsViewModel with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/Presentation/UiBuilder.php
-
-		-
-			message: '#^Method ProfessionalWiki\\WikibaseFacetedSearch\\Presentation\\UiBuilder\:\:renderTemplate\(\) has parameter \$instancesViewModel with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/Presentation/UiBuilder.php
 
 		-
 			message: '#^Cannot cast mixed to string\.$#'
