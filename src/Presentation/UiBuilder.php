@@ -42,7 +42,7 @@ class UiBuilder {
 		return $this->templateParser->processTemplate(
 			'Layout',
 			[
-				'instanceId' => 'P1460', // TODO: Link to config
+				'instanceId' => $this->config->getInstanceOfId()->getSerialization(),
 				'instances' => $instancesViewModel,
 				'facets' => $facetsViewModel,
 				'msg-filters' => wfMessage( 'wikibase-faceted-search-filters' )->text(),

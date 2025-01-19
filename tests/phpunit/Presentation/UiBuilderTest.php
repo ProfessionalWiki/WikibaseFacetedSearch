@@ -11,6 +11,7 @@ use ProfessionalWiki\WikibaseFacetedSearch\Tests\TestDoubles\SpyFacetHtmlBuilder
 use ProfessionalWiki\WikibaseFacetedSearch\Tests\TestDoubles\SpyTemplateParser;
 use ProfessionalWiki\WikibaseFacetedSearch\Tests\TestDoubles\StubQueryStringParser;
 use ProfessionalWiki\WikibaseFacetedSearch\WikibaseFacetedSearchExtension;
+use Wikibase\DataModel\Entity\NumericPropertyId;
 
 /**
  * @covers \ProfessionalWiki\WikibaseFacetedSearch\Presentation\UiBuilder
@@ -25,7 +26,7 @@ class UiBuilderTest extends TestCase {
 	}
 
 	public function testTabsViewModelContainsItemTypeProperty(): void {
-		$config = new Config();
+		$config = new Config( instanceOfId: new NumericPropertyId( 'P1337' ) );
 		$templatePsy = new SpyTemplateParser();
 
 		$uiBuilder = new UiBuilder(
@@ -38,7 +39,7 @@ class UiBuilderTest extends TestCase {
 		$uiBuilder->createHtml('unimportant' );
 
 		$this->assertSame(
-			'P1460',
+			'P1337',
 			$templatePsy->getArgs()['instanceId']
 		);
 	}
