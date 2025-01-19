@@ -8,7 +8,7 @@
 			{{#instances}}
 				<button
 					class="wikibase-faceted-search__instance cdx-tabs__list__item"
-					aria-selected="{{selected}}"
+					aria-selected="{{#selected}}true{{/selected}}{{^selected}}false{{/selected}}"
 					value="{{value}}"
 				>
 					{{label}}

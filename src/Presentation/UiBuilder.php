@@ -10,7 +10,6 @@ use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetConfig;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\PropertyConstraints;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Query;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\QueryStringParser;
-use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Entity\ItemId;
 
 class UiBuilder {
@@ -54,27 +53,32 @@ class UiBuilder {
 		return $this->queryStringParser->parse( $searchQuery );
 	}
 
-	/**
-	 * @return array<array<string, string>>
-	 */
 	private function buildTabsViewModel( ?ItemId $selectedItemType ): array {
-		$tabs = [
-			[
-				'label' => wfMessage( 'wikibase-faceted-search-instance-type-all' )->text(),
-				'value' => '',
-				'selected' => 'true' // TODO: implement
-			]
-		];
+		$tabs = [];
 
 		foreach ( $this->config->getItemTypes() as $itemType ) {
 			$tabs[] = [
-				'label' => $itemType->getSerialization(), // TODO: look up label, or leave this up to the frontend?
+				'label' => $itemType->getSerialization(), // TODO: use label from config
 				'value' => $itemType->getSerialization(),
-				'selected' => 'false' // TODO: $itemType->equals( $selectedItemType ) ? 'true' : 'false'
+				'selected' => $itemType->equals( $selectedItemType )
 			];
 		}
 
-		return $tabs;
+		return [
+			[
+				'label' => wfMessage( 'wikibase-faceted-search-instance-type-all' )->text(),
+				'value' => '',
+				'selected' => $this->noTabsAreSelected( $tabs )
+			],
+			...$tabs
+		];
+	}
+
+	/**
+	 * @param array<array{selected: bool}> $tabs
+	 */
+	private function noTabsAreSelected( array $tabs ): bool {
+		return !array_reduce( $tabs, ( fn( $carry, $tab ) => $carry || $tab['selected'] ), false );
 	}
 
 	private function buildFacetsViewModel( ?ItemId $itemType, Query $query ): array {
