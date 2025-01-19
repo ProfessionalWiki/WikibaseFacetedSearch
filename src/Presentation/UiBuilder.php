@@ -28,7 +28,7 @@ class UiBuilder {
 		$itemType = $query->getItemTypes()[0] ?? null;
 
 		return $this->renderTemplate(
-			$this->buildInstancesViewModel(
+			$this->buildTabsViewModel(
 				itemType: $itemType
 			),
 			$this->buildFacetsViewModel(
@@ -57,7 +57,7 @@ class UiBuilder {
 	/**
 	 * @return array<array<string, string>>
 	 */
-	private function buildInstancesViewModel( ?ItemId $itemType ): array {
+	private function buildTabsViewModel( ?ItemId $itemType ): array {
 		$instances = [
 			[
 				'label' => wfMessage( 'wikibase-faceted-search-instance-type-all' )->text(),
@@ -80,12 +80,13 @@ class UiBuilder {
 		$instances = array_merge( $instances, $instancesExample );
 
 		$itemTypeId = $itemType ? $itemType->getSerialization() : '';
-		$instances = array_map( function( array $instance ) use ( $itemTypeId )	 {
-			$instance['selected'] = $instance['value'] === $itemTypeId ? 'true' : 'false';
-			return $instance;
-		}, $instances );
-
-		return $instances;
+		return array_map(
+			function( array $instance ) use ( $itemTypeId )	 {
+				$instance['selected'] = $instance['value'] === $itemTypeId ? 'true' : 'false';
+				return $instance;
+			},
+			$instances
+		);
 	}
 
 	private function buildFacetsViewModel( ?ItemId $itemType, Query $query ): array {
