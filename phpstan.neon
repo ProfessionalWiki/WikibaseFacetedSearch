@@ -19,6 +19,7 @@ parameters:
 		- src/Persistence/Search/AggregatableKeywordIndexField.php
 		- src/Persistence/Search/SearchIndexFieldsBuilder.php
 		- src/Persistence/Search/Query/HasWbFacetFeature.php
+		- src/Persistence/Elastic*.php
 	reportUnmatchedIgnoredErrors: false
 	ignoreErrors:
 		- '#no value type specified in iterable type array\.$#'

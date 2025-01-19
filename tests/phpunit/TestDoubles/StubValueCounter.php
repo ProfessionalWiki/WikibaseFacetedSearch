@@ -9,7 +9,7 @@ use ProfessionalWiki\WikibaseFacetedSearch\Application\ValueCounter;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\ValueCounts;
 use Wikibase\DataModel\Entity\PropertyId;
 
-class StubValueCounter extends ValueCounter {
+class StubValueCounter implements ValueCounter {
 
 	public const FIRST_VALUE = 'Bob';
 	public const FIRST_COUNT = 5;
