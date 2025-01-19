@@ -11,6 +11,7 @@ use ProfessionalWiki\WikibaseFacetedSearch\Tests\TestDoubles\SpyFacetHtmlBuilder
 use ProfessionalWiki\WikibaseFacetedSearch\Tests\TestDoubles\SpyTemplateParser;
 use ProfessionalWiki\WikibaseFacetedSearch\Tests\TestDoubles\StubQueryStringParser;
 use ProfessionalWiki\WikibaseFacetedSearch\WikibaseFacetedSearchExtension;
+use RuntimeException;
 use Wikibase\DataModel\Entity\NumericPropertyId;
 
 /**
@@ -20,6 +21,12 @@ use Wikibase\DataModel\Entity\NumericPropertyId;
 class UiBuilderTest extends TestCase {
 
 	public function testIntegrationSmoke(): void {
+		try {
+			WikibaseFacetedSearchExtension::getInstance()->getConfig()->getInstanceOfId();
+		} catch ( RuntimeException ) {
+			$this->markTestSkipped( 'No valid config available' );
+		}
+
 		$html = WikibaseFacetedSearchExtension::getInstance()->getUiBuilder()->createHtml( 'foo' );
 		$this->assertStringContainsString( 'topbar', $html );
 		$this->assertStringContainsString( 'sidebar', $html );
@@ -36,7 +43,7 @@ class UiBuilderTest extends TestCase {
 			new StubQueryStringParser()
 		);
 
-		$uiBuilder->createHtml('unimportant' );
+		$uiBuilder->createHtml( 'unimportant' );
 
 		$this->assertSame(
 			'P1337',
