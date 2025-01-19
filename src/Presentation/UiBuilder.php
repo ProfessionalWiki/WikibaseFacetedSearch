@@ -23,9 +23,6 @@ class UiBuilder {
 	) {
 	}
 
-	/**
-	 * TODO: add integration tests
-	 */
 	public function createHtml( string $searchQuery ): string {
 		$query = $this->parseQuery( $searchQuery );
 		$itemType = $query->getItemTypes()[0] ?? null;
