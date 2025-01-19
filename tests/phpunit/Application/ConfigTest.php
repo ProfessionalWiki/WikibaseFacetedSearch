@@ -120,4 +120,24 @@ class ConfigTest extends TestCase {
 		);
 	}
 
+	public function testGetItemTypes(): void {
+		$config = new Config(
+			facets: new FacetConfigList(
+				new FacetConfig( new ItemId( 'Q1' ), new NumericPropertyId( 'P1' ), FacetType::LIST ),
+				new FacetConfig( new ItemId( 'Q2' ), new NumericPropertyId( 'P2' ), FacetType::RANGE ),
+				new FacetConfig( new ItemId( 'Q1' ), new NumericPropertyId( 'P3' ), FacetType::LIST ),
+				new FacetConfig( new ItemId( 'Q3' ), new NumericPropertyId( 'P4' ), FacetType::RANGE )
+			)
+		);
+
+		$this->assertEquals(
+			[
+				new ItemId( 'Q1' ),
+				new ItemId( 'Q2' ),
+				new ItemId( 'Q3' )
+			],
+			$config->getItemTypes()
+		);
+	}
+
 }

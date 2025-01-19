@@ -36,18 +36,79 @@ class UiBuilderTest extends TestCase {
 		$config = new Config( instanceOfId: new NumericPropertyId( 'P1337' ) );
 		$templatePsy = new SpyTemplateParser();
 
-		$uiBuilder = new UiBuilder(
-			$config,
-			new SpyFacetHtmlBuilder(),
-			$templatePsy,
-			new StubQueryStringParser()
-		);
-
-		$uiBuilder->createHtml( 'unimportant' );
+		$this->newUiBuilder( config: $config, templatePsy: $templatePsy )
+			->createHtml( 'unimportant' );
 
 		$this->assertSame(
 			'P1337',
 			$templatePsy->getArgs()['instanceId']
+		);
+	}
+
+	private function newUiBuilder(
+		?Config $config = null,
+		?SpyTemplateParser $templatePsy = null
+	): UiBuilder {
+		return new UiBuilder(
+			$config ?? new Config(),
+			new SpyFacetHtmlBuilder(),
+			$templatePsy ?? new SpyTemplateParser(),
+			new StubQueryStringParser()
+		);
+	}
+
+	public function testTabsViewModelContainsItemTypes(): void {
+		$config = WikibaseFacetedSearchExtension::getInstance()->newConfigDeserializer()->deserialize( <<<JSON
+{
+	"instanceOfId": "P1337",
+	"instanceOfValues": {
+		"Q5976445": {
+			"label": "People",
+			"facets": {
+				"P592": {
+					"type": "list"
+				},
+				"P593": {
+					"type": "range"
+				}
+			}
+		},
+		"Q5976449": {
+			"label": "Documents",
+			"facets": {
+				"P22": {
+					"type": "list"
+				}
+			}
+		}
+	}
+}
+JSON );
+
+		$templatePsy = new SpyTemplateParser();
+
+		$this->newUiBuilder( config: $config, templatePsy: $templatePsy )
+			->createHtml( 'unimportant' );
+
+		$this->assertEquals(
+			[
+				[
+					'label' => 'All',
+					'value' => '',
+					'selected' => 'true'
+				],
+				[
+					'label' => 'Q5976445',
+					'value' => 'Q5976445',
+					'selected' => 'false'
+				],
+				[
+					'label' => 'Q5976449',
+					'value' => 'Q5976449',
+					'selected' => 'false'
+				],
+			],
+			$templatePsy->getArgs()['instances']
 		);
 	}
 

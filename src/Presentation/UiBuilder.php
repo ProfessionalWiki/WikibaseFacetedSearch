@@ -29,7 +29,7 @@ class UiBuilder {
 
 		return $this->renderTemplate(
 			$this->buildTabsViewModel(
-				itemType: $itemType
+				selectedItemType: $itemType
 			),
 			$this->buildFacetsViewModel(
 				itemType: $itemType,
@@ -57,36 +57,24 @@ class UiBuilder {
 	/**
 	 * @return array<array<string, string>>
 	 */
-	private function buildTabsViewModel( ?ItemId $itemType ): array {
-		$instances = [
+	private function buildTabsViewModel( ?ItemId $selectedItemType ): array {
+		$tabs = [
 			[
 				'label' => wfMessage( 'wikibase-faceted-search-instance-type-all' )->text(),
-				'value' => ''
+				'value' => '',
+				'selected' => 'true' // TODO: implement
 			]
 		];
 
-		// TODO: Get instances from config
-		$instancesExample = [
-			[
-				'label' => 'People',
-				'value' => 'Q5976445'
-			],
-			[
-				'label' => 'Documents',
-				'value' => 'Q5976449'
-			]
-		];
+		foreach ( $this->config->getItemTypes() as $itemType ) {
+			$tabs[] = [
+				'label' => $itemType->getSerialization(), // TODO: look up label, or leave this up to the frontend?
+				'value' => $itemType->getSerialization(),
+				'selected' => 'false' // TODO: $itemType->equals( $selectedItemType ) ? 'true' : 'false'
+			];
+		}
 
-		$instances = array_merge( $instances, $instancesExample );
-
-		$itemTypeId = $itemType ? $itemType->getSerialization() : '';
-		return array_map(
-			function( array $instance ) use ( $itemTypeId )	 {
-				$instance['selected'] = $instance['value'] === $itemTypeId ? 'true' : 'false';
-				return $instance;
-			},
-			$instances
-		);
+		return $tabs;
 	}
 
 	private function buildFacetsViewModel( ?ItemId $itemType, Query $query ): array {

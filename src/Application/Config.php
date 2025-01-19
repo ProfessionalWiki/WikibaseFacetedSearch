@@ -48,4 +48,19 @@ class Config {
 		return $this->getFacets()->getFacetConfigForItemType( $itemTypeId )->getConfigForProperty( $propertyId );
 	}
 
+	/**
+	 * @return ItemId[]
+	 */
+	public function getItemTypes(): array {
+		$itemTypes = [];
+
+		// TODO: needing this logic is really silly. We have the info as array keys in the JSON.
+		// https://github.com/ProfessionalWiki/WikibaseFacetedSearch/issues/107
+		foreach ( $this->getFacets()->asArray() as $facetConfig ) {
+			$itemTypes[$facetConfig->itemTypeId->getSerialization()] = $facetConfig->itemTypeId;
+		}
+
+		return array_values( $itemTypes );
+	}
+
 }
