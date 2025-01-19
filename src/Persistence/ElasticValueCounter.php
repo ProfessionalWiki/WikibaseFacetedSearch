@@ -20,8 +20,8 @@ class ElasticValueCounter implements ValueCounter {
 	 * Count the values for a given property, highest occurrences first.
 	 * Values are indexed per property at wbfs_P123, where P123 is the serialization of the property id.
 	 */
-	public function countValues( PropertyId $property ): ValueCounts {
-		$query = [
+	public function countValues( PropertyId $property /* TODO: current query */ ): ValueCounts {
+		$query = [ // TODO: filter by current query
 			'size' => 0,
 			'aggs' => [
 				'valueCounts' => [
