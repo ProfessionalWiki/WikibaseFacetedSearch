@@ -4,6 +4,7 @@ declare( strict_types = 1 );
 
 namespace ProfessionalWiki\WikibaseFacetedSearch;
 
+use CirrusSearch\SearchConfig;
 use MediaWiki\Language\Language;
 use CirrusSearch\CirrusSearch;
 use MediaWiki\MediaWikiServices;
@@ -21,6 +22,8 @@ use ProfessionalWiki\WikibaseFacetedSearch\Application\ValueCounter;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\CombiningConfigLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\ConfigDeserializer;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\ConfigJsonValidator;
+use ProfessionalWiki\WikibaseFacetedSearch\Persistence\ElasticQueryRunner;
+use ProfessionalWiki\WikibaseFacetedSearch\Persistence\ElasticValueCounter;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\FromPageStatementsLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\PageItemLookupFactory;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\PageContentConfigLookup;
@@ -204,8 +207,24 @@ class WikibaseFacetedSearchExtension {
 		);
 	}
 
-	private function getValueCounter(): ValueCounter {
-		return new ValueCounter();
+	public function getValueCounter(): ValueCounter {
+		return new ElasticValueCounter(
+			queryRunner: $this->getElasticQueryRunner()
+		);
+	}
+
+	public function getElasticQueryRunner(): ElasticQueryRunner {
+		return new ElasticQueryRunner(
+			$this->getSearchConfig()
+		);
+	}
+
+	private function getSearchConfig(): SearchConfig {
+		/**
+		 * @var SearchConfig $config
+		 */
+		$config = MediaWikiServices::getInstance()->getConfigFactory()->makeConfig( 'CirrusSearch' );
+		return $config;
 	}
 
 	private function newRangeFacetHtmlBuilder(): FacetHtmlBuilder {

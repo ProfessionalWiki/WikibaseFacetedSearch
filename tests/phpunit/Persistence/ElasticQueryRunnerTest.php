@@ -4,14 +4,13 @@ declare( strict_types = 1 );
 
 namespace ProfessionalWiki\WikibaseFacetedSearch\Tests\Persistence;
 
-use CirrusSearch\Connection;
-use CirrusSearch\SearchConfig;
-use Elastica\Client;
 use Elastica\Response;
-use MediaWiki\MediaWikiServices;
 use MediaWikiIntegrationTestCase;
+use ProfessionalWiki\WikibaseFacetedSearch\WikibaseFacetedSearchExtension;
 
 /**
+ * @covers \ProfessionalWiki\WikibaseFacetedSearch\Persistence\ElasticQueryRunner
+ * @covers \ProfessionalWiki\WikibaseFacetedSearch\WikibaseFacetedSearchExtension
  * @group Database
  */
 class ElasticQueryRunnerTest extends MediaWikiIntegrationTestCase {
@@ -30,23 +29,7 @@ class ElasticQueryRunnerTest extends MediaWikiIntegrationTestCase {
 	}
 
 	private function runQuery( array $query ): Response {
-		return $this->getClient()->request( '_search', 'GET', $query );
-	}
-
-	private function getClient(): Client {
-		return $this->getConnection()->getClient();
-	}
-
-	private function getConnection(): Connection {
-		return new Connection( $this->getSearchConfig() );
-	}
-
-	private function getSearchConfig(): SearchConfig {
-		/**
-		 * @var SearchConfig $config
-		 */
-		$config = MediaWikiServices::getInstance()->getConfigFactory()->makeConfig( 'CirrusSearch' );
-		return $config;
+		return WikibaseFacetedSearchExtension::getInstance()->getElasticQueryRunner()->runQuery( $query );
 	}
 
 	public function testCanQueryMediaWikiPage(): void {
