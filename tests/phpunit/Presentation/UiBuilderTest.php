@@ -4,9 +4,9 @@ declare( strict_types = 1 );
 
 namespace ProfessionalWiki\WikibaseFacetedSearch\Tests\Presentation;
 
+use MediaWiki\MediaWikiServices;
 use PHPUnit\Framework\TestCase;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
-use ProfessionalWiki\WikibaseFacetedSearch\Application\PropertyConstraints;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\PropertyConstraintsList;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Query;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\QueryStringParser;
@@ -18,6 +18,7 @@ use ProfessionalWiki\WikibaseFacetedSearch\WikibaseFacetedSearchExtension;
 use RuntimeException;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\NumericPropertyId;
+use Wikibase\Lib\Store\FallbackLabelDescriptionLookup;
 
 /**
  * @covers \ProfessionalWiki\WikibaseFacetedSearch\Presentation\UiBuilder
@@ -39,27 +40,34 @@ class UiBuilderTest extends TestCase {
 
 	public function testTabsViewModelContainsItemTypeProperty(): void {
 		$config = new Config( instanceOfId: new NumericPropertyId( 'P1337' ) );
-		$templatePsy = new SpyTemplateParser();
+		$templateSpy = new SpyTemplateParser();
 
-		$this->newUiBuilder( config: $config, templatePsy: $templatePsy )
+		$this->newUiBuilder( config: $config, templateSpy: $templateSpy )
 			->createHtml( 'unimportant' );
 
 		$this->assertSame(
 			'P1337',
-			$templatePsy->getArgs()['instanceId']
+			$templateSpy->getArgs()['instanceId']
 		);
 	}
 
 	private function newUiBuilder(
 		?Config $config = null,
-		?SpyTemplateParser $templatePsy = null,
+		?SpyTemplateParser $templateSpy = null,
 		?QueryStringParser $queryStringParser = null
 	): UiBuilder {
 		return new UiBuilder(
 			$config ?? new Config(),
 			new SpyFacetHtmlBuilder(),
-			$templatePsy ?? new SpyTemplateParser(),
+			$this->newLabelDescriptionLookup(),
+			$templateSpy ?? new SpyTemplateParser(),
 			$queryStringParser ?? new StubQueryStringParser()
+		);
+	}
+
+	private function newLabelDescriptionLookup(): FallbackLabelDescriptionLookup {
+		return WikibaseFacetedSearchExtension::getInstance()->newLabelDescriptionLookup(
+			MediaWikiServices::getInstance()->getContentLanguage()
 		);
 	}
 
@@ -91,9 +99,9 @@ class UiBuilderTest extends TestCase {
 }
 JSON );
 
-		$templatePsy = new SpyTemplateParser();
+		$templateSpy = new SpyTemplateParser();
 
-		$this->newUiBuilder( config: $config, templatePsy: $templatePsy )
+		$this->newUiBuilder( config: $config, templateSpy: $templateSpy )
 			->createHtml( 'unimportant' );
 
 		$this->assertEquals(
@@ -114,7 +122,7 @@ JSON );
 					'selected' => false
 				],
 			],
-			$templatePsy->getArgs()['instances']
+			$templateSpy->getArgs()['instances']
 		);
 	}
 
@@ -139,11 +147,11 @@ JSON );
 }
 JSON );
 
-		$templatePsy = new SpyTemplateParser();
+		$templateSpy = new SpyTemplateParser();
 
 		$this->newUiBuilder(
 			config: $config,
-			templatePsy: $templatePsy,
+			templateSpy: $templateSpy,
 			queryStringParser: new StubQueryStringParser( new Query(
 				new PropertyConstraintsList(),
 				itemTypes: [ new ItemId( 'Q2' ) ]
@@ -173,7 +181,7 @@ JSON );
 					'selected' => false
 				],
 			],
-			$templatePsy->getArgs()['instances']
+			$templateSpy->getArgs()['instances']
 		);
 	}
 

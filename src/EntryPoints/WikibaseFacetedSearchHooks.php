@@ -62,7 +62,7 @@ class WikibaseFacetedSearchHooks {
 		$output->addModules( 'ext.wikibase.facetedsearch' );
 
 		$output->addHTML(
-			WikibaseFacetedSearchExtension::getInstance()->getUiBuilder()->createHtml(
+			WikibaseFacetedSearchExtension::getInstance()->getUiBuilder( $specialSearch->getLanguage() )->createHtml(
 				searchQuery: $term
 			)
 		);
