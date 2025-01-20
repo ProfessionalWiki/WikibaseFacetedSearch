@@ -112,7 +112,7 @@ class UiBuilder {
 	}
 
 	private function getLabelFromEntityId( EntityId $entityId ): string {
-		return $this->labelDescriptionLookup->getLabel( $entityId )->getText();
+		return $this->labelDescriptionLookup->getLabel( $entityId )?->getText() ?? $entityId->getSerialization();
 	}
 
 }
