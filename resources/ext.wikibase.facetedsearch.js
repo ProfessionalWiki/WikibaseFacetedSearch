@@ -210,3 +210,10 @@ function submitSearchForm( query ) {
 }
 
 init();
+
+// Export for unit tests
+module.exports = {
+	getListFacetQuerySegments,
+	getRangeFacetQuerySegments,
+	buildQueryString
+};
