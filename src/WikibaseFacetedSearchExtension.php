@@ -184,10 +184,11 @@ class WikibaseFacetedSearchExtension {
 		return new ConfigJsonValidator( $schema );
 	}
 
-	public function getUiBuilder(): UiBuilder {
+	public function getUiBuilder( Language $language ): UiBuilder {
 		return new UiBuilder(
 			config: $this->getConfig(),
 			facetHtmlBuilder: $this->getFacetHtmlBuilder(),
+			labelDescriptionLookup: $this->newLabelDescriptionLookup( $language ),
 			templateParser: $this->getTemplateParser(),
 			queryStringParser: $this->getQueryStringParser()
 		);

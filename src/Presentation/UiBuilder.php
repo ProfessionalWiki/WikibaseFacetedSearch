@@ -10,13 +10,16 @@ use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetConfig;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\PropertyConstraints;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Query;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\QueryStringParser;
+use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\ItemId;
+use Wikibase\Lib\Store\FallbackLabelDescriptionLookup;
 
 class UiBuilder {
 
 	public function __construct(
 		private readonly Config $config,
 		private readonly FacetHtmlBuilder $facetHtmlBuilder,
+		private readonly FallbackLabelDescriptionLookup $labelDescriptionLookup,
 		private readonly TemplateParser $templateParser,
 		private readonly QueryStringParser $queryStringParser,
 	) {
@@ -58,7 +61,7 @@ class UiBuilder {
 
 		foreach ( $this->config->getItemTypes() as $itemType ) {
 			$tabs[] = [
-				'label' => $itemType->getSerialization(), // TODO: use label from config
+				'label' => $this->getLabelFromEntityId( $itemType ), // TODO: Prefer label from config (We need to figure out #107)
 				'value' => $itemType->getSerialization(),
 				'selected' => $itemType->equals( $selectedItemType )
 			];
@@ -100,12 +103,16 @@ class UiBuilder {
 
 	private function buildFacetViewModel( FacetConfig $config, PropertyConstraints $state ): array {
 		return [
-			'label' => $config->propertyId->getSerialization(), // TODO: look up label, or leave this up to the frontend?
+			'label' => $this->getLabelFromEntityId( $config->propertyId ),
 			'propertyId' => $config->propertyId->getSerialization(),
 			'type' => $config->type->value, // TODO: is this needed?
 			'expanded' => true, // TODO: get this from the URL somehow
 			'facetHtml' => $this->facetHtmlBuilder->buildHtml( $config, $state )
 		];
+	}
+
+	private function getLabelFromEntityId( EntityId $entityId ): string {
+		return $this->labelDescriptionLookup->getLabel( $entityId )->getText();
 	}
 
 }
