@@ -10,7 +10,6 @@ use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetConfig;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\PropertyConstraints;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Query;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\QueryStringParser;
-use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Entity\ItemId;
 
 class UiBuilder {
@@ -23,16 +22,13 @@ class UiBuilder {
 	) {
 	}
 
-	/**
-	 * TODO: add integration tests
-	 */
 	public function createHtml( string $searchQuery ): string {
 		$query = $this->parseQuery( $searchQuery );
 		$itemType = $query->getItemTypes()[0] ?? null;
 
 		return $this->renderTemplate(
-			$this->buildInstancesViewModel(
-				itemType: $itemType
+			$this->buildTabsViewModel(
+				selectedItemType: $itemType
 			),
 			$this->buildFacetsViewModel(
 				itemType: $itemType,
@@ -45,7 +41,7 @@ class UiBuilder {
 		return $this->templateParser->processTemplate(
 			'Layout',
 			[
-				'instanceId' => 'P1460', // TODO: Link to config
+				'instanceId' => $this->config->getInstanceOfId()->getSerialization(),
 				'instances' => $instancesViewModel,
 				'facets' => $facetsViewModel,
 				'msg-filters' => wfMessage( 'wikibase-faceted-search-filters' )->text(),
@@ -57,38 +53,32 @@ class UiBuilder {
 		return $this->queryStringParser->parse( $searchQuery );
 	}
 
-	/**
-	 * @return array<array<string, string>>
-	 */
-	private function buildInstancesViewModel( ?ItemId $itemType ): array {
-		$instances = [
+	private function buildTabsViewModel( ?ItemId $selectedItemType ): array {
+		$tabs = [];
+
+		foreach ( $this->config->getItemTypes() as $itemType ) {
+			$tabs[] = [
+				'label' => $itemType->getSerialization(), // TODO: use label from config
+				'value' => $itemType->getSerialization(),
+				'selected' => $itemType->equals( $selectedItemType )
+			];
+		}
+
+		return [
 			[
 				'label' => wfMessage( 'wikibase-faceted-search-instance-type-all' )->text(),
-				'value' => ''
-			]
-		];
-
-		// TODO: Get instances from config
-		$instancesExample = [
-			[
-				'label' => 'People',
-				'value' => 'Q5976445'
+				'value' => '',
+				'selected' => $this->noTabsAreSelected( $tabs )
 			],
-			[
-				'label' => 'Documents',
-				'value' => 'Q5976449'
-			]
+			...$tabs
 		];
+	}
 
-		$instances = array_merge( $instances, $instancesExample );
-
-		$itemTypeId = $itemType ? $itemType->getSerialization() : '';
-		$instances = array_map( function( array $instance ) use ( $itemTypeId )	 {
-			$instance['selected'] = $instance['value'] === $itemTypeId ? 'true' : 'false';
-			return $instance;
-		}, $instances );
-
-		return $instances;
+	/**
+	 * @param array<array{selected: bool}> $tabs
+	 */
+	private function noTabsAreSelected( array $tabs ): bool {
+		return !array_reduce( $tabs, ( fn( $carry, $tab ) => $carry || $tab['selected'] ), false );
 	}
 
 	private function buildFacetsViewModel( ?ItemId $itemType, Query $query ): array {
