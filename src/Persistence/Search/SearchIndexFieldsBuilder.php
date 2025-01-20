@@ -25,20 +25,25 @@ class SearchIndexFieldsBuilder {
 	 * @return array<string, SearchIndexField>
 	 */
 	public function createFields(): array {
-		$fields = [];
-
-		foreach ( $this->config->getFacets()->asArray() as $facetConfig ) {
-			$fieldType = $this->getFieldTypeForPropertyId( $facetConfig->propertyId );
-
-			if ( $fieldType === null ) {
-				continue;
-			}
-
-			$name = $this->getFacetFieldName( $facetConfig );
-			$fields[$name] = $this->makeSearchFieldMapping( $name, $fieldType );
+		try {
+			$itemType = $this->config->getInstanceOfId();
+		} catch ( Exception ) {
+			return [];
 		}
 
-		return $fields;
+		return $this->makeItemTypeSearchFieldMapping( $itemType )
+			+ $this->makeFacetSearchFieldMappings( $this->config->getFacets()->asArray() );
+	}
+
+	/**
+	 * @return array<string, SearchIndexField>
+	 */
+	private function makeItemTypeSearchFieldMapping( PropertyId $propertyId ): array {
+		$name = $this->getPropertyFieldName( $propertyId );
+
+		return [
+			$name => $this->makeSearchFieldMapping( $name, SearchIndexField::INDEX_TYPE_KEYWORD )
+		];
 	}
 
 	private function getFieldTypeForPropertyId( PropertyId $propertyId ): ?string {
@@ -61,8 +66,29 @@ class SearchIndexFieldsBuilder {
 		};
 	}
 
-	private function getFacetFieldName( FacetConfig $facetConfig ): string {
-		return 'wbfs_' . $facetConfig->propertyId->getSerialization();
+	private function getPropertyFieldName( PropertyId $propertyId ): string {
+		return 'wbfs_' . $propertyId->getSerialization();
+	}
+
+	/**
+	 * @param FacetConfig[] $facets
+	 * @return array<string, SearchIndexField>
+	 */
+	private function makeFacetSearchFieldMappings( array $facets ): array {
+		$fields = [];
+
+		foreach ( $facets as $facetConfig ) {
+			$fieldType = $this->getFieldTypeForPropertyId( $facetConfig->propertyId );
+
+			if ( $fieldType === null ) {
+				continue;
+			}
+
+			$name = $this->getPropertyFieldName( $facetConfig->propertyId );
+			$fields[$name] = $this->makeSearchFieldMapping( $name, $fieldType );
+		}
+
+		return $fields;
 	}
 
 	private function makeSearchFieldMapping( string $name, string $fieldType ): SearchIndexField {

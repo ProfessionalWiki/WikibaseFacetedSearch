@@ -44,6 +44,17 @@ class SearchIndexFieldsBuilderTest extends TestCase {
 		);
 	}
 
+	public function testConfigWithoutItemTypeReturnsNoFields(): void {
+		$builder = $this->newBuilder( new Config(
+			facets: new FacetConfigList(
+				$this->newFacetConfig( 'Q1', 'P100' ),
+				$this->newFacetConfig( 'Q1', 'P200' ),
+			)
+		) );
+
+		$this->assertSame( [], $builder->createFields() );
+	}
+
 	private function newDataTypeLookup(): InMemoryDataTypeLookup {
 		$dataTypeLookup = new InMemoryDataTypeLookup();
 
@@ -64,9 +75,25 @@ class SearchIndexFieldsBuilderTest extends TestCase {
 		return $dataTypeLookup;
 	}
 
+	public function testReturnsFieldForItemType(): void {
+		$builder = $this->newBuilder(
+			new Config(
+				instanceOfId: new NumericPropertyId( 'P1' )
+			)
+		);
+
+		$this->assertEquals(
+			[
+				'wbfs_P1' => new AggregatableKeywordIndexField( 'wbfs_P1', SearchIndexField::INDEX_TYPE_KEYWORD, $this->cirrusSearch->getConfig() )
+			],
+			$builder->createFields()
+		);
+	}
+
 	public function testReturnsFieldsForConfig(): void {
 		$builder = $this->newBuilder(
 			new Config(
+				instanceOfId: new NumericPropertyId( 'P1' ),
 				facets: new FacetConfigList(
 					$this->newFacetConfig( 'Q1', 'P100' ),
 					$this->newFacetConfig( 'Q1', 'P200' ),
@@ -79,6 +106,7 @@ class SearchIndexFieldsBuilderTest extends TestCase {
 
 		$this->assertEquals(
 			[
+				'wbfs_P1' => new AggregatableKeywordIndexField( 'wbfs_P1', SearchIndexField::INDEX_TYPE_KEYWORD, $this->cirrusSearch->getConfig() ),
 				'wbfs_P100' => new NumberIndexField( 'wbfs_P100', SearchIndexField::INDEX_TYPE_NUMBER, $this->cirrusSearch->getConfig() ),
 				'wbfs_P200' => new AggregatableKeywordIndexField( 'wbfs_P200', SearchIndexField::INDEX_TYPE_KEYWORD, $this->cirrusSearch->getConfig() ),
 				'wbfs_P300' => new DatetimeIndexField( 'wbfs_P300', SearchIndexField::INDEX_TYPE_DATETIME, $this->cirrusSearch->getConfig() ),
@@ -103,6 +131,7 @@ class SearchIndexFieldsBuilderTest extends TestCase {
 	public function testDoesNotReturnFieldsForMissingProperties(): void {
 		$builder = $this->newBuilder(
 			new Config(
+				instanceOfId: new NumericPropertyId( 'P1' ),
 				facets: new FacetConfigList(
 					$this->newFacetConfig( 'Q1', 'P100' ),
 					$this->newFacetConfig( 'Q2', 'P404' ),
@@ -113,6 +142,7 @@ class SearchIndexFieldsBuilderTest extends TestCase {
 
 		$this->assertEquals(
 			[
+				'wbfs_P1' => new AggregatableKeywordIndexField( 'wbfs_P1', SearchIndexField::INDEX_TYPE_KEYWORD, $this->cirrusSearch->getConfig() ),
 				'wbfs_P100' => new NumberIndexField( 'wbfs_P100', SearchIndexField::INDEX_TYPE_NUMBER, $this->cirrusSearch->getConfig() ),
 				'wbfs_P200' => new AggregatableKeywordIndexField( 'wbfs_P200', SearchIndexField::INDEX_TYPE_KEYWORD, $this->cirrusSearch->getConfig() )
 			],
