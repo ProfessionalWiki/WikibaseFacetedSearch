@@ -5,23 +5,24 @@ declare( strict_types = 1 );
 namespace ProfessionalWiki\WikibaseFacetedSearch\Tests\Presentation;
 
 use MediaWiki\MediaWikiServices;
-use PHPUnit\Framework\TestCase;
+use MediaWikiIntegrationTestCase;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\UiBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\WikibaseFacetedSearchExtension;
-use RuntimeException;
 
 /**
  * @covers \ProfessionalWiki\WikibaseFacetedSearch\Presentation\UiBuilder
  * @covers \ProfessionalWiki\WikibaseFacetedSearch\WikibaseFacetedSearchExtension
+ * @group Database
  */
-class UiBuilderIntegrationTest extends TestCase {
+class UiBuilderIntegrationTest extends MediaWikiIntegrationTestCase {
 
 	public function testIntegrationSmoke(): void {
-		try {
-			WikibaseFacetedSearchExtension::getInstance()->getConfig()->getInstanceOfId();
-		} catch ( RuntimeException ) {
-			$this->markTestSkipped( 'No valid config available' );
-		}
+		$this->overrideConfigValue(
+			WikibaseFacetedSearchExtension::CONFIG_VARIABLE_NAME,
+			'{"instanceOfId":"P31"}'
+		);
+
+		WikibaseFacetedSearchExtension::getInstance()->getConfig()->getInstanceOfId();
 
 		$html = $this->getUiBuilderFromGlobals()->createHtml( 'foo' );
 		$this->assertStringContainsString( 'topbar', $html );

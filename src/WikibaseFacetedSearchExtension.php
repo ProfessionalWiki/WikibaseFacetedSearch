@@ -46,6 +46,7 @@ use Wikibase\Repo\WikibaseRepo;
 class WikibaseFacetedSearchExtension {
 
 	public const CONFIG_PAGE_TITLE = 'WikibaseFacetedSearch';
+	public const CONFIG_VARIABLE_NAME = 'WikibaseFacetedSearch';
 
 	public const DEFAULT_CONFIG = '{
 	"linkTargetSitelinkSiteId": null,
@@ -92,7 +93,7 @@ class WikibaseFacetedSearchExtension {
 
 	private function newConfigLookup(): ConfigLookup {
 		return new CombiningConfigLookup(
-			baseConfig: (string)MediaWikiServices::getInstance()->getMainConfig()->get( 'WikibaseFacetedSearch' ),
+			baseConfig: (string)MediaWikiServices::getInstance()->getMainConfig()->get( self::CONFIG_VARIABLE_NAME ),
 			deserializer: $this->newConfigDeserializer(),
 			configLookup: $this->newPageContentConfigLookup(),
 			enableWikiConfig: (bool)MediaWikiServices::getInstance()->getMainConfig()->get( 'WikibaseFacetedSearchEnableInWikiConfig' )
