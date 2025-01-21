@@ -4,7 +4,6 @@ declare( strict_types = 1 );
 
 namespace ProfessionalWiki\WikibaseFacetedSearch\Tests\Presentation;
 
-use MediaWiki\MediaWikiServices;
 use PHPUnit\Framework\TestCase;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\PropertyConstraintsList;
@@ -15,28 +14,14 @@ use ProfessionalWiki\WikibaseFacetedSearch\Tests\TestDoubles\SpyFacetHtmlBuilder
 use ProfessionalWiki\WikibaseFacetedSearch\Tests\TestDoubles\SpyTemplateParser;
 use ProfessionalWiki\WikibaseFacetedSearch\Tests\TestDoubles\StubQueryStringParser;
 use ProfessionalWiki\WikibaseFacetedSearch\WikibaseFacetedSearchExtension;
-use RuntimeException;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\NumericPropertyId;
-use Wikibase\Lib\Store\FallbackLabelDescriptionLookup;
+use Wikibase\DataModel\Services\Lookup\LabelLookup;
 
 /**
  * @covers \ProfessionalWiki\WikibaseFacetedSearch\Presentation\UiBuilder
- * @covers \ProfessionalWiki\WikibaseFacetedSearch\WikibaseFacetedSearchExtension
  */
-class UiBuilderTest extends TestCase {
-
-	public function testIntegrationSmoke(): void {
-		try {
-			WikibaseFacetedSearchExtension::getInstance()->getConfig()->getInstanceOfId();
-		} catch ( RuntimeException ) {
-			$this->markTestSkipped( 'No valid config available' );
-		}
-
-		$html = WikibaseFacetedSearchExtension::getInstance()->getUiBuilder()->createHtml( 'foo' );
-		$this->assertStringContainsString( 'topbar', $html );
-		$this->assertStringContainsString( 'sidebar', $html );
-	}
+class UiBuilderUnitTest extends TestCase {
 
 	public function testTabsViewModelContainsItemTypeProperty(): void {
 		$config = new Config( instanceOfId: new NumericPropertyId( 'P1337' ) );
@@ -59,15 +44,9 @@ class UiBuilderTest extends TestCase {
 		return new UiBuilder(
 			$config ?? new Config(),
 			new SpyFacetHtmlBuilder(),
-			$this->newLabelDescriptionLookup(),
+			$this->createMock( LabelLookup::class ),
 			$templateSpy ?? new SpyTemplateParser(),
 			$queryStringParser ?? new StubQueryStringParser()
-		);
-	}
-
-	private function newLabelDescriptionLookup(): FallbackLabelDescriptionLookup {
-		return WikibaseFacetedSearchExtension::getInstance()->newLabelDescriptionLookup(
-			MediaWikiServices::getInstance()->getContentLanguage()
 		);
 	}
 

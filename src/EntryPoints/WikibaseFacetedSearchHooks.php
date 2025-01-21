@@ -48,7 +48,7 @@ class WikibaseFacetedSearchHooks {
 		}
 
 		$titleSnippet = WikibaseFacetedSearchExtension::getInstance()
-			->newLabelDescriptionLookup( $specialSearch->getLanguage() )
+			->getLabelLookup( $specialSearch->getLanguage() )
 			->getLabel( $itemId )
 			?->getText() ?? $titleSnippet;
 	}

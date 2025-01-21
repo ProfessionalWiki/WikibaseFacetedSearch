@@ -12,14 +12,14 @@ use ProfessionalWiki\WikibaseFacetedSearch\Application\Query;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\QueryStringParser;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\ItemId;
-use Wikibase\Lib\Store\FallbackLabelDescriptionLookup;
+use Wikibase\DataModel\Services\Lookup\LabelLookup;
 
 class UiBuilder {
 
 	public function __construct(
 		private readonly Config $config,
 		private readonly FacetHtmlBuilder $facetHtmlBuilder,
-		private readonly FallbackLabelDescriptionLookup $labelDescriptionLookup,
+		private readonly LabelLookup $labelLookup,
 		private readonly TemplateParser $templateParser,
 		private readonly QueryStringParser $queryStringParser,
 	) {
@@ -112,7 +112,7 @@ class UiBuilder {
 	}
 
 	private function getLabelFromEntityId( EntityId $entityId ): string {
-		return $this->labelDescriptionLookup->getLabel( $entityId )?->getText() ?? $entityId->getSerialization();
+		return $this->labelLookup->getLabel( $entityId )?->getText() ?? $entityId->getSerialization();
 	}
 
 }

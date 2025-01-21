@@ -39,6 +39,7 @@ use RuntimeException;
 use SearchEngine;
 use TemplateParser;
 use Title;
+use Wikibase\DataModel\Services\Lookup\LabelLookup;
 use Wikibase\Lib\Store\FallbackLabelDescriptionLookup;
 use Wikibase\Lib\Store\SiteLinkStore;
 use Wikibase\Repo\WikibaseRepo;
@@ -46,6 +47,7 @@ use Wikibase\Repo\WikibaseRepo;
 class WikibaseFacetedSearchExtension {
 
 	public const CONFIG_PAGE_TITLE = 'WikibaseFacetedSearch';
+	public const CONFIG_VARIABLE_NAME = 'WikibaseFacetedSearch';
 
 	public const DEFAULT_CONFIG = '{
 	"linkTargetSitelinkSiteId": null,
@@ -92,7 +94,7 @@ class WikibaseFacetedSearchExtension {
 
 	private function newConfigLookup(): ConfigLookup {
 		return new CombiningConfigLookup(
-			baseConfig: (string)MediaWikiServices::getInstance()->getMainConfig()->get( 'WikibaseFacetedSearch' ),
+			baseConfig: (string)MediaWikiServices::getInstance()->getMainConfig()->get( self::CONFIG_VARIABLE_NAME ),
 			deserializer: $this->newConfigDeserializer(),
 			configLookup: $this->newPageContentConfigLookup(),
 			enableWikiConfig: (bool)MediaWikiServices::getInstance()->getMainConfig()->get( 'WikibaseFacetedSearchEnableInWikiConfig' )
@@ -188,7 +190,7 @@ class WikibaseFacetedSearchExtension {
 		return new UiBuilder(
 			config: $this->getConfig(),
 			facetHtmlBuilder: $this->getFacetHtmlBuilder(),
-			labelDescriptionLookup: $this->newLabelDescriptionLookup( $language ),
+			labelLookup: $this->getLabelLookup( $language ),
 			templateParser: $this->getTemplateParser(),
 			queryStringParser: $this->getQueryStringParser()
 		);
@@ -240,7 +242,7 @@ class WikibaseFacetedSearchExtension {
 		);
 	}
 
-	public function newLabelDescriptionLookup( Language $language ): FallbackLabelDescriptionLookup {
+	public function getLabelLookup( Language $language ): LabelLookup {
 		return WikibaseRepo::getFallbackLabelDescriptionLookupFactory()->newLabelDescriptionLookup( $language );
 	}
 
