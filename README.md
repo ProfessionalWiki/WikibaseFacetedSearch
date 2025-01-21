@@ -31,20 +31,16 @@ Commands to run in a MediaWiki environment/container:
 * `make` or `make ci`: Run everything
 * `make test`: Run all PHP tests
 * `make phpunit --filter FooBar`: run only PHPUnit tests with FooBar in their name
-* `make phpcs`: Run PHP style checks
 * `make cs`: Run PHP style checks and static analysis
+* `make phpcs`: Run PHP style checks
+* `make stan`: Run PHP static analysis
+* `make stan-baseline`: Update the PHPStan baseline file (which contains errors we wish to ignore)
 
 Commands that use Docker:
 
 * `make jest` Run JS tests
 * `make lint` Lint JS, CSS, and i18n files
 * `make js` Run all JS checks
-
-### Updating Baseline Files
-
-Sometimes PHPStan generates errors or warnings we do not wish to fix.
-These can be ignored by adding them to the respective baseline file.
-You can update these files with `make stan-baseline`.
 
 ## Release Notes
 
