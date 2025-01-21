@@ -4,7 +4,6 @@ declare( strict_types = 1 );
 
 namespace ProfessionalWiki\WikibaseFacetedSearch\Tests\Presentation;
 
-use MediaWiki\MediaWikiServices;
 use PHPUnit\Framework\TestCase;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\PropertyConstraintsList;
@@ -17,7 +16,7 @@ use ProfessionalWiki\WikibaseFacetedSearch\Tests\TestDoubles\StubQueryStringPars
 use ProfessionalWiki\WikibaseFacetedSearch\WikibaseFacetedSearchExtension;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\NumericPropertyId;
-use Wikibase\Lib\Store\FallbackLabelDescriptionLookup;
+use Wikibase\DataModel\Services\Lookup\LabelLookup;
 
 /**
  * @covers \ProfessionalWiki\WikibaseFacetedSearch\Presentation\UiBuilder
@@ -45,15 +44,9 @@ class UiBuilderUnitTest extends TestCase {
 		return new UiBuilder(
 			$config ?? new Config(),
 			new SpyFacetHtmlBuilder(),
-			$this->newLabelDescriptionLookup(),
+			$this->createMock( LabelLookup::class ),
 			$templateSpy ?? new SpyTemplateParser(),
 			$queryStringParser ?? new StubQueryStringParser()
-		);
-	}
-
-	private function newLabelDescriptionLookup(): FallbackLabelDescriptionLookup {
-		return WikibaseFacetedSearchExtension::getInstance()->newLabelDescriptionLookup(
-			MediaWikiServices::getInstance()->getContentLanguage()
 		);
 	}
 

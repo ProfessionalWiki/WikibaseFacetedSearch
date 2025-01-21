@@ -39,6 +39,7 @@ use RuntimeException;
 use SearchEngine;
 use TemplateParser;
 use Title;
+use Wikibase\DataModel\Services\Lookup\LabelLookup;
 use Wikibase\Lib\Store\FallbackLabelDescriptionLookup;
 use Wikibase\Lib\Store\SiteLinkStore;
 use Wikibase\Repo\WikibaseRepo;
@@ -189,7 +190,7 @@ class WikibaseFacetedSearchExtension {
 		return new UiBuilder(
 			config: $this->getConfig(),
 			facetHtmlBuilder: $this->getFacetHtmlBuilder(),
-			labelDescriptionLookup: $this->newLabelDescriptionLookup( $language ),
+			labelLookup: $this->newLabelLookup( $language ),
 			templateParser: $this->getTemplateParser(),
 			queryStringParser: $this->getQueryStringParser()
 		);
@@ -241,7 +242,7 @@ class WikibaseFacetedSearchExtension {
 		);
 	}
 
-	public function newLabelDescriptionLookup( Language $language ): FallbackLabelDescriptionLookup {
+	public function newLabelLookup( Language $language ): LabelLookup {
 		return WikibaseRepo::getFallbackLabelDescriptionLookupFactory()->newLabelDescriptionLookup( $language );
 	}
 
