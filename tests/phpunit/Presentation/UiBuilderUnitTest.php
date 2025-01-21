@@ -15,32 +15,14 @@ use ProfessionalWiki\WikibaseFacetedSearch\Tests\TestDoubles\SpyFacetHtmlBuilder
 use ProfessionalWiki\WikibaseFacetedSearch\Tests\TestDoubles\SpyTemplateParser;
 use ProfessionalWiki\WikibaseFacetedSearch\Tests\TestDoubles\StubQueryStringParser;
 use ProfessionalWiki\WikibaseFacetedSearch\WikibaseFacetedSearchExtension;
-use RuntimeException;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\NumericPropertyId;
 use Wikibase\Lib\Store\FallbackLabelDescriptionLookup;
 
 /**
  * @covers \ProfessionalWiki\WikibaseFacetedSearch\Presentation\UiBuilder
- * @covers \ProfessionalWiki\WikibaseFacetedSearch\WikibaseFacetedSearchExtension
  */
-class UiBuilderTest extends TestCase {
-
-	public function testIntegrationSmoke(): void {
-		try {
-			WikibaseFacetedSearchExtension::getInstance()->getConfig()->getInstanceOfId();
-		} catch ( RuntimeException ) {
-			$this->markTestSkipped( 'No valid config available' );
-		}
-
-		$html = $this->getUiBuilderFromGlobals()->createHtml( 'foo' );
-		$this->assertStringContainsString( 'topbar', $html );
-		$this->assertStringContainsString( 'sidebar', $html );
-	}
-
-	private function getUiBuilderFromGlobals(): UiBuilder {
-		return WikibaseFacetedSearchExtension::getInstance()->getUiBuilder( MediaWikiServices::getInstance()->getContentLanguage() );
-	}
+class UiBuilderUnitTest extends TestCase {
 
 	public function testTabsViewModelContainsItemTypeProperty(): void {
 		$config = new Config( instanceOfId: new NumericPropertyId( 'P1337' ) );
