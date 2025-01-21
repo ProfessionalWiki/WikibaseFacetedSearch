@@ -190,7 +190,7 @@ class WikibaseFacetedSearchExtension {
 		return new UiBuilder(
 			config: $this->getConfig(),
 			facetHtmlBuilder: $this->getFacetHtmlBuilder(),
-			labelLookup: $this->newLabelLookup( $language ),
+			labelLookup: $this->getLabelLookup( $language ),
 			templateParser: $this->getTemplateParser(),
 			queryStringParser: $this->getQueryStringParser()
 		);
@@ -242,7 +242,7 @@ class WikibaseFacetedSearchExtension {
 		);
 	}
 
-	public function newLabelLookup( Language $language ): LabelLookup {
+	public function getLabelLookup( Language $language ): LabelLookup {
 		return WikibaseRepo::getFallbackLabelDescriptionLookupFactory()->newLabelDescriptionLookup( $language );
 	}
 
