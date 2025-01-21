@@ -26,12 +26,19 @@ Run `composer install` in `extensions/WikibaseFacetedSearch/` to make the code q
 
 You can use the `Makefile` by running make commands in the `WikibaseFacetedSearch` directory.
 
-* `make ci`: Run everything
-* `make test`: Run all tests
+Commands to run in a MediaWiki environment/container:
+
+* `make` or `make ci`: Run everything
+* `make test`: Run all PHP tests
 * `make phpunit --filter FooBar`: run only PHPUnit tests with FooBar in their name
-* `make phpcs`: Run all style checks
-* `make cs`: Run all style checks and static analysis
-* `make jest` Run Jest
+* `make phpcs`: Run PHP style checks
+* `make cs`: Run PHP style checks and static analysis
+
+Commands that use Docker:
+
+* `make jest` Run JS tests
+* `make lint` Lint JS, CSS, and i18n files
+* `make js` Run all JS checks
 
 ### Updating Baseline Files
 

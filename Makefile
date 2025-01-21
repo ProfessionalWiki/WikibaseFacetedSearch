@@ -1,7 +1,7 @@
-.PHONY: ci test cs phpunit phpcs stan
+# Commands run from inside the MediaWiki container ##########################################################
 
 ci: test cs
-test: phpunit jest
+test: phpunit
 cs: phpcs stan
 
 phpunit:
@@ -23,11 +23,17 @@ stan:
 stan-baseline:
 	vendor/bin/phpstan analyse --configuration=phpstan.neon --memory-limit=2G --generate-baseline
 
+
+
+# Commands run from the host machine #######################################################################
+
 npm-install:
 	docker run -it --rm -v "$(CURDIR)":/home/node/app -w /home/node/app -u node node:20 npm install
 
-lint-docker:
+lint:
 	docker run -it --rm -v "$(CURDIR)":/home/node/app -w /home/node/app -u node node:20 npm run lint
 
 jest:
 	docker run -it --rm -v "$(CURDIR)":/home/node/app -w /home/node/app -u node node:20 npm run test
+
+js: lint jest
