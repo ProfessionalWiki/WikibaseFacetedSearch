@@ -33,9 +33,13 @@ class UiBuilderTest extends TestCase {
 			$this->markTestSkipped( 'No valid config available' );
 		}
 
-		$html = WikibaseFacetedSearchExtension::getInstance()->getUiBuilder()->createHtml( 'foo' );
+		$html = $this->getUiBuilderFromGlobals()->createHtml( 'foo' );
 		$this->assertStringContainsString( 'topbar', $html );
 		$this->assertStringContainsString( 'sidebar', $html );
+	}
+
+	private function getUiBuilderFromGlobals(): UiBuilder {
+		return WikibaseFacetedSearchExtension::getInstance()->getUiBuilder( MediaWikiServices::getInstance()->getContentLanguage() );
 	}
 
 	public function testTabsViewModelContainsItemTypeProperty(): void {
