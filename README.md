@@ -31,6 +31,7 @@ You can use the `Makefile` by running make commands in the `WikibaseFacetedSearc
 * `make phpunit --filter FooBar`: run only PHPUnit tests with FooBar in their name
 * `make phpcs`: Run all style checks
 * `make cs`: Run all style checks and static analysis
+* `make jest` Run Jest
 
 ### Updating Baseline Files
 

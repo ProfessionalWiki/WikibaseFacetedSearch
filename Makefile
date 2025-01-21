@@ -1,7 +1,7 @@
 .PHONY: ci test cs phpunit phpcs stan
 
 ci: test cs
-test: phpunit
+test: phpunit jest
 cs: phpcs stan
 
 phpunit:
@@ -25,3 +25,6 @@ stan-baseline:
 
 lint-docker:
 	docker run -it --rm -v "$(CURDIR)":/home/node/app -w /home/node/app -u node node:20 npm install && npm run lint
+
+jest:
+	npm install && npm run test
