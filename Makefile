@@ -23,8 +23,11 @@ stan:
 stan-baseline:
 	vendor/bin/phpstan analyse --configuration=phpstan.neon --memory-limit=2G --generate-baseline
 
+npm-install:
+	docker run -it --rm -v "$(CURDIR)":/home/node/app -w /home/node/app -u node node:20 npm install
+
 lint-docker:
-	docker run -it --rm -v "$(CURDIR)":/home/node/app -w /home/node/app -u node node:20 npm install && npm run lint
+	docker run -it --rm -v "$(CURDIR)":/home/node/app -w /home/node/app -u node node:20 npm run lint
 
 jest:
-	npm install && npm run test
+	docker run -it --rm -v "$(CURDIR)":/home/node/app -w /home/node/app -u node node:20 npm run test
