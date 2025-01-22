@@ -91,7 +91,14 @@
 		},
 		"ext.wikibase.facetedsearch": {
 			"packageFiles": [
-				"ext.wikibase.facetedsearch.js"
+				"ext.wikibase.facetedsearch.js",
+				"dialog.js"
+			],
+			"styles": [
+				"dialog.less"
+			],
+			"dependencies": [
+				"mediawiki.page.ready"
 			]
 		},
 		"ext.wikibase.facetedsearch.docs.styles": {
