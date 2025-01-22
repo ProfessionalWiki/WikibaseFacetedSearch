@@ -1,0 +1,21 @@
+@import 'mediawiki.skin.variables.less';
+
+.wikibase-faceted-search__dialog {
+	width: calc( 100% - @size-400 );
+	max-width: @size-3200;
+	max-height: calc( 100vh - @size-250 );
+	background-color: @background-color-base;
+	border: @border-base;
+	border-radius: @border-radius-base;
+	box-shadow: @box-shadow-drop-medium;
+	overflow: auto;
+
+	&-backdrop {
+		position: fixed;
+		inset: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background-color: @background-color-backdrop-light;
+	}
+}

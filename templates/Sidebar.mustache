@@ -1,12 +1,19 @@
-<details class="wikibase-faceted-search__header">
-	<summary class="cdx-button cdx-button--size-large cdx-button--fake-button cdx-button--fake-button--enabled">
+<button class="wikibase-faceted-search__facets-dialog-button wikibase-faceted-search__dialog-button cdx-button cdx-button--size-large">
+	<span
+		class="wikibase-faceted-search__icon wikibase-faceted-search__icon--filter cdx-button__icon"
+		aria-hidden="true"
+	></span>
+	{{msg-filters}}
+</button>
+<div class="wikibase-faceted-search__facets">
+	<div class="wikibase-faceted-search__facets-header mw-sticky-header-element">
 		<span
-			class="wikibase-faceted-search__icon wikibase-faceted-search__icon--filter cdx-button__icon"
+			class="wikibase-faceted-search__icon wikibase-faceted-search__icon--filter"
 			aria-hidden="true"
 		></span>
 		{{msg-filters}}
-	</summary>
-</details>
-<div class="wikibase-faceted-search__facets">
-	{{#facets}}{{>Facet}}{{/facets}}
+	</div>
+	<div class="wikibase-faceted-search__facets-list">
+		{{#facets}}{{>Facet}}{{/facets}}
+	</div>
 </div>
