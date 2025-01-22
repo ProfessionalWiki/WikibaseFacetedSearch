@@ -53,7 +53,7 @@ class WikibaseFacetedSearchHooks {
 			?->getText() ?? $titleSnippet;
 	}
 
-	public static function onSpecialSearchResultsAppend(
+	public static function onSpecialSearchResultsPrepend(
 		SpecialSearch $specialSearch,
 		OutputPage $output,
 		string $term
