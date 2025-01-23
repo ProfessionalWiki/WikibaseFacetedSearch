@@ -40,12 +40,12 @@ class Config {
 	/**
 	 * @return FacetConfig[]
 	 */
-	public function getFacetConfigForItemType( ItemId $itemTypeId ): array {
-		return $this->getFacets()->getFacetConfigForItemType( $itemTypeId )->asArray();
+	public function getFacetConfigForItemType( ItemId $itemType ): array {
+		return $this->getFacets()->getFacetConfigForItemType( $itemType )->asArray();
 	}
 
-	public function getConfigForProperty( ItemId $itemTypeId, PropertyId $propertyId ): ?FacetConfig {
-		return $this->getFacets()->getFacetConfigForItemType( $itemTypeId )->getConfigForProperty( $propertyId );
+	public function getConfigForProperty( ItemId $itemType, PropertyId $propertyId ): ?FacetConfig {
+		return $this->getFacets()->getFacetConfigForItemType( $itemType )->getConfigForProperty( $propertyId );
 	}
 
 	/**
@@ -57,7 +57,7 @@ class Config {
 		// TODO: needing this logic is really silly. We have the info as array keys in the JSON.
 		// https://github.com/ProfessionalWiki/WikibaseFacetedSearch/issues/107
 		foreach ( $this->getFacets()->asArray() as $facetConfig ) {
-			$itemTypes[$facetConfig->itemTypeId->getSerialization()] = $facetConfig->itemTypeId;
+			$itemTypes[$facetConfig->itemType->getSerialization()] = $facetConfig->itemType;
 		}
 
 		return array_values( $itemTypes );

@@ -83,7 +83,7 @@ class ConfigTest extends TestCase {
 
 	public function testGetConfigForPropertyReturnsConfigForTheRightItemAndPropertyIdCombo(): void {
 		$twoTwoHundredFacet = new FacetConfig(
-			itemTypeId: new ItemId( 'Q2' ),
+			itemType: new ItemId( 'Q2' ),
 			propertyId: new NumericPropertyId( 'P200' ),
 			type: FacetType::RANGE
 		);
@@ -91,23 +91,23 @@ class ConfigTest extends TestCase {
 		$config = new Config(
 			facets: new FacetConfigList(
 				new FacetConfig(
-					itemTypeId: new ItemId( 'Q1' ),
+					itemType: new ItemId( 'Q1' ),
 					propertyId: new NumericPropertyId( 'P200' ),
 					type: FacetType::RANGE
 				),
 				new FacetConfig(
-					itemTypeId: new ItemId( 'Q2' ),
+					itemType: new ItemId( 'Q2' ),
 					propertyId: new NumericPropertyId( 'P100' ),
 					type: FacetType::RANGE
 				),
 				$twoTwoHundredFacet,
 				new FacetConfig(
-					itemTypeId: new ItemId( 'Q3' ),
+					itemType: new ItemId( 'Q3' ),
 					propertyId: new NumericPropertyId( 'P200' ),
 					type: FacetType::RANGE
 				),
 				new FacetConfig(
-					itemTypeId: new ItemId( 'Q2' ),
+					itemType: new ItemId( 'Q2' ),
 					propertyId: new NumericPropertyId( 'P300' ),
 					type: FacetType::RANGE
 				)

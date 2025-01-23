@@ -43,7 +43,7 @@ class RangeFacetHtmlBuilderTest extends TestCase {
 
 	private function newConfig(): FacetConfig {
 		return new FacetConfig(
-			itemTypeId: new ItemId( 'Q123' ),
+			itemType: new ItemId( 'Q123' ),
 			propertyId: new NumericPropertyId( self::FACET_PROPERTY_ID ),
 			type: FacetType::RANGE
 		);
