@@ -4,6 +4,7 @@ declare( strict_types = 1 );
 
 namespace ProfessionalWiki\WikibaseFacetedSearch\Tests\Presentation;
 
+use MediaWiki\MediaWikiServices;
 use PHPUnit\Framework\TestCase;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetConfig;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetType;
@@ -46,7 +47,7 @@ class ListFacetHtmlBuilderTest extends TestCase {
 		return new ListFacetHtmlBuilder(
 			parser: WikibaseFacetedSearchExtension::getInstance()->getTemplateParser(),
 			valueCounter: new StubValueCounter(),
-			localizedTextLookup: WikibaseFacetedSearchExtension::getInstance()->getLocalizedTextLookup( MediaWikiServices::getInstance()->getContentLanguage() )
+			localizedTextLookup: $this->newLocalizedTextLookup()
 		);
 	}
 
@@ -213,6 +214,10 @@ class ListFacetHtmlBuilderTest extends TestCase {
 
 		$this->assertTrue( $viewModel['toggle']['and']['selected'] );
 		$this->assertFalse( $viewModel['toggle']['or']['selected'] );
+	}
+
+	private function newLocalizedTextLookup(): LocalizedTextLookup {
+		return WikibaseFacetedSearchExtension::getInstance()->getLocalizedTextLookup( MediaWikiServices::getInstance()->getContentLanguage() );
 	}
 
 }
