@@ -44,7 +44,6 @@ use Wikibase\DataModel\Services\Lookup\LabelLookup;
 use Wikibase\Lib\Store\SiteLinkStore;
 use Wikibase\Repo\WikibaseRepo;
 
-
 class WikibaseFacetedSearchExtension {
 
 	public const CONFIG_PAGE_TITLE = 'WikibaseFacetedSearch';

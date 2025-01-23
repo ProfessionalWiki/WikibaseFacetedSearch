@@ -47,6 +47,7 @@ class ListFacetHtmlBuilderTest extends TestCase {
 			parser: WikibaseFacetedSearchExtension::getInstance()->getTemplateParser(),
 			valueCounter: new StubValueCounter(),
 			localizedTextLookup: WikibaseFacetedSearchExtension::getInstance()->getLocalizedTextLookup( MediaWikiServices::getInstance()->getContentLanguage() )
+		);
 	}
 
 	public function testCheckboxesViewModelContainsAllValues(): void {
