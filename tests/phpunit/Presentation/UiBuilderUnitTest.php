@@ -44,7 +44,7 @@ class UiBuilderUnitTest extends TestCase {
 		return new UiBuilder(
 			$config ?? new Config(),
 			new SpyFacetHtmlBuilder(),
-			$this->createMock( LocalizedTextLookup::class ),
+			$this->newLocalizedTextLookup(),
 			$templateSpy ?? new SpyTemplateParser(),
 			$queryStringParser ?? new StubQueryStringParser()
 		);
@@ -162,6 +162,10 @@ JSON );
 			],
 			$templateSpy->getArgs()['instances']
 		);
+	}
+
+	private function newLocalizedTextLookup(): LocalizedTextLookup {
+		return WikibaseFacetedSearchExtension::getInstance()->getLocalizedTextLookup( MediaWikiServices::getInstance()->getContentLanguage() );
 	}
 
 }
