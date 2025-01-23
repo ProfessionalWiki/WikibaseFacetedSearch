@@ -10,8 +10,10 @@ use ProfessionalWiki\WikibaseFacetedSearch\Application\PropertyConstraintsList;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Query;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\QueryStringParser;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\UiBuilder;
+use ProfessionalWiki\WikibaseFacetedSearch\Tests\TestDoubles\FakeItemTypeLabelLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Tests\TestDoubles\SpyFacetHtmlBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Tests\TestDoubles\SpyTemplateParser;
+use ProfessionalWiki\WikibaseFacetedSearch\Tests\TestDoubles\StubLabelLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Tests\TestDoubles\StubQueryStringParser;
 use ProfessionalWiki\WikibaseFacetedSearch\WikibaseFacetedSearchExtension;
 use Wikibase\DataModel\Entity\ItemId;
@@ -44,7 +46,8 @@ class UiBuilderUnitTest extends TestCase {
 		return new UiBuilder(
 			$config ?? new Config(),
 			new SpyFacetHtmlBuilder(),
-			$this->createMock( LabelLookup::class ),
+			new StubLabelLookup( null ),
+			new FakeItemTypeLabelLookup(),
 			$templateSpy ?? new SpyTemplateParser(),
 			$queryStringParser ?? new StubQueryStringParser()
 		);
@@ -91,12 +94,12 @@ JSON );
 					'selected' => true
 				],
 				[
-					'label' => 'Q5976445',
+					'label' => 'Q5976445Label',
 					'value' => 'Q5976445',
 					'selected' => false
 				],
 				[
-					'label' => 'Q5976449',
+					'label' => 'Q5976449Label',
 					'value' => 'Q5976449',
 					'selected' => false
 				],
@@ -145,17 +148,17 @@ JSON );
 					'selected' => false
 				],
 				[
-					'label' => 'Q1',
+					'label' => 'Q1Label',
 					'value' => 'Q1',
 					'selected' => false
 				],
 				[
-					'label' => 'Q2',
+					'label' => 'Q2Label',
 					'value' => 'Q2',
 					'selected' => true
 				],
 				[
-					'label' => 'Q3',
+					'label' => 'Q3Label',
 					'value' => 'Q3',
 					'selected' => false
 				],
