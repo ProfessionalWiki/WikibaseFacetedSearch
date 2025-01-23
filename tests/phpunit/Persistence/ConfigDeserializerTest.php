@@ -40,10 +40,10 @@ class ConfigDeserializerTest extends TestCase {
 		$this->assertEquals( new Config(), $config );
 	}
 
-	public function testInvalidInstanceOfIdReturnsEmptyConfig(): void {
+	public function testInvalidItemTypePropertyReturnsEmptyConfig(): void {
 		$deserializer = $this->newDeserializer();
 
-		$config = $deserializer->deserialize( '{ "instanceOfId": "Q123" }' );
+		$config = $deserializer->deserialize( '{ "itemTypeProperty": "Q123" }' );
 
 		$this->assertEquals( new Config(), $config );
 	}
@@ -51,7 +51,7 @@ class ConfigDeserializerTest extends TestCase {
 	public function testInvalidFacetsReturnsEmptyConfig(): void {
 		$deserializer = $this->newDeserializer();
 
-		$config = $deserializer->deserialize( '{ "instanceOfValues": "foo" }' );
+		$config = $deserializer->deserialize( '{ "configPerItemType": "foo" }' );
 
 		$this->assertEquals( new Config(), $config );
 	}
@@ -61,7 +61,7 @@ class ConfigDeserializerTest extends TestCase {
 
 		$config = $deserializer->deserialize( '
 {
-	"instanceOfValues": {
+	"configPerItemType": {
 		"Q1": "notAnArray"
 	}
 }
@@ -87,7 +87,7 @@ class ConfigDeserializerTest extends TestCase {
 		$deserializer = $this->newDeserializer();
 
 		$config = $deserializer->deserialize( '{
-	"instanceOfValues": {
+	"configPerItemType": {
 		"Q200": {
 			"label": "Cat Pictures",
 			"facets": {
@@ -126,7 +126,7 @@ class ConfigDeserializerTest extends TestCase {
 		$deserializer = $this->newDeserializer();
 
 		$config = $deserializer->deserialize( '{
-	"instanceOfValues": {
+	"configPerItemType": {
 		"Q200": {
 			"label": "Cat Pictures",
 			"facets": {

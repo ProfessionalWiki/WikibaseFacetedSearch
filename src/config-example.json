@@ -1,7 +1,7 @@
 {
 	"linkTargetSitelinkSiteId": "enwiki",
-	"instanceOfId": "P42",
-	"instanceOfValues": {
+	"itemTypeProperty": "P42",
+	"configPerItemType": {
 		"Q100": {
 			"label": "Memes",
 			"facets": {

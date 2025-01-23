@@ -12,7 +12,7 @@ class Config {
 
 	public function __construct(
 		public readonly ?string $linkTargetSitelinkSiteId = null,
-		private readonly ?PropertyId $instanceOfId = null,
+		private readonly ?PropertyId $itemTypeProperty = null,
 		private readonly ?FacetConfigList $facets = null
 	) {
 	}
@@ -20,17 +20,17 @@ class Config {
 	public function combine( Config $config ): self {
 		return new Config(
 			$config->linkTargetSitelinkSiteId ?? $this->linkTargetSitelinkSiteId,
-			$config->instanceOfId ?? $this->instanceOfId,
+			$config->itemTypeProperty ?? $this->itemTypeProperty,
 			$config->facets ?? $this->facets
 		);
 	}
 
-	public function getInstanceOfId(): PropertyId {
-		if ( $this->instanceOfId === null ) {
+	public function getItemTypeProperty(): PropertyId {
+		if ( $this->itemTypeProperty === null ) {
 			throw new RuntimeException( 'No instance of ID configured' );
 		}
 
-		return $this->instanceOfId;
+		return $this->itemTypeProperty;
 	}
 
 	public function getFacets(): FacetConfigList {
@@ -40,12 +40,12 @@ class Config {
 	/**
 	 * @return FacetConfig[]
 	 */
-	public function getFacetConfigForItemType( ItemId $itemTypeId ): array {
-		return $this->getFacets()->getFacetConfigForItemType( $itemTypeId )->asArray();
+	public function getFacetConfigForItemType( ItemId $itemType ): array {
+		return $this->getFacets()->getFacetConfigForItemType( $itemType )->asArray();
 	}
 
-	public function getConfigForProperty( ItemId $itemTypeId, PropertyId $propertyId ): ?FacetConfig {
-		return $this->getFacets()->getFacetConfigForItemType( $itemTypeId )->getConfigForProperty( $propertyId );
+	public function getConfigForProperty( ItemId $itemType, PropertyId $propertyId ): ?FacetConfig {
+		return $this->getFacets()->getFacetConfigForItemType( $itemType )->getConfigForProperty( $propertyId );
 	}
 
 	/**
@@ -57,7 +57,7 @@ class Config {
 		// TODO: needing this logic is really silly. We have the info as array keys in the JSON.
 		// https://github.com/ProfessionalWiki/WikibaseFacetedSearch/issues/107
 		foreach ( $this->getFacets()->asArray() as $facetConfig ) {
-			$itemTypes[$facetConfig->itemTypeId->getSerialization()] = $facetConfig->itemTypeId;
+			$itemTypes[$facetConfig->itemType->getSerialization()] = $facetConfig->itemType;
 		}
 
 		return array_values( $itemTypes );

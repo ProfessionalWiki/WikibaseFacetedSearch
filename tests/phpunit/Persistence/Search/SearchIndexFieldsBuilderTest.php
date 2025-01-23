@@ -78,7 +78,7 @@ class SearchIndexFieldsBuilderTest extends TestCase {
 	public function testReturnsFieldForItemType(): void {
 		$builder = $this->newBuilder(
 			new Config(
-				instanceOfId: new NumericPropertyId( 'P1' )
+				itemTypeProperty: new NumericPropertyId( 'P1' )
 			)
 		);
 
@@ -93,7 +93,7 @@ class SearchIndexFieldsBuilderTest extends TestCase {
 	public function testReturnsFieldsForConfig(): void {
 		$builder = $this->newBuilder(
 			new Config(
-				instanceOfId: new NumericPropertyId( 'P1' ),
+				itemTypeProperty: new NumericPropertyId( 'P1' ),
 				facets: new FacetConfigList(
 					$this->newFacetConfig( 'Q1', 'P100' ),
 					$this->newFacetConfig( 'Q1', 'P200' ),
@@ -131,7 +131,7 @@ class SearchIndexFieldsBuilderTest extends TestCase {
 	public function testDoesNotReturnFieldsForMissingProperties(): void {
 		$builder = $this->newBuilder(
 			new Config(
-				instanceOfId: new NumericPropertyId( 'P1' ),
+				itemTypeProperty: new NumericPropertyId( 'P1' ),
 				facets: new FacetConfigList(
 					$this->newFacetConfig( 'Q1', 'P100' ),
 					$this->newFacetConfig( 'Q2', 'P404' ),

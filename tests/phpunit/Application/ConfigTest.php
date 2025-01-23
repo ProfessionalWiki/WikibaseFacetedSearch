@@ -49,16 +49,16 @@ class ConfigTest extends TestCase {
 		$this->assertEquals( $new, $combined );
 	}
 
-	public function testGetInstanceOfIdThrowsExceptionWhenNotConfigured(): void {
+	public function testGetItemTypePropertyThrowsExceptionWhenNotConfigured(): void {
 		$this->expectException( RuntimeException::class );
-		( new Config() )->getInstanceOfId();
+		( new Config() )->getItemTypeProperty();
 	}
 
-	public function testGetInstanceOfIdReturnsConfiguredId(): void {
+	public function testGetItemTypePropertyReturnsConfiguredId(): void {
 		$propertyId = new NumericPropertyId( 'P42' );
-		$config = new Config( instanceOfId: $propertyId );
+		$config = new Config( itemTypeProperty: $propertyId );
 
-		$this->assertSame( $propertyId, $config->getInstanceOfId() );
+		$this->assertSame( $propertyId, $config->getItemTypeProperty() );
 	}
 
 	public function testGetFacetsReturnsEmptyListByDefault(): void {
@@ -83,7 +83,7 @@ class ConfigTest extends TestCase {
 
 	public function testGetConfigForPropertyReturnsConfigForTheRightItemAndPropertyIdCombo(): void {
 		$twoTwoHundredFacet = new FacetConfig(
-			itemTypeId: new ItemId( 'Q2' ),
+			itemType: new ItemId( 'Q2' ),
 			propertyId: new NumericPropertyId( 'P200' ),
 			type: FacetType::RANGE
 		);
@@ -91,23 +91,23 @@ class ConfigTest extends TestCase {
 		$config = new Config(
 			facets: new FacetConfigList(
 				new FacetConfig(
-					itemTypeId: new ItemId( 'Q1' ),
+					itemType: new ItemId( 'Q1' ),
 					propertyId: new NumericPropertyId( 'P200' ),
 					type: FacetType::RANGE
 				),
 				new FacetConfig(
-					itemTypeId: new ItemId( 'Q2' ),
+					itemType: new ItemId( 'Q2' ),
 					propertyId: new NumericPropertyId( 'P100' ),
 					type: FacetType::RANGE
 				),
 				$twoTwoHundredFacet,
 				new FacetConfig(
-					itemTypeId: new ItemId( 'Q3' ),
+					itemType: new ItemId( 'Q3' ),
 					propertyId: new NumericPropertyId( 'P200' ),
 					type: FacetType::RANGE
 				),
 				new FacetConfig(
-					itemTypeId: new ItemId( 'Q2' ),
+					itemType: new ItemId( 'Q2' ),
 					propertyId: new NumericPropertyId( 'P300' ),
 					type: FacetType::RANGE
 				)

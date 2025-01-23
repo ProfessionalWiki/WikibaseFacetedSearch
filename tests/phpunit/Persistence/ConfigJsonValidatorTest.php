@@ -68,11 +68,11 @@ class ConfigJsonValidatorTest extends TestCase {
 		);
 	}
 
-	public function testInvalidInstanceOfIdFailsValidation(): void {
+	public function testInvalidItemTypePropertyFailsValidation(): void {
 		$this->assertFalse(
 			$this->newValidator()->validate( '
 {
-	"instanceOfId": "Q42"
+	"itemTypeProperty": "Q42"
 }
 			' )
 		);
@@ -93,7 +93,7 @@ class ConfigJsonValidatorTest extends TestCase {
 		$this->assertFalse(
 			$this->newValidator()->validate( '
 {
-	"instanceOfValues": {
+	"configPerItemType": {
 		"P1": {
 			"label": "Memes",
 			"facets": []
@@ -108,7 +108,7 @@ class ConfigJsonValidatorTest extends TestCase {
 		$this->assertFalse(
 			$this->newValidator()->validate( '
 {
-	"instanceOfValues": {
+	"configPerItemType": {
 		"Q1": "invalid"
 	}
 }
@@ -120,7 +120,7 @@ class ConfigJsonValidatorTest extends TestCase {
 		$this->assertFalse(
 			$this->newValidator()->validate( '
 {
-	"instanceOfValues": {
+	"configPerItemType": {
 		"Q1": {
 			"label": "Memes",
 			"facets": {
@@ -139,7 +139,7 @@ class ConfigJsonValidatorTest extends TestCase {
 		$this->assertFalse(
 			$this->newValidator()->validate( '
 {
-	"instanceOfValues": {
+	"configPerItemType": {
 		"Q1": {
 			"label": "Memes",
 			"facets": {
@@ -166,7 +166,7 @@ class ConfigJsonValidatorTest extends TestCase {
 		$this->assertFalse(
 			$this->newValidator()->validate( '
 {
-	"instanceOfValues": {
+	"configPerItemType": {
 		"Q1": {
 			"label": "Memes",
 			"facets": {
@@ -186,7 +186,7 @@ class ConfigJsonValidatorTest extends TestCase {
 		$this->assertTrue(
 			$this->newValidator()->validate( '
 {
-	"instanceOfValues": {
+	"configPerItemType": {
 		"Q1": {
 			"label": "Memes",
 			"facets": {
@@ -209,7 +209,7 @@ class ConfigJsonValidatorTest extends TestCase {
 		$this->assertFalse(
 			$this->newValidator()->validate( '
 {
-	"instanceOfValues": {
+	"configPerItemType": {
 		"Q1": {
 			"label": "Memes",
 			"facets": {

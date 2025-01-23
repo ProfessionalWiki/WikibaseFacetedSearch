@@ -26,7 +26,7 @@ class SearchIndexFieldsBuilder {
 	 */
 	public function createFields(): array {
 		try {
-			$itemType = $this->config->getInstanceOfId();
+			$itemType = $this->config->getItemTypeProperty();
 		} catch ( Exception ) {
 			return [];
 		}

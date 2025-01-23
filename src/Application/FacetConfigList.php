@@ -22,7 +22,7 @@ class FacetConfigList {
 		return new self(
 			...array_filter(
 				$this->facets,
-				fn( FacetConfig $facetConfig ) => $facetConfig->itemTypeId->equals( $itemId )
+				fn( FacetConfig $facetConfig ) => $facetConfig->itemType->equals( $itemId )
 			)
 		);
 	}

@@ -30,7 +30,7 @@ class StatementListTranslator {
 		}
 
 		$propertyIds = $this->getPropertiesToIndex( $itemType );
-		$propertyIds[] = $this->config->getInstanceOfId();
+		$propertyIds[] = $this->config->getItemTypeProperty();
 
 		$values = [];
 

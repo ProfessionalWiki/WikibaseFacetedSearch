@@ -37,8 +37,8 @@ class ConfigDeserializer {
 	private function newConfig( array $configArray ): Config {
 		return new Config(
 			linkTargetSitelinkSiteId: $configArray['linkTargetSitelinkSiteId'] ?? null,
-			instanceOfId: $this->newPropertyId( $configArray['instanceOfId'] ?? null ),
-			facets: $this->newFacetConfigList( $configArray['instanceOfValues'] ?? [] )
+			itemTypeProperty: $this->newPropertyId( $configArray['itemTypeProperty'] ?? null ),
+			facets: $this->newFacetConfigList( $configArray['configPerItemType'] ?? [] )
 		);
 	}
 
@@ -78,7 +78,7 @@ class ConfigDeserializer {
 		unset( $typeSpecificConfig['type'] );
 
 		return new FacetConfig(
-			itemTypeId: new ItemId( $itemId ),
+			itemType: new ItemId( $itemId ),
 			propertyId: new NumericPropertyId( $propertyId ),
 			type: FacetType::from( $facetConfig['type'] ),
 			typeSpecificConfig: $typeSpecificConfig

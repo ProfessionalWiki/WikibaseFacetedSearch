@@ -51,14 +51,14 @@ class QueryStringParserTest extends TestCase {
 	}
 
 	public function testParsesNonExistenceItemTypes(): void {
-		$parser = $this->newQueryStringParser( instanceOfId: 'P32' );
+		$parser = $this->newQueryStringParser( itemTypeProperty: 'P32' );
 		$query = $parser->parse( 'haswbfacet:P404' );
 
 		$this->assertEquals( [], $query->getItemTypes() );
 	}
 
 	public function testParsesSingleItemType(): void {
-		$parser = $this->newQueryStringParser( instanceOfId: 'P32' );
+		$parser = $this->newQueryStringParser( itemTypeProperty: 'P32' );
 		$query = $parser->parse( 'unrelated haswbstatement:P32=Q68 unrelated' );
 
 		$itemTypes = [
@@ -69,7 +69,7 @@ class QueryStringParserTest extends TestCase {
 	}
 
 	public function testParsesMultipleItemTypes(): void {
-		$parser = $this->newQueryStringParser( instanceOfId: 'P32' );
+		$parser = $this->newQueryStringParser( itemTypeProperty: 'P32' );
 		$query = $parser->parse( 'unrelated haswbstatement:P32=Q68 haswbstatement:P32=Q67 unrelated haswbstatement:P32=Q69 unrelated' );
 
 		$itemTypes = [
@@ -81,8 +81,8 @@ class QueryStringParserTest extends TestCase {
 		$this->assertEquals( $itemTypes, $query->getItemTypes() );
 	}
 
-	public function testIgnoresHaswbstatementForNonInstanceOfIdProperties(): void {
-		$parser = $this->newQueryStringParser( instanceOfId: 'P32' );
+	public function testIgnoresHaswbstatementForNonItemTypePropertyProperties(): void {
+		$parser = $this->newQueryStringParser( itemTypeProperty: 'P32' );
 		$query = $parser->parse( 'haswbstatement:P1=wrongId haswbstatement:P32=Q68 haswbstatement:P2=alsoWrong' );
 
 		$itemTypes = [
@@ -93,7 +93,7 @@ class QueryStringParserTest extends TestCase {
 	}
 
 	public function testIgnoresInvalidItemTypes(): void {
-		$parser = $this->newQueryStringParser( instanceOfId: 'P32' );
+		$parser = $this->newQueryStringParser( itemTypeProperty: 'P32' );
 		$query = $parser->parse( 'haswbstatement:P32=invalid haswbstatement:P32=Q68 haswbstatement:P32=wrong' );
 
 		$itemTypes = [
@@ -198,9 +198,9 @@ class QueryStringParserTest extends TestCase {
 		$this->assertSame( 'baz', $query->getFreeText() );
 	}
 
-	private function newQueryStringParser( ?string $instanceOfId = 'P11111' ): QueryStringParser {
+	private function newQueryStringParser( ?string $itemTypeProperty = 'P11111' ): QueryStringParser {
 		return new QueryStringParser(
-			instanceOfId: new NumericPropertyId( $instanceOfId )
+			itemTypeProperty: new NumericPropertyId( $itemTypeProperty )
 		);
 	}
 

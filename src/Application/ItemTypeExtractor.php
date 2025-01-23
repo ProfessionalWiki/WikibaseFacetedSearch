@@ -13,12 +13,12 @@ use Wikibase\DataModel\Statement\StatementList;
 class ItemTypeExtractor {
 
 	public function __construct(
-		private readonly PropertyId $instanceOfId
+		private readonly PropertyId $itemTypeProperty
 	) {
 	}
 
 	public function getItemType( StatementList $statements ): ?ItemId {
-		$itemTypeStatements = $statements->getByPropertyId( $this->instanceOfId )->getBestStatements();
+		$itemTypeStatements = $statements->getByPropertyId( $this->itemTypeProperty )->getBestStatements();
 
 		if ( $itemTypeStatements->isEmpty() ) {
 			return null;

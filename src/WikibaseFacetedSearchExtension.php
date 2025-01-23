@@ -51,8 +51,8 @@ class WikibaseFacetedSearchExtension {
 
 	public const DEFAULT_CONFIG = '{
 	"linkTargetSitelinkSiteId": null,
-	"instanceOfId": null,
-	"instanceOfValues": {}
+	"itemTypeProperty": null,
+	"configPerItemType": {}
 }';
 
 	private ?Config $config;
@@ -162,7 +162,7 @@ class WikibaseFacetedSearchExtension {
 
 	private function newItemTypeExtractor(): ItemTypeExtractor {
 		return new ItemTypeExtractor(
-			instanceOfId: $this->getConfig()->getInstanceOfId()
+			itemTypeProperty: $this->getConfig()->getItemTypeProperty()
 		);
 	}
 
@@ -238,7 +238,7 @@ class WikibaseFacetedSearchExtension {
 
 	private function getQueryStringParser(): QueryStringParser {
 		return new QueryStringParser(
-			instanceOfId: $this->getConfig()->getInstanceOfId()
+			itemTypeProperty: $this->getConfig()->getItemTypeProperty()
 		);
 	}
 

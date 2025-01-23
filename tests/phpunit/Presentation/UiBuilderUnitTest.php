@@ -24,7 +24,7 @@ use Wikibase\DataModel\Services\Lookup\LabelLookup;
 class UiBuilderUnitTest extends TestCase {
 
 	public function testTabsViewModelContainsItemTypeProperty(): void {
-		$config = new Config( instanceOfId: new NumericPropertyId( 'P1337' ) );
+		$config = new Config( itemTypeProperty: new NumericPropertyId( 'P1337' ) );
 		$templateSpy = new SpyTemplateParser();
 
 		$this->newUiBuilder( config: $config, templateSpy: $templateSpy )
@@ -53,8 +53,8 @@ class UiBuilderUnitTest extends TestCase {
 	public function testTabsViewModelContainsItemTypes(): void {
 		$config = WikibaseFacetedSearchExtension::getInstance()->newConfigDeserializer()->deserialize( <<<JSON
 {
-	"instanceOfId": "P1337",
-	"instanceOfValues": {
+	"itemTypeProperty": "P1337",
+	"configPerItemType": {
 		"Q5976445": {
 			"label": "People",
 			"facets": {
@@ -108,8 +108,8 @@ JSON );
 	public function testTabsViewModelSelectsCurrentItemType(): void {
 		$config = WikibaseFacetedSearchExtension::getInstance()->newConfigDeserializer()->deserialize( <<<JSON
 {
-	"instanceOfId": "P1337",
-	"instanceOfValues": {
+	"itemTypeProperty": "P1337",
+	"configPerItemType": {
 		"Q1": {
 			"label": "whatever1",
 			"facets": { "P1": { "type": "list" } }

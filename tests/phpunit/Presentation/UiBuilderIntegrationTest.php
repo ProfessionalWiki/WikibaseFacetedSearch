@@ -19,10 +19,10 @@ class UiBuilderIntegrationTest extends MediaWikiIntegrationTestCase {
 	public function testIntegrationSmoke(): void {
 		$this->overrideConfigValue(
 			WikibaseFacetedSearchExtension::CONFIG_VARIABLE_NAME,
-			'{"instanceOfId":"P31"}'
+			'{"itemTypeProperty":"P31"}'
 		);
 
-		WikibaseFacetedSearchExtension::getInstance()->getConfig()->getInstanceOfId();
+		WikibaseFacetedSearchExtension::getInstance()->getConfig()->getItemTypeProperty();
 
 		$html = $this->getUiBuilderFromGlobals()->createHtml( 'foo' );
 		$this->assertStringContainsString( 'topbar', $html );

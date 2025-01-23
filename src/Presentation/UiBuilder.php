@@ -44,7 +44,7 @@ class UiBuilder {
 		return $this->templateParser->processTemplate(
 			'Layout',
 			[
-				'instanceId' => $this->config->getInstanceOfId()->getSerialization(),
+				'instanceId' => $this->config->getItemTypeProperty()->getSerialization(),
 				'instances' => $instancesViewModel,
 				'facets' => $facetsViewModel,
 				'msg-filters' => wfMessage( 'wikibase-faceted-search-filters' )->text(),
