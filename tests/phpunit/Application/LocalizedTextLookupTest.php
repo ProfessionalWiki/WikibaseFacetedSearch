@@ -36,7 +36,7 @@ class LocalizedTextLookupTest extends TestCase {
 
 	private function setLabelToEntity( ItemId $itemId, string $label ) {
 		return ( new Item( $itemId ) )->setLabel(
-			MediaWikiServices::getInstance()->getContentLanguageCode(),
+			MediaWikiServices::getInstance()->getContentLanguageCode()->toString(),
 			$label
 		);
 	}
