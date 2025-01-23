@@ -63,4 +63,8 @@ class Config {
 		return array_values( $itemTypes );
 	}
 
+	public function isComplete(): bool {
+		return $this->itemTypeProperty !== null;
+	}
+
 }

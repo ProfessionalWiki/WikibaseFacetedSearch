@@ -30,7 +30,6 @@ class StatementListTranslator {
 		}
 
 		$propertyIds = $this->getPropertiesToIndex( $itemType );
-		$propertyIds[] = $this->config->getItemTypeProperty();
 
 		$values = [];
 
@@ -45,12 +44,15 @@ class StatementListTranslator {
 	 * @return PropertyId[]
 	 */
 	private function getPropertiesToIndex( ItemId $itemType ): array {
-		return array_values(
+		$properties = array_values(
 			array_map(
 				fn( FacetConfig $config ) => $config->propertyId,
 				$this->config->getFacetConfigForItemType( $itemType )
 			)
 		);
+		$properties[] = $this->config->getItemTypeProperty();
+
+		return $properties;
 	}
 
 	private function translatePropertyStatements( StatementList $statements, PropertyId $propertyId ): array {

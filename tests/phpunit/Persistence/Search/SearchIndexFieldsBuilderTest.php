@@ -30,10 +30,12 @@ class SearchIndexFieldsBuilderTest extends TestCase {
 		$this->cirrusSearch = new CirrusSearch();
 	}
 
-	public function testEmptyConfigReturnsNoFields(): void {
+	public function testEmptyConfigThrowsException(): void {
 		$builder = $this->newBuilder( new Config() );
 
-		$this->assertSame( [], $builder->createFields() );
+		$this->expectException( \RuntimeException::class );
+
+		$builder->createFieldObjects();
 	}
 
 	private function newBuilder( Config $config ): SearchIndexFieldsBuilder {
@@ -44,7 +46,7 @@ class SearchIndexFieldsBuilderTest extends TestCase {
 		);
 	}
 
-	public function testConfigWithoutItemTypeReturnsNoFields(): void {
+	public function testConfigWithoutItemTypeThrowsException(): void {
 		$builder = $this->newBuilder( new Config(
 			facets: new FacetConfigList(
 				$this->newFacetConfig( 'Q1', 'P100' ),
@@ -52,7 +54,9 @@ class SearchIndexFieldsBuilderTest extends TestCase {
 			)
 		) );
 
-		$this->assertSame( [], $builder->createFields() );
+		$this->expectException( \RuntimeException::class );
+
+		$builder->createFieldObjects();
 	}
 
 	private function newDataTypeLookup(): InMemoryDataTypeLookup {
@@ -86,7 +90,7 @@ class SearchIndexFieldsBuilderTest extends TestCase {
 			[
 				'wbfs_P1' => new AggregatableKeywordIndexField( 'wbfs_P1', SearchIndexField::INDEX_TYPE_KEYWORD, $this->cirrusSearch->getConfig() )
 			],
-			$builder->createFields()
+			$builder->createFieldObjects()
 		);
 	}
 
@@ -112,7 +116,7 @@ class SearchIndexFieldsBuilderTest extends TestCase {
 				'wbfs_P300' => new DatetimeIndexField( 'wbfs_P300', SearchIndexField::INDEX_TYPE_DATETIME, $this->cirrusSearch->getConfig() ),
 				'wbfs_P400' => new AggregatableKeywordIndexField( 'wbfs_P400', SearchIndexField::INDEX_TYPE_KEYWORD, $this->cirrusSearch->getConfig() )
 			],
-			$builder->createFields()
+			$builder->createFieldObjects()
 		);
 	}
 
@@ -146,7 +150,7 @@ class SearchIndexFieldsBuilderTest extends TestCase {
 				'wbfs_P100' => new NumberIndexField( 'wbfs_P100', SearchIndexField::INDEX_TYPE_NUMBER, $this->cirrusSearch->getConfig() ),
 				'wbfs_P200' => new AggregatableKeywordIndexField( 'wbfs_P200', SearchIndexField::INDEX_TYPE_KEYWORD, $this->cirrusSearch->getConfig() )
 			],
-			$builder->createFields()
+			$builder->createFieldObjects()
 		);
 	}
 
