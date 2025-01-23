@@ -52,7 +52,7 @@ class WikibaseFacetedSearchExtension {
 	public const DEFAULT_CONFIG = '{
 	"linkTargetSitelinkSiteId": null,
 	"instanceOfId": null,
-	"instanceOfValues": {}
+	"configPerItemType": {}
 }';
 
 	private ?Config $config;

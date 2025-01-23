@@ -38,7 +38,7 @@ class ConfigDeserializer {
 		return new Config(
 			linkTargetSitelinkSiteId: $configArray['linkTargetSitelinkSiteId'] ?? null,
 			instanceOfId: $this->newPropertyId( $configArray['instanceOfId'] ?? null ),
-			facets: $this->newFacetConfigList( $configArray['instanceOfValues'] ?? [] )
+			facets: $this->newFacetConfigList( $configArray['configPerItemType'] ?? [] )
 		);
 	}
 

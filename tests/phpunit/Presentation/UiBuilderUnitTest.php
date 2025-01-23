@@ -54,7 +54,7 @@ class UiBuilderUnitTest extends TestCase {
 		$config = WikibaseFacetedSearchExtension::getInstance()->newConfigDeserializer()->deserialize( <<<JSON
 {
 	"instanceOfId": "P1337",
-	"instanceOfValues": {
+	"configPerItemType": {
 		"Q5976445": {
 			"label": "People",
 			"facets": {
@@ -109,7 +109,7 @@ JSON );
 		$config = WikibaseFacetedSearchExtension::getInstance()->newConfigDeserializer()->deserialize( <<<JSON
 {
 	"instanceOfId": "P1337",
-	"instanceOfValues": {
+	"configPerItemType": {
 		"Q1": {
 			"label": "whatever1",
 			"facets": { "P1": { "type": "list" } }

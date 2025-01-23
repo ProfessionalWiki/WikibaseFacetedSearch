@@ -20,7 +20,7 @@ class Valid {
 {
     "linkTargetSitelinkSiteId": "enwiki",
     "instanceOfId": "P42",
-    "instanceOfValues": {
+    "configPerItemType": {
         "Q100": {
             "label": "Memes",
             "facets": {
