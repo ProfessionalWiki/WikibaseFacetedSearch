@@ -151,7 +151,7 @@ class WikibaseFacetedSearchHooks {
 		}
 
 		if ( WikibaseFacetedSearchExtension::getInstance()->getConfig()->isComplete() ) {
-			$fields = WikibaseFacetedSearchExtension::getInstance()->newSearchIndexFieldsBuilder( $engine )->createFields()
+			$fields = WikibaseFacetedSearchExtension::getInstance()->newSearchIndexFieldsBuilder( $engine )->createFieldObjects()
 				+ $fields;
 		}
 	}
