@@ -25,13 +25,7 @@ class SearchIndexFieldsBuilder {
 	 * @return array<string, SearchIndexField>
 	 */
 	public function createFields(): array {
-		try {
-			$itemType = $this->config->getItemTypeProperty();
-		} catch ( Exception ) {
-			return [];
-		}
-
-		return $this->makeItemTypeSearchFieldMapping( $itemType )
+		return $this->makeItemTypeSearchFieldMapping( $this->config->getItemTypeProperty() )
 			+ $this->makeFacetSearchFieldMappings( $this->config->getFacets()->asArray() );
 	}
 

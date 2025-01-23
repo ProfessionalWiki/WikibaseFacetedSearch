@@ -140,4 +140,27 @@ class ConfigTest extends TestCase {
 		);
 	}
 
+	public function testWithoutItemTypeIsNotComplete(): void {
+		$this->assertFalse( ( new Config() )->isComplete() );
+	}
+
+	public function testWithOnlyItemTypeIsComplete(): void {
+		$config = new Config( itemTypeProperty: new NumericPropertyId( 'P1' ) );
+
+		$this->assertTrue( $config->isComplete() );
+	}
+
+	public function testFullConfigIsComplete(): void {
+		$config = new Config(
+			linkTargetSitelinkSiteId: 'enwiki',
+			itemTypeProperty: new NumericPropertyId( 'P1' ),
+			facets: new FacetConfigList(
+				new FacetConfig( new ItemId( 'Q1' ), new NumericPropertyId( 'P1' ), FacetType::LIST ),
+				new FacetConfig( new ItemId( 'Q2' ), new NumericPropertyId( 'P2' ), FacetType::LIST )
+			)
+		);
+
+		$this->assertTrue( $config->isComplete() );
+	}
+
 }
