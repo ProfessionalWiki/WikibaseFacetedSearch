@@ -19,7 +19,7 @@ class Valid {
 		return '
 {
     "linkTargetSitelinkSiteId": "enwiki",
-    "instanceOfId": "P42",
+    "itemTypeProperty": "P42",
     "configPerItemType": {
         "Q100": {
             "label": "Memes",
@@ -49,7 +49,7 @@ class Valid {
 	public static function config(): Config {
 		return new Config(
 			linkTargetSitelinkSiteId: 'enwiki',
-			instanceOfId: new NumericPropertyId( 'P42' ),
+			itemTypeProperty: new NumericPropertyId( 'P42' ),
 			facets: new FacetConfigList(
 				new FacetConfig( new ItemId( self::ITEM_TYPE_WITH_FACETS ), new NumericPropertyId( 'P1' ), FacetType::LIST ),
 				new FacetConfig( new ItemId( self::ITEM_TYPE_WITH_FACETS ), new NumericPropertyId( 'P2' ), FacetType::RANGE ),

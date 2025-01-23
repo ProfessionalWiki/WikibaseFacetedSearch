@@ -49,16 +49,16 @@ class ConfigTest extends TestCase {
 		$this->assertEquals( $new, $combined );
 	}
 
-	public function testGetInstanceOfIdThrowsExceptionWhenNotConfigured(): void {
+	public function testGetItemTypePropertyThrowsExceptionWhenNotConfigured(): void {
 		$this->expectException( RuntimeException::class );
-		( new Config() )->getInstanceOfId();
+		( new Config() )->getItemTypeProperty();
 	}
 
-	public function testGetInstanceOfIdReturnsConfiguredId(): void {
+	public function testGetItemTypePropertyReturnsConfiguredId(): void {
 		$propertyId = new NumericPropertyId( 'P42' );
-		$config = new Config( instanceOfId: $propertyId );
+		$config = new Config( itemTypeProperty: $propertyId );
 
-		$this->assertSame( $propertyId, $config->getInstanceOfId() );
+		$this->assertSame( $propertyId, $config->getItemTypeProperty() );
 	}
 
 	public function testGetFacetsReturnsEmptyListByDefault(): void {

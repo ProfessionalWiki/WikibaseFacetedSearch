@@ -6,7 +6,7 @@
 		"linkTargetSitelinkSiteId": {
 			"type": [ "string", "null" ]
 		},
-		"instanceOfId": {
+		"itemTypeProperty": {
 			"type": [ "string", "null" ],
 			"pattern": "^P[1-9]\\d{0,9}$"
 		},

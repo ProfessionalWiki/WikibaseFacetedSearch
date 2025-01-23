@@ -61,7 +61,7 @@ class ConfigEditPageTextBuilder {
 	</section>
 
 	<section>
-		<h2 id="InstanceOfId">Instance Of property ID</h2>
+		<h2 id="ItemTypeProperty">Instance Of property ID</h2>
 
 		<p>
 			The property ID for the "instance of" property.
@@ -73,7 +73,7 @@ class ConfigEditPageTextBuilder {
 
 		<pre>
 {
-	"instanceOfId": "P1"
+	"itemTypeProperty": "P1"
 }</pre>
 	</section>
 

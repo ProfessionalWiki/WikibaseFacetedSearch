@@ -12,7 +12,7 @@ class Config {
 
 	public function __construct(
 		public readonly ?string $linkTargetSitelinkSiteId = null,
-		private readonly ?PropertyId $instanceOfId = null,
+		private readonly ?PropertyId $itemTypeProperty = null,
 		private readonly ?FacetConfigList $facets = null
 	) {
 	}
@@ -20,17 +20,17 @@ class Config {
 	public function combine( Config $config ): self {
 		return new Config(
 			$config->linkTargetSitelinkSiteId ?? $this->linkTargetSitelinkSiteId,
-			$config->instanceOfId ?? $this->instanceOfId,
+			$config->itemTypeProperty ?? $this->itemTypeProperty,
 			$config->facets ?? $this->facets
 		);
 	}
 
-	public function getInstanceOfId(): PropertyId {
-		if ( $this->instanceOfId === null ) {
+	public function getItemTypeProperty(): PropertyId {
+		if ( $this->itemTypeProperty === null ) {
 			throw new RuntimeException( 'No instance of ID configured' );
 		}
 
-		return $this->instanceOfId;
+		return $this->itemTypeProperty;
 	}
 
 	public function getFacets(): FacetConfigList {

@@ -68,11 +68,11 @@ class ConfigJsonValidatorTest extends TestCase {
 		);
 	}
 
-	public function testInvalidInstanceOfIdFailsValidation(): void {
+	public function testInvalidItemTypePropertyFailsValidation(): void {
 		$this->assertFalse(
 			$this->newValidator()->validate( '
 {
-	"instanceOfId": "Q42"
+	"itemTypeProperty": "Q42"
 }
 			' )
 		);

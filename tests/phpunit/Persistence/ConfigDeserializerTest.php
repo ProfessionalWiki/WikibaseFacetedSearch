@@ -40,10 +40,10 @@ class ConfigDeserializerTest extends TestCase {
 		$this->assertEquals( new Config(), $config );
 	}
 
-	public function testInvalidInstanceOfIdReturnsEmptyConfig(): void {
+	public function testInvalidItemTypePropertyReturnsEmptyConfig(): void {
 		$deserializer = $this->newDeserializer();
 
-		$config = $deserializer->deserialize( '{ "instanceOfId": "Q123" }' );
+		$config = $deserializer->deserialize( '{ "itemTypeProperty": "Q123" }' );
 
 		$this->assertEquals( new Config(), $config );
 	}
