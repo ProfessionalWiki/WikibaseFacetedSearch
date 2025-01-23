@@ -7,6 +7,7 @@ namespace ProfessionalWiki\WikibaseFacetedSearch\Tests\Presentation;
 use PHPUnit\Framework\TestCase;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\PropertyConstraintsList;
+use ProfessionalWiki\WikibaseFacetedSearch\Application\LocalizedTextLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Query;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\QueryStringParser;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\UiBuilder;
@@ -16,7 +17,6 @@ use ProfessionalWiki\WikibaseFacetedSearch\Tests\TestDoubles\StubQueryStringPars
 use ProfessionalWiki\WikibaseFacetedSearch\WikibaseFacetedSearchExtension;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\NumericPropertyId;
-use Wikibase\DataModel\Services\Lookup\LabelLookup;
 
 /**
  * @covers \ProfessionalWiki\WikibaseFacetedSearch\Presentation\UiBuilder
@@ -44,7 +44,7 @@ class UiBuilderUnitTest extends TestCase {
 		return new UiBuilder(
 			$config ?? new Config(),
 			new SpyFacetHtmlBuilder(),
-			$this->createMock( LabelLookup::class ),
+			$this->createMock( LocalizedTextLookup::class ),
 			$templateSpy ?? new SpyTemplateParser(),
 			$queryStringParser ?? new StubQueryStringParser()
 		);

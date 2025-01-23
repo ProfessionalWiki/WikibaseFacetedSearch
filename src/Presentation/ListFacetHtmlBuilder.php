@@ -6,6 +6,7 @@ namespace ProfessionalWiki\WikibaseFacetedSearch\Presentation;
 
 use MediaWiki\Html\TemplateParser;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetConfig;
+use ProfessionalWiki\WikibaseFacetedSearch\Application\LocalizedTextLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\PropertyConstraints;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\ValueCount;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\ValueCounter;
@@ -24,7 +25,8 @@ class ListFacetHtmlBuilder implements FacetHtmlBuilder {
 
 	public function __construct(
 		private readonly TemplateParser $parser,
-		private readonly ValueCounter $valueCounter
+		private readonly ValueCounter $valueCounter,
+		private readonly LocalizedTextLookup $localizedTextLookup
 	) {
 	}
 
@@ -102,7 +104,7 @@ class ListFacetHtmlBuilder implements FacetHtmlBuilder {
 
 		foreach ( $this->getValuesAndCounts( $config ) as $i => $valueCount ) {
 			$checkboxes[] = [
-				'label' => $valueCount->value,
+				'label' => $this->localizedTextLookup->getLabelFromEntityIdString( $valueCount->value ),
 				'count' => $valueCount->count,
 				'checked' => in_array( $valueCount->value, $selectedValues ), // TODO: test with multiple types of values
 				'value' => $valueCount->value,

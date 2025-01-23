@@ -7,6 +7,7 @@ namespace ProfessionalWiki\WikibaseFacetedSearch\Tests\Presentation;
 use PHPUnit\Framework\TestCase;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetConfig;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetType;
+use ProfessionalWiki\WikibaseFacetedSearch\Application\LocalizedTextLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\PropertyConstraints;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\ListFacetHtmlBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Tests\TestDoubles\StubValueCounter;
@@ -44,8 +45,8 @@ class ListFacetHtmlBuilderTest extends TestCase {
 	private function newListFacetHtmlBuilder(): ListFacetHtmlBuilder {
 		return new ListFacetHtmlBuilder(
 			parser: WikibaseFacetedSearchExtension::getInstance()->getTemplateParser(),
-			valueCounter: new StubValueCounter()
-		);
+			valueCounter: new StubValueCounter(),
+			localizedTextLookup: WikibaseFacetedSearchExtension::getInstance()->getLocalizedTextLookup( MediaWikiServices::getInstance()->getContentLanguage() )
 	}
 
 	public function testCheckboxesViewModelContainsAllValues(): void {

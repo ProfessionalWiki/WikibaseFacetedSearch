@@ -7,19 +7,18 @@ namespace ProfessionalWiki\WikibaseFacetedSearch\Presentation;
 use MediaWiki\Html\TemplateParser;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetConfig;
+use ProfessionalWiki\WikibaseFacetedSearch\Application\LocalizedTextLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\PropertyConstraints;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Query;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\QueryStringParser;
-use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\DataModel\Entity\ItemId;
-use Wikibase\DataModel\Services\Lookup\LabelLookup;
 
 class UiBuilder {
 
 	public function __construct(
 		private readonly Config $config,
 		private readonly FacetHtmlBuilder $facetHtmlBuilder,
-		private readonly LabelLookup $labelLookup,
+		private readonly LocalizedTextLookup $localizedTextLookup,
 		private readonly TemplateParser $templateParser,
 		private readonly QueryStringParser $queryStringParser,
 	) {
@@ -61,7 +60,7 @@ class UiBuilder {
 
 		foreach ( $this->config->getItemTypes() as $itemType ) {
 			$tabs[] = [
-				'label' => $this->getLabelFromEntityId( $itemType ), // TODO: Prefer label from config (We need to figure out #107)
+				'label' => $this->localizedTextLookup->getLabelFromEntityId( $itemType ), // TODO: Prefer label from config (We need to figure out #107)
 				'value' => $itemType->getSerialization(),
 				'selected' => $itemType->equals( $selectedItemType )
 			];
@@ -103,16 +102,12 @@ class UiBuilder {
 
 	private function buildFacetViewModel( FacetConfig $config, PropertyConstraints $state ): array {
 		return [
-			'label' => $this->getLabelFromEntityId( $config->propertyId ),
+			'label' => $this->localizedTextLookup->getLabelFromEntityId( $config->propertyId ),
 			'propertyId' => $config->propertyId->getSerialization(),
 			'type' => $config->type->value, // TODO: is this needed?
 			'expanded' => true, // TODO: get this from the URL somehow
 			'facetHtml' => $this->facetHtmlBuilder->buildHtml( $config, $state )
 		];
-	}
-
-	private function getLabelFromEntityId( EntityId $entityId ): string {
-		return $this->labelLookup->getLabel( $entityId )?->getText() ?? $entityId->getSerialization();
 	}
 
 }
