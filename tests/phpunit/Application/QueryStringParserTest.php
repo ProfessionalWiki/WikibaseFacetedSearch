@@ -204,4 +204,11 @@ class QueryStringParserTest extends TestCase {
 		);
 	}
 
+	public function testParsesExactPropertyIdForItemType(): void {
+		$parser = $this->newQueryStringParser( itemTypeProperty: 'P32' );
+		$query = $parser->parse( 'unrelated haswbfacet:P320=Q68 unrelated' );
+
+		$this->assertEquals( [], $query->getItemTypes() );
+	}
+
 }

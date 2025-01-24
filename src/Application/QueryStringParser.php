@@ -51,7 +51,7 @@ class QueryStringParser {
 	}
 
 	private function isInstanceOfPart( string $part ): bool {
-		return str_starts_with( $part, 'haswbfacet:' . $this->itemTypeProperty->getSerialization() );
+		return str_starts_with( $part, 'haswbfacet:' . $this->itemTypeProperty->getSerialization() . '=' );
 	}
 
 	private function isFacetPart( string $part ): bool {
@@ -64,8 +64,7 @@ class QueryStringParser {
 	 * @return ItemId[]
 	 */
 	private function extractItemTypes( string $part, array &$itemTypes ): array {
-		$part = substr( $part, strlen( 'haswbfacet:' . $this->itemTypeProperty->getSerialization() ) );
-		$itemTypeStr = explode( '=', $part, 2 )[1] ?? '';
+		$itemTypeStr = substr( $part, strlen( 'haswbfacet:' . $this->itemTypeProperty->getSerialization() . '=' ) );
 
 		if ( $itemTypeStr === '' ) {
 			return $itemTypes;
