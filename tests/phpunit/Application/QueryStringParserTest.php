@@ -211,4 +211,32 @@ class QueryStringParserTest extends TestCase {
 		$this->assertEquals( [], $query->getItemTypes() );
 	}
 
+	public function testParsesSingleItemTypeWithOrValues(): void {
+		$parser = $this->newQueryStringParser( itemTypeProperty: 'P32' );
+		$query = $parser->parse( 'haswbfacet:P32=Q68 haswbfacet:P42=foo|bar|baz' );
+
+		$constraints = $query->getConstraintsForProperty( new NumericPropertyId( 'P42' ) );
+
+		$this->assertEquals( [ new ItemId( 'Q68' ) ], $query->getItemTypes() );
+
+		$this->assertEquals(
+			[ 'foo', 'bar', 'baz' ],
+			$constraints->getOrSelectedValues()
+		);
+	}
+
+	public function testParsesSingleItemTypeWithAndValues(): void {
+		$parser = $this->newQueryStringParser( itemTypeProperty: 'P32' );
+		$query = $parser->parse( 'haswbfacet:P32=Q68 haswbfacet:P42=foo haswbfacet:P42=bar' );
+
+		$constraints = $query->getConstraintsForProperty( new NumericPropertyId( 'P42' ) );
+
+		$this->assertEquals( [ new ItemId( 'Q68' ) ], $query->getItemTypes() );
+
+		$this->assertEquals(
+			[ 'foo', 'bar' ],
+			$constraints->getAndSelectedValues()
+		);
+	}
+
 }
