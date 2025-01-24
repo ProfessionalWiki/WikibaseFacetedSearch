@@ -12,7 +12,7 @@ use Wikibase\DataModel\Entity\PropertyId;
 class QueryStringParser {
 
 	public function __construct(
-		private readonly PropertyId $instanceOfId
+		private readonly PropertyId $itemTypeProperty
 	) {
 	}
 
@@ -51,7 +51,7 @@ class QueryStringParser {
 	}
 
 	private function isInstanceOfPart( string $part ): bool {
-		return str_starts_with( $part, 'haswbstatement:' . $this->instanceOfId->getSerialization() );
+		return str_starts_with( $part, 'haswbstatement:' . $this->itemTypeProperty->getSerialization() );
 	}
 
 	private function isFacetPart( string $part ): bool {

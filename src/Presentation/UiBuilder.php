@@ -7,6 +7,7 @@ namespace ProfessionalWiki\WikibaseFacetedSearch\Presentation;
 use MediaWiki\Html\TemplateParser;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetConfig;
+use ProfessionalWiki\WikibaseFacetedSearch\Application\ItemTypeLabelLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\LocalizedTextLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\PropertyConstraints;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Query;
@@ -18,6 +19,7 @@ class UiBuilder {
 	public function __construct(
 		private readonly Config $config,
 		private readonly FacetHtmlBuilder $facetHtmlBuilder,
+    private readonly ItemTypeLabelLookup $itemTypeLabelLookup,
 		private readonly LocalizedTextLookup $localizedTextLookup,
 		private readonly TemplateParser $templateParser,
 		private readonly QueryStringParser $queryStringParser,
@@ -43,7 +45,7 @@ class UiBuilder {
 		return $this->templateParser->processTemplate(
 			'Layout',
 			[
-				'instanceId' => $this->config->getInstanceOfId()->getSerialization(),
+				'instanceId' => $this->config->getItemTypeProperty()->getSerialization(),
 				'instances' => $instancesViewModel,
 				'facets' => $facetsViewModel,
 				'msg-filters' => wfMessage( 'wikibase-faceted-search-filters' )->text(),
@@ -60,7 +62,7 @@ class UiBuilder {
 
 		foreach ( $this->config->getItemTypes() as $itemType ) {
 			$tabs[] = [
-				'label' => $this->localizedTextLookup->getLabelFromEntityId( $itemType ), // TODO: Prefer label from config (We need to figure out #107)
+				'label' => $this->itemTypeLabelLookup->getLabel( $itemType ),
 				'value' => $itemType->getSerialization(),
 				'selected' => $itemType->equals( $selectedItemType )
 			];
@@ -100,13 +102,13 @@ class UiBuilder {
 		return $facets;
 	}
 
-	private function buildFacetViewModel( FacetConfig $config, PropertyConstraints $state ): array {
+	private function buildFacetViewModel( FacetConfig $facet, PropertyConstraints $state ): array {
 		return [
 			'label' => $this->localizedTextLookup->getLabelFromEntityId( $config->propertyId ),
 			'propertyId' => $config->propertyId->getSerialization(),
 			'type' => $config->type->value, // TODO: is this needed?
 			'expanded' => true, // TODO: get this from the URL somehow
-			'facetHtml' => $this->facetHtmlBuilder->buildHtml( $config, $state )
+			'facetHtml' => $this->facetHtmlBuilder->buildHtml( $facet, $state )
 		];
 	}
 

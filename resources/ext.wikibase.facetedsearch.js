@@ -11,9 +11,18 @@ function init() {
 
 	const facets = document.querySelector( '.wikibase-faceted-search__facets' );
 	const instances = document.querySelector( '.wikibase-faceted-search__instances' );
+
 	if ( facets ) {
 		facets.addEventListener( 'input', onFacetsInput );
+
+		const
+			button = document.querySelector( '.wikibase-faceted-search__dialog-button' ),
+			content = document.querySelector( '.wikibase-faceted-search__facets' ),
+			teleportTarget = require( 'mediawiki.page.ready' ).teleportTarget;
+
+		require( './dialog.js' ).init( button, content, teleportTarget );
 	}
+
 	if ( instances ) {
 		instances.addEventListener( 'click', ( event ) => onInstancesClick( event, instances.dataset.instanceId ) );
 	}

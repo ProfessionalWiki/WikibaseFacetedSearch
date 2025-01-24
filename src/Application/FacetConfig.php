@@ -13,7 +13,7 @@ class FacetConfig {
 	 * @param array<string, mixed> $typeSpecificConfig
 	 */
 	public function __construct(
-		public readonly ItemId $itemTypeId,
+		public readonly ItemId $itemType,
 		public readonly PropertyId $propertyId,
 		public readonly FacetType $type,
 		public readonly array $typeSpecificConfig = [],

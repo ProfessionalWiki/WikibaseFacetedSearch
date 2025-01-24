@@ -6,11 +6,11 @@
 		"linkTargetSitelinkSiteId": {
 			"type": [ "string", "null" ]
 		},
-		"instanceOfId": {
+		"itemTypeProperty": {
 			"type": [ "string", "null" ],
 			"pattern": "^P[1-9]\\d{0,9}$"
 		},
-		"instanceOfValues": {
+		"configPerItemType": {
 			"type": "object",
 			"propertyNames": {
 				"pattern": "^Q[1-9]\\d{0,9}$"

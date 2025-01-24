@@ -150,8 +150,10 @@ class WikibaseFacetedSearchHooks {
 			return;
 		}
 
-		$fields = WikibaseFacetedSearchExtension::getInstance()->newSearchIndexFieldsBuilder( $engine )->createFields()
-			+ $fields;
+		if ( WikibaseFacetedSearchExtension::getInstance()->getConfig()->isComplete() ) {
+			$fields = WikibaseFacetedSearchExtension::getInstance()->newSearchIndexFieldsBuilder( $engine )->createFieldObjects()
+				+ $fields;
+		}
 	}
 
 	public static function onSearchDataForIndex(
@@ -165,9 +167,11 @@ class WikibaseFacetedSearchHooks {
 			return;
 		}
 
-		$fields = WikibaseFacetedSearchExtension::getInstance()->newStatementListTranslator()->translateStatements(
-			WikibaseFacetedSearchExtension::getInstance()->newStatementsLookup()->getStatements( $page )
-		) + $fields;
+		if ( WikibaseFacetedSearchExtension::getInstance()->getConfig()->isComplete() ) {
+			$fields = WikibaseFacetedSearchExtension::getInstance()->newStatementListTranslator()->translateStatements(
+					WikibaseFacetedSearchExtension::getInstance()->newStatementsLookup()->getStatements( $page )
+				) + $fields;
+		}
 	}
 
 }

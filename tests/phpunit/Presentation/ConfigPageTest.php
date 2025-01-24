@@ -22,7 +22,7 @@ class ConfigPageTest extends WikibaseFacetedSearchIntegrationTest {
 	public function testPageShowsPersistedConfig(): void {
 		$this->editConfigPage( config: Valid::configJson() );
 		$this->assertStringContainsString(
-			'instanceOfId',
+			'itemTypeProperty',
 			$this->getPageHtml( 'MediaWiki:WikibaseFacetedSearch' )
 		);
 	}
@@ -47,7 +47,7 @@ class ConfigPageTest extends WikibaseFacetedSearchIntegrationTest {
 		$html = $this->getEditPageHtml( 'MediaWiki:WikibaseFacetedSearch' );
 
 		$this->assertStringContainsString(
-			'"instanceOfId": null',
+			'"itemTypeProperty": null',
 			$html
 		);
 	}

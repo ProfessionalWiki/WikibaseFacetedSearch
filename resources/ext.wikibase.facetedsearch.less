@@ -10,19 +10,6 @@
 		overflow-x: auto;
 	}
 
-	&__sidebar {
-		.cdx-accordion {
-			&__content {
-				font-size: inherit;
-			}
-
-			.cdx-accordion__header {
-				font-size: inherit;
-				font-weight: @font-weight-bold;
-			}
-		}
-	}
-
 	&__icon {
 		// Needed the specificity to override cdx-mixin-css-icon mixin
 		&.wikibase-faceted-search__icon.wikibase-faceted-search__icon.wikibase-faceted-search__icon {
@@ -39,50 +26,46 @@
 		}
 	}
 
-	// Header that is also used as collapse button in mobile
-	&__header {
-		display: none;
-
-		@media ( max-width: @max-width-breakpoint-tablet ) {
-			display: block;
-		}
-
-		// Style as a ToggleButton
-		> summary {
-			display: flex;
-			align-items: center;
-			max-width: none;
-			user-select: none;
-		}
-
-		&[ open ] > summary {
-			border-bottom-left-radius: 0;
-			border-bottom-right-radius: 0;
-			background-color: @background-color-progressive;
-			border-color: transparent;
-			color: @color-inverted-fixed;
-		}
-	}
-
 	// Common
 	&__facets {
 		position: sticky;
 		top: @spacing-100;
 
-		// Default to collapsed state in tablet
 		@media ( max-width: @max-width-breakpoint-tablet ) {
 			display: none;
 
-			.wikibase-faceted-search__header[ open ] + & {
+			&.wikibase-faceted-search__dialog {
 				display: block;
-				border-style: solid;
-				border-width: 1px;
-				border-color: @border-color-base;
-				margin-bottom: -1px;
+			}
+		}
 
-				.wikibase-faceted-search__facet:last-child {
-					border-bottom: 0;
-				}
+		&-dialog-button.cdx-button {
+			width: 100%;
+			max-width: none;
+
+			@media ( min-width: @min-width-breakpoint-desktop ) {
+				display: none;
+			}
+		}
+
+		&-header {
+			position: sticky;
+			top: 0;
+			z-index: @z-index-sticky;
+			padding: @spacing-75;
+			border-bottom: @border-subtle;
+			font-weight: @font-weight-bold;
+			background-color: @background-color-base;
+		}
+
+		.cdx-accordion {
+			&__content {
+				font-size: inherit;
+			}
+
+			.cdx-accordion__header {
+				font-size: inherit;
+				font-weight: @font-weight-bold;
 			}
 		}
 	}

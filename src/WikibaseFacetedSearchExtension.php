@@ -4,15 +4,16 @@ declare( strict_types = 1 );
 
 namespace ProfessionalWiki\WikibaseFacetedSearch;
 
+use CirrusSearch\CirrusSearch;
 use CirrusSearch\SearchConfig;
 use MediaWiki\Language\Language;
-use CirrusSearch\CirrusSearch;
 use MediaWiki\MediaWikiServices;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\ConfigLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\DataValueTranslator;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetType;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\ItemTypeExtractor;
+use ProfessionalWiki\WikibaseFacetedSearch\Application\ItemTypeLabelLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\LocalizedTextLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\PageItemLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\QueryStringParser;
@@ -25,10 +26,11 @@ use ProfessionalWiki\WikibaseFacetedSearch\Persistence\ConfigDeserializer;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\ConfigJsonValidator;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\ElasticQueryRunner;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\ElasticValueCounter;
+use ProfessionalWiki\WikibaseFacetedSearch\Persistence\FallbackItemTypeLabelLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\FromPageStatementsLookup;
-use ProfessionalWiki\WikibaseFacetedSearch\Persistence\PageItemLookupFactory;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\PageContentConfigLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\PageContentFetcher;
+use ProfessionalWiki\WikibaseFacetedSearch\Persistence\PageItemLookupFactory;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\Search\SearchIndexFieldsBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\SitelinkBasedStatementsLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\DelegatingFacetHtmlBuilder;
@@ -51,8 +53,8 @@ class WikibaseFacetedSearchExtension {
 
 	public const DEFAULT_CONFIG = '{
 	"linkTargetSitelinkSiteId": null,
-	"instanceOfId": null,
-	"instanceOfValues": {}
+	"itemTypeProperty": null,
+	"configPerItemType": {}
 }';
 
 	private ?Config $config;
@@ -162,7 +164,7 @@ class WikibaseFacetedSearchExtension {
 
 	private function newItemTypeExtractor(): ItemTypeExtractor {
 		return new ItemTypeExtractor(
-			instanceOfId: $this->getConfig()->getInstanceOfId()
+			itemTypeProperty: $this->getConfig()->getItemTypeProperty()
 		);
 	}
 
@@ -197,6 +199,7 @@ class WikibaseFacetedSearchExtension {
 		return new UiBuilder(
 			config: $this->getConfig(),
 			facetHtmlBuilder: $this->getFacetHtmlBuilder( $language ),
+      itemTypeLabelLookup: $this->getItemTypeLabelLookup( $language ),
 			localizedTextLookup: $this->getLocalizedTextLookup( $language ),
 			templateParser: $this->getTemplateParser(),
 			queryStringParser: $this->getQueryStringParser()
@@ -246,7 +249,13 @@ class WikibaseFacetedSearchExtension {
 
 	private function getQueryStringParser(): QueryStringParser {
 		return new QueryStringParser(
-			instanceOfId: $this->getConfig()->getInstanceOfId()
+			itemTypeProperty: $this->getConfig()->getItemTypeProperty()
+		);
+	}
+
+	private function getItemTypeLabelLookup( Language $language ): ItemTypeLabelLookup {
+		return new FallbackItemTypeLabelLookup(
+			labelLookup: $this->getLabelLookup( $language )
 		);
 	}
 
