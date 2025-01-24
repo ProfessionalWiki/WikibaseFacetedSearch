@@ -9,7 +9,6 @@ use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetConfig;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\PropertyConstraints;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\ValueCount;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\ValueCounter;
-use ProfessionalWiki\WikibaseFacetedSearch\Presentation\FacetHtmlBuilder;
 
 /**
  * Renders list facets via the `ListFacet.mustache` template.
