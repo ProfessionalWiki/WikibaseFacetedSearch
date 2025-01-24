@@ -6,10 +6,10 @@ namespace ProfessionalWiki\WikibaseFacetedSearch\Presentation;
 
 use MediaWiki\Html\TemplateParser;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetConfig;
-use ProfessionalWiki\WikibaseFacetedSearch\Application\LocalizedTextLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\PropertyConstraints;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\ValueCount;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\ValueCounter;
+use ProfessionalWiki\WikibaseFacetedSearch\Presentation\FacetHtmlBuilder;
 
 /**
  * Renders list facets via the `ListFacet.mustache` template.
@@ -24,9 +24,9 @@ class ListFacetHtmlBuilder implements FacetHtmlBuilder {
 	private const COMBINE_WITH_AND_BY_DEFAULT = true; // Maybe this gets turned into (constructor-injected) config
 
 	public function __construct(
+		private readonly FacetLabelBuilder $labelBuilder,
 		private readonly TemplateParser $parser,
-		private readonly ValueCounter $valueCounter,
-		private readonly LocalizedTextLookup $localizedTextLookup
+		private readonly ValueCounter $valueCounter
 	) {
 	}
 
@@ -104,7 +104,7 @@ class ListFacetHtmlBuilder implements FacetHtmlBuilder {
 
 		foreach ( $this->getValuesAndCounts( $config ) as $i => $valueCount ) {
 			$checkboxes[] = [
-				'label' => $this->localizedTextLookup->getLabelFromEntityIdString( (string)$valueCount->value ),
+				'label' => $this->labelBuilder->getItemLabel( (string)$valueCount->value, $config->propertyId ),
 				'count' => $valueCount->count,
 				'checked' => in_array( $valueCount->value, $selectedValues ), // TODO: test with multiple types of values
 				'value' => $valueCount->value,

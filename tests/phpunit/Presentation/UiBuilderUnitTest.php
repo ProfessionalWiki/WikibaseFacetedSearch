@@ -8,7 +8,6 @@ use MediaWiki\MediaWikiServices;
 use PHPUnit\Framework\TestCase;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\PropertyConstraintsList;
-use ProfessionalWiki\WikibaseFacetedSearch\Application\LocalizedTextLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Query;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\QueryStringParser;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\UiBuilder;
@@ -47,7 +46,6 @@ class UiBuilderUnitTest extends TestCase {
 			$config ?? new Config(),
 			new SpyFacetHtmlBuilder(),
 			new FakeItemTypeLabelLookup(),
-			$this->newLocalizedTextLookup(),
 			$templateSpy ?? new SpyTemplateParser(),
 			$queryStringParser ?? new StubQueryStringParser()
 		);
@@ -165,10 +163,6 @@ JSON );
 			],
 			$templateSpy->getArgs()['instances']
 		);
-	}
-
-	private function newLocalizedTextLookup(): LocalizedTextLookup {
-		return WikibaseFacetedSearchExtension::getInstance()->getLocalizedTextLookup( MediaWikiServices::getInstance()->getContentLanguage() );
 	}
 
 }

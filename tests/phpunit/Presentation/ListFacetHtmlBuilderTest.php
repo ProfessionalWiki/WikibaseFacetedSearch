@@ -8,7 +8,6 @@ use MediaWiki\MediaWikiServices;
 use PHPUnit\Framework\TestCase;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetConfig;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetType;
-use ProfessionalWiki\WikibaseFacetedSearch\Application\LocalizedTextLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\PropertyConstraints;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\ListFacetHtmlBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Tests\TestDoubles\StubValueCounter;
@@ -45,9 +44,9 @@ class ListFacetHtmlBuilderTest extends TestCase {
 
 	private function newListFacetHtmlBuilder(): ListFacetHtmlBuilder {
 		return new ListFacetHtmlBuilder(
+			labelBuilder: WikibaseFacetedSearchExtension::getInstance()->getFacetLabelBuilder( MediaWikiServices::getInstance()->getContentLanguage() ),
 			parser: WikibaseFacetedSearchExtension::getInstance()->getTemplateParser(),
-			valueCounter: new StubValueCounter(),
-			localizedTextLookup: $this->newLocalizedTextLookup()
+			valueCounter: new StubValueCounter()
 		);
 	}
 
@@ -214,10 +213,6 @@ class ListFacetHtmlBuilderTest extends TestCase {
 
 		$this->assertTrue( $viewModel['toggle']['and']['selected'] );
 		$this->assertFalse( $viewModel['toggle']['or']['selected'] );
-	}
-
-	private function newLocalizedTextLookup(): LocalizedTextLookup {
-		return WikibaseFacetedSearchExtension::getInstance()->getLocalizedTextLookup( MediaWikiServices::getInstance()->getContentLanguage() );
 	}
 
 }

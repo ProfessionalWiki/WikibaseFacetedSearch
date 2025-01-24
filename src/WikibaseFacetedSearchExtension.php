@@ -14,7 +14,6 @@ use ProfessionalWiki\WikibaseFacetedSearch\Application\DataValueTranslator;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetType;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\ItemTypeExtractor;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\ItemTypeLabelLookup;
-use ProfessionalWiki\WikibaseFacetedSearch\Application\LocalizedTextLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\PageItemLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\QueryStringParser;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\StatementListTranslator;
@@ -35,6 +34,7 @@ use ProfessionalWiki\WikibaseFacetedSearch\Persistence\Search\SearchIndexFieldsB
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\SitelinkBasedStatementsLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\DelegatingFacetHtmlBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\FacetHtmlBuilder;
+use ProfessionalWiki\WikibaseFacetedSearch\Presentation\FacetLabelBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\ListFacetHtmlBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\RangeFacetHtmlBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\UiBuilder;
@@ -188,19 +188,11 @@ class WikibaseFacetedSearchExtension {
 		return new ConfigJsonValidator( $schema );
 	}
 
-	public function getLocalizedTextLookup( Language $language ): LocalizedTextLookup {
-		return new LocalizedTextLookup(
-			entityIdParser: $this->getEntityIdParser(),
-			labelLookup: $this->getLabelLookup( $language )
-		);
-	}
-
 	public function getUiBuilder( Language $language ): UiBuilder {
 		return new UiBuilder(
 			config: $this->getConfig(),
 			facetHtmlBuilder: $this->getFacetHtmlBuilder( $language ),
-			itemTypeLabelLookup: $this->getItemTypeLabelLookup( $language ),
-			localizedTextLookup: $this->getLocalizedTextLookup( $language ),
+			facetLabelBuilder: $this->getFacetLabelBuilder( $language ),
 			templateParser: $this->getTemplateParser(),
 			queryStringParser: $this->getQueryStringParser()
 		);
@@ -208,16 +200,23 @@ class WikibaseFacetedSearchExtension {
 
 	private function getFacetHtmlBuilder( Language $language ): FacetHtmlBuilder {
 		$delegator = new DelegatingFacetHtmlBuilder();
-		$delegator->addBuilder( FacetType::LIST, $this->newListFacetHtmlBuilder( $language ) );
+		$delegator->addBuilder( FacetType::LIST, $this->newListFacetHtmlBuilder( $this->getFacetLabelBuilder( $language ) )	);
 		$delegator->addBuilder( FacetType::RANGE, $this->newRangeFacetHtmlBuilder() );
 		return $delegator;
 	}
 
-	private function newListFacetHtmlBuilder( Language $language ): FacetHtmlBuilder {
+	private function getFacetLabelBuilder( Language $language ): FacetLabelBuilder {
+		return new FacetLabelBuilder(
+			dataTypeLookup: WikibaseRepo::getPropertyDataTypeLookup(),
+			labelLookup: $this->getItemTypeLabelLookup( $language )
+		);
+	}
+
+	private function newListFacetHtmlBuilder( FacetLabelBuilder $labelBuilder ): FacetHtmlBuilder {
 		return new ListFacetHtmlBuilder(
+			labelBuilder: $labelBuilder,
 			parser: $this->getTemplateParser(),
-			valueCounter: $this->getValueCounter(),
-			localizedTextLookup: $this->getLocalizedTextLookup( $language )
+			valueCounter: $this->getValueCounter()
 		);
 	}
 
