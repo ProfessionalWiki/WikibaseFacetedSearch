@@ -22,10 +22,10 @@ class QueryStringParser {
 		$itemTypes = [];
 
 		foreach ( $this->splitQueryString( $queryString ) as $part ) {
-			if ( $this->isFacetPart( $part ) ) {
-				$constraints = $constraints->withConstraint( $this->handleFacetPart( $part, $constraints ) );
-			} elseif ( $this->isInstanceOfPart( $part ) ) {
+			if ( $this->isInstanceOfPart( $part ) ) {
 				$itemTypes = $this->extractItemTypes( $part, $itemTypes );
+			} elseif ( $this->isFacetPart( $part ) ) {
+				$constraints = $constraints->withConstraint( $this->handleFacetPart( $part, $constraints ) );
 			}
 			else {
 				$freeText[] = $part;
@@ -51,7 +51,7 @@ class QueryStringParser {
 	}
 
 	private function isInstanceOfPart( string $part ): bool {
-		return str_starts_with( $part, 'haswbstatement:' . $this->itemTypeProperty->getSerialization() );
+		return str_starts_with( $part, 'haswbfacet:' . $this->itemTypeProperty->getSerialization() );
 	}
 
 	private function isFacetPart( string $part ): bool {
@@ -64,7 +64,7 @@ class QueryStringParser {
 	 * @return ItemId[]
 	 */
 	private function extractItemTypes( string $part, array &$itemTypes ): array {
-		$part = substr( $part, strlen( 'haswbstatement:' ) );
+		$part = substr( $part, strlen( 'haswbfacet:' . $this->itemTypeProperty->getSerialization() ) );
 		$itemTypeStr = explode( '=', $part, 2 )[1] ?? '';
 
 		if ( $itemTypeStr === '' ) {
