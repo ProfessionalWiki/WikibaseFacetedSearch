@@ -19,7 +19,7 @@ class UiBuilder {
 	public function __construct(
 		private readonly Config $config,
 		private readonly FacetHtmlBuilder $facetHtmlBuilder,
-    private readonly ItemTypeLabelLookup $itemTypeLabelLookup,
+		private readonly ItemTypeLabelLookup $itemTypeLabelLookup,
 		private readonly LocalizedTextLookup $localizedTextLookup,
 		private readonly TemplateParser $templateParser,
 		private readonly QueryStringParser $queryStringParser,
@@ -104,9 +104,9 @@ class UiBuilder {
 
 	private function buildFacetViewModel( FacetConfig $facet, PropertyConstraints $state ): array {
 		return [
-			'label' => $this->localizedTextLookup->getLabelFromEntityId( $config->propertyId ),
-			'propertyId' => $config->propertyId->getSerialization(),
-			'type' => $config->type->value, // TODO: is this needed?
+			'label' => $this->localizedTextLookup->getLabelFromEntityId( $facet->propertyId ),
+			'propertyId' => $facet->propertyId->getSerialization(),
+			'type' => $facet->type->value, // TODO: is this needed?
 			'expanded' => true, // TODO: get this from the URL somehow
 			'facetHtml' => $this->facetHtmlBuilder->buildHtml( $facet, $state )
 		];

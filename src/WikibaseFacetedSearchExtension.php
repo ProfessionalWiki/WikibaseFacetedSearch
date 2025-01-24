@@ -199,7 +199,7 @@ class WikibaseFacetedSearchExtension {
 		return new UiBuilder(
 			config: $this->getConfig(),
 			facetHtmlBuilder: $this->getFacetHtmlBuilder( $language ),
-      itemTypeLabelLookup: $this->getItemTypeLabelLookup( $language ),
+			itemTypeLabelLookup: $this->getItemTypeLabelLookup( $language ),
 			localizedTextLookup: $this->getLocalizedTextLookup( $language ),
 			templateParser: $this->getTemplateParser(),
 			queryStringParser: $this->getQueryStringParser()
