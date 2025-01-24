@@ -5,7 +5,6 @@ declare( strict_types = 1 );
 namespace ProfessionalWiki\WikibaseFacetedSearch\Presentation;
 
 use ProfessionalWiki\WikibaseFacetedSearch\Application\ItemTypeLabelLookup;
-use Wikibase\DataModel\Entity\NumericPropertyId;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Services\Lookup\PropertyDataTypeLookup;
@@ -25,7 +24,7 @@ class FacetLabelBuilder {
 		return $this->labelLookup->getLabel( $itemType );
 	}
 
-	public function getFacetLabel( NumericPropertyId $propertyId ): string {
+	public function getFacetLabel( PropertyId $propertyId ): string {
 		return $this->labelLookup->getLabel( $propertyId );
 	}
 
