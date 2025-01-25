@@ -68,7 +68,7 @@ function onInstancesClick( event, instanceId ) {
 
 	submitSearchForm( buildQueryString(
 		specialSearchInput.value,
-		[ instance.value ? `haswbstatement:${ instanceId }=${ instance.value }` : '' ]
+		[ instance.value ? `haswbfacet:${ instanceId }=${ instance.value }` : '' ]
 	) );
 }
 
@@ -203,7 +203,7 @@ function buildQueryString( oldQuery, newQueries, propertyId ) {
 function getFilteredQueries( query, propertyId ) {
 	const propertyIdPattern = propertyId || 'P\\d+';
 	return query.split( /\s+/ ).filter(
-		( item ) => !( new RegExp( `^(haswbfacet|\\-haswbfacet|haswbstatement):${ propertyIdPattern }(=|>=|<=)` ) ).test( item )
+		( item ) => !( new RegExp( `^(haswbfacet|\\-haswbfacet):${ propertyIdPattern }(=|>=|<=)` ) ).test( item )
 	);
 }
 

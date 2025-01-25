@@ -55,20 +55,20 @@ describe( 'getRangeFacetQuerySegments', () => {
 	test( 'Query string with new instance query', () => {
 		expect(
 			actual.buildQueryString(
-				'freetext haswbstatement:P1=Q10 haswbfacet:P2=Q20 haswbfacet:P3=Q30',
-				[ 'haswbstatement:P1=Q11' ]
+				'freetext haswbfacet:P1=Q10 haswbfacet:P2=Q20 haswbfacet:P3=Q30',
+				[ 'haswbfacet:P1=Q11' ]
 			)
-		).toEqual( 'freetext haswbstatement:P1=Q11' );
+		).toEqual( 'freetext haswbfacet:P1=Q11' );
 	} );
 
 	test( 'Query string with new facet query', () => {
 		expect(
 			actual.buildQueryString(
-				'freetext haswbstatement:P1=Q10 haswbfacet:P2=Q20 haswbfacet:P3=Q30',
+				'freetext haswbfacet:P1=Q10 haswbfacet:P2=Q20 haswbfacet:P3=Q30',
 				[ 'haswbfacet:P2=Q21' ],
 				'P2'
 			)
-		).toEqual( 'freetext haswbstatement:P1=Q10 haswbfacet:P3=Q30 haswbfacet:P2=Q21' );
+		).toEqual( 'freetext haswbfacet:P1=Q10 haswbfacet:P3=Q30 haswbfacet:P2=Q21' );
 	} );
 } );
 
@@ -76,19 +76,19 @@ describe( 'buildQueryString', () => {
 	test( 'Query string with new instance query', () => {
 		expect(
 			actual.buildQueryString(
-				'freetext haswbstatement:P1=Q10 haswbfacet:P2=Q20 haswbfacet:P3=Q30',
-				[ 'haswbstatement:P1=Q11' ]
+				'freetext haswbfacet:P1=Q10 haswbfacet:P2=Q20 haswbfacet:P3=Q30',
+				[ 'haswbfacet:P1=Q11' ]
 			)
-		).toEqual( 'freetext haswbstatement:P1=Q11' );
+		).toEqual( 'freetext haswbfacet:P1=Q11' );
 	} );
 
 	test( 'Query string with new facet query', () => {
 		expect(
 			actual.buildQueryString(
-				'freetext haswbstatement:P1=Q10 haswbfacet:P2=Q20 haswbfacet:P3=Q30',
+				'freetext haswbfacet:P1=Q10 haswbfacet:P2=Q20 haswbfacet:P3=Q30',
 				[ 'haswbfacet:P2=Q21' ],
 				'P2'
 			)
-		).toEqual( 'freetext haswbstatement:P1=Q10 haswbfacet:P3=Q30 haswbfacet:P2=Q21' );
+		).toEqual( 'freetext haswbfacet:P1=Q10 haswbfacet:P3=Q30 haswbfacet:P2=Q21' );
 	} );
 } );
