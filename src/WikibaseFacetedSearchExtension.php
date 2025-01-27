@@ -206,7 +206,7 @@ class WikibaseFacetedSearchExtension {
 		return $delegator;
 	}
 
-	private function getFacetLabelBuilder( Language $language ): FacetLabelBuilder {
+	public function getFacetLabelBuilder( Language $language ): FacetLabelBuilder {
 		return new FacetLabelBuilder(
 			dataTypeLookup: WikibaseRepo::getPropertyDataTypeLookup(),
 			labelLookup: $this->getItemTypeLabelLookup( $language )
