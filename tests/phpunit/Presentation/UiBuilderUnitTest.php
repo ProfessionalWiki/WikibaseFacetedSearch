@@ -41,13 +41,14 @@ class UiBuilderUnitTest extends TestCase {
 	private function newUiBuilder(
 		?Config $config = null,
 		?SpyTemplateParser $templateSpy = null,
+		?StubLabelLookup $labelLookup = null,
 		?QueryStringParser $queryStringParser = null
 	): UiBuilder {
 		return new UiBuilder(
 			$config ?? new Config(),
 			new SpyFacetHtmlBuilder(),
 			new FakeItemTypeLabelLookup(),
-			new StubLabelLookup(),
+			$labelLookup ?? new StubLabelLookup(),
 			$templateSpy ?? new SpyTemplateParser(),
 			$queryStringParser ?? new StubQueryStringParser()
 		);
