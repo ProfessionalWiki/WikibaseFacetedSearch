@@ -12,7 +12,8 @@ use Wikibase\DataModel\Services\Lookup\PropertyDataTypeLookupException;
 
 class FacetLabelBuilder {
 
-	private array $propertyIdToType;
+	/** @var array<string, ?string> */
+	private array $propertyIdToType = [];
 
 	public function __construct(
 		private readonly PropertyDataTypeLookup $dataTypeLookup,
@@ -41,17 +42,18 @@ class FacetLabelBuilder {
 	private function getPropertyDataTypeId( PropertyId $propertyId ): ?string {
 		$key = $propertyId->getSerialization();
 
-		if ( isset( $this->propertyIdToType[$key] ) ) {
-			return $this->propertyIdToType[$key];
+		if ( !array_key_exists( $key, $this->propertyIdToType ) ) {
+			$this->propertyIdToType[$key] = $this->getDataTypeIdForProperty( $propertyId );
 		}
 
+		return $this->propertyIdToType[$key];
+	}
+
+	private function getDataTypeIdForProperty( PropertyId $propertyId ): ?string {
 		try {
-			$dataTypeId = $this->dataTypeLookup->getDataTypeIdForProperty( $propertyId );
+			return $this->dataTypeLookup->getDataTypeIdForProperty( $propertyId );
 		} catch ( PropertyDataTypeLookupException ) {
 			return null;
 		}
-
-		$this->propertyIdToType[$key] = $dataTypeId;
-		return $this->propertyIdToType[$key];
 	}
 }
