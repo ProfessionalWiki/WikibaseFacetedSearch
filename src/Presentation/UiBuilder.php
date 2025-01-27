@@ -7,17 +7,20 @@ namespace ProfessionalWiki\WikibaseFacetedSearch\Presentation;
 use MediaWiki\Html\TemplateParser;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetConfig;
+use ProfessionalWiki\WikibaseFacetedSearch\Application\ItemTypeLabelLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\PropertyConstraints;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Query;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\QueryStringParser;
 use Wikibase\DataModel\Entity\ItemId;
+use Wikibase\DataModel\Services\Lookup\LabelLookup;
 
 class UiBuilder {
 
 	public function __construct(
 		private readonly Config $config,
 		private readonly FacetHtmlBuilder $facetHtmlBuilder,
-		private readonly FacetLabelBuilder $facetLabelBuilder,
+		private readonly ItemTypeLabelLookup $itemTypeLabelLookup,
+		private readonly LabelLookup $labelLookup,
 		private readonly TemplateParser $templateParser,
 		private readonly QueryStringParser $queryStringParser,
 	) {
@@ -59,7 +62,7 @@ class UiBuilder {
 
 		foreach ( $this->config->getItemTypes() as $itemType ) {
 			$tabs[] = [
-				'label' => $this->facetLabelBuilder->getTabLabel( $itemType ),
+				'label' => $this->itemTypeLabelLookup->getLabel( $itemType ),
 				'value' => $itemType->getSerialization(),
 				'selected' => $itemType->equals( $selectedItemType )
 			];
@@ -101,7 +104,7 @@ class UiBuilder {
 
 	private function buildFacetViewModel( FacetConfig $facet, PropertyConstraints $state ): array {
 		return [
-			'label' => $this->facetLabelBuilder->getFacetLabel( $facet->propertyId ),
+			'label' => $this->labelLookup->getLabel( $facet->propertyId )?->getText() ?? $facet->propertyId->getSerialization(),
 			'propertyId' => $facet->propertyId->getSerialization(),
 			'type' => $facet->type->value, // TODO: is this needed?
 			'expanded' => true, // TODO: get this from the URL somehow

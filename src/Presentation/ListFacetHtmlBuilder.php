@@ -103,7 +103,7 @@ class ListFacetHtmlBuilder implements FacetHtmlBuilder {
 
 		foreach ( $this->getValuesAndCounts( $config ) as $i => $valueCount ) {
 			$checkboxes[] = [
-				'label' => $this->labelBuilder->getItemLabel( (string)$valueCount->value, $config->propertyId ),
+				'label' => $this->labelBuilder->getLabel( (string)$valueCount->value, $config->propertyId ),
 				'count' => $valueCount->count,
 				'checked' => in_array( $valueCount->value, $selectedValues ), // TODO: test with multiple types of values
 				'value' => $valueCount->value,

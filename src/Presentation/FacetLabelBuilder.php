@@ -21,15 +21,7 @@ class FacetLabelBuilder {
 	) {
 	}
 
-	public function getTabLabel( ItemId $itemType ): string {
-		return $this->labelLookup->getLabel( $itemType );
-	}
-
-	public function getFacetLabel( PropertyId $propertyId ): string {
-		return $this->labelLookup->getLabel( $propertyId );
-	}
-
-	public function getItemLabel( string $value, PropertyId $propertyId ): string {
+	public function getLabel( string $value, PropertyId $propertyId ): string {
 		$dataTypeId = $this->getPropertyDataTypeId( $propertyId );
 
 		if ( $dataTypeId === null || $dataTypeId !== 'wikibase-item' ) {

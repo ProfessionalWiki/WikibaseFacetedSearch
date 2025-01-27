@@ -4,11 +4,10 @@ declare( strict_types = 1 );
 
 namespace ProfessionalWiki\WikibaseFacetedSearch\Application;
 
-use Wikibase\DataModel\Entity\EntityId;
+use Wikibase\DataModel\Entity\ItemId;
 
-// TODO: Make into a generic class that can be used for other labels
 interface ItemTypeLabelLookup {
 
-	public function getLabel( EntityId $itemType ): string;
+	public function getLabel( ItemId $itemType ): string;
 
 }
