@@ -4,9 +4,9 @@ declare( strict_types = 1 );
 
 namespace ProfessionalWiki\WikibaseFacetedSearch\Presentation;
 
-use ProfessionalWiki\WikibaseFacetedSearch\Application\ItemTypeLabelLookup;
-use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Entity\ItemId;
+use Wikibase\DataModel\Entity\PropertyId;
+use Wikibase\DataModel\Services\Lookup\LabelLookup;
 use Wikibase\DataModel\Services\Lookup\PropertyDataTypeLookup;
 use Wikibase\DataModel\Services\Lookup\PropertyDataTypeLookupException;
 
@@ -17,7 +17,7 @@ class FacetLabelBuilder {
 
 	public function __construct(
 		private readonly PropertyDataTypeLookup $dataTypeLookup,
-		private readonly ItemTypeLabelLookup $labelLookup
+		private readonly LabelLookup $labelLookup
 	) {
 	}
 
@@ -28,7 +28,7 @@ class FacetLabelBuilder {
 			return $value;
 		}
 
-		return $this->labelLookup->getLabel( new ItemId( $value ) );
+		return $this->labelLookup->getLabel( new ItemId( $value ) )?->getText() ?? $value;
 	}
 
 	private function getPropertyDataTypeId( PropertyId $propertyId ): ?string {

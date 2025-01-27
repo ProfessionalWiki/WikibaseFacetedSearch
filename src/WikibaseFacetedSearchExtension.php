@@ -6,6 +6,7 @@ namespace ProfessionalWiki\WikibaseFacetedSearch;
 
 use CirrusSearch\CirrusSearch;
 use CirrusSearch\SearchConfig;
+use MediaWiki\Html\TemplateParser;
 use MediaWiki\Language\Language;
 use MediaWiki\MediaWikiServices;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
@@ -39,10 +40,10 @@ use ProfessionalWiki\WikibaseFacetedSearch\Presentation\ListFacetHtmlBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\RangeFacetHtmlBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\UiBuilder;
 use RuntimeException;
-use TemplateParser;
 use Title;
 use Wikibase\DataModel\Entity\EntityIdParser;
 use Wikibase\DataModel\Services\Lookup\LabelLookup;
+use Wikibase\DataModel\Services\Lookup\PropertyDataTypeLookup;
 use Wikibase\Lib\Store\SiteLinkStore;
 use Wikibase\Repo\WikibaseRepo;
 
@@ -128,7 +129,7 @@ class WikibaseFacetedSearchExtension {
 		return new SearchIndexFieldsBuilder(
 			engine:	$engine,
 			config: $this->getConfig(),
-			dataTypeLookup: WikibaseRepo::getPropertyDataTypeLookup()
+			dataTypeLookup: $this->getPropertyDataTypeLookup()
 		);
 	}
 
@@ -208,8 +209,8 @@ class WikibaseFacetedSearchExtension {
 
 	public function getFacetLabelBuilder( Language $language ): FacetLabelBuilder {
 		return new FacetLabelBuilder(
-			dataTypeLookup: WikibaseRepo::getPropertyDataTypeLookup(),
-			labelLookup: $this->getItemTypeLabelLookup( $language )
+			dataTypeLookup: $this->getPropertyDataTypeLookup(),
+			labelLookup: $this->getLabelLookup( $language )
 		);
 	}
 
@@ -265,6 +266,10 @@ class WikibaseFacetedSearchExtension {
 
 	public function getEntityIdParser(): EntityIdParser {
 		return WikibaseRepo::getEntityIdParser();
+	}
+
+	public function getPropertyDataTypeLookup(): PropertyDataTypeLookup {
+		return WikibaseRepo::getPropertyDataTypeLookup();
 	}
 
 }
