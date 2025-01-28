@@ -30,7 +30,7 @@ function init() {
 }
 
 /**
- * Handles the input event for any input elements in the facets.
+ * Handles the input or click event for any elements in the facets.
  *
  * @param {Event} event
  */
