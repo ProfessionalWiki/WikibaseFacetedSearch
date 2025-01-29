@@ -98,19 +98,33 @@ class ListFacetHtmlBuilder implements FacetHtmlBuilder {
 
 		$selectedValues = $combineWithAnd ? $state->getAndSelectedValues() : $state->getOrSelectedValues();
 
-		$checkboxes = [];
+		$visibleCheckboxes = [];
+		$collapsedCheckboxes = [];
 
 		foreach ( $this->getValuesAndCounts( $config ) as $i => $valueCount ) {
-			$checkboxes[] = [
+			$data = [
 				'label' => $valueCount->value,
 				'count' => $valueCount->count,
 				'checked' => in_array( $valueCount->value, $selectedValues ), // TODO: test with multiple types of values
 				'value' => $valueCount->value,
 				'id' => $state->propertyId->getSerialization() . "-$i",
 			];
+
+			// TODO: Make the number of visible checkboxes configurable
+			if ( $i < 5 ) {
+				$visibleCheckboxes[] = $data;
+			} else {
+				$collapsedCheckboxes[] = $data;
+			}
 		}
 
-		return $checkboxes;
+		return [
+			'visible' => $visibleCheckboxes,
+			'collapsed' => $collapsedCheckboxes,
+			'showMore' => count( $collapsedCheckboxes ) > 0,
+			'msg-show-more' => wfMessage( 'wikibase-faceted-search-facet-show-more' )->text(),
+			'msg-show-less' => wfMessage( 'wikibase-faceted-search-facet-show-less' )->text()
+		];
 	}
 
 	/**

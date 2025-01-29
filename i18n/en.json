@@ -25,6 +25,9 @@
 
 	"wikibase-faceted-search-facet-apply": "Apply",
 
+	"wikibase-faceted-search-facet-show-more": "Show more",
+	"wikibase-faceted-search-facet-show-less": "Show less",
+
 	"wikibase-faceted-search-facet-range-min": "Minimum",
 	"wikibase-faceted-search-facet-range-max": "Maximum"
 }
