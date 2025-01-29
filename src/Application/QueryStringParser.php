@@ -97,7 +97,7 @@ class QueryStringParser {
 
 		if ( $operator === '=' ) {
 			if ( str_contains( $value, '|' ) ) {
-				return $propertyConstraints->withOrValues( ...explode( '|', $value ) );
+				return $propertyConstraints->withOrValues( ...$this->getNonEmptyOrValues( $value ) );
 			}
 
 			return $propertyConstraints->withAdditionalAndValue( $value );
@@ -159,4 +159,13 @@ class QueryStringParser {
 		return '';
 	}
 
+	/**
+	 * @return string[]
+	 */
+	private function getNonEmptyOrValues( string $value ): array {
+		return array_filter(
+			explode( '|', $value ),
+			fn( string $orValue ): bool => $orValue !== ''
+		);
+	}
 }
