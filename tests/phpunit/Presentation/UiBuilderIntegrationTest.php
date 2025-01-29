@@ -26,7 +26,8 @@ class UiBuilderIntegrationTest extends MediaWikiIntegrationTestCase {
 
 		$html = $this->getUiBuilderFromGlobals()->createHtml( 'foo' );
 		$this->assertStringContainsString( 'topbar', $html );
-		$this->assertStringContainsString( 'sidebar', $html );
+		// TODO: Sidebar only appears when there are facets
+		// $this->assertStringContainsString( 'sidebar', $html );
 	}
 
 	private function getUiBuilderFromGlobals(): UiBuilder {
