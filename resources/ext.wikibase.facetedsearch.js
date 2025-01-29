@@ -14,6 +14,7 @@ function init() {
 
 	if ( facets ) {
 		facets.addEventListener( 'input', onFacetsInput );
+		facets.addEventListener( 'click', onFacetsInput );
 
 		const
 			button = document.querySelector( '.wikibase-faceted-search__dialog-button' ),
@@ -29,17 +30,17 @@ function init() {
 }
 
 /**
- * Handles the change event for any input elements in the facets.
+ * Handles the input or click event for any elements in the facets.
  *
  * @param {Event} event
  */
 function onFacetsInput( event ) {
-	const input = event.target;
-	if ( !input ) {
+	const target = event.target;
+	if ( !target ) {
 		return;
 	}
 
-	const facet = input.closest( '.wikibase-faceted-search__facet' );
+	const facet = target.closest( '.wikibase-faceted-search__facet' );
 	if ( !facet ) {
 		return;
 	}
@@ -49,9 +50,12 @@ function onFacetsInput( event ) {
 		return;
 	}
 
-	if ( input.classList.contains( 'cdx-checkbox__input' ) ) {
+	// TODO: Clean up the facet type detection logic after MVP or when we have more facet types
+	if ( target.classList.contains( 'cdx-checkbox__input' ) ) {
 		onListFacetInput( facet, propertyId );
-	} else if ( input.classList.contains( 'cdx-text-input__input' ) ) {
+	} else if ( target.classList.contains( 'cdx-button' ) ) {
+		onListFacetInput( facet, propertyId, target.value );
+	} else if ( target.classList.contains( 'cdx-text-input__input' ) ) {
 		onRangeFacetInput( facet, propertyId );
 	}
 }
@@ -75,19 +79,32 @@ function onInstancesClick( event, instanceId ) {
 /**
  * Handles the input event for a list facet.
  *
- * @param {HTMLDivElement} facet - The facet element.
- * @param {string} propertyId - The ID of the property on the facet.
+ * @param {HTMLDivElement} facet
+ * @param {string} propertyId
+ * @param {?string} mode
  */
-function onListFacetInput( facet, propertyId ) {
-	const newQueries = getListFacetQuerySegments( facet, propertyId );
+function onListFacetInput( facet, propertyId, mode ) {
+	mode = mode || getListFacetQueryMode( facet );
+	const newQueries = getListFacetQuerySegments( facet, propertyId, mode );
 	submitSearchForm( buildQueryString( specialSearchInput.value, newQueries, propertyId ) );
+}
+
+/**
+ * Determines the query mode for a list facet based on the selected toggle button.
+ *
+ * @param {HTMLDivElement} facet
+ * @return {string}
+ */
+function getListFacetQueryMode( facet ) {
+	const selectedButton = facet.querySelector( '.wikibase-faceted-search__facet-toggle > .cdx-button--action-progressive' );
+	return selectedButton ? selectedButton.value : 'AND';
 }
 
 /**
  * Handles the input event for a range facet.
  *
- * @param {HTMLDivElement} facet - The facet element.
- * @param {string} propertyId - The ID of the property on the facet.
+ * @param {HTMLDivElement} facet
+ * @param {string} propertyId
  */
 function onRangeFacetInput( facet, propertyId ) {
 	const applyButton = facet.querySelector( '.wikibase-faceted-search__facet-item-range-apply' );
@@ -140,19 +157,33 @@ function updateErrorState( input ) {
  *
  * @param {HTMLDivElement} facet
  * @param {string} propertyId
+ * @param {string} mode
  * @return {string[]}
  */
-function getListFacetQuerySegments( facet, propertyId ) {
-	const segments = [];
+function getListFacetQuerySegments( facet, propertyId, mode ) {
+	const checkedValues = [];
+
 	[ ...facet.querySelectorAll( '.wikibase-faceted-search__facet-item' ) ].forEach( ( facetItem ) => {
 		const checkbox = facetItem.querySelector( '.cdx-checkbox__input' );
 		if ( !checkbox || !checkbox.checked || !checkbox.value ) {
 			return;
 		}
-		// TODO: Support other operators
-		// TODO: Support OR values
-		segments.push( `haswbfacet:${ propertyId }=${ checkbox.value }` );
+		checkedValues.push( checkbox.value );
 	} );
+
+	if ( checkedValues.length === 0 ) {
+		return [];
+	}
+
+	const segments = [];
+	if ( mode === 'AND' ) {
+		checkedValues.forEach( ( value ) => {
+			segments.push( `haswbfacet:${ propertyId }=${ value }` );
+		} );
+	} else {
+		segments.push( `haswbfacet:${ propertyId }=${ checkedValues.join( '|' ) }` );
+	}
+
 	return segments;
 }
 
@@ -222,6 +253,7 @@ init();
 
 // Export for unit tests
 module.exports = {
+	getListFacetQueryMode,
 	getListFacetQuerySegments,
 	getRangeFacetQuerySegments,
 	buildQueryString
