@@ -32,9 +32,17 @@ class ListFacetHtmlBuilderTest extends TestCase {
 		$this->assertStringContainsString( StubValueCounter::FIRST_VALUE, $html );
 		$this->assertStringContainsString( StubValueCounter::SECOND_VALUE, $html );
 		$this->assertStringContainsString( StubValueCounter::THIRD_VALUE, $html );
+		$this->assertStringContainsString( StubValueCounter::FOURTH_VALUE, $html );
+		$this->assertStringContainsString( StubValueCounter::FIFTH_VALUE, $html );
+		$this->assertStringContainsString( StubValueCounter::SIXTH_VALUE, $html );
+		$this->assertStringContainsString( StubValueCounter::SEVENTH_VALUE, $html );
 		$this->assertStringContainsString( 'count">' . StubValueCounter::FIRST_COUNT, $html );
 		$this->assertStringContainsString( 'count">' . StubValueCounter::SECOND_COUNT, $html );
 		$this->assertStringContainsString( 'count">' . StubValueCounter::THIRD_COUNT, $html );
+		$this->assertStringContainsString( 'count">' . StubValueCounter::FOURTH_COUNT, $html );
+		$this->assertStringContainsString( 'count">' . StubValueCounter::FIFTH_COUNT, $html );
+		$this->assertStringContainsString( 'count">' . StubValueCounter::SIXTH_COUNT, $html );
+		$this->assertStringContainsString( 'count">' . StubValueCounter::SEVENTH_COUNT, $html );
 	}
 
 	private function newPropertyConstraints(): PropertyConstraints {
@@ -48,15 +56,33 @@ class ListFacetHtmlBuilderTest extends TestCase {
 		);
 	}
 
+	public function testCheckboxesViewModelContainsLabels(): void {
+		$viewModel = $this->buildViewModel();
+
+		$this->assertArrayHasKey( 'checkboxes', $viewModel );
+		$this->assertArrayHasKey( 'msg-show-more', $viewModel['checkboxes'] );
+		$this->assertArrayHasKey( 'msg-show-less', $viewModel['checkboxes'] );
+		$this->assertIsString( $viewModel['checkboxes']['msg-show-more'] );
+		$this->assertIsString( $viewModel['checkboxes']['msg-show-less'] );
+	}
+
 	public function testCheckboxesViewModelContainsAllValues(): void {
 		$viewModel = $this->buildViewModel();
 
 		$this->assertArrayHasKey( 'checkboxes', $viewModel );
-		$this->assertIsArray( $viewModel['checkboxes'] );
-		$this->assertSame( StubValueCounter::FIRST_VALUE, $viewModel['checkboxes'][0]['label'] );
-		$this->assertSame( StubValueCounter::SECOND_VALUE, $viewModel['checkboxes'][1]['label'] );
-		$this->assertSame( StubValueCounter::THIRD_VALUE, $viewModel['checkboxes'][2]['label'] );
-		$this->assertCount( 3, $viewModel['checkboxes'] );
+
+		$this->assertArrayHasKey( 'visible', $viewModel['checkboxes'] );
+		$this->assertSame( StubValueCounter::FIRST_VALUE, $viewModel['checkboxes']['visible'][0]['label'] );
+		$this->assertSame( StubValueCounter::SECOND_VALUE, $viewModel['checkboxes']['visible'][1]['label'] );
+		$this->assertSame( StubValueCounter::THIRD_VALUE, $viewModel['checkboxes']['visible'][2]['label'] );
+		$this->assertSame( StubValueCounter::FOURTH_VALUE, $viewModel['checkboxes']['visible'][3]['label'] );
+		$this->assertSame( StubValueCounter::FIFTH_VALUE, $viewModel['checkboxes']['visible'][4]['label'] );
+		$this->assertCount( 5, $viewModel['checkboxes']['visible'] );
+
+		$this->assertArrayHasKey( 'collapsed', $viewModel['checkboxes'] );
+		$this->assertSame( StubValueCounter::SIXTH_VALUE, $viewModel['checkboxes']['collapsed'][0]['label'] );
+		$this->assertSame( StubValueCounter::SEVENTH_VALUE, $viewModel['checkboxes']['collapsed'][1]['label'] );
+		$this->assertCount( 2, $viewModel['checkboxes']['collapsed'] );
 	}
 
 	private function buildViewModel( ?PropertyConstraints $constraints = null, array $typeSpecificConfig = [] ): array {
@@ -78,9 +104,14 @@ class ListFacetHtmlBuilderTest extends TestCase {
 	public function testCheckboxesViewModelContainsAllCounts(): void {
 		$viewModel = $this->buildViewModel();
 
-		$this->assertSame( StubValueCounter::FIRST_COUNT, $viewModel['checkboxes'][0]['count'] );
-		$this->assertSame( StubValueCounter::SECOND_COUNT, $viewModel['checkboxes'][1]['count'] );
-		$this->assertSame( StubValueCounter::THIRD_COUNT, $viewModel['checkboxes'][2]['count'] );
+		$this->assertSame( StubValueCounter::FIRST_COUNT, $viewModel['checkboxes']['visible'][0]['count'] );
+		$this->assertSame( StubValueCounter::SECOND_COUNT, $viewModel['checkboxes']['visible'][1]['count'] );
+		$this->assertSame( StubValueCounter::THIRD_COUNT, $viewModel['checkboxes']['visible'][2]['count'] );
+		$this->assertSame( StubValueCounter::FOURTH_COUNT, $viewModel['checkboxes']['visible'][3]['count'] );
+		$this->assertSame( StubValueCounter::FIFTH_COUNT, $viewModel['checkboxes']['visible'][4]['count'] );
+
+		$this->assertSame( StubValueCounter::SIXTH_COUNT, $viewModel['checkboxes']['collapsed'][0]['count'] );
+		$this->assertSame( StubValueCounter::SEVENTH_COUNT, $viewModel['checkboxes']['collapsed'][1]['count'] );
 	}
 
 	public function testOnlyCheckboxesForValuesInThePropertyConstraintsAreChecked_andCase(): void {
@@ -91,9 +122,14 @@ class ListFacetHtmlBuilderTest extends TestCase {
 				->withAdditionalAndValue( 'another mismatch' )
 		);
 
-		$this->assertFalse( $viewModel['checkboxes'][0]['checked'] );
-		$this->assertTrue( $viewModel['checkboxes'][1]['checked'] );
-		$this->assertFalse( $viewModel['checkboxes'][2]['checked'] );
+		$this->assertFalse( $viewModel['checkboxes']['visible'][0]['checked'] );
+		$this->assertTrue( $viewModel['checkboxes']['visible'][1]['checked'] );
+		$this->assertFalse( $viewModel['checkboxes']['visible'][2]['checked'] );
+		$this->assertFalse( $viewModel['checkboxes']['visible'][3]['checked'] );
+		$this->assertFalse( $viewModel['checkboxes']['visible'][4]['checked'] );
+
+		$this->assertFalse( $viewModel['checkboxes']['collapsed'][0]['checked'] );
+		$this->assertFalse( $viewModel['checkboxes']['collapsed'][1]['checked'] );
 	}
 
 	public function testOnlyCheckboxesForValuesInThePropertyConstraintsAreChecked_orCase(): void {
@@ -106,9 +142,14 @@ class ListFacetHtmlBuilderTest extends TestCase {
 			typeSpecificConfig: [ 'defaultCombineWith' => 'OR' ]
 		);
 
-		$this->assertFalse( $viewModel['checkboxes'][0]['checked'] );
-		$this->assertTrue( $viewModel['checkboxes'][1]['checked'] );
-		$this->assertFalse( $viewModel['checkboxes'][2]['checked'] );
+		$this->assertFalse( $viewModel['checkboxes']['visible'][0]['checked'] );
+		$this->assertTrue( $viewModel['checkboxes']['visible'][1]['checked'] );
+		$this->assertFalse( $viewModel['checkboxes']['visible'][2]['checked'] );
+		$this->assertFalse( $viewModel['checkboxes']['visible'][3]['checked'] );
+		$this->assertFalse( $viewModel['checkboxes']['visible'][4]['checked'] );
+
+		$this->assertFalse( $viewModel['checkboxes']['collapsed'][0]['checked'] );
+		$this->assertFalse( $viewModel['checkboxes']['collapsed'][1]['checked'] );
 	}
 
 	public function testAndIsDisabledWhenOrIsSelectedAndChoiceIsDisabled(): void {

@@ -102,7 +102,7 @@ class ListFacetHtmlBuilder implements FacetHtmlBuilder {
 		$collapsedCheckboxes = [];
 
 		foreach ( $this->getValuesAndCounts( $config ) as $i => $valueCount ) {
-			$data = [
+			$checkbox = [
 				'label' => $valueCount->value,
 				'count' => $valueCount->count,
 				'checked' => in_array( $valueCount->value, $selectedValues ), // TODO: test with multiple types of values
@@ -112,9 +112,9 @@ class ListFacetHtmlBuilder implements FacetHtmlBuilder {
 
 			// TODO: Make the number of visible checkboxes configurable
 			if ( $i < 5 ) {
-				$visibleCheckboxes[] = $data;
+				$visibleCheckboxes[] = $checkbox;
 			} else {
-				$collapsedCheckboxes[] = $data;
+				$collapsedCheckboxes[] = $checkbox;
 			}
 		}
 
