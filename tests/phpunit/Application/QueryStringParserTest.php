@@ -127,6 +127,42 @@ class QueryStringParserTest extends TestCase {
 		);
 	}
 
+	public function testParsesSingleOrValueWithLeadingPipe(): void {
+		$parser = $this->newQueryStringParser();
+		$query = $parser->parse( 'haswbfacet:P42=|foo' );
+
+		$constraints = $query->getConstraintsForProperty( new NumericPropertyId( 'P42' ) );
+
+		$this->assertEquals(
+			[ 'foo' ],
+			$constraints->getOrSelectedValues()
+		);
+	}
+
+	public function testParsesSingleOrValueWithTrailingPipe(): void {
+		$parser = $this->newQueryStringParser();
+		$query = $parser->parse( 'haswbfacet:P42=foo|' );
+
+		$constraints = $query->getConstraintsForProperty( new NumericPropertyId( 'P42' ) );
+
+		$this->assertEquals(
+			[ 'foo' ],
+			$constraints->getOrSelectedValues()
+		);
+	}
+
+	public function testRemovesEmptyOrValues(): void {
+		$parser = $this->newQueryStringParser();
+		$query = $parser->parse( 'haswbfacet:P42=|foo||bar||baz|' );
+
+		$constraints = $query->getConstraintsForProperty( new NumericPropertyId( 'P42' ) );
+
+		$this->assertEquals(
+			[ 'foo', 'bar', 'baz' ],
+			$constraints->getOrSelectedValues()
+		);
+	}
+
 	public function testParsesMinimum(): void {
 		$parser = $this->newQueryStringParser();
 		$query = $parser->parse( 'haswbfacet:P42>=42' );
