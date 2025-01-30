@@ -46,6 +46,7 @@ class UiBuilder {
 		return $this->templateParser->processTemplate(
 			'Layout',
 			[
+				'showSidebar' => count( $facetsViewModel ) > 0,
 				'instanceId' => $this->config->getItemTypeProperty()->getSerialization(),
 				'instances' => $instancesViewModel,
 				'facets' => $facetsViewModel,

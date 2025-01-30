@@ -59,7 +59,7 @@ class QueryStringParserTest extends TestCase {
 
 	public function testParsesSingleItemType(): void {
 		$parser = $this->newQueryStringParser( itemTypeProperty: 'P32' );
-		$query = $parser->parse( 'unrelated haswbstatement:P32=Q68 unrelated' );
+		$query = $parser->parse( 'unrelated haswbfacet:P32=Q68 unrelated' );
 
 		$itemTypes = [
 			new ItemId( 'Q68' )
@@ -70,7 +70,7 @@ class QueryStringParserTest extends TestCase {
 
 	public function testParsesMultipleItemTypes(): void {
 		$parser = $this->newQueryStringParser( itemTypeProperty: 'P32' );
-		$query = $parser->parse( 'unrelated haswbstatement:P32=Q68 haswbstatement:P32=Q67 unrelated haswbstatement:P32=Q69 unrelated' );
+		$query = $parser->parse( 'unrelated haswbfacet:P32=Q68 haswbfacet:P32=Q67 unrelated haswbfacet:P32=Q69 unrelated' );
 
 		$itemTypes = [
 			new ItemId( 'Q68' ),
@@ -81,9 +81,9 @@ class QueryStringParserTest extends TestCase {
 		$this->assertEquals( $itemTypes, $query->getItemTypes() );
 	}
 
-	public function testIgnoresHaswbstatementForNonItemTypePropertyProperties(): void {
+	public function testIgnoresHaswbfacetForNonItemTypePropertyProperties(): void {
 		$parser = $this->newQueryStringParser( itemTypeProperty: 'P32' );
-		$query = $parser->parse( 'haswbstatement:P1=wrongId haswbstatement:P32=Q68 haswbstatement:P2=alsoWrong' );
+		$query = $parser->parse( 'haswbfacet:P1=wrongId haswbfacet:P32=Q68 haswbfacet:P2=alsoWrong' );
 
 		$itemTypes = [
 			new ItemId( 'Q68' )
@@ -94,7 +94,7 @@ class QueryStringParserTest extends TestCase {
 
 	public function testIgnoresInvalidItemTypes(): void {
 		$parser = $this->newQueryStringParser( itemTypeProperty: 'P32' );
-		$query = $parser->parse( 'haswbstatement:P32=invalid haswbstatement:P32=Q68 haswbstatement:P32=wrong' );
+		$query = $parser->parse( 'haswbfacet:P32=invalid haswbfacet:P32=Q68 haswbfacet:P32=wrong' );
 
 		$itemTypes = [
 			new ItemId( 'Q68' )
@@ -118,6 +118,42 @@ class QueryStringParserTest extends TestCase {
 	public function testParsesOrValues(): void {
 		$parser = $this->newQueryStringParser();
 		$query = $parser->parse( 'haswbfacet:P42=foo|bar|baz' );
+
+		$constraints = $query->getConstraintsForProperty( new NumericPropertyId( 'P42' ) );
+
+		$this->assertEquals(
+			[ 'foo', 'bar', 'baz' ],
+			$constraints->getOrSelectedValues()
+		);
+	}
+
+	public function testParsesSingleOrValueWithLeadingPipe(): void {
+		$parser = $this->newQueryStringParser();
+		$query = $parser->parse( 'haswbfacet:P42=|foo' );
+
+		$constraints = $query->getConstraintsForProperty( new NumericPropertyId( 'P42' ) );
+
+		$this->assertEquals(
+			[ 'foo' ],
+			$constraints->getOrSelectedValues()
+		);
+	}
+
+	public function testParsesSingleOrValueWithTrailingPipe(): void {
+		$parser = $this->newQueryStringParser();
+		$query = $parser->parse( 'haswbfacet:P42=foo|' );
+
+		$constraints = $query->getConstraintsForProperty( new NumericPropertyId( 'P42' ) );
+
+		$this->assertEquals(
+			[ 'foo' ],
+			$constraints->getOrSelectedValues()
+		);
+	}
+
+	public function testRemovesEmptyOrValues(): void {
+		$parser = $this->newQueryStringParser();
+		$query = $parser->parse( 'haswbfacet:P42=|foo||bar||baz|' );
 
 		$constraints = $query->getConstraintsForProperty( new NumericPropertyId( 'P42' ) );
 
@@ -201,6 +237,41 @@ class QueryStringParserTest extends TestCase {
 	private function newQueryStringParser( ?string $itemTypeProperty = 'P11111' ): QueryStringParser {
 		return new QueryStringParser(
 			itemTypeProperty: new NumericPropertyId( $itemTypeProperty )
+		);
+	}
+
+	public function testParsesExactPropertyIdForItemType(): void {
+		$parser = $this->newQueryStringParser( itemTypeProperty: 'P32' );
+		$query = $parser->parse( 'unrelated haswbfacet:P320=Q68 unrelated' );
+
+		$this->assertEquals( [], $query->getItemTypes() );
+	}
+
+	public function testParsesSingleItemTypeWithOrValues(): void {
+		$parser = $this->newQueryStringParser( itemTypeProperty: 'P32' );
+		$query = $parser->parse( 'haswbfacet:P32=Q68 haswbfacet:P42=foo|bar|baz' );
+
+		$constraints = $query->getConstraintsForProperty( new NumericPropertyId( 'P42' ) );
+
+		$this->assertEquals( [ new ItemId( 'Q68' ) ], $query->getItemTypes() );
+
+		$this->assertEquals(
+			[ 'foo', 'bar', 'baz' ],
+			$constraints->getOrSelectedValues()
+		);
+	}
+
+	public function testParsesSingleItemTypeWithAndValues(): void {
+		$parser = $this->newQueryStringParser( itemTypeProperty: 'P32' );
+		$query = $parser->parse( 'haswbfacet:P32=Q68 haswbfacet:P42=foo haswbfacet:P42=bar' );
+
+		$constraints = $query->getConstraintsForProperty( new NumericPropertyId( 'P42' ) );
+
+		$this->assertEquals( [ new ItemId( 'Q68' ) ], $query->getItemTypes() );
+
+		$this->assertEquals(
+			[ 'foo', 'bar' ],
+			$constraints->getAndSelectedValues()
 		);
 	}
 
