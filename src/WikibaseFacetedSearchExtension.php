@@ -201,7 +201,7 @@ class WikibaseFacetedSearchExtension {
 
 	private function getFacetHtmlBuilder( Language $language ): FacetHtmlBuilder {
 		$delegator = new DelegatingFacetHtmlBuilder();
-		$delegator->addBuilder( FacetType::LIST, $this->newListFacetHtmlBuilder( $this->getFacetValueFormatter( $language ) )	);
+		$delegator->addBuilder( FacetType::LIST, $this->newListFacetHtmlBuilder( $this->getFacetValueFormatter( $language ) ) );
 		$delegator->addBuilder( FacetType::RANGE, $this->newRangeFacetHtmlBuilder() );
 		return $delegator;
 	}
