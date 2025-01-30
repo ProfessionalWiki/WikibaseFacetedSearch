@@ -44,9 +44,9 @@ class ListFacetHtmlBuilderTest extends TestCase {
 
 	private function newListFacetHtmlBuilder(): ListFacetHtmlBuilder {
 		return new ListFacetHtmlBuilder(
-			labelBuilder: WikibaseFacetedSearchExtension::getInstance()->getFacetLabelBuilder( MediaWikiServices::getInstance()->getContentLanguage() ),
 			parser: WikibaseFacetedSearchExtension::getInstance()->getTemplateParser(),
-			valueCounter: new StubValueCounter()
+			valueCounter: new StubValueCounter(),
+			valueFormatter: WikibaseFacetedSearchExtension::getInstance()->getFacetValueFormatter( MediaWikiServices::getInstance()->getContentLanguage() )
 		);
 	}
 
@@ -55,9 +55,9 @@ class ListFacetHtmlBuilderTest extends TestCase {
 
 		$this->assertArrayHasKey( 'checkboxes', $viewModel );
 		$this->assertIsArray( $viewModel['checkboxes'] );
-		$this->assertSame( StubValueCounter::FIRST_VALUE, $viewModel['checkboxes'][0]['label'] );
-		$this->assertSame( StubValueCounter::SECOND_VALUE, $viewModel['checkboxes'][1]['label'] );
-		$this->assertSame( StubValueCounter::THIRD_VALUE, $viewModel['checkboxes'][2]['label'] );
+		$this->assertSame( StubValueCounter::FIRST_VALUE, $viewModel['checkboxes'][0]['formattedValue'] );
+		$this->assertSame( StubValueCounter::SECOND_VALUE, $viewModel['checkboxes'][1]['formattedValue'] );
+		$this->assertSame( StubValueCounter::THIRD_VALUE, $viewModel['checkboxes'][2]['formattedValue'] );
 		$this->assertCount( 3, $viewModel['checkboxes'] );
 	}
 

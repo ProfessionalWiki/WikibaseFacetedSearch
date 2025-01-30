@@ -35,13 +35,12 @@ use ProfessionalWiki\WikibaseFacetedSearch\Persistence\Search\SearchIndexFieldsB
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\SitelinkBasedStatementsLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\DelegatingFacetHtmlBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\FacetHtmlBuilder;
-use ProfessionalWiki\WikibaseFacetedSearch\Presentation\FacetLabelBuilder;
+use ProfessionalWiki\WikibaseFacetedSearch\Presentation\FacetValueFormatter;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\ListFacetHtmlBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\RangeFacetHtmlBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\UiBuilder;
 use RuntimeException;
 use Title;
-use Wikibase\DataModel\Entity\EntityIdParser;
 use Wikibase\DataModel\Services\Lookup\LabelLookup;
 use Wikibase\DataModel\Services\Lookup\PropertyDataTypeLookup;
 use Wikibase\Lib\Store\SiteLinkStore;
@@ -202,23 +201,23 @@ class WikibaseFacetedSearchExtension {
 
 	private function getFacetHtmlBuilder( Language $language ): FacetHtmlBuilder {
 		$delegator = new DelegatingFacetHtmlBuilder();
-		$delegator->addBuilder( FacetType::LIST, $this->newListFacetHtmlBuilder( $this->getFacetLabelBuilder( $language ) )	);
+		$delegator->addBuilder( FacetType::LIST, $this->newListFacetHtmlBuilder( $this->getFacetValueFormatter( $language ) )	);
 		$delegator->addBuilder( FacetType::RANGE, $this->newRangeFacetHtmlBuilder() );
 		return $delegator;
 	}
 
-	public function getFacetLabelBuilder( Language $language ): FacetLabelBuilder {
-		return new FacetLabelBuilder(
+	public function getFacetValueFormatter( Language $language ): FacetValueFormatter {
+		return new FacetValueFormatter(
 			dataTypeLookup: $this->getPropertyDataTypeLookup(),
 			labelLookup: $this->getLabelLookup( $language )
 		);
 	}
 
-	private function newListFacetHtmlBuilder( FacetLabelBuilder $labelBuilder ): FacetHtmlBuilder {
+	private function newListFacetHtmlBuilder( FacetValueFormatter $valueFormatter ): FacetHtmlBuilder {
 		return new ListFacetHtmlBuilder(
-			labelBuilder: $labelBuilder,
 			parser: $this->getTemplateParser(),
-			valueCounter: $this->getValueCounter()
+			valueCounter: $this->getValueCounter(),
+			valueFormatter: $valueFormatter
 		);
 	}
 
@@ -262,10 +261,6 @@ class WikibaseFacetedSearchExtension {
 
 	public function getLabelLookup( Language $language ): LabelLookup {
 		return WikibaseRepo::getFallbackLabelDescriptionLookupFactory()->newLabelDescriptionLookup( $language );
-	}
-
-	public function getEntityIdParser(): EntityIdParser {
-		return WikibaseRepo::getEntityIdParser();
 	}
 
 	public function getPropertyDataTypeLookup(): PropertyDataTypeLookup {

@@ -10,7 +10,7 @@ use Wikibase\DataModel\Services\Lookup\LabelLookup;
 use Wikibase\DataModel\Services\Lookup\PropertyDataTypeLookup;
 use Wikibase\DataModel\Services\Lookup\PropertyDataTypeLookupException;
 
-class FacetLabelBuilder {
+class FacetValueFormatter {
 
 	/** @var array<string, ?string> */
 	private array $propertyIdToType = [];

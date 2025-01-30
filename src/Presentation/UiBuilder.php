@@ -12,6 +12,7 @@ use ProfessionalWiki\WikibaseFacetedSearch\Application\PropertyConstraints;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Query;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\QueryStringParser;
 use Wikibase\DataModel\Entity\ItemId;
+use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Services\Lookup\LabelLookup;
 
 class UiBuilder {
@@ -104,12 +105,16 @@ class UiBuilder {
 
 	private function buildFacetViewModel( FacetConfig $facet, PropertyConstraints $state ): array {
 		return [
-			'label' => $this->labelLookup->getLabel( $facet->propertyId )?->getText() ?? $facet->propertyId->getSerialization(),
+			'label' => $this->getFacetLabel( $facet->propertyId ),
 			'propertyId' => $facet->propertyId->getSerialization(),
 			'type' => $facet->type->value, // TODO: is this needed?
 			'expanded' => true, // TODO: get this from the URL somehow
 			'facetHtml' => $this->facetHtmlBuilder->buildHtml( $facet, $state )
 		];
+	}
+
+	private function getFacetLabel( PropertyId $propertyId ): string {
+		return $this->labelLookup->getLabel( $propertyId )?->getText() ?? $propertyId->getSerialization();
 	}
 
 }

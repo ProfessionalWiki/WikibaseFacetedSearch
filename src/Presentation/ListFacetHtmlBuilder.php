@@ -23,9 +23,9 @@ class ListFacetHtmlBuilder implements FacetHtmlBuilder {
 	private const COMBINE_WITH_AND_BY_DEFAULT = true; // Maybe this gets turned into (constructor-injected) config
 
 	public function __construct(
-		private readonly FacetLabelBuilder $labelBuilder,
 		private readonly TemplateParser $parser,
-		private readonly ValueCounter $valueCounter
+		private readonly ValueCounter $valueCounter,
+		private readonly FacetValueFormatter $valueFormatter
 	) {
 	}
 
@@ -103,7 +103,7 @@ class ListFacetHtmlBuilder implements FacetHtmlBuilder {
 
 		foreach ( $this->getValuesAndCounts( $config ) as $i => $valueCount ) {
 			$checkboxes[] = [
-				'label' => $this->labelBuilder->getLabel( (string)$valueCount->value, $config->propertyId ),
+				'formattedValue' => $this->valueFormatter->getLabel( (string)$valueCount->value, $config->propertyId ),
 				'count' => $valueCount->count,
 				'checked' => in_array( $valueCount->value, $selectedValues ), // TODO: test with multiple types of values
 				'value' => $valueCount->value,
