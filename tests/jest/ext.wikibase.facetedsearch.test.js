@@ -38,37 +38,43 @@ describe( 'getListFacetQueryMode', () => {
 	} );
 } );
 
-describe( 'getListFacetQuerySegments', () => {
-	test( 'Query segements for list facet with no checked items', () => {
+describe( 'getListFacetSelectedValues', () => {
+	test( 'List facet with no checked items', () => {
 		document.body.innerHTML = `
 			<div class="wikibase-faceted-search__facet-item"><input class="cdx-checkbox__input" type="checkbox" value="Q1"></div>
 			<div class="wikibase-faceted-search__facet-item"><input class="cdx-checkbox__input" type="checkbox" value="Q2"></div>
 			<div class="wikibase-faceted-search__facet-item"><input class="cdx-checkbox__input" type="checkbox" value="Q3"></div>
 		`;
 
-		expect( actual.getListFacetQuerySegments( document.body, 'P1' ) )
+		expect( actual.getListFacetSelectedValues( document.body ) )
 			.toEqual( [] );
 	} );
 
-	test( 'Query segements for list facet with multiple checked items in AND mode', () => {
+	test( 'List facet with multiple checked items', () => {
 		document.body.innerHTML = `
 			<div class="wikibase-faceted-search__facet-item"><input class="cdx-checkbox__input" type="checkbox" value="Q1"></div>
 			<div class="wikibase-faceted-search__facet-item"><input class="cdx-checkbox__input" type="checkbox" value="Q2" checked></div>
 			<div class="wikibase-faceted-search__facet-item"><input class="cdx-checkbox__input" type="checkbox" value="Q3" checked></div>
 		`;
 
-		expect( actual.getListFacetQuerySegments( document.body, 'P1', 'AND' ) )
+		expect( actual.getListFacetSelectedValues( document.body ) )
+			.toEqual( [ 'Q2', 'Q3' ] );
+	} );
+} );
+
+describe( 'getListFacetQuerySegments', () => {
+	test( 'Query segements for list facet with no selected values', () => {
+		expect( actual.getListFacetQuerySegments( [], 'P1' ) )
+			.toEqual( [ 'haswbfacet:P1=' ] );
+	} );
+
+	test( 'Query segements for list facet with multiple selected values in AND mode', () => {
+		expect( actual.getListFacetQuerySegments( [ 'Q2', 'Q3' ], 'P1', 'AND' ) )
 			.toEqual( [ 'haswbfacet:P1=Q2', 'haswbfacet:P1=Q3' ] );
 	} );
 
-	test( 'Query segements for list facet with multiple checked items in OR mode', () => {
-		document.body.innerHTML = `
-			<div class="wikibase-faceted-search__facet-item"><input class="cdx-checkbox__input" type="checkbox" value="Q1"></div>
-			<div class="wikibase-faceted-search__facet-item"><input class="cdx-checkbox__input" type="checkbox" value="Q2" checked></div>
-			<div class="wikibase-faceted-search__facet-item"><input class="cdx-checkbox__input" type="checkbox" value="Q3" checked></div>
-		`;
-
-		expect( actual.getListFacetQuerySegments( document.body, 'P1', 'OR' ) )
+	test( 'Query segements for list facet with multiple selected values in OR mode', () => {
+		expect( actual.getListFacetQuerySegments( [ 'Q2', 'Q3' ], 'P1', 'OR' ) )
 			.toEqual( [ 'haswbfacet:P1=Q2|Q3' ] );
 	} );
 } );

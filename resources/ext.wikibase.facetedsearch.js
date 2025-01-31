@@ -264,6 +264,7 @@ init();
 // Export for unit tests
 module.exports = {
 	getListFacetQueryMode,
+	getListFacetSelectedValues,
 	getListFacetQuerySegments,
 	getRangeFacetQuerySegments,
 	buildQueryString
