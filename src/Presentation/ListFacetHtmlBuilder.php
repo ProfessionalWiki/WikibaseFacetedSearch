@@ -9,6 +9,7 @@ use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetConfig;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\PropertyConstraints;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\ValueCount;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\ValueCounter;
+use Wikibase\DataModel\Entity\PropertyId;
 
 /**
  * Renders list facets via the `ListFacet.mustache` template.
@@ -96,34 +97,31 @@ class ListFacetHtmlBuilder implements FacetHtmlBuilder {
 	}
 
 	private function buildCheckboxesViewModel( FacetConfig $config, PropertyConstraints $state ): array {
+		$maxVisibleCheckboxes = 5; // TODO: Make this configurable
 		$combineWithAnd = $this->shouldCombineWithAnd( $config, $state );
 
 		$selectedValues = $combineWithAnd ? $state->getAndSelectedValues() : $state->getOrSelectedValues();
 
-		$visibleCheckboxes = [];
-		$collapsedCheckboxes = [];
+		$checkboxes = [];
 
 		foreach ( $this->getValuesAndCounts( $config ) as $i => $valueCount ) {
-			$checkbox = [
-				'label' => $valueCount->value,
-				'count' => $valueCount->count,
-				'checked' => in_array( $valueCount->value, $selectedValues ), // TODO: test with multiple types of values
-				'value' => $valueCount->value,
-				'id' => $state->propertyId->getSerialization() . "-$i",
-			];
-
-			// TODO: Make the number of visible checkboxes configurable
-			if ( $i < 5 ) {
-				$visibleCheckboxes[] = $checkbox;
-			} else {
-				$collapsedCheckboxes[] = $checkbox;
-			}
+			$checkboxes[] = $this->buildCheckboxViewModel( $valueCount, $selectedValues, $state->propertyId, $i );
 		}
 
 		return [
-			'visible' => $visibleCheckboxes,
-			'collapsed' => $collapsedCheckboxes,
-			'showMore' => count( $collapsedCheckboxes ) > 0
+			'visible' => array_slice( $checkboxes, 0, $maxVisibleCheckboxes ),
+			'collapsed' => array_slice( $checkboxes, $maxVisibleCheckboxes ),
+			'showMore' => count( $checkboxes ) > $maxVisibleCheckboxes
+		];
+	}
+
+	private function buildCheckboxViewModel( ValueCount $valueCount, array $selectedValues, PropertyId $propertyId, int $index ): array {
+		return [
+			'label' => $valueCount->value,
+			'count' => $valueCount->count,
+			'checked' => in_array( $valueCount->value, $selectedValues ), // TODO: test with multiple types of values
+			'value' => $valueCount->value,
+			'id' => $propertyId->getSerialization() . "-$index",
 		];
 	}
 
