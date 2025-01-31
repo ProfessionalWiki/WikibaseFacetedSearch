@@ -84,8 +84,12 @@ function onInstancesClick( event, instanceId ) {
  * @param {?string} mode
  */
 function onListFacetInput( facet, propertyId, mode ) {
+	const selectedValues = getListFacetSelectedValues( facet );
+	if ( selectedValues.length === 0 ) {
+		return;
+	}
 	mode = mode || getListFacetQueryMode( facet );
-	const newQueries = getListFacetQuerySegments( facet, propertyId, mode );
+	const newQueries = getListFacetQuerySegments( selectedValues, propertyId, mode );
 	submitSearchForm( buildQueryString( specialSearchInput.value, newQueries, propertyId ) );
 }
 
@@ -153,35 +157,41 @@ function updateErrorState( input ) {
 }
 
 /**
- * Extracts the queries from a list facet element.
+ * Extracts the selected facet items from a list facet element.
  *
  * @param {HTMLDivElement} facet
- * @param {string} propertyId
- * @param {string} mode
  * @return {string[]}
  */
-function getListFacetQuerySegments( facet, propertyId, mode ) {
-	const checkedValues = [];
+function getListFacetSelectedValues( facet ) {
+	const selectedValues = [];
 
 	[ ...facet.querySelectorAll( '.wikibase-faceted-search__facet-item' ) ].forEach( ( facetItem ) => {
 		const checkbox = facetItem.querySelector( '.cdx-checkbox__input' );
 		if ( !checkbox || !checkbox.checked || !checkbox.value ) {
 			return;
 		}
-		checkedValues.push( checkbox.value );
+		selectedValues.push( checkbox.value );
 	} );
 
-	if ( checkedValues.length === 0 ) {
-		return [];
-	}
+	return selectedValues;
+}
 
+/**
+ * Constructs an array of list facet queries based on the provided selected values.
+ *
+ * @param {string[]} selectedValues
+ * @param {string} propertyId
+ * @param {string} mode
+ * @return {string[]}
+ */
+function getListFacetQuerySegments( selectedValues, propertyId, mode ) {
 	const segments = [];
 	if ( mode === 'AND' ) {
-		checkedValues.forEach( ( value ) => {
+		selectedValues.forEach( ( value ) => {
 			segments.push( `haswbfacet:${ propertyId }=${ value }` );
 		} );
 	} else {
-		segments.push( `haswbfacet:${ propertyId }=${ checkedValues.join( '|' ) }` );
+		segments.push( `haswbfacet:${ propertyId }=${ selectedValues.join( '|' ) }` );
 	}
 
 	return segments;
