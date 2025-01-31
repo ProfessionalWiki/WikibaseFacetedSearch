@@ -20,6 +20,7 @@ parameters:
 		- src/Persistence/Search/SearchIndexFieldsBuilder.php
 		- src/Persistence/Search/Query/HasWbFacetFeature.php
 		- src/Persistence/Elastic*.php
+		- src/WikibaseFacetedSearchExtension.php
 	reportUnmatchedIgnoredErrors: false
 	ignoreErrors:
 		- '#no value type specified in iterable type array\.$#'

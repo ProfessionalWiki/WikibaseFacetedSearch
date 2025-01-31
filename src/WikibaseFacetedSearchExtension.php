@@ -30,6 +30,11 @@ use ProfessionalWiki\WikibaseFacetedSearch\Persistence\FromPageStatementsLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\PageContentConfigLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\PageContentFetcher;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\PageItemLookupFactory;
+use ProfessionalWiki\WikibaseFacetedSearch\Persistence\Search\Query\DelegatingFacetQueryBuilder;
+use ProfessionalWiki\WikibaseFacetedSearch\Persistence\Search\Query\HasWbFacetFeature;
+use ProfessionalWiki\WikibaseFacetedSearch\Persistence\Search\Query\ItemTypeQueryBuilder;
+use ProfessionalWiki\WikibaseFacetedSearch\Persistence\Search\Query\ListFacetQueryBuilder;
+use ProfessionalWiki\WikibaseFacetedSearch\Persistence\Search\Query\RangeFacetQueryBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\Search\SearchIndexFieldsBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\SitelinkBasedStatementsLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\DelegatingFacetHtmlBuilder;
@@ -41,6 +46,7 @@ use RuntimeException;
 use TemplateParser;
 use Title;
 use Wikibase\DataModel\Services\Lookup\LabelLookup;
+use Wikibase\DataModel\Services\Lookup\PropertyDataTypeLookup;
 use Wikibase\Lib\Store\SiteLinkStore;
 use Wikibase\Repo\WikibaseRepo;
 
@@ -126,8 +132,12 @@ class WikibaseFacetedSearchExtension {
 		return new SearchIndexFieldsBuilder(
 			engine:	$engine,
 			config: $this->getConfig(),
-			dataTypeLookup: WikibaseRepo::getPropertyDataTypeLookup()
+			dataTypeLookup: $this->getPropertyDataTypeLookup()
 		);
+	}
+
+	private function getPropertyDataTypeLookup(): PropertyDataTypeLookup {
+		return WikibaseRepo::getPropertyDataTypeLookup();
 	}
 
 	public function newStatementsLookup(): StatementsLookup {
@@ -251,6 +261,40 @@ class WikibaseFacetedSearchExtension {
 
 	public function getLabelLookup( Language $language ): LabelLookup {
 		return WikibaseRepo::getFallbackLabelDescriptionLookupFactory()->newLabelDescriptionLookup( $language );
+	}
+
+	public function newHasWbFacetFeature(): HasWbFacetFeature {
+		return new HasWbFacetFeature(
+			config: $this->getConfig(),
+			queryStringParser: $this->getQueryStringParser(),
+			itemTypeQueryBuilder: $this->getItemTypeQueryBuilder(),
+			facetQueryBuilder: $this->getFacetQueryBuilder()
+		);
+	}
+
+	private function getItemTypeQueryBuilder(): ItemTypeQueryBuilder {
+		return new ItemTypeQueryBuilder(
+			itemTypeProperty: $this->getConfig()->getItemTypeProperty()
+		);
+	}
+
+	private function getFacetQueryBuilder(): DelegatingFacetQueryBuilder {
+		$delegator = new DelegatingFacetQueryBuilder();
+		$delegator->addBuilder( FacetType::LIST, $this->newListFacetQueryBuilder() );
+		$delegator->addBuilder( FacetType::RANGE, $this->newRangeFacetQueryBuilder() );
+		return $delegator;
+	}
+
+	private function newListFacetQueryBuilder(): ListFacetQueryBuilder {
+		return new ListFacetQueryBuilder(
+			dataTypeLookup: $this->getPropertyDataTypeLookup()
+		);
+	}
+
+	private function newRangeFacetQueryBuilder(): RangeFacetQueryBuilder {
+		return new RangeFacetQueryBuilder(
+			dataTypeLookup: $this->getPropertyDataTypeLookup()
+		);
 	}
 
 }
