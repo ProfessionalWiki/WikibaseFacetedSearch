@@ -18,7 +18,6 @@ use ProfessionalWiki\WikibaseFacetedSearch\Tests\TestDoubles\StubQueryStringPars
 use ProfessionalWiki\WikibaseFacetedSearch\WikibaseFacetedSearchExtension;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\NumericPropertyId;
-use Wikibase\DataModel\Services\Lookup\LabelLookup;
 
 /**
  * @covers \ProfessionalWiki\WikibaseFacetedSearch\Presentation\UiBuilder
