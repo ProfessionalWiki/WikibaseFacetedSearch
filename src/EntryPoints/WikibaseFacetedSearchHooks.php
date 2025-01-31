@@ -15,7 +15,6 @@ use MediaWiki\Output\OutputPage;
 use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Specials\SpecialSearch;
 use MediaWiki\Title\Title;
-use ProfessionalWiki\WikibaseFacetedSearch\Persistence\Search\Query\HasWbFacetFeature;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\ConfigEditPageTextBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\ConfigJsonErrorFormatter;
 use ProfessionalWiki\WikibaseFacetedSearch\WikibaseFacetedSearchExtension;

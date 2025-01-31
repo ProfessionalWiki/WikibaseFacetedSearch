@@ -4,7 +4,7 @@ declare( strict_types = 1 );
 
 namespace ProfessionalWiki\WikibaseFacetedSearch\Tests\Persistence\Search\Query;
 
-use Elastica\Query;
+use Elastica\Query\Terms;
 use PHPUnit\Framework\TestCase;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\Search\Query\ItemTypeQueryBuilder;
 use Wikibase\DataModel\Entity\ItemId;
@@ -25,7 +25,7 @@ class ItemTypeQueryBuilderTest extends TestCase {
 		] );
 
 		$this->assertEquals(
-			new Query\Terms(
+			new Terms(
 				'wbfs_P42',
 				[ 'Q100' ]
 			),
@@ -46,7 +46,7 @@ class ItemTypeQueryBuilderTest extends TestCase {
 		] );
 
 		$this->assertEquals(
-			new Query\Terms(
+			new Terms(
 				'wbfs_P42',
 				[ 'Q100', 'Q200' ]
 			),

@@ -4,7 +4,9 @@ declare( strict_types = 1 );
 
 namespace ProfessionalWiki\WikibaseFacetedSearch\Tests\Persistence\Search\Query;
 
-use Elastica\Query;
+use Elastica\Query\AbstractQuery;
+use Elastica\Query\Exists;
+use Elastica\Query\Terms;
 use PHPUnit\Framework\TestCase;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetConfig;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetType;
@@ -74,8 +76,8 @@ class ListFacetQueryBuilderTest extends TestCase {
 		);
 	}
 
-	private function assertIsTermsQueryWithParams( string $propertyId, array $values, Query\AbstractQuery $query ): void {
-		$this->assertInstanceOf( Query\Terms::class, $query );
+	private function assertIsTermsQueryWithParams( string $propertyId, array $values, AbstractQuery $query ): void {
+		$this->assertInstanceOf( Terms::class, $query );
 		$this->assertSame(
 			[
 				'wbfs_' . $propertyId => $values
@@ -158,7 +160,7 @@ class ListFacetQueryBuilderTest extends TestCase {
 			$constraints
 		);
 
-		$this->assertInstanceOf( Query\Exists::class, $query );
+		$this->assertInstanceOf( Exists::class, $query );
 		$this->assertSame(
 			[
 				'field' => 'wbfs_' . self::STRING_PROPERTY

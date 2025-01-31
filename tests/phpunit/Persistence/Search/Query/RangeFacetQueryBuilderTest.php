@@ -4,12 +4,12 @@ declare( strict_types = 1 );
 
 namespace ProfessionalWiki\WikibaseFacetedSearch\Tests\Persistence\Search\Query;
 
-use Elastica\Query;
+use Elastica\Query\AbstractQuery;
+use Elastica\Query\Range;
 use PHPUnit\Framework\TestCase;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetConfig;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetType;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\PropertyConstraints;
-use ProfessionalWiki\WikibaseFacetedSearch\Persistence\Search\Query\DelegatingFacetQueryBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\Search\Query\RangeFacetQueryBuilder;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\NumericPropertyId;
@@ -76,8 +76,8 @@ class RangeFacetQueryBuilderTest extends TestCase {
 		);
 	}
 
-	private function assertIsRangeQueryWithParams( string $propertyId, array $values, Query\AbstractQuery $query ): void {
-		$this->assertInstanceOf( Query\Range::class, $query );
+	private function assertIsRangeQueryWithParams( string $propertyId, array $values, AbstractQuery $query ): void {
+		$this->assertInstanceOf( Range::class, $query );
 		$this->assertSame(
 			[
 				'wbfs_' . $propertyId => $values
@@ -97,7 +97,7 @@ class RangeFacetQueryBuilderTest extends TestCase {
 		);
 
 		$this->assertEquals(
-			new Query\Range(
+			new Range(
 				'wbfs_' . self::TIME_PROPERTY,
 				[ 'gte' => '2000-01-01', 'lte' => '2010-12-31' ]
 			),

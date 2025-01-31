@@ -4,8 +4,8 @@ declare( strict_types = 1 );
 
 namespace ProfessionalWiki\WikibaseFacetedSearch\Persistence\Search\Query;
 
-use Elastica\Query;
 use Elastica\Query\AbstractQuery;
+use Elastica\Query\Range;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetConfig;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\PropertyConstraints;
 use Wikibase\DataModel\Services\Lookup\PropertyDataTypeLookup;
@@ -28,7 +28,7 @@ class RangeFacetQueryBuilder implements FacetQueryBuilder {
 	}
 
 	private function buildQuantityQuery( string $name, PropertyConstraints $constraints ): AbstractQuery {
-		return new Query\Range(
+		return new Range(
 			$name,
 			[
 				'gte' => $constraints->getInclusiveMinimum(),
@@ -38,7 +38,7 @@ class RangeFacetQueryBuilder implements FacetQueryBuilder {
 	}
 
 	private function buildTimeQuery( string $name, PropertyConstraints $constraints ): AbstractQuery {
-		return new Query\Range(
+		return new Range(
 			$name,
 			[
 				'gte' => $constraints->getInclusiveMinimum() === null ? null : (int)$constraints->getInclusiveMinimum() . '-01-01',

@@ -5,8 +5,9 @@ declare( strict_types = 1 );
 namespace ProfessionalWiki\WikibaseFacetedSearch\Persistence\Search\Query;
 
 use DateTime;
-use Elastica\Query;
 use Elastica\Query\AbstractQuery;
+use Elastica\Query\Exists;
+use Elastica\Query\Terms;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetConfig;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\PropertyConstraints;
 use Wikibase\DataModel\Services\Lookup\PropertyDataTypeLookup;
@@ -35,11 +36,11 @@ class ListFacetQueryBuilder implements FacetQueryBuilder {
 	}
 
 	private function buildAnyValueQuery( string $name ): AbstractQuery {
-		return new Query\Exists( $name );
+		return new Exists( $name );
 	}
 
 	private function buildStringQuery( string $name, PropertyConstraints $constraints ): AbstractQuery {
-		return new Query\Terms(
+		return new Terms(
 			$name,
 			$this->getFacetValues( $constraints )
 		);
@@ -54,7 +55,7 @@ class ListFacetQueryBuilder implements FacetQueryBuilder {
 	}
 
 	private function buildQuantityQuery( string $name, PropertyConstraints $constraints ): AbstractQuery {
-		return new Query\Terms(
+		return new Terms(
 			$name,
 			array_map(
 				fn( $value ) => (float)$value,
@@ -64,7 +65,7 @@ class ListFacetQueryBuilder implements FacetQueryBuilder {
 	}
 
 	private function buildTimeQuery( string $name, PropertyConstraints $constraints ): AbstractQuery {
-		return new Query\Terms(
+		return new Terms(
 			$name,
 			array_map(
 				fn( $value ) => $this->timestampToIso8601( (int)$value ),
