@@ -31,7 +31,25 @@ parameters:
 			path: src/Persistence/ConfigDeserializer.php
 
 		-
-			message: '#^Cannot cast mixed to string\.$#'
-			identifier: cast.string
+			message: '#^Parameter \#2 \$terms of class Elastica\\Query\\Terms constructor expects list\<bool\|float\|int\|string\>, array\<string\> given\.$#'
+			identifier: argument.type
 			count: 1
-			path: src/WikibaseFacetedSearchExtension.php
+			path: src/Persistence/Search/Query/ItemTypeQueryBuilder.php
+
+		-
+			message: '#^Parameter \#2 \$terms of class Elastica\\Query\\Terms constructor expects list\<bool\|float\|int\|string\>, array given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Persistence/Search/Query/ListFacetQueryBuilder.php
+
+		-
+			message: '#^Parameter \#2 \$terms of class Elastica\\Query\\Terms constructor expects list\<bool\|float\|int\|string\>, array\<float\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Persistence/Search/Query/ListFacetQueryBuilder.php
+
+		-
+			message: '#^Parameter \#2 \$terms of class Elastica\\Query\\Terms constructor expects list\<bool\|float\|int\|string\>, array\<string\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Persistence/Search/Query/ListFacetQueryBuilder.php
