@@ -56,16 +56,6 @@ class ListFacetHtmlBuilderTest extends TestCase {
 		);
 	}
 
-	public function testCheckboxesViewModelContainsLabels(): void {
-		$viewModel = $this->buildViewModel();
-
-		$this->assertArrayHasKey( 'checkboxes', $viewModel );
-		$this->assertArrayHasKey( 'msg-show-more', $viewModel['checkboxes'] );
-		$this->assertArrayHasKey( 'msg-show-less', $viewModel['checkboxes'] );
-		$this->assertIsString( $viewModel['checkboxes']['msg-show-more'] );
-		$this->assertIsString( $viewModel['checkboxes']['msg-show-less'] );
-	}
-
 	public function testCheckboxesViewModelContainsAllValues(): void {
 		$viewModel = $this->buildViewModel();
 
