@@ -86,6 +86,38 @@ class RangeFacetQueryBuilderTest extends TestCase {
 		);
 	}
 
+	public function testBuildsQueryForQuantityRangeWithOnlyMinimum(): void {
+		$query = $this->newFacetQueryBuilder()->buildQuery(
+			$this->newRangeFacetConfig( self::QUANTITY_PROPERTY ),
+			new PropertyConstraints(
+				new NumericPropertyId( self::QUANTITY_PROPERTY ),
+				min: 42
+			)
+		);
+
+		$this->assertIsRangeQueryWithParams(
+			self::QUANTITY_PROPERTY,
+			[ 'gte' => 42.0, 'lte' => null ],
+			$query
+		);
+	}
+
+	public function testBuildsQueryForQuantityRangeWithOnlyMaximum(): void {
+		$query = $this->newFacetQueryBuilder()->buildQuery(
+			$this->newRangeFacetConfig( self::QUANTITY_PROPERTY ),
+			new PropertyConstraints(
+				new NumericPropertyId( self::QUANTITY_PROPERTY ),
+				max: 9001
+			)
+		);
+
+		$this->assertIsRangeQueryWithParams(
+			self::QUANTITY_PROPERTY,
+			[ 'gte' => null, 'lte' => 9001.0 ],
+			$query
+		);
+	}
+
 	public function testBuildsQueryForDateRange(): void {
 		$query = $this->newFacetQueryBuilder()->buildQuery(
 			$this->newRangeFacetConfig( self::TIME_PROPERTY ),
@@ -100,6 +132,42 @@ class RangeFacetQueryBuilderTest extends TestCase {
 			new Range(
 				'wbfs_' . self::TIME_PROPERTY,
 				[ 'gte' => '2000-01-01', 'lte' => '2010-12-31' ]
+			),
+			$query
+		);
+	}
+
+	public function testBuildsQueryForDateRangeWithOnlyMinimum(): void {
+		$query = $this->newFacetQueryBuilder()->buildQuery(
+			$this->newRangeFacetConfig( self::TIME_PROPERTY ),
+			new PropertyConstraints(
+				new NumericPropertyId( self::TIME_PROPERTY ),
+				min: 2000
+			)
+		);
+
+		$this->assertEquals(
+			new Range(
+				'wbfs_' . self::TIME_PROPERTY,
+				[ 'gte' => '2000-01-01', 'lte' => null ]
+			),
+			$query
+		);
+	}
+
+	public function testBuildsQueryForDateRangeWithOnlyMaximum(): void {
+		$query = $this->newFacetQueryBuilder()->buildQuery(
+			$this->newRangeFacetConfig( self::TIME_PROPERTY ),
+			new PropertyConstraints(
+				new NumericPropertyId( self::TIME_PROPERTY ),
+				max: 2010
+			)
+		);
+
+		$this->assertEquals(
+			new Range(
+				'wbfs_' . self::TIME_PROPERTY,
+				[ 'gte' => null, 'lte' => '2010-12-31' ]
 			),
 			$query
 		);
