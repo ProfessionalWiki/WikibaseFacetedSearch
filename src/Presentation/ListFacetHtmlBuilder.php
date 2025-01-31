@@ -44,6 +44,8 @@ class ListFacetHtmlBuilder implements FacetHtmlBuilder {
 		return [
 			'toggle' => $this->buildToggleViewModel( $combineWithAnd, $this->hasCombineWithChoice( $config ) ),
 			'checkboxes' => $this->buildCheckboxesViewModel( $config, $state ),
+			'msg-show-more' => wfMessage( 'wikibase-faceted-search-facet-show-more' )->text(),
+			'msg-show-less' => wfMessage( 'wikibase-faceted-search-facet-show-less' )->text()
 			// TODO: act on config: showNoneFilter https://github.com/ProfessionalWiki/WikibaseFacetedSearch/issues/117
 			// TODO: act on config: showAnyFilter https://github.com/ProfessionalWiki/WikibaseFacetedSearch/issues/119
 		];
@@ -121,9 +123,7 @@ class ListFacetHtmlBuilder implements FacetHtmlBuilder {
 		return [
 			'visible' => $visibleCheckboxes,
 			'collapsed' => $collapsedCheckboxes,
-			'showMore' => count( $collapsedCheckboxes ) > 0,
-			'msg-show-more' => wfMessage( 'wikibase-faceted-search-facet-show-more' )->text(),
-			'msg-show-less' => wfMessage( 'wikibase-faceted-search-facet-show-less' )->text()
+			'showMore' => count( $collapsedCheckboxes ) > 0
 		];
 	}
 
