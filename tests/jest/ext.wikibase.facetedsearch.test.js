@@ -68,9 +68,19 @@ describe( 'getListFacetQuerySegments', () => {
 			.toEqual( [ 'haswbfacet:P1=' ] );
 	} );
 
+	test( 'Query segements for list facet with single selected value in AND mode', () => {
+		expect( actual.getListFacetQuerySegments( [ 'Q2' ], 'P1', 'AND' ) )
+			.toEqual( [ 'haswbfacet:P1=Q2' ] );
+	} );
+
 	test( 'Query segements for list facet with multiple selected values in AND mode', () => {
 		expect( actual.getListFacetQuerySegments( [ 'Q2', 'Q3' ], 'P1', 'AND' ) )
 			.toEqual( [ 'haswbfacet:P1=Q2', 'haswbfacet:P1=Q3' ] );
+	} );
+
+	test( 'Query segements for list facet with single selected value in OR mode', () => {
+		expect( actual.getListFacetQuerySegments( [ 'Q2' ], 'P1', 'OR' ) )
+			.toEqual( [ 'haswbfacet:P1=Q2' ] );
 	} );
 
 	test( 'Query segements for list facet with multiple selected values in OR mode', () => {
