@@ -6,8 +6,8 @@ namespace ProfessionalWiki\WikibaseFacetedSearch\Tests\Persistence;
 
 use PHPUnit\Framework\TestCase;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
-use ProfessionalWiki\WikibaseFacetedSearch\Persistence\PageItemLookupFactory;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\NullPageItemLookup;
+use ProfessionalWiki\WikibaseFacetedSearch\Persistence\PageItemLookupFactory;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\SitelinkPageItemLookup;
 use Wikibase\Lib\Store\HashSiteLinkStore;
 
