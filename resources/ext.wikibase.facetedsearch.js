@@ -85,9 +85,6 @@ function onInstancesClick( event, instanceId ) {
  */
 function onListFacetInput( facet, propertyId, mode ) {
 	const selectedValues = getListFacetSelectedValues( facet );
-	if ( selectedValues.length === 0 ) {
-		return;
-	}
 	mode = mode || getListFacetQueryMode( facet );
 	const newQueries = getListFacetQuerySegments( selectedValues, propertyId, mode );
 	submitSearchForm( buildQueryString( specialSearchInput.value, newQueries, propertyId ) );
