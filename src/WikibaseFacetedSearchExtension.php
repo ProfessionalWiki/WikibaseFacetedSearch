@@ -17,6 +17,7 @@ use ProfessionalWiki\WikibaseFacetedSearch\Application\ItemTypeExtractor;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\ItemTypeLabelLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\PageItemLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\QueryStringParser;
+use ProfessionalWiki\WikibaseFacetedSearch\Application\SearchQueryHistory;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\StatementListTranslator;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\StatementsLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\StatementTranslator;
@@ -62,6 +63,8 @@ class WikibaseFacetedSearchExtension {
 }';
 
 	private ?Config $config;
+
+	private SearchQueryHistory $searchQueryHistory;
 
 	public static function getInstance(): self {
 		/** @var ?WikibaseFacetedSearchExtension $instance */
@@ -295,6 +298,10 @@ class WikibaseFacetedSearchExtension {
 		return new RangeFacetQueryBuilder(
 			dataTypeLookup: $this->getPropertyDataTypeLookup()
 		);
+	}
+
+	public function getSearchQueryHistory(): SearchQueryHistory {
+		return $this->searchQueryHistory ??= new SearchQueryHistory();
 	}
 
 }

@@ -6,8 +6,11 @@ namespace ProfessionalWiki\WikibaseFacetedSearch\EntryPoints;
 
 use CirrusSearch\CirrusSearch;
 use CirrusSearch\Query\KeywordFeature;
+use CirrusSearch\Search\CirrusSearchResultSet;
 use CirrusSearch\SearchConfig;
+use Elastica\Query\MatchAll;
 use HtmlArmor;
+use ISearchResultSet;
 use MediaWiki\Content\ContentHandler;
 use MediaWiki\EditPage\EditPage;
 use MediaWiki\Html\Html;
@@ -65,6 +68,30 @@ class WikibaseFacetedSearchHooks {
 				searchQuery: $term
 			)
 		);
+	}
+
+	public static function onSpecialSearchResults(
+		string $term,
+		?ISearchResultSet $titleMatches,
+		?ISearchResultSet $textMatches
+	): void {
+		if ( !( $textMatches instanceof CirrusSearchResultSet ) ) {
+			return;
+		}
+
+		WikibaseFacetedSearchExtension::getInstance()->getSearchQueryHistory()->setQuery(
+			$term,
+			$textMatches->getElasticaResultSet()->getQuery()->getQuery()
+		);
+	}
+
+	public static function onSpecialSearchResultsAppend(
+		SpecialSearch $specialSearch,
+		OutputPage $output,
+		string $term
+	): void {
+		// Build sidebar with current query
+		WikibaseFacetedSearchExtension::getInstance()->getSearchQueryHistory()->getQuery( $term ) ?? new MatchAll();
 	}
 
 	public static function onContentHandlerDefaultModelFor( Title $title, ?string &$model ): void {
