@@ -32,6 +32,7 @@ use ProfessionalWiki\WikibaseFacetedSearch\Persistence\PageContentConfigLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\PageContentFetcher;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\PageItemLookupFactory;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\Search\Query\DelegatingFacetQueryBuilder;
+use ProfessionalWiki\WikibaseFacetedSearch\Persistence\Search\Query\FullSearchQueryBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\Search\Query\HasWbFacetFeature;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\Search\Query\ItemTypeQueryBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\Search\Query\ListFacetQueryBuilder;
@@ -43,6 +44,7 @@ use ProfessionalWiki\WikibaseFacetedSearch\Presentation\FacetHtmlBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\ListFacetHtmlBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\RangeFacetHtmlBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\UiBuilder;
+use RequestContext;
 use RuntimeException;
 use TemplateParser;
 use Wikibase\DataModel\Services\Lookup\LabelLookup;
@@ -294,6 +296,13 @@ class WikibaseFacetedSearchExtension {
 	private function newRangeFacetQueryBuilder(): RangeFacetQueryBuilder {
 		return new RangeFacetQueryBuilder(
 			dataTypeLookup: $this->getPropertyDataTypeLookup()
+		);
+	}
+
+	public function newFullSearchQueryBuilder( RequestContext $requestContext, CirrusSearch $cirrusSearch ): FullSearchQueryBuilder {
+		return new FullSearchQueryBuilder(
+			requestContext: $requestContext,
+			cirrusSearch: $cirrusSearch
 		);
 	}
 

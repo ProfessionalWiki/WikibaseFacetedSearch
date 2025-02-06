@@ -4,6 +4,7 @@ declare( strict_types = 1 );
 
 namespace ProfessionalWiki\WikibaseFacetedSearch\Persistence;
 
+use Elastica\Query\AbstractQuery;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\ValueCount;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\ValueCounter;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\ValueCounts;
@@ -20,9 +21,10 @@ class ElasticValueCounter implements ValueCounter {
 	 * Count the values for a given property, highest occurrences first.
 	 * Values are indexed per property at wbfs_P123, where P123 is the serialization of the property id.
 	 */
-	public function countValues( PropertyId $property /* TODO: current query */ ): ValueCounts {
+	public function countValues( PropertyId $property, AbstractQuery $currentQuery): ValueCounts {
 		$query = [ // TODO: filter by current query
 			'size' => 0,
+			'query' => $currentQuery->toArray(),
 			'aggs' => [
 				'valueCounts' => [
 					'terms' => [

@@ -5,9 +5,23 @@ declare( strict_types = 1 );
 namespace ProfessionalWiki\WikibaseFacetedSearch\EntryPoints;
 
 use CirrusSearch\CirrusSearch;
+use CirrusSearch\CirrusSearchHookRunner;
+use CirrusSearch\Fallbacks\FallbackRunner;
+use CirrusSearch\Parser\BasicQueryClassifier;
+use CirrusSearch\Parser\NamespacePrefixParser;
+use CirrusSearch\Parser\QueryStringRegex\SearchQueryParseException;
 use CirrusSearch\Query\KeywordFeature;
+use CirrusSearch\Search\CirrusSearchResultSet;
+use CirrusSearch\Search\FullTextResultsType;
+use CirrusSearch\Search\SearchContext;
+use CirrusSearch\Search\SearchQuery;
+use CirrusSearch\Search\SearchQueryBuilder;
+use CirrusSearch\Search\SearchRequestBuilder;
+use CirrusSearch\Search\TitleHelper;
 use CirrusSearch\SearchConfig;
+use CirrusSearch\Searcher;
 use HtmlArmor;
+use ISearchResultSet;
 use MediaWiki\Content\ContentHandler;
 use MediaWiki\EditPage\EditPage;
 use MediaWiki\Html\Html;
@@ -57,12 +71,26 @@ class WikibaseFacetedSearchHooks {
 		OutputPage $output,
 		string $term
 	): void {
+		if ( !WikibaseFacetedSearchExtension::getInstance()->getConfig()->isComplete() ) {
+			return;
+		}
+
+		$searchEngine = $specialSearch->getSearchEngine();
+
+		if ( !( $searchEngine instanceof CirrusSearch ) ) {
+			return;
+		}
+
 		$output->addModuleStyles( 'ext.wikibase.facetedsearch.styles' );
 		$output->addModules( 'ext.wikibase.facetedsearch' );
 
 		$output->addHTML(
 			WikibaseFacetedSearchExtension::getInstance()->getUiBuilder( $specialSearch->getLanguage() )->createHtml(
-				searchQuery: $term
+				searchQuery: $term,
+				currentQuery: WikibaseFacetedSearchExtension::getInstance()->newFullSearchQueryBuilder(
+					requestContext: $specialSearch->getContext(),
+					cirrusSearch: $searchEngine
+				)->buildQuery( $term )
 			)
 		);
 	}

@@ -4,6 +4,7 @@ declare( strict_types = 1 );
 
 namespace ProfessionalWiki\WikibaseFacetedSearch\Tests\TestDoubles;
 
+use Elastica\Query\AbstractQuery;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\ValueCount;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\ValueCounter;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\ValueCounts;
@@ -20,7 +21,7 @@ class StubValueCounter implements ValueCounter {
 	public const THIRD_VALUE = 'Charlie';
 	public const THIRD_COUNT = 1;
 
-	public function countValues( PropertyId $property ): ValueCounts {
+	public function countValues( PropertyId $property, AbstractQuery $currentQuery): ValueCounts {
 		return new ValueCounts( [
 			new ValueCount( self::FIRST_VALUE, self::FIRST_COUNT ),
 			new ValueCount( self::SECOND_VALUE, self::SECOND_COUNT ),

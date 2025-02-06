@@ -4,6 +4,7 @@ declare( strict_types = 1 );
 
 namespace ProfessionalWiki\WikibaseFacetedSearch\Presentation;
 
+use Elastica\Query\AbstractQuery;
 use MediaWiki\Html\TemplateParser;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetConfig;
@@ -27,7 +28,7 @@ class UiBuilder {
 	) {
 	}
 
-	public function createHtml( string $searchQuery ): string {
+	public function createHtml( string $searchQuery, AbstractQuery $currentQuery ): string {
 		$query = $this->parseQuery( $searchQuery );
 		$itemType = $query->getItemTypes()[0] ?? null;
 
@@ -37,7 +38,8 @@ class UiBuilder {
 			),
 			$this->buildFacetsViewModel(
 				itemType: $itemType,
-				query: $query
+				query: $query,
+				currentQuery: $currentQuery
 			)
 		);
 	}
@@ -87,7 +89,7 @@ class UiBuilder {
 		return !array_reduce( $tabs, ( fn( $carry, $tab ) => $carry || $tab['selected'] ), false );
 	}
 
-	private function buildFacetsViewModel( ?ItemId $itemType, Query $query ): array {
+	private function buildFacetsViewModel( ?ItemId $itemType, Query $query, AbstractQuery $currentQuery ): array {
 		if ( $itemType === null ) {
 			return [];
 		}
@@ -97,20 +99,21 @@ class UiBuilder {
 		foreach ( $this->config->getFacetConfigForItemType( $itemType ) as $facetConfig ) {
 			$facets[] = $this->buildFacetViewModel(
 				$facetConfig,
-				$query->getConstraintsForProperty( $facetConfig->propertyId ) ?? new PropertyConstraints( $facetConfig->propertyId )
+				$query->getConstraintsForProperty( $facetConfig->propertyId ) ?? new PropertyConstraints( $facetConfig->propertyId ),
+				$currentQuery
 			);
 		}
 
 		return $facets;
 	}
 
-	private function buildFacetViewModel( FacetConfig $facet, PropertyConstraints $state ): array {
+	private function buildFacetViewModel( FacetConfig $facet, PropertyConstraints $state, AbstractQuery $query ): array {
 		return [
 			'label' => $this->getPropertyLabel( $facet->propertyId ),
 			'propertyId' => $facet->propertyId->getSerialization(),
 			'type' => $facet->type->value, // TODO: is this needed?
 			'expanded' => true, // TODO: get this from the URL somehow
-			'facetHtml' => $this->facetHtmlBuilder->buildHtml( $facet, $state )
+			'facetHtml' => $this->facetHtmlBuilder->buildHtml( $facet, $state, $query )
 		];
 	}
 
