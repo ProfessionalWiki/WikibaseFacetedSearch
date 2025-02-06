@@ -20,8 +20,8 @@ class UiBuilder {
 	public function __construct(
 		private readonly Config $config,
 		private readonly FacetHtmlBuilder $facetHtmlBuilder,
-		private readonly LabelLookup $labelLookup,
 		private readonly ItemTypeLabelLookup $itemTypeLabelLookup,
+		private readonly LabelLookup $labelLookup,
 		private readonly TemplateParser $templateParser,
 		private readonly QueryStringParser $queryStringParser,
 	) {
@@ -106,7 +106,7 @@ class UiBuilder {
 
 	private function buildFacetViewModel( FacetConfig $facet, PropertyConstraints $state ): array {
 		return [
-			'label' => $this->getPropertyLabel( $facet->propertyId ),
+			'label' => $this->getFacetLabel( $facet->propertyId ),
 			'propertyId' => $facet->propertyId->getSerialization(),
 			'type' => $facet->type->value, // TODO: is this needed?
 			'expanded' => true, // TODO: get this from the URL somehow
@@ -114,8 +114,8 @@ class UiBuilder {
 		];
 	}
 
-	private function getPropertyLabel( PropertyId $id ): string {
-		return $this->labelLookup->getLabel( $id )?->getText() ?? $id->getSerialization();
+	private function getFacetLabel( PropertyId $propertyId ): string {
+		return $this->labelLookup->getLabel( $propertyId )?->getText() ?? $propertyId->getSerialization();
 	}
 
 }

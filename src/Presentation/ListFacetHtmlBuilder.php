@@ -24,7 +24,8 @@ class ListFacetHtmlBuilder implements FacetHtmlBuilder {
 
 	public function __construct(
 		private readonly TemplateParser $parser,
-		private readonly ValueCounter $valueCounter
+		private readonly ValueCounter $valueCounter,
+		private readonly FacetValueFormatter $valueFormatter
 	) {
 	}
 
@@ -104,7 +105,7 @@ class ListFacetHtmlBuilder implements FacetHtmlBuilder {
 
 		foreach ( $this->getValuesAndCounts( $config ) as $i => $valueCount ) {
 			$checkboxes[] = [
-				'label' => $valueCount->value,
+				'formattedValue' => $this->valueFormatter->getLabel( (string)$valueCount->value, $config->propertyId ),
 				'count' => $valueCount->count,
 				'checked' => in_array( $valueCount->value, $selectedValues ), // TODO: test with multiple types of values
 				'value' => $valueCount->value,

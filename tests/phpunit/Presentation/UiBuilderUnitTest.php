@@ -45,8 +45,8 @@ class UiBuilderUnitTest extends TestCase {
 		return new UiBuilder(
 			$config ?? new Config(),
 			new SpyFacetHtmlBuilder(),
-			new StubLabelLookup( null ),
 			new FakeItemTypeLabelLookup(),
+			new StubLabelLookup( null ),
 			$templateSpy ?? new SpyTemplateParser(),
 			$queryStringParser ?? new StubQueryStringParser()
 		);

@@ -6,6 +6,7 @@ namespace ProfessionalWiki\WikibaseFacetedSearch;
 
 use CirrusSearch\CirrusSearch;
 use CirrusSearch\SearchConfig;
+use MediaWiki\Html\TemplateParser;
 use MediaWiki\Language\Language;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Title\Title;
@@ -40,11 +41,11 @@ use ProfessionalWiki\WikibaseFacetedSearch\Persistence\Search\SearchIndexFieldsB
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\SitelinkBasedStatementsLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\DelegatingFacetHtmlBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\FacetHtmlBuilder;
+use ProfessionalWiki\WikibaseFacetedSearch\Presentation\FacetValueFormatter;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\ListFacetHtmlBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\RangeFacetHtmlBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\UiBuilder;
 use RuntimeException;
-use TemplateParser;
 use Wikibase\DataModel\Services\Lookup\LabelLookup;
 use Wikibase\DataModel\Services\Lookup\PropertyDataTypeLookup;
 use Wikibase\Lib\Store\SiteLinkStore;
@@ -199,25 +200,33 @@ class WikibaseFacetedSearchExtension {
 	public function getUiBuilder( Language $language ): UiBuilder {
 		return new UiBuilder(
 			config: $this->getConfig(),
-			facetHtmlBuilder: $this->getFacetHtmlBuilder(),
-			labelLookup: $this->getLabelLookup( $language ),
+			facetHtmlBuilder: $this->getFacetHtmlBuilder( $language ),
 			itemTypeLabelLookup: $this->getItemTypeLabelLookup( $language ),
+			labelLookup: $this->getLabelLookup( $language ),
 			templateParser: $this->getTemplateParser(),
 			queryStringParser: $this->getQueryStringParser()
 		);
 	}
 
-	private function getFacetHtmlBuilder(): FacetHtmlBuilder {
+	private function getFacetHtmlBuilder( Language $language ): FacetHtmlBuilder {
 		$delegator = new DelegatingFacetHtmlBuilder();
-		$delegator->addBuilder( FacetType::LIST, $this->newListFacetHtmlBuilder() );
+		$delegator->addBuilder( FacetType::LIST, $this->newListFacetHtmlBuilder( $this->getFacetValueFormatter( $language ) ) );
 		$delegator->addBuilder( FacetType::RANGE, $this->newRangeFacetHtmlBuilder() );
 		return $delegator;
 	}
 
-	private function newListFacetHtmlBuilder(): FacetHtmlBuilder {
+	public function getFacetValueFormatter( Language $language ): FacetValueFormatter {
+		return new FacetValueFormatter(
+			dataTypeLookup: $this->getPropertyDataTypeLookup(),
+			labelLookup: $this->getLabelLookup( $language )
+		);
+	}
+
+	private function newListFacetHtmlBuilder( FacetValueFormatter $valueFormatter ): FacetHtmlBuilder {
 		return new ListFacetHtmlBuilder(
 			parser: $this->getTemplateParser(),
-			valueCounter: $this->getValueCounter()
+			valueCounter: $this->getValueCounter(),
+			valueFormatter: $valueFormatter
 		);
 	}
 
