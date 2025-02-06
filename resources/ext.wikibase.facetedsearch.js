@@ -84,7 +84,7 @@ function onInstancesClick( event, instanceId ) {
  * @param {?string} mode
  */
 function onListFacetInput( facet, propertyId, mode ) {
-	const selectedValues = getListFacetSelectedValues( facet );
+	const selectedValues = getListFacetSelectedItems( facet );
 	mode = mode || getListFacetQueryMode( facet );
 	const newQueries = getListFacetQuerySegments( selectedValues, propertyId, mode );
 	submitSearchForm( buildQueryString( specialSearchInput.value, newQueries, propertyId ) );
@@ -159,7 +159,7 @@ function updateErrorState( input ) {
  * @param {HTMLDivElement} facet
  * @return {string[]}
  */
-function getListFacetSelectedValues( facet ) {
+function getListFacetSelectedItems( facet ) {
 	const selectedValues = [];
 
 	[ ...facet.querySelectorAll( '.wikibase-faceted-search__facet-item' ) ].forEach( ( facetItem ) => {
@@ -261,7 +261,7 @@ init();
 // Export for unit tests
 module.exports = {
 	getListFacetQueryMode,
-	getListFacetSelectedValues,
+	getListFacetSelectedItems,
 	getListFacetQuerySegments,
 	getRangeFacetQuerySegments,
 	buildQueryString
