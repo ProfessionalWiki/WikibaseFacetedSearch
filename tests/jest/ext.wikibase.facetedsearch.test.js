@@ -38,7 +38,7 @@ describe( 'getListFacetQueryMode', () => {
 	} );
 } );
 
-describe( 'getListFacetSelectedValues', () => {
+describe( 'getListFacetSelectedItems', () => {
 	test( 'List facet with no checked items', () => {
 		document.body.innerHTML = `
 			<div class="wikibase-faceted-search__facet-item"><input class="cdx-checkbox__input" type="checkbox" value="Q1"></div>
@@ -46,7 +46,7 @@ describe( 'getListFacetSelectedValues', () => {
 			<div class="wikibase-faceted-search__facet-item"><input class="cdx-checkbox__input" type="checkbox" value="Q3"></div>
 		`;
 
-		expect( actual.getListFacetSelectedValues( document.body ) )
+		expect( actual.getListFacetSelectedItems( document.body ) )
 			.toEqual( [] );
 	} );
 
@@ -57,7 +57,7 @@ describe( 'getListFacetSelectedValues', () => {
 			<div class="wikibase-faceted-search__facet-item"><input class="cdx-checkbox__input" type="checkbox" value="Q3" checked></div>
 		`;
 
-		expect( actual.getListFacetSelectedValues( document.body ) )
+		expect( actual.getListFacetSelectedItems( document.body ) )
 			.toEqual( [ 'Q2', 'Q3' ] );
 	} );
 } );
