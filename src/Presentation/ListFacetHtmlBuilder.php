@@ -4,6 +4,7 @@ declare( strict_types = 1 );
 
 namespace ProfessionalWiki\WikibaseFacetedSearch\Presentation;
 
+use Elastica\Query\AbstractQuery;
 use MediaWiki\Html\TemplateParser;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetConfig;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\PropertyConstraints;
@@ -29,22 +30,22 @@ class ListFacetHtmlBuilder implements FacetHtmlBuilder {
 	) {
 	}
 
-	public function buildHtml( FacetConfig $config, PropertyConstraints $state ): string {
+	public function buildHtml( FacetConfig $config, PropertyConstraints $state, AbstractQuery $currentQuery ): string {
 		return $this->parser->processTemplate(
 			'ListFacet',
-			$this->buildViewModel( $config, $state )
+			$this->buildViewModel( $config, $state, $currentQuery )
 		);
 	}
 
 	/**
 	 * @return array<string, mixed>
 	 */
-	public function buildViewModel( FacetConfig $config, PropertyConstraints $state ): array {
+	public function buildViewModel( FacetConfig $config, PropertyConstraints $state, AbstractQuery $currentQuery ): array {
 		$combineWithAnd = $this->shouldCombineWithAnd( $config, $state );
 
 		return [
 			'toggle' => $this->buildToggleViewModel( $combineWithAnd, $this->hasCombineWithChoice( $config ) ),
-			'checkboxes' => $this->buildCheckboxesViewModel( $config, $state ),
+			'checkboxes' => $this->buildCheckboxesViewModel( $config, $state, $currentQuery ),
 			// TODO: act on config: showNoneFilter https://github.com/ProfessionalWiki/WikibaseFacetedSearch/issues/117
 			// TODO: act on config: showAnyFilter https://github.com/ProfessionalWiki/WikibaseFacetedSearch/issues/119
 		];
@@ -96,14 +97,14 @@ class ListFacetHtmlBuilder implements FacetHtmlBuilder {
 		];
 	}
 
-	private function buildCheckboxesViewModel( FacetConfig $config, PropertyConstraints $state ): array {
+	private function buildCheckboxesViewModel( FacetConfig $config, PropertyConstraints $state, AbstractQuery $currentQuery ): array {
 		$combineWithAnd = $this->shouldCombineWithAnd( $config, $state );
 
 		$selectedValues = $combineWithAnd ? $state->getAndSelectedValues() : $state->getOrSelectedValues();
 
 		$checkboxes = [];
 
-		foreach ( $this->getValuesAndCounts( $config ) as $i => $valueCount ) {
+		foreach ( $this->getValuesAndCounts( $config, $currentQuery ) as $i => $valueCount ) {
 			$checkboxes[] = [
 				'formattedValue' => $this->valueFormatter->getLabel( (string)$valueCount->value, $config->propertyId ),
 				'count' => $valueCount->count,
@@ -119,8 +120,8 @@ class ListFacetHtmlBuilder implements FacetHtmlBuilder {
 	/**
 	 * @return ValueCount[]
 	 */
-	private function getValuesAndCounts( FacetConfig $config ): array {
-		return $this->valueCounter->countValues( $config->propertyId )->asArray();
+	private function getValuesAndCounts( FacetConfig $config, AbstractQuery $currentQuery ): array {
+		return $this->valueCounter->countValues( $config->propertyId, $currentQuery )->asArray();
 	}
 
 }

@@ -56,6 +56,7 @@ class WikibaseFacetedSearchExtension {
 
 	public const CONFIG_PAGE_TITLE = 'WikibaseFacetedSearch';
 	public const CONFIG_VARIABLE_NAME = 'WikibaseFacetedSearch';
+	public const QUERY_GLOBAL = 'wgWikibaseFacetedSearchCurrentQuery';
 
 	public const DEFAULT_CONFIG = '{
 	"linkTargetSitelinkSiteId": null,

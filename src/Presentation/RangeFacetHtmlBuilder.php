@@ -4,6 +4,7 @@ declare( strict_types = 1 );
 
 namespace ProfessionalWiki\WikibaseFacetedSearch\Presentation;
 
+use Elastica\Query\AbstractQuery;
 use MediaWiki\Html\TemplateParser;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetConfig;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\PropertyConstraints;
@@ -18,7 +19,7 @@ class RangeFacetHtmlBuilder implements FacetHtmlBuilder {
 	) {
 	}
 
-	public function buildHtml( FacetConfig $config, PropertyConstraints $state ): string {
+	public function buildHtml( FacetConfig $config, PropertyConstraints $state, AbstractQuery $currentQuery ): string {
 		return $this->parser->processTemplate(
 			'RangeFacet',
 			[

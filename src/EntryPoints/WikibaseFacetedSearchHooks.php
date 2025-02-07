@@ -6,8 +6,11 @@ namespace ProfessionalWiki\WikibaseFacetedSearch\EntryPoints;
 
 use CirrusSearch\CirrusSearch;
 use CirrusSearch\Query\KeywordFeature;
+use CirrusSearch\Search\CirrusSearchResultSet;
 use CirrusSearch\SearchConfig;
+use Elastica\Query\AbstractQuery;
 use HtmlArmor;
+use ISearchResultSet;
 use MediaWiki\Content\ContentHandler;
 use MediaWiki\EditPage\EditPage;
 use MediaWiki\Html\Html;
@@ -67,6 +70,20 @@ class WikibaseFacetedSearchHooks {
 		);
 	}
 
+	public static function onSpecialSearchResults(
+		string $term,
+		?ISearchResultSet $titleMatches,
+		?ISearchResultSet $textMatches
+	): void {
+		if ( $textMatches instanceof CirrusSearchResultSet ) {
+			self::setCurrentQuery( $textMatches->getElasticaResultSet()->getQuery()->getQuery() );
+		}
+	}
+
+	private static function setCurrentQuery( AbstractQuery $query ): void {
+		$GLOBALS[WikibaseFacetedSearchExtension::QUERY_GLOBAL] = $query;
+	}
+
 	public static function onSpecialSearchResultsAppend(
 		SpecialSearch $specialSearch,
 		OutputPage $output,
@@ -74,9 +91,14 @@ class WikibaseFacetedSearchHooks {
 	): void {
 		$output->addHTML(
 			WikibaseFacetedSearchExtension::getInstance()->getSidebarHtmlBuilder( $specialSearch->getLanguage() )->createHtml(
-				searchQuery: $term
+				searchQuery: $term,
+				currentQuery: self::getCurrentQuery()
 			)
 		);
+	}
+
+	private static function getCurrentQuery(): AbstractQuery {
+		return $GLOBALS[WikibaseFacetedSearchExtension::QUERY_GLOBAL];
 	}
 
 	public static function onContentHandlerDefaultModelFor( Title $title, ?string &$model ): void {

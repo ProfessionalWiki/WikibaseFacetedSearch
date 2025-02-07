@@ -4,6 +4,7 @@ declare( strict_types = 1 );
 
 namespace ProfessionalWiki\WikibaseFacetedSearch\Tests\Presentation;
 
+use Elastica\Query\MatchAll;
 use PHPUnit\Framework\TestCase;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetConfig;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetType;
@@ -23,7 +24,8 @@ class RangeFacetHtmlBuilderTest extends TestCase {
 	public function testRendersTemplateWithMinAndMax(): void {
 		$html = $this->newRangeFacetHtmlBuilder()->buildHtml(
 			config: $this->newConfig(),
-			state: $this->newPropertyConstraints()->withInclusiveMinimum( 1337 )->withInclusiveMaximum( 9001 )
+			state: $this->newPropertyConstraints()->withInclusiveMinimum( 1337 )->withInclusiveMaximum( 9001 ),
+			currentQuery: new MatchAll()
 		);
 
 		//$this->assertStringContainsString( self::FACET_PROPERTY_ID, $html );
@@ -62,7 +64,8 @@ class RangeFacetHtmlBuilderTest extends TestCase {
 	public function testRendersTemplateWithNoMinAndMax(): void {
 		$html = $this->newRangeFacetHtmlBuilder()->buildHtml(
 			config: $this->newConfig(),
-			state: $this->newPropertyConstraints()
+			state: $this->newPropertyConstraints(),
+			currentQuery: new MatchAll()
 		);
 
 		$this->assertMatchesRegularExpression( '/range-min.*?value=""/s', $html );
