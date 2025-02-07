@@ -44,7 +44,8 @@ use ProfessionalWiki\WikibaseFacetedSearch\Presentation\FacetHtmlBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\FacetValueFormatter;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\ListFacetHtmlBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\RangeFacetHtmlBuilder;
-use ProfessionalWiki\WikibaseFacetedSearch\Presentation\UiBuilder;
+use ProfessionalWiki\WikibaseFacetedSearch\Presentation\SidebarHtmlBuilder;
+use ProfessionalWiki\WikibaseFacetedSearch\Presentation\TabsHtmlBuilder;
 use RuntimeException;
 use Wikibase\DataModel\Services\Lookup\LabelLookup;
 use Wikibase\DataModel\Services\Lookup\PropertyDataTypeLookup;
@@ -197,11 +198,10 @@ class WikibaseFacetedSearchExtension {
 		return new ConfigJsonValidator( $schema );
 	}
 
-	public function getUiBuilder( Language $language ): UiBuilder {
-		return new UiBuilder(
+	public function getSidebarHtmlBuilder( Language $language ): SidebarHtmlBuilder {
+		return new SidebarHtmlBuilder(
 			config: $this->getConfig(),
 			facetHtmlBuilder: $this->getFacetHtmlBuilder( $language ),
-			itemTypeLabelLookup: $this->getItemTypeLabelLookup( $language ),
 			labelLookup: $this->getLabelLookup( $language ),
 			templateParser: $this->getTemplateParser(),
 			queryStringParser: $this->getQueryStringParser()
@@ -303,6 +303,15 @@ class WikibaseFacetedSearchExtension {
 	private function newRangeFacetQueryBuilder(): RangeFacetQueryBuilder {
 		return new RangeFacetQueryBuilder(
 			dataTypeLookup: $this->getPropertyDataTypeLookup()
+		);
+	}
+
+	public function getTabsHtmlBuilder( Language $language ): TabsHtmlBuilder {
+		return new TabsHtmlBuilder(
+			config: $this->getConfig(),
+			itemTypeLabelLookup: $this->getItemTypeLabelLookup( $language ),
+			templateParser: $this->getTemplateParser(),
+			queryStringParser: $this->getQueryStringParser()
 		);
 	}
 
