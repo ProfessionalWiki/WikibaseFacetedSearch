@@ -4,6 +4,7 @@ declare( strict_types = 1 );
 
 namespace ProfessionalWiki\WikibaseFacetedSearch\Tests\Presentation;
 
+use Elastica\Query\MatchAll;
 use MediaWiki\MediaWikiServices;
 use PHPUnit\Framework\TestCase;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetConfig;
@@ -26,7 +27,8 @@ class ListFacetHtmlBuilderTest extends TestCase {
 	public function testRendersTemplate(): void {
 		$html = $this->newListFacetHtmlBuilder()->buildHtml(
 			config: $this->newFacetConfig(),
-			state: $this->newPropertyConstraints()
+			state: $this->newPropertyConstraints(),
+			currentQuery: new MatchAll()
 		);
 
 		$this->assertStringContainsString( self::FACET_PROPERTY_ID, $html );
@@ -64,7 +66,8 @@ class ListFacetHtmlBuilderTest extends TestCase {
 	private function buildViewModel( ?PropertyConstraints $constraints = null, array $typeSpecificConfig = [] ): array {
 		return $this->newListFacetHtmlBuilder()->buildViewModel(
 			config: $this->newFacetConfig( $typeSpecificConfig ),
-			state: $constraints ?? $this->newPropertyConstraints()
+			state: $constraints ?? $this->newPropertyConstraints(),
+			currentQuery: new MatchAll()
 		);
 	}
 
