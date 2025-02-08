@@ -4,6 +4,7 @@ declare( strict_types = 1 );
 
 namespace ProfessionalWiki\WikibaseFacetedSearch\Tests\Presentation;
 
+use Elastica\Query\MatchAll;
 use MediaWiki\MediaWikiServices;
 use MediaWikiIntegrationTestCase;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\SidebarHtmlBuilder;
@@ -36,7 +37,7 @@ class SidebarHtmlBuilderIntegrationTest extends MediaWikiIntegrationTestCase {
 JSON
 		);
 
-		$html = $this->getSidebarHtmlBuilderFromGlobals()->createHtml( 'foo haswbfacet:P42=Q1' );
+		$html = $this->getSidebarHtmlBuilderFromGlobals()->createHtml( 'foo haswbfacet:P42=Q1', new MatchAll() );
 		$this->assertStringContainsString( 'sidebar', $html );
 	}
 
