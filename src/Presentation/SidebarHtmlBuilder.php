@@ -7,7 +7,6 @@ namespace ProfessionalWiki\WikibaseFacetedSearch\Presentation;
 use MediaWiki\Html\TemplateParser;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetConfig;
-use ProfessionalWiki\WikibaseFacetedSearch\Application\ItemTypeLabelLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\PropertyConstraints;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Query;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\QueryStringParser;
@@ -15,13 +14,12 @@ use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Services\Lookup\LabelLookup;
 
-class UiBuilder {
+class SidebarHtmlBuilder {
 
 	public function __construct(
 		private readonly Config $config,
 		private readonly FacetHtmlBuilder $facetHtmlBuilder,
 		private readonly LabelLookup $labelLookup,
-		private readonly ItemTypeLabelLookup $itemTypeLabelLookup,
 		private readonly TemplateParser $templateParser,
 		private readonly QueryStringParser $queryStringParser,
 	) {
@@ -32,9 +30,6 @@ class UiBuilder {
 		$itemType = $query->getItemTypes()[0] ?? null;
 
 		return $this->renderTemplate(
-			$this->buildTabsViewModel(
-				selectedItemType: $itemType
-			),
 			$this->buildFacetsViewModel(
 				itemType: $itemType,
 				query: $query
@@ -42,13 +37,15 @@ class UiBuilder {
 		);
 	}
 
-	private function renderTemplate( array $instancesViewModel, array $facetsViewModel ): string {
+	private function renderTemplate( array $facetsViewModel ): string {
+		if ( count( $facetsViewModel ) === 0 ) {
+			return '';
+		}
+
 		return $this->templateParser->processTemplate(
-			'Layout',
+			'Sidebar',
 			[
-				'showSidebar' => count( $facetsViewModel ) > 0,
 				'instanceId' => $this->config->getItemTypeProperty()->getSerialization(),
-				'instances' => $instancesViewModel,
 				'facets' => $facetsViewModel,
 				'msg-filters' => wfMessage( 'wikibase-faceted-search-filters' )->text(),
 			]
@@ -57,34 +54,6 @@ class UiBuilder {
 
 	private function parseQuery( string $searchQuery ): Query {
 		return $this->queryStringParser->parse( $searchQuery );
-	}
-
-	private function buildTabsViewModel( ?ItemId $selectedItemType ): array {
-		$tabs = [];
-
-		foreach ( $this->config->getItemTypes() as $itemType ) {
-			$tabs[] = [
-				'label' => $this->itemTypeLabelLookup->getLabel( $itemType ),
-				'value' => $itemType->getSerialization(),
-				'selected' => $itemType->equals( $selectedItemType )
-			];
-		}
-
-		return [
-			[
-				'label' => wfMessage( 'wikibase-faceted-search-instance-type-all' )->text(),
-				'value' => '',
-				'selected' => $this->noTabsAreSelected( $tabs )
-			],
-			...$tabs
-		];
-	}
-
-	/**
-	 * @param array<array{selected: bool}> $tabs
-	 */
-	private function noTabsAreSelected( array $tabs ): bool {
-		return !array_reduce( $tabs, ( fn( $carry, $tab ) => $carry || $tab['selected'] ), false );
 	}
 
 	private function buildFacetsViewModel( ?ItemId $itemType, Query $query ): array {
@@ -106,7 +75,7 @@ class UiBuilder {
 
 	private function buildFacetViewModel( FacetConfig $facet, PropertyConstraints $state ): array {
 		return [
-			'label' => $this->getPropertyLabel( $facet->propertyId ),
+			'label' => $this->getFacetLabel( $facet->propertyId ),
 			'propertyId' => $facet->propertyId->getSerialization(),
 			'type' => $facet->type->value, // TODO: is this needed?
 			'expanded' => true, // TODO: get this from the URL somehow
@@ -114,8 +83,8 @@ class UiBuilder {
 		];
 	}
 
-	private function getPropertyLabel( PropertyId $id ): string {
-		return $this->labelLookup->getLabel( $id )?->getText() ?? $id->getSerialization();
+	private function getFacetLabel( PropertyId $propertyId ): string {
+		return $this->labelLookup->getLabel( $propertyId )?->getText() ?? $propertyId->getSerialization();
 	}
 
 }

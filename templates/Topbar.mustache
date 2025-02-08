@@ -2,18 +2,20 @@
 	Codex - Tabs component
 	@see https://doc.wikimedia.org/codex/v1.14.0/components/demos/tabs.html#markup-structure
 }}
-<div class="wikibase-faceted-search__instances cdx-tabs" data-instance-id="{{instanceId}}">
-	<div class="cdx-tabs__header">
-		<div class="cdx-tabs__list" tabindex="-1">
-			{{#instances}}
-				<button
-					class="wikibase-faceted-search__instance cdx-tabs__list__item"
-					aria-selected="{{#selected}}true{{/selected}}{{^selected}}false{{/selected}}"
-					value="{{value}}"
-				>
-					{{label}}
-				</button>
-			{{/instances}}
+<div class="wikibase-faceted-search__topbar">
+	<div class="wikibase-faceted-search__instances cdx-tabs" data-instance-id="{{instanceId}}">
+		<div class="cdx-tabs__header">
+			<div class="cdx-tabs__list" tabindex="-1">
+				{{#instances}}
+					<button
+						class="wikibase-faceted-search__instance cdx-tabs__list__item"
+						aria-selected="{{#selected}}true{{/selected}}{{^selected}}false{{/selected}}"
+						value="{{value}}"
+					>
+						{{label}}
+					</button>
+				{{/instances}}
+			</div>
 		</div>
 	</div>
 </div>

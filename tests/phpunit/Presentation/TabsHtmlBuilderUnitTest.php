@@ -9,27 +9,24 @@ use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\PropertyConstraintsList;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Query;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\QueryStringParser;
-use ProfessionalWiki\WikibaseFacetedSearch\Presentation\UiBuilder;
+use ProfessionalWiki\WikibaseFacetedSearch\Presentation\TabsHtmlBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Tests\TestDoubles\FakeItemTypeLabelLookup;
-use ProfessionalWiki\WikibaseFacetedSearch\Tests\TestDoubles\SpyFacetHtmlBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Tests\TestDoubles\SpyTemplateParser;
-use ProfessionalWiki\WikibaseFacetedSearch\Tests\TestDoubles\StubLabelLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Tests\TestDoubles\StubQueryStringParser;
 use ProfessionalWiki\WikibaseFacetedSearch\WikibaseFacetedSearchExtension;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\NumericPropertyId;
-use Wikibase\DataModel\Services\Lookup\LabelLookup;
 
 /**
- * @covers \ProfessionalWiki\WikibaseFacetedSearch\Presentation\UiBuilder
+ * @covers \ProfessionalWiki\WikibaseFacetedSearch\Presentation\TabsHtmlBuilder
  */
-class UiBuilderUnitTest extends TestCase {
+class TabsHtmlBuilderUnitTest extends TestCase {
 
 	public function testTabsViewModelContainsItemTypeProperty(): void {
 		$config = new Config( itemTypeProperty: new NumericPropertyId( 'P1337' ) );
 		$templateSpy = new SpyTemplateParser();
 
-		$this->newUiBuilder( config: $config, templateSpy: $templateSpy )
+		$this->newTabsHtmlBuilder( config: $config, templateSpy: $templateSpy )
 			->createHtml( 'unimportant' );
 
 		$this->assertSame(
@@ -38,15 +35,13 @@ class UiBuilderUnitTest extends TestCase {
 		);
 	}
 
-	private function newUiBuilder(
+	private function newTabsHtmlBuilder(
 		?Config $config = null,
 		?SpyTemplateParser $templateSpy = null,
 		?QueryStringParser $queryStringParser = null
-	): UiBuilder {
-		return new UiBuilder(
+	): TabsHtmlBuilder {
+		return new TabsHtmlBuilder(
 			$config ?? new Config(),
-			new SpyFacetHtmlBuilder(),
-			new StubLabelLookup( null ),
 			new FakeItemTypeLabelLookup(),
 			$templateSpy ?? new SpyTemplateParser(),
 			$queryStringParser ?? new StubQueryStringParser()
@@ -83,7 +78,7 @@ JSON );
 
 		$templateSpy = new SpyTemplateParser();
 
-		$this->newUiBuilder( config: $config, templateSpy: $templateSpy )
+		$this->newTabsHtmlBuilder( config: $config, templateSpy: $templateSpy )
 			->createHtml( 'unimportant' );
 
 		$this->assertEquals(
@@ -131,7 +126,7 @@ JSON );
 
 		$templateSpy = new SpyTemplateParser();
 
-		$this->newUiBuilder(
+		$this->newTabsHtmlBuilder(
 			config: $config,
 			templateSpy: $templateSpy,
 			queryStringParser: new StubQueryStringParser( new Query(

@@ -15,7 +15,6 @@ use MediaWiki\Output\OutputPage;
 use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Specials\SpecialSearch;
 use MediaWiki\Title\Title;
-use ProfessionalWiki\WikibaseFacetedSearch\Persistence\Search\Query\HasWbFacetFeature;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\ConfigEditPageTextBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\ConfigJsonErrorFormatter;
 use ProfessionalWiki\WikibaseFacetedSearch\WikibaseFacetedSearchExtension;
@@ -62,7 +61,19 @@ class WikibaseFacetedSearchHooks {
 		$output->addModules( 'ext.wikibase.facetedsearch' );
 
 		$output->addHTML(
-			WikibaseFacetedSearchExtension::getInstance()->getUiBuilder( $specialSearch->getLanguage() )->createHtml(
+			WikibaseFacetedSearchExtension::getInstance()->getTabsHtmlBuilder( $specialSearch->getLanguage() )->createHtml(
+				searchQuery: $term
+			)
+		);
+	}
+
+	public static function onSpecialSearchResultsAppend(
+		SpecialSearch $specialSearch,
+		OutputPage $output,
+		string $term
+	): void {
+		$output->addHTML(
+			WikibaseFacetedSearchExtension::getInstance()->getSidebarHtmlBuilder( $specialSearch->getLanguage() )->createHtml(
 				searchQuery: $term
 			)
 		);
@@ -139,7 +150,9 @@ class WikibaseFacetedSearchHooks {
 	 * @param KeywordFeature[] &$extraFeatures
 	 */
 	public static function onCirrusSearchAddQueryFeatures( SearchConfig $config, array &$extraFeatures ): void {
-		$extraFeatures[] = new HasWbFacetFeature();
+		if ( WikibaseFacetedSearchExtension::getInstance()->getConfig()->isComplete() ) {
+			$extraFeatures[] = WikibaseFacetedSearchExtension::getInstance()->newHasWbFacetFeature();
+		}
 	}
 
 	/**

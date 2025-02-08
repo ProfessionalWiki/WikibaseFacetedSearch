@@ -25,7 +25,8 @@ class ListFacetHtmlBuilder implements FacetHtmlBuilder {
 
 	public function __construct(
 		private readonly TemplateParser $parser,
-		private readonly ValueCounter $valueCounter
+		private readonly ValueCounter $valueCounter,
+		private readonly FacetValueFormatter $valueFormatter
 	) {
 	}
 
@@ -85,11 +86,13 @@ class ListFacetHtmlBuilder implements FacetHtmlBuilder {
 		return [
 			'and' => [
 				'label' => wfMessage( 'wikibase-faceted-search-and' )->text(),
+				'value' => self::CONFIG_VALUE_COMBINE_WITH_AND,
 				'selected' => $combineWithAnd,
 				'disabled' => !$canChoose && !$combineWithAnd
 			],
 			'or' => [
 				'label' => wfMessage( 'wikibase-faceted-search-or' )->text(),
+				'value' => self::CONFIG_VALUE_COMBINE_WITH_OR,
 				'selected' => !$combineWithAnd,
 				'disabled' => !$canChoose && $combineWithAnd
 			]
@@ -105,7 +108,7 @@ class ListFacetHtmlBuilder implements FacetHtmlBuilder {
 		$checkboxes = [];
 
 		foreach ( $this->getValuesAndCounts( $config ) as $i => $valueCount ) {
-			$checkboxes[] = $this->buildCheckboxViewModel( $valueCount, $selectedValues, $state->propertyId, $i );
+			$checkboxes[] = $this->buildCheckboxViewModel( $config, $valueCount, $selectedValues, $state->propertyId, $i );
 		}
 
 		return [
@@ -115,9 +118,9 @@ class ListFacetHtmlBuilder implements FacetHtmlBuilder {
 		];
 	}
 
-	private function buildCheckboxViewModel( ValueCount $valueCount, array $selectedValues, PropertyId $propertyId, int $index ): array {
+	private function buildCheckboxViewModel( FacetConfig $config, ValueCount $valueCount, array $selectedValues, PropertyId $propertyId, int $index ): array {
 		return [
-			'label' => $valueCount->value,
+			'formattedValue' => $this->valueFormatter->getLabel( (string)$valueCount->value, $config->propertyId ),
 			'count' => $valueCount->count,
 			'checked' => in_array( $valueCount->value, $selectedValues ), // TODO: test with multiple types of values
 			'value' => $valueCount->value,

@@ -4,6 +4,7 @@ declare( strict_types = 1 );
 
 namespace ProfessionalWiki\WikibaseFacetedSearch\Tests\Presentation;
 
+use MediaWiki\MediaWikiServices;
 use PHPUnit\Framework\TestCase;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetConfig;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetType;
@@ -52,7 +53,8 @@ class ListFacetHtmlBuilderTest extends TestCase {
 	private function newListFacetHtmlBuilder(): ListFacetHtmlBuilder {
 		return new ListFacetHtmlBuilder(
 			parser: WikibaseFacetedSearchExtension::getInstance()->getTemplateParser(),
-			valueCounter: new StubValueCounter()
+			valueCounter: new StubValueCounter(),
+			valueFormatter: WikibaseFacetedSearchExtension::getInstance()->getFacetValueFormatter( MediaWikiServices::getInstance()->getContentLanguage() )
 		);
 	}
 
@@ -62,16 +64,16 @@ class ListFacetHtmlBuilderTest extends TestCase {
 		$this->assertArrayHasKey( 'checkboxes', $viewModel );
 
 		$this->assertArrayHasKey( 'visible', $viewModel['checkboxes'] );
-		$this->assertSame( StubValueCounter::FIRST_VALUE, $viewModel['checkboxes']['visible'][0]['label'] );
-		$this->assertSame( StubValueCounter::SECOND_VALUE, $viewModel['checkboxes']['visible'][1]['label'] );
-		$this->assertSame( StubValueCounter::THIRD_VALUE, $viewModel['checkboxes']['visible'][2]['label'] );
-		$this->assertSame( StubValueCounter::FOURTH_VALUE, $viewModel['checkboxes']['visible'][3]['label'] );
-		$this->assertSame( StubValueCounter::FIFTH_VALUE, $viewModel['checkboxes']['visible'][4]['label'] );
+		$this->assertSame( StubValueCounter::FIRST_VALUE, $viewModel['checkboxes']['visible'][0]['formattedValue'] );
+		$this->assertSame( StubValueCounter::SECOND_VALUE, $viewModel['checkboxes']['visible'][1]['formattedValue'] );
+		$this->assertSame( StubValueCounter::THIRD_VALUE, $viewModel['checkboxes']['visible'][2]['formattedValue'] );
+		$this->assertSame( StubValueCounter::FOURTH_VALUE, $viewModel['checkboxes']['visible'][3]['formattedValue'] );
+		$this->assertSame( StubValueCounter::FIFTH_VALUE, $viewModel['checkboxes']['visible'][4]['formattedValue'] );
 		$this->assertCount( 5, $viewModel['checkboxes']['visible'] );
 
 		$this->assertArrayHasKey( 'collapsed', $viewModel['checkboxes'] );
-		$this->assertSame( StubValueCounter::SIXTH_VALUE, $viewModel['checkboxes']['collapsed'][0]['label'] );
-		$this->assertSame( StubValueCounter::SEVENTH_VALUE, $viewModel['checkboxes']['collapsed'][1]['label'] );
+		$this->assertSame( StubValueCounter::SIXTH_VALUE, $viewModel['checkboxes']['collapsed'][0]['formattedValue'] );
+		$this->assertSame( StubValueCounter::SEVENTH_VALUE, $viewModel['checkboxes']['collapsed'][1]['formattedValue'] );
 		$this->assertCount( 2, $viewModel['checkboxes']['collapsed'] );
 	}
 
