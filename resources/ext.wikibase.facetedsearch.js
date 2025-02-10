@@ -51,11 +51,11 @@ function onFacetsInput( event ) {
 	}
 
 	// TODO: Clean up the facet type detection logic after MVP or when we have more facet types
-	if ( target.classList.contains( 'cdx-checkbox__input' ) ) {
+	if ( target.classList.contains( 'wikibase-faceted-search__facet-item-checkbox' ) ) {
 		onListFacetInput( facet, propertyId );
-	} else if ( target.classList.contains( 'cdx-button' ) ) {
+	} else if ( target.classList.contains( 'wikibase-faceted-search__facet-toggle-button' ) ) {
 		onListFacetInput( facet, propertyId, target.value );
-	} else if ( target.classList.contains( 'cdx-text-input__input' ) ) {
+	} else if ( target.classList.contains( 'wikibase-faceted-search__facet-item-input' ) ) {
 		onRangeFacetInput( facet, propertyId );
 	}
 }
@@ -109,8 +109,8 @@ function getListFacetQueryMode( facet ) {
  */
 function onRangeFacetInput( facet, propertyId ) {
 	const applyButton = facet.querySelector( '.wikibase-faceted-search__facet-item-range-apply' );
-	const minInput = facet.querySelector( '.wikibase-faceted-search__facet-item-range-min > .cdx-text-input__input' );
-	const maxInput = facet.querySelector( '.wikibase-faceted-search__facet-item-range-max > .cdx-text-input__input' );
+	const minInput = facet.querySelector( '.wikibase-faceted-search__facet-item-range-min > .wikibase-faceted-search__facet-item-input' );
+	const maxInput = facet.querySelector( '.wikibase-faceted-search__facet-item-range-max > .wikibase-faceted-search__facet-item-input' );
 
 	if ( !applyButton || !minInput || !maxInput ) {
 		return;
@@ -163,7 +163,7 @@ function getListFacetSelectedValues( facet ) {
 	const selectedValues = [];
 
 	[ ...facet.querySelectorAll( '.wikibase-faceted-search__facet-item' ) ].forEach( ( facetItem ) => {
-		const checkbox = facetItem.querySelector( '.cdx-checkbox__input' );
+		const checkbox = facetItem.querySelector( '.wikibase-faceted-search__facet-item-checkbox' );
 		if ( !checkbox || !checkbox.checked || !checkbox.value ) {
 			return;
 		}

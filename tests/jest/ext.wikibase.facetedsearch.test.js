@@ -41,9 +41,9 @@ describe( 'getListFacetQueryMode', () => {
 describe( 'getListFacetSelectedValues', () => {
 	test( 'List facet with no checked items', () => {
 		document.body.innerHTML = `
-			<div class="wikibase-faceted-search__facet-item"><input class="cdx-checkbox__input" type="checkbox" value="Q1"></div>
-			<div class="wikibase-faceted-search__facet-item"><input class="cdx-checkbox__input" type="checkbox" value="Q2"></div>
-			<div class="wikibase-faceted-search__facet-item"><input class="cdx-checkbox__input" type="checkbox" value="Q3"></div>
+			<div class="wikibase-faceted-search__facet-item"><input class="wikibase-faceted-search__facet-item-checkbox" type="checkbox" value="Q1"></div>
+			<div class="wikibase-faceted-search__facet-item"><input class="wikibase-faceted-search__facet-item-checkbox" type="checkbox" value="Q2"></div>
+			<div class="wikibase-faceted-search__facet-item"><input class="wikibase-faceted-search__facet-item-checkbox" type="checkbox" value="Q3"></div>
 		`;
 
 		expect( actual.getListFacetSelectedValues( document.body ) )
@@ -52,9 +52,9 @@ describe( 'getListFacetSelectedValues', () => {
 
 	test( 'List facet with multiple checked items', () => {
 		document.body.innerHTML = `
-			<div class="wikibase-faceted-search__facet-item"><input class="cdx-checkbox__input" type="checkbox" value="Q1"></div>
-			<div class="wikibase-faceted-search__facet-item"><input class="cdx-checkbox__input" type="checkbox" value="Q2" checked></div>
-			<div class="wikibase-faceted-search__facet-item"><input class="cdx-checkbox__input" type="checkbox" value="Q3" checked></div>
+			<div class="wikibase-faceted-search__facet-item"><input class="wikibase-faceted-search__facet-item-checkbox" type="checkbox" value="Q1"></div>
+			<div class="wikibase-faceted-search__facet-item"><input class="wikibase-faceted-search__facet-item-checkbox" type="checkbox" value="Q2" checked></div>
+			<div class="wikibase-faceted-search__facet-item"><input class="wikibase-faceted-search__facet-item-checkbox" type="checkbox" value="Q3" checked></div>
 		`;
 
 		expect( actual.getListFacetSelectedValues( document.body ) )
