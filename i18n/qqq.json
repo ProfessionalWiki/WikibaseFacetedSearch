@@ -17,6 +17,8 @@
 	"wikibase-faceted-search-and": "Label used for the And toggle button in the And/Or toggle",
 	"wikibase-faceted-search-or": "Label used for the Or toggle button in the And/Or toggle",
 	"wikibase-faceted-search-facet-apply": "Label used for the Apply button in the facet",
+	"wikibase-faceted-search-facet-show-more": "Label used for the Show more button in the facet",
+	"wikibase-faceted-search-facet-show-less": "Label used for the Show less button in the facet",
 	"wikibase-faceted-search-facet-range-min": "Minimum value label displayed on range facet",
 	"wikibase-faceted-search-facet-range-max": "Maximum value label displayed on range facet"
 }

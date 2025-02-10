@@ -10,6 +10,7 @@ use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetConfig;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\PropertyConstraints;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\ValueCount;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\ValueCounter;
+use Wikibase\DataModel\Entity\PropertyId;
 
 /**
  * Renders list facets via the `ListFacet.mustache` template.
@@ -46,6 +47,8 @@ class ListFacetHtmlBuilder implements FacetHtmlBuilder {
 		return [
 			'toggle' => $this->buildToggleViewModel( $combineWithAnd, $this->hasCombineWithChoice( $config ) ),
 			'checkboxes' => $this->buildCheckboxesViewModel( $config, $state, $currentQuery ),
+			'msg-show-more' => wfMessage( 'wikibase-faceted-search-facet-show-more' )->text(),
+			'msg-show-less' => wfMessage( 'wikibase-faceted-search-facet-show-less' )->text()
 			// TODO: act on config: showNoneFilter https://github.com/ProfessionalWiki/WikibaseFacetedSearch/issues/117
 			// TODO: act on config: showAnyFilter https://github.com/ProfessionalWiki/WikibaseFacetedSearch/issues/119
 		];
@@ -98,6 +101,7 @@ class ListFacetHtmlBuilder implements FacetHtmlBuilder {
 	}
 
 	private function buildCheckboxesViewModel( FacetConfig $config, PropertyConstraints $state, AbstractQuery $currentQuery ): array {
+		$maxVisibleCheckboxes = 5; // TODO: Make this configurable
 		$combineWithAnd = $this->shouldCombineWithAnd( $config, $state );
 
 		$selectedValues = $combineWithAnd ? $state->getAndSelectedValues() : $state->getOrSelectedValues();
@@ -105,16 +109,24 @@ class ListFacetHtmlBuilder implements FacetHtmlBuilder {
 		$checkboxes = [];
 
 		foreach ( $this->getValuesAndCounts( $config, $currentQuery ) as $i => $valueCount ) {
-			$checkboxes[] = [
-				'formattedValue' => $this->valueFormatter->getLabel( (string)$valueCount->value, $config->propertyId ),
-				'count' => $valueCount->count,
-				'checked' => in_array( $valueCount->value, $selectedValues ), // TODO: test with multiple types of values
-				'value' => $valueCount->value,
-				'id' => $state->propertyId->getSerialization() . "-$i",
-			];
+			$checkboxes[] = $this->buildCheckboxViewModel( $config, $valueCount, $selectedValues, $state->propertyId, $i );
 		}
 
-		return $checkboxes;
+		return [
+			'visible' => array_slice( $checkboxes, 0, $maxVisibleCheckboxes ),
+			'collapsed' => array_slice( $checkboxes, $maxVisibleCheckboxes ),
+			'showMore' => count( $checkboxes ) > $maxVisibleCheckboxes
+		];
+	}
+
+	private function buildCheckboxViewModel( FacetConfig $config, ValueCount $valueCount, array $selectedValues, PropertyId $propertyId, int $index ): array {
+		return [
+			'formattedValue' => $this->valueFormatter->getLabel( (string)$valueCount->value, $config->propertyId ),
+			'count' => $valueCount->count,
+			'checked' => in_array( $valueCount->value, $selectedValues ), // TODO: test with multiple types of values
+			'value' => $valueCount->value,
+			'id' => $propertyId->getSerialization() . "-$index",
+		];
 	}
 
 	/**

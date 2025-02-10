@@ -10,7 +10,9 @@ use PHPUnit\Framework\TestCase;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetConfig;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetType;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\PropertyConstraints;
+use ProfessionalWiki\WikibaseFacetedSearch\Application\ValueCounter;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\ListFacetHtmlBuilder;
+use ProfessionalWiki\WikibaseFacetedSearch\Tests\TestDoubles\SequentialValueCounter;
 use ProfessionalWiki\WikibaseFacetedSearch\Tests\TestDoubles\StubValueCounter;
 use ProfessionalWiki\WikibaseFacetedSearch\WikibaseFacetedSearchExtension;
 use Wikibase\DataModel\Entity\ItemId;
@@ -35,19 +37,28 @@ class ListFacetHtmlBuilderTest extends TestCase {
 		$this->assertStringContainsString( StubValueCounter::FIRST_VALUE, $html );
 		$this->assertStringContainsString( StubValueCounter::SECOND_VALUE, $html );
 		$this->assertStringContainsString( StubValueCounter::THIRD_VALUE, $html );
+		$this->assertStringContainsString( StubValueCounter::FOURTH_VALUE, $html );
+		$this->assertStringContainsString( StubValueCounter::FIFTH_VALUE, $html );
+		$this->assertStringContainsString( StubValueCounter::SIXTH_VALUE, $html );
+		$this->assertStringContainsString( StubValueCounter::SEVENTH_VALUE, $html );
 		$this->assertStringContainsString( 'count">' . StubValueCounter::FIRST_COUNT, $html );
 		$this->assertStringContainsString( 'count">' . StubValueCounter::SECOND_COUNT, $html );
 		$this->assertStringContainsString( 'count">' . StubValueCounter::THIRD_COUNT, $html );
+		$this->assertStringContainsString( 'count">' . StubValueCounter::FOURTH_COUNT, $html );
+		$this->assertStringContainsString( 'count">' . StubValueCounter::FIFTH_COUNT, $html );
+		$this->assertStringContainsString( 'count">' . StubValueCounter::SIXTH_COUNT, $html );
+		$this->assertStringContainsString( 'count">' . StubValueCounter::SEVENTH_COUNT, $html );
+		$this->assertStringContainsString( 'overflow-button-show', $html );
 	}
 
 	private function newPropertyConstraints(): PropertyConstraints {
 		return new PropertyConstraints( propertyId: new NumericPropertyId( self::FACET_PROPERTY_ID ) );
 	}
 
-	private function newListFacetHtmlBuilder(): ListFacetHtmlBuilder {
+	private function newListFacetHtmlBuilder( ?ValueCounter $valueCounter = null ): ListFacetHtmlBuilder {
 		return new ListFacetHtmlBuilder(
 			parser: WikibaseFacetedSearchExtension::getInstance()->getTemplateParser(),
-			valueCounter: new StubValueCounter(),
+			valueCounter: $valueCounter ?? new StubValueCounter(),
 			valueFormatter: WikibaseFacetedSearchExtension::getInstance()->getFacetValueFormatter( MediaWikiServices::getInstance()->getContentLanguage() )
 		);
 	}
@@ -56,15 +67,27 @@ class ListFacetHtmlBuilderTest extends TestCase {
 		$viewModel = $this->buildViewModel();
 
 		$this->assertArrayHasKey( 'checkboxes', $viewModel );
-		$this->assertIsArray( $viewModel['checkboxes'] );
-		$this->assertSame( StubValueCounter::FIRST_VALUE, $viewModel['checkboxes'][0]['formattedValue'] );
-		$this->assertSame( StubValueCounter::SECOND_VALUE, $viewModel['checkboxes'][1]['formattedValue'] );
-		$this->assertSame( StubValueCounter::THIRD_VALUE, $viewModel['checkboxes'][2]['formattedValue'] );
-		$this->assertCount( 3, $viewModel['checkboxes'] );
+
+		$this->assertArrayHasKey( 'visible', $viewModel['checkboxes'] );
+		$this->assertSame( StubValueCounter::FIRST_VALUE, $viewModel['checkboxes']['visible'][0]['formattedValue'] );
+		$this->assertSame( StubValueCounter::SECOND_VALUE, $viewModel['checkboxes']['visible'][1]['formattedValue'] );
+		$this->assertSame( StubValueCounter::THIRD_VALUE, $viewModel['checkboxes']['visible'][2]['formattedValue'] );
+		$this->assertSame( StubValueCounter::FOURTH_VALUE, $viewModel['checkboxes']['visible'][3]['formattedValue'] );
+		$this->assertSame( StubValueCounter::FIFTH_VALUE, $viewModel['checkboxes']['visible'][4]['formattedValue'] );
+		$this->assertCount( 5, $viewModel['checkboxes']['visible'] );
+
+		$this->assertArrayHasKey( 'collapsed', $viewModel['checkboxes'] );
+		$this->assertSame( StubValueCounter::SIXTH_VALUE, $viewModel['checkboxes']['collapsed'][0]['formattedValue'] );
+		$this->assertSame( StubValueCounter::SEVENTH_VALUE, $viewModel['checkboxes']['collapsed'][1]['formattedValue'] );
+		$this->assertCount( 2, $viewModel['checkboxes']['collapsed'] );
 	}
 
-	private function buildViewModel( ?PropertyConstraints $constraints = null, array $typeSpecificConfig = [] ): array {
-		return $this->newListFacetHtmlBuilder()->buildViewModel(
+	private function buildViewModel(
+		?PropertyConstraints $constraints = null,
+		array $typeSpecificConfig = [],
+		?ValueCounter $valueCounter = null
+	): array {
+		return $this->newListFacetHtmlBuilder( $valueCounter )->buildViewModel(
 			config: $this->newFacetConfig( $typeSpecificConfig ),
 			state: $constraints ?? $this->newPropertyConstraints(),
 			currentQuery: new MatchAll()
@@ -83,9 +106,14 @@ class ListFacetHtmlBuilderTest extends TestCase {
 	public function testCheckboxesViewModelContainsAllCounts(): void {
 		$viewModel = $this->buildViewModel();
 
-		$this->assertSame( StubValueCounter::FIRST_COUNT, $viewModel['checkboxes'][0]['count'] );
-		$this->assertSame( StubValueCounter::SECOND_COUNT, $viewModel['checkboxes'][1]['count'] );
-		$this->assertSame( StubValueCounter::THIRD_COUNT, $viewModel['checkboxes'][2]['count'] );
+		$this->assertSame( StubValueCounter::FIRST_COUNT, $viewModel['checkboxes']['visible'][0]['count'] );
+		$this->assertSame( StubValueCounter::SECOND_COUNT, $viewModel['checkboxes']['visible'][1]['count'] );
+		$this->assertSame( StubValueCounter::THIRD_COUNT, $viewModel['checkboxes']['visible'][2]['count'] );
+		$this->assertSame( StubValueCounter::FOURTH_COUNT, $viewModel['checkboxes']['visible'][3]['count'] );
+		$this->assertSame( StubValueCounter::FIFTH_COUNT, $viewModel['checkboxes']['visible'][4]['count'] );
+
+		$this->assertSame( StubValueCounter::SIXTH_COUNT, $viewModel['checkboxes']['collapsed'][0]['count'] );
+		$this->assertSame( StubValueCounter::SEVENTH_COUNT, $viewModel['checkboxes']['collapsed'][1]['count'] );
 	}
 
 	public function testOnlyCheckboxesForValuesInThePropertyConstraintsAreChecked_andCase(): void {
@@ -94,11 +122,17 @@ class ListFacetHtmlBuilderTest extends TestCase {
 				->withAdditionalAndValue( 'mismatch' )
 				->withAdditionalAndValue( StubValueCounter::SECOND_VALUE )
 				->withAdditionalAndValue( 'another mismatch' )
+				->withAdditionalAndValue( StubValueCounter::SIXTH_VALUE )
 		);
 
-		$this->assertFalse( $viewModel['checkboxes'][0]['checked'] );
-		$this->assertTrue( $viewModel['checkboxes'][1]['checked'] );
-		$this->assertFalse( $viewModel['checkboxes'][2]['checked'] );
+		$this->assertFalse( $viewModel['checkboxes']['visible'][0]['checked'] );
+		$this->assertTrue( $viewModel['checkboxes']['visible'][1]['checked'] );
+		$this->assertFalse( $viewModel['checkboxes']['visible'][2]['checked'] );
+		$this->assertFalse( $viewModel['checkboxes']['visible'][3]['checked'] );
+		$this->assertFalse( $viewModel['checkboxes']['visible'][4]['checked'] );
+
+		$this->assertTrue( $viewModel['checkboxes']['collapsed'][0]['checked'] );
+		$this->assertFalse( $viewModel['checkboxes']['collapsed'][1]['checked'] );
 	}
 
 	public function testOnlyCheckboxesForValuesInThePropertyConstraintsAreChecked_orCase(): void {
@@ -106,14 +140,20 @@ class ListFacetHtmlBuilderTest extends TestCase {
 			constraints: $this->newPropertyConstraints()->withOrValues(
 				'mismatch',
 				StubValueCounter::SECOND_VALUE,
-				'another mismatch'
+				'another mismatch',
+				StubValueCounter::SIXTH_VALUE
 			),
 			typeSpecificConfig: [ 'defaultCombineWith' => 'OR' ]
 		);
 
-		$this->assertFalse( $viewModel['checkboxes'][0]['checked'] );
-		$this->assertTrue( $viewModel['checkboxes'][1]['checked'] );
-		$this->assertFalse( $viewModel['checkboxes'][2]['checked'] );
+		$this->assertFalse( $viewModel['checkboxes']['visible'][0]['checked'] );
+		$this->assertTrue( $viewModel['checkboxes']['visible'][1]['checked'] );
+		$this->assertFalse( $viewModel['checkboxes']['visible'][2]['checked'] );
+		$this->assertFalse( $viewModel['checkboxes']['visible'][3]['checked'] );
+		$this->assertFalse( $viewModel['checkboxes']['visible'][4]['checked'] );
+
+		$this->assertTrue( $viewModel['checkboxes']['collapsed'][0]['checked'] );
+		$this->assertFalse( $viewModel['checkboxes']['collapsed'][1]['checked'] );
 	}
 
 	public function testAndIsDisabledWhenOrIsSelectedAndChoiceIsDisabled(): void {
@@ -216,6 +256,36 @@ class ListFacetHtmlBuilderTest extends TestCase {
 
 		$this->assertTrue( $viewModel['toggle']['and']['selected'] );
 		$this->assertFalse( $viewModel['toggle']['or']['selected'] );
+	}
+
+	public function testContainsOnlyVisibleCheckboxesIfCountLessThanBoundary(): void {
+		$viewModel = $this->buildViewModel(
+			valueCounter: new SequentialValueCounter( 4 )
+		);
+
+		$this->assertCount( 4, $viewModel['checkboxes']['visible'] );
+		$this->assertCount( 0, $viewModel['checkboxes']['collapsed'] );
+		$this->assertFalse( $viewModel['checkboxes']['showMore'] );
+	}
+
+	public function testContainsOnlyVisibleCheckboxesIfCountEqualsBoundary(): void {
+		$viewModel = $this->buildViewModel(
+			valueCounter: new SequentialValueCounter( 5 )
+		);
+
+		$this->assertCount( 5, $viewModel['checkboxes']['visible'] );
+		$this->assertCount( 0, $viewModel['checkboxes']['collapsed'] );
+		$this->assertFalse( $viewModel['checkboxes']['showMore'] );
+	}
+
+	public function testContainsVisibleAndCollapsedCheckboxesIfCountGreaterThanBoundary(): void {
+		$viewModel = $this->buildViewModel(
+			valueCounter: new SequentialValueCounter( 6 )
+		);
+
+		$this->assertCount( 5, $viewModel['checkboxes']['visible'] );
+		$this->assertCount( 1, $viewModel['checkboxes']['collapsed'] );
+		$this->assertTrue( $viewModel['checkboxes']['showMore'] );
 	}
 
 }
