@@ -22,7 +22,7 @@ class ElasticValueCounter implements ValueCounter {
 	 * Values are indexed per property at wbfs_P123, where P123 is the serialization of the property id.
 	 */
 	public function countValues( PropertyId $property, AbstractQuery $currentQuery ): ValueCounts {
-		$query = [ // TODO: filter by current query
+		$query = [
 			'size' => 0,
 			'query' => $currentQuery->toArray(),
 			'aggs' => [
