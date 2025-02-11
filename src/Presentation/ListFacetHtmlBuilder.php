@@ -104,7 +104,10 @@ class ListFacetHtmlBuilder implements FacetHtmlBuilder {
 		$maxVisibleCheckboxes = 5; // TODO: Make this configurable
 		$combineWithAnd = $this->shouldCombineWithAnd( $config, $state );
 
-		$selectedValues = $combineWithAnd ? $state->getAndSelectedValues() : $state->getOrSelectedValues();
+		$selectedValues = array_filter(
+			$combineWithAnd ? $state->getAndSelectedValues() : $state->getOrSelectedValues(),
+			fn( $value ) => $value !== ''
+		);
 
 		$checkboxes = [];
 

@@ -169,4 +169,15 @@ class ListFacetQueryBuilderTest extends TestCase {
 		);
 	}
 
+	public function testBuildsNullQueryWhenListIsEmpty(): void {
+		$query = $this->newFacetQueryBuilder()->buildQuery(
+			$this->newListFacetConfig( self::STRING_PROPERTY ),
+			new PropertyConstraints(
+				new NumericPropertyId( self::STRING_PROPERTY )
+			)
+		);
+
+		$this->assertNull( $query );
+	}
+
 }

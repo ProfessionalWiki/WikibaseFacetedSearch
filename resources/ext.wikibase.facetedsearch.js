@@ -184,11 +184,15 @@ function getListFacetSelectedValues( facet ) {
 function getListFacetQuerySegments( selectedValues, propertyId, mode ) {
 	const segments = [];
 	if ( mode === 'AND' ) {
+		if ( selectedValues.length === 0 ) {
+			segments.push( `haswbfacet:${ propertyId }=` );
+		}
 		selectedValues.forEach( ( value ) => {
 			segments.push( `haswbfacet:${ propertyId }=${ value }` );
 		} );
 	} else {
-		segments.push( `haswbfacet:${ propertyId }=${ selectedValues.join( '|' ) }` );
+		const suffix = selectedValues.length <= 1 ? '|' : '';
+		segments.push( `haswbfacet:${ propertyId }=${ selectedValues.join( '|' ) }${ suffix }` );
 	}
 
 	return segments;
