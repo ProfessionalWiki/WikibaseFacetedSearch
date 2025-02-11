@@ -16,8 +16,8 @@ use Wikibase\DataModel\Entity\NumericPropertyId;
 class ElasticValueCounterTest extends TestCase {
 
 	public function testCanExecuteValueCountQuery(): void {
-		$counter = WikibaseFacetedSearchExtension::getInstance()->getValueCounter();
-		$counter->countValues( new NumericPropertyId( 'P22' ), new MatchAll() );
+		$counter = WikibaseFacetedSearchExtension::getInstance()->getValueCounter( new MatchAll() );
+		$counter->countValues( new NumericPropertyId( 'P22' ) );
 		$this->assertTrue( true );
 	}
 

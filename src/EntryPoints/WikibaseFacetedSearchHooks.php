@@ -90,10 +90,11 @@ class WikibaseFacetedSearchHooks {
 		string $term
 	): void {
 		$output->addHTML(
-			WikibaseFacetedSearchExtension::getInstance()->getSidebarHtmlBuilder( $specialSearch->getLanguage() )->createHtml(
-				searchQuery: $term,
-				currentQuery: self::getCurrentQuery()
-			)
+			WikibaseFacetedSearchExtension::getInstance()
+				->getSidebarHtmlBuilder( $specialSearch->getLanguage(), self::getCurrentQuery() )
+				->createHtml(
+					searchQuery: $term
+				)
 		);
 	}
 

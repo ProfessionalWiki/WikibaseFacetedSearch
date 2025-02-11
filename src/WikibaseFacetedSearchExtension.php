@@ -6,6 +6,7 @@ namespace ProfessionalWiki\WikibaseFacetedSearch;
 
 use CirrusSearch\CirrusSearch;
 use CirrusSearch\SearchConfig;
+use Elastica\Query\AbstractQuery;
 use MediaWiki\Html\TemplateParser;
 use MediaWiki\Language\Language;
 use MediaWiki\MediaWikiServices;
@@ -199,19 +200,19 @@ class WikibaseFacetedSearchExtension {
 		return new ConfigJsonValidator( $schema );
 	}
 
-	public function getSidebarHtmlBuilder( Language $language ): SidebarHtmlBuilder {
+	public function getSidebarHtmlBuilder( Language $language, AbstractQuery $currentQuery ): SidebarHtmlBuilder {
 		return new SidebarHtmlBuilder(
 			config: $this->getConfig(),
-			facetHtmlBuilder: $this->getFacetHtmlBuilder( $language ),
+			facetHtmlBuilder: $this->getFacetHtmlBuilder( $language, $currentQuery ),
 			labelLookup: $this->getLabelLookup( $language ),
 			templateParser: $this->getTemplateParser(),
 			queryStringParser: $this->getQueryStringParser()
 		);
 	}
 
-	private function getFacetHtmlBuilder( Language $language ): FacetHtmlBuilder {
+	private function getFacetHtmlBuilder( Language $language, AbstractQuery $currentQuery ): FacetHtmlBuilder {
 		$delegator = new DelegatingFacetHtmlBuilder();
-		$delegator->addBuilder( FacetType::LIST, $this->newListFacetHtmlBuilder( $this->getFacetValueFormatter( $language ) ) );
+		$delegator->addBuilder( FacetType::LIST, $this->newListFacetHtmlBuilder( $this->getFacetValueFormatter( $language ), $currentQuery ) );
 		$delegator->addBuilder( FacetType::RANGE, $this->newRangeFacetHtmlBuilder() );
 		return $delegator;
 	}
@@ -223,17 +224,18 @@ class WikibaseFacetedSearchExtension {
 		);
 	}
 
-	private function newListFacetHtmlBuilder( FacetValueFormatter $valueFormatter ): FacetHtmlBuilder {
+	private function newListFacetHtmlBuilder( FacetValueFormatter $valueFormatter, AbstractQuery $currentQuery ): FacetHtmlBuilder {
 		return new ListFacetHtmlBuilder(
 			parser: $this->getTemplateParser(),
-			valueCounter: $this->getValueCounter(),
+			valueCounter: $this->getValueCounter( $currentQuery ),
 			valueFormatter: $valueFormatter
 		);
 	}
 
-	public function getValueCounter(): ValueCounter {
+	public function getValueCounter( AbstractQuery $currentQuery ): ValueCounter {
 		return new ElasticValueCounter(
-			queryRunner: $this->getElasticQueryRunner()
+			queryRunner: $this->getElasticQueryRunner(),
+			currentQuery: $currentQuery
 		);
 	}
 

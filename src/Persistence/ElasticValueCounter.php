@@ -13,7 +13,8 @@ use Wikibase\DataModel\Entity\PropertyId;
 class ElasticValueCounter implements ValueCounter {
 
 	public function __construct(
-		private readonly ElasticQueryRunner $queryRunner
+		private readonly ElasticQueryRunner $queryRunner,
+		private readonly AbstractQuery $currentQuery
 	) {
 	}
 
@@ -21,10 +22,10 @@ class ElasticValueCounter implements ValueCounter {
 	 * Count the values for a given property, highest occurrences first.
 	 * Values are indexed per property at wbfs_P123, where P123 is the serialization of the property id.
 	 */
-	public function countValues( PropertyId $property, AbstractQuery $currentQuery ): ValueCounts {
+	public function countValues( PropertyId $property ): ValueCounts {
 		$query = [
 			'size' => 0,
-			'query' => $currentQuery->toArray(),
+			'query' => $this->currentQuery->toArray(),
 			'aggs' => [
 				'valueCounts' => [
 					'terms' => [

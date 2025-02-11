@@ -24,8 +24,7 @@ class RangeFacetHtmlBuilderTest extends TestCase {
 	public function testRendersTemplateWithMinAndMax(): void {
 		$html = $this->newRangeFacetHtmlBuilder()->buildHtml(
 			config: $this->newConfig(),
-			state: $this->newPropertyConstraints()->withInclusiveMinimum( 1337 )->withInclusiveMaximum( 9001 ),
-			currentQuery: new MatchAll()
+			state: $this->newPropertyConstraints()->withInclusiveMinimum( 1337 )->withInclusiveMaximum( 9001 )
 		);
 
 		//$this->assertStringContainsString( self::FACET_PROPERTY_ID, $html );
@@ -64,8 +63,7 @@ class RangeFacetHtmlBuilderTest extends TestCase {
 	public function testRendersTemplateWithNoMinAndMax(): void {
 		$html = $this->newRangeFacetHtmlBuilder()->buildHtml(
 			config: $this->newConfig(),
-			state: $this->newPropertyConstraints(),
-			currentQuery: new MatchAll()
+			state: $this->newPropertyConstraints()
 		);
 
 		$this->assertMatchesRegularExpression( '/range-min.*?value=""/s', $html );
