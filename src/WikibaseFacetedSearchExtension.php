@@ -14,6 +14,7 @@ use MediaWiki\Title\Title;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\ConfigLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\DataValueTranslator;
+use ProfessionalWiki\WikibaseFacetedSearch\Application\ElasticQueryFilter;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetType;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\ItemTypeExtractor;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\ItemTypeLabelLookup;
@@ -212,7 +213,9 @@ class WikibaseFacetedSearchExtension {
 
 	private function getFacetHtmlBuilder( Language $language, AbstractQuery $currentQuery ): FacetHtmlBuilder {
 		$delegator = new DelegatingFacetHtmlBuilder();
-		$delegator->addBuilder( FacetType::LIST, $this->newListFacetHtmlBuilder( $this->getFacetValueFormatter( $language ), $currentQuery ) );
+		$delegator->addBuilder( FacetType::LIST, $this->newListFacetHtmlBuilder(
+			$this->getFacetValueFormatter( $language ), $currentQuery
+		) );
 		$delegator->addBuilder( FacetType::RANGE, $this->newRangeFacetHtmlBuilder() );
 		return $delegator;
 	}
@@ -224,7 +227,10 @@ class WikibaseFacetedSearchExtension {
 		);
 	}
 
-	private function newListFacetHtmlBuilder( FacetValueFormatter $valueFormatter, AbstractQuery $currentQuery ): FacetHtmlBuilder {
+	private function newListFacetHtmlBuilder(
+		FacetValueFormatter $valueFormatter,
+		AbstractQuery $currentQuery
+	): FacetHtmlBuilder {
 		return new ListFacetHtmlBuilder(
 			parser: $this->getTemplateParser(),
 			valueCounter: $this->getValueCounter( $currentQuery ),
@@ -259,7 +265,7 @@ class WikibaseFacetedSearchExtension {
 		);
 	}
 
-	private function getQueryStringParser(): QueryStringParser {
+	public function getQueryStringParser(): QueryStringParser {
 		return new QueryStringParser(
 			itemTypeProperty: $this->getConfig()->getItemTypeProperty()
 		);
@@ -316,6 +322,10 @@ class WikibaseFacetedSearchExtension {
 			templateParser: $this->getTemplateParser(),
 			queryStringParser: $this->getQueryStringParser()
 		);
+	}
+
+	public function newElasticQueryFilter(): ElasticQueryFilter {
+		return new ElasticQueryFilter();
 	}
 
 }
