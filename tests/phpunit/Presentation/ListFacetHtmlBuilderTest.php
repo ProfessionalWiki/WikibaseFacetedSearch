@@ -29,8 +29,7 @@ class ListFacetHtmlBuilderTest extends TestCase {
 	public function testRendersTemplate(): void {
 		$html = $this->newListFacetHtmlBuilder()->buildHtml(
 			config: $this->newFacetConfig(),
-			state: $this->newPropertyConstraints(),
-			currentQuery: new MatchAll()
+			state: $this->newPropertyConstraints()
 		);
 
 		$this->assertStringContainsString( self::FACET_PROPERTY_ID, $html );
@@ -89,8 +88,7 @@ class ListFacetHtmlBuilderTest extends TestCase {
 	): array {
 		return $this->newListFacetHtmlBuilder( $valueCounter )->buildViewModel(
 			config: $this->newFacetConfig( $typeSpecificConfig ),
-			state: $constraints ?? $this->newPropertyConstraints(),
-			currentQuery: new MatchAll()
+			state: $constraints ?? $this->newPropertyConstraints()
 		);
 	}
 

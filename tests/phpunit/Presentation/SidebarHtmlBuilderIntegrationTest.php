@@ -37,12 +37,15 @@ class SidebarHtmlBuilderIntegrationTest extends MediaWikiIntegrationTestCase {
 JSON
 		);
 
-		$html = $this->getSidebarHtmlBuilderFromGlobals()->createHtml( 'foo haswbfacet:P42=Q1', new MatchAll() );
+		$html = $this->getSidebarHtmlBuilderFromGlobals()->createHtml( 'foo haswbfacet:P42=Q1' );
 		$this->assertStringContainsString( 'sidebar', $html );
 	}
 
 	private function getSidebarHtmlBuilderFromGlobals(): SidebarHtmlBuilder {
-		return WikibaseFacetedSearchExtension::getInstance()->getSidebarHtmlBuilder( MediaWikiServices::getInstance()->getContentLanguage() );
+		return WikibaseFacetedSearchExtension::getInstance()->getSidebarHtmlBuilder(
+			language: MediaWikiServices::getInstance()->getContentLanguage(),
+			currentQuery: new MatchAll()
+		);
 	}
 
 }

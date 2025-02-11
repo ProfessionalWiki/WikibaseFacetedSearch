@@ -4,7 +4,6 @@ declare( strict_types = 1 );
 
 namespace ProfessionalWiki\WikibaseFacetedSearch\Presentation;
 
-use Elastica\Query\AbstractQuery;
 use MediaWiki\Html\TemplateParser;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetConfig;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\PropertyConstraints;
@@ -31,22 +30,22 @@ class ListFacetHtmlBuilder implements FacetHtmlBuilder {
 	) {
 	}
 
-	public function buildHtml( FacetConfig $config, PropertyConstraints $state, AbstractQuery $currentQuery ): string {
+	public function buildHtml( FacetConfig $config, PropertyConstraints $state ): string {
 		return $this->parser->processTemplate(
 			'ListFacet',
-			$this->buildViewModel( $config, $state, $currentQuery )
+			$this->buildViewModel( $config, $state )
 		);
 	}
 
 	/**
 	 * @return array<string, mixed>
 	 */
-	public function buildViewModel( FacetConfig $config, PropertyConstraints $state, AbstractQuery $currentQuery ): array {
+	public function buildViewModel( FacetConfig $config, PropertyConstraints $state ): array {
 		$combineWithAnd = $this->shouldCombineWithAnd( $config, $state );
 
 		return [
 			'toggle' => $this->buildToggleViewModel( $combineWithAnd, $this->hasCombineWithChoice( $config ) ),
-			'checkboxes' => $this->buildCheckboxesViewModel( $config, $state, $currentQuery ),
+			'checkboxes' => $this->buildCheckboxesViewModel( $config, $state ),
 			'msg-show-more' => wfMessage( 'wikibase-faceted-search-facet-show-more' )->text(),
 			'msg-show-less' => wfMessage( 'wikibase-faceted-search-facet-show-less' )->text()
 			// TODO: act on config: showNoneFilter https://github.com/ProfessionalWiki/WikibaseFacetedSearch/issues/117
@@ -100,7 +99,7 @@ class ListFacetHtmlBuilder implements FacetHtmlBuilder {
 		];
 	}
 
-	private function buildCheckboxesViewModel( FacetConfig $config, PropertyConstraints $state, AbstractQuery $currentQuery ): array {
+	private function buildCheckboxesViewModel( FacetConfig $config, PropertyConstraints $state ): array {
 		$maxVisibleCheckboxes = 5; // TODO: Make this configurable
 		$combineWithAnd = $this->shouldCombineWithAnd( $config, $state );
 
@@ -111,7 +110,7 @@ class ListFacetHtmlBuilder implements FacetHtmlBuilder {
 
 		$checkboxes = [];
 
-		foreach ( $this->getValuesAndCounts( $config, $currentQuery ) as $i => $valueCount ) {
+		foreach ( $this->getValuesAndCounts( $config ) as $i => $valueCount ) {
 			$checkboxes[] = $this->buildCheckboxViewModel( $config, $valueCount, $selectedValues, $state->propertyId, $i );
 		}
 
@@ -135,8 +134,8 @@ class ListFacetHtmlBuilder implements FacetHtmlBuilder {
 	/**
 	 * @return ValueCount[]
 	 */
-	private function getValuesAndCounts( FacetConfig $config, AbstractQuery $currentQuery ): array {
-		return $this->valueCounter->countValues( $config->propertyId, $currentQuery )->asArray();
+	private function getValuesAndCounts( FacetConfig $config ): array {
+		return $this->valueCounter->countValues( $config->propertyId )->asArray();
 	}
 
 }

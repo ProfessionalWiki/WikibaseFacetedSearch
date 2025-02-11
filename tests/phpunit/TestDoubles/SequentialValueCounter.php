@@ -4,7 +4,6 @@ declare( strict_types = 1 );
 
 namespace ProfessionalWiki\WikibaseFacetedSearch\Tests\TestDoubles;
 
-use Elastica\Query\AbstractQuery;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\ValueCount;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\ValueCounter;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\ValueCounts;
@@ -17,7 +16,7 @@ class SequentialValueCounter implements ValueCounter {
 	) {
 	}
 
-	public function countValues( PropertyId $property, AbstractQuery $currentQuery ): ValueCounts {
+	public function countValues( PropertyId $property ): ValueCounts {
 		return new ValueCounts( ...[
 			array_map(
 				fn( $i ) => new ValueCount( self::valueFor( $i ), $this->count + 100 ),
