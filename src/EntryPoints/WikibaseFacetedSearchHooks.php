@@ -91,10 +91,20 @@ class WikibaseFacetedSearchHooks {
 	): void {
 		$output->addHTML(
 			WikibaseFacetedSearchExtension::getInstance()
-				->getSidebarHtmlBuilder( $specialSearch->getLanguage(), self::getCurrentQuery() )
+				->getSidebarHtmlBuilder(
+					language: $specialSearch->getLanguage(),
+					currentQuery: self::getFilteredCurrentQuery( $term )
+				)
 				->createHtml(
 					searchQuery: $term
 				)
+		);
+	}
+
+	private static function getFilteredCurrentQuery( string $searchQuery ): AbstractQuery {
+		return WikibaseFacetedSearchExtension::getInstance()->newElasticQueryFilter()->removeOrFacets(
+			self::getCurrentQuery(),
+			WikibaseFacetedSearchExtension::getInstance()->getQueryStringParser()->parse( $searchQuery )
 		);
 	}
 
