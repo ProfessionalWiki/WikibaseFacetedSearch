@@ -134,7 +134,7 @@ class QueryStringParserTest extends TestCase {
 		$constraints = $query->getConstraintsForProperty( new NumericPropertyId( 'P42' ) );
 
 		$this->assertEquals(
-			[ 'foo' ],
+			[ '', 'foo' ],
 			$constraints->getOrSelectedValues()
 		);
 	}
@@ -146,19 +146,19 @@ class QueryStringParserTest extends TestCase {
 		$constraints = $query->getConstraintsForProperty( new NumericPropertyId( 'P42' ) );
 
 		$this->assertEquals(
-			[ 'foo' ],
+			[ 'foo', '' ],
 			$constraints->getOrSelectedValues()
 		);
 	}
 
-	public function testRemovesEmptyOrValues(): void {
+	public function testKeepsSingleEmptyOrValue(): void {
 		$parser = $this->newQueryStringParser();
 		$query = $parser->parse( 'haswbfacet:P42=|foo||bar||baz|' );
 
 		$constraints = $query->getConstraintsForProperty( new NumericPropertyId( 'P42' ) );
 
 		$this->assertEquals(
-			[ 'foo', 'bar', 'baz' ],
+			[ '', 'foo', 'bar', 'baz' ],
 			$constraints->getOrSelectedValues()
 		);
 	}
@@ -272,6 +272,30 @@ class QueryStringParserTest extends TestCase {
 		$this->assertEquals(
 			[ 'foo', 'bar' ],
 			$constraints->getAndSelectedValues()
+		);
+	}
+
+	public function testHasSingleEmptyValueIfAndValueIsEmpty(): void {
+		$parser = $this->newQueryStringParser();
+		$query = $parser->parse( 'haswbfacet:P42=' );
+
+		$constraints = $query->getConstraintsForProperty( new NumericPropertyId( 'P42' ) );
+
+		$this->assertEquals(
+			[ '' ],
+			$constraints->getAndSelectedValues()
+		);
+	}
+
+	public function testHasSingleEmptyValueIfAllOrValuesAreEmpty(): void {
+		$parser = $this->newQueryStringParser();
+		$query = $parser->parse( 'haswbfacet:P42=|' );
+
+		$constraints = $query->getConstraintsForProperty( new NumericPropertyId( 'P42' ) );
+
+		$this->assertEquals(
+			[ '' ],
+			$constraints->getOrSelectedValues()
 		);
 	}
 

@@ -63,12 +63,12 @@ describe( 'getListFacetSelectedValues', () => {
 } );
 
 describe( 'getListFacetQuerySegments', () => {
-	test( 'Query segements for list facet with no selected values', () => {
+	test( 'Query segments for list facet with no selected values and no type', () => {
 		expect( actual.getListFacetQuerySegments( [], 'P1' ) )
-			.toEqual( [ 'haswbfacet:P1=' ] );
+			.toEqual( [ 'haswbfacet:P1=|' ] );
 	} );
 
-	test( 'Query segements for list facet with single selected value in AND mode', () => {
+	test( 'Query segments for list facet with single selected value in AND mode', () => {
 		expect( actual.getListFacetQuerySegments( [ 'Q2' ], 'P1', 'AND' ) )
 			.toEqual( [ 'haswbfacet:P1=Q2' ] );
 	} );
@@ -80,12 +80,22 @@ describe( 'getListFacetQuerySegments', () => {
 
 	test( 'Query segements for list facet with single selected value in OR mode', () => {
 		expect( actual.getListFacetQuerySegments( [ 'Q2' ], 'P1', 'OR' ) )
-			.toEqual( [ 'haswbfacet:P1=Q2' ] );
+			.toEqual( [ 'haswbfacet:P1=Q2|' ] );
 	} );
 
 	test( 'Query segements for list facet with multiple selected values in OR mode', () => {
 		expect( actual.getListFacetQuerySegments( [ 'Q2', 'Q3' ], 'P1', 'OR' ) )
 			.toEqual( [ 'haswbfacet:P1=Q2|Q3' ] );
+	} );
+
+	test( 'Query segments for list facet with no selected AND values', () => {
+		expect( actual.getListFacetQuerySegments( [], 'P1', 'AND' ) )
+			.toEqual( [ 'haswbfacet:P1=' ] );
+	} );
+
+	test( 'Query segments for list facet with no selected OR values', () => {
+		expect( actual.getListFacetQuerySegments( [], 'P1', 'OR' ) )
+			.toEqual( [ 'haswbfacet:P1=|' ] );
 	} );
 } );
 

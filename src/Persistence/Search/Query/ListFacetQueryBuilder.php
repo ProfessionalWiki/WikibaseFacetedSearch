@@ -26,24 +26,26 @@ class ListFacetQueryBuilder implements FacetQueryBuilder {
 			return $this->buildAnyValueQuery( $name );
 		}
 
+		$values = array_filter(
+			$this->getFacetValues( $constraints ),
+			fn( $value ) => $value !== ''
+		);
+
+		if ( $values === [] ) {
+			return null;
+		}
+
 		return match ( $this->dataTypeLookup->getDataTypeIdForProperty( $config->propertyId ) ) {
-			'string' => $this->buildStringQuery( $name, $constraints ),
-			'wikibase-item' => $this->buildStringQuery( $name, $constraints ),
-			'quantity' => $this->buildQuantityQuery( $name, $constraints ),
-			'time' => $this->buildTimeQuery( $name, $constraints ),
+			'string' => $this->buildStringQuery( $name, $values ),
+			'wikibase-item' => $this->buildStringQuery( $name, $values ),
+			'quantity' => $this->buildQuantityQuery( $name, $values ),
+			'time' => $this->buildTimeQuery( $name, $values ),
 			default => null
 		};
 	}
 
 	private function buildAnyValueQuery( string $name ): AbstractQuery {
 		return new Exists( $name );
-	}
-
-	private function buildStringQuery( string $name, PropertyConstraints $constraints ): AbstractQuery {
-		return new Terms(
-			$name,
-			$this->getFacetValues( $constraints )
-		);
 	}
 
 	private function getFacetValues( PropertyConstraints $constraints ): array {
@@ -54,22 +56,29 @@ class ListFacetQueryBuilder implements FacetQueryBuilder {
 		return $constraints->getAndSelectedValues();
 	}
 
-	private function buildQuantityQuery( string $name, PropertyConstraints $constraints ): AbstractQuery {
+	private function buildStringQuery( string $name, array $values ): AbstractQuery {
+		return new Terms(
+			$name,
+			$values
+		);
+	}
+
+	private function buildQuantityQuery( string $name, array $values ): AbstractQuery {
 		return new Terms(
 			$name,
 			array_map(
 				fn( $value ) => (float)$value,
-				$this->getFacetValues( $constraints )
+				$values
 			)
 		);
 	}
 
-	private function buildTimeQuery( string $name, PropertyConstraints $constraints ): AbstractQuery {
+	private function buildTimeQuery( string $name, array $values ): AbstractQuery {
 		return new Terms(
 			$name,
 			array_map(
 				fn( $value ) => $this->timestampToIso8601( (int)$value ),
-				$this->getFacetValues( $constraints )
+				$values
 			)
 		);
 	}
