@@ -1,38 +1,40 @@
-{{#toggle}}
-	<div class="wikibase-faceted-search__facet-toggle">
-		{{#and}}
-			<button 
-			class="wikibase-faceted-search__facet-toggle-button cdx-button {{#selected}}cdx-button--action-progressive cdx-button--weight-primary{{/selected}}"
-			value="{{value}}"
-			{{#disabled}}disabled{{/disabled}}
-			>
-				{{label}}
-			</button>
-		{{/and}}
-		{{#or}}
-			<button
-			class="wikibase-faceted-search__facet-toggle-button cdx-button {{#selected}}cdx-button--action-progressive cdx-button--weight-primary{{/selected}}"
-			value="{{value}}"
-			{{#disabled}}disabled{{/disabled}}
-			>
-				{{label}}
-			</button>
-		{{/or}}
-	</div>
-{{/toggle}}
-{{#checkboxes}}
-	<div class="wikibase-faceted-search__facet-items">
-		{{#visible}}{{>FacetItemCheckbox}}{{/visible}}
-	</div>
-	{{#showMore}}
-		<details class="wikibase-faceted-search__facet-items-overflow">
-			<summary class="wikibase-faceted-search__facet-items-overflow-buttons">
-				<div class="wikibase-faceted-search__facet-items-overflow-button-show cdx-button cdx-button--fake-button cdx-button--fake-button--enabled">{{msg-show-more}}</div>
-				<div class="wikibase-faceted-search__facet-items-overflow-button-hide cdx-button cdx-button--fake-button cdx-button--fake-button--enabled">{{msg-show-less}}</div>
-			</summary>
-			<div class="wikibase-faceted-search__facet-items">
-				{{#collapsed}}{{>FacetItemCheckbox}}{{/collapsed}}
-			</div>
-		</details>
-	{{/showMore}}
-{{/checkboxes}}
+{{#showFacet}}
+	{{#toggle}}
+		<div class="wikibase-faceted-search__facet-toggle">
+			{{#and}}
+				<button 
+				class="wikibase-faceted-search__facet-toggle-button cdx-button {{#selected}}cdx-button--action-progressive cdx-button--weight-primary{{/selected}}"
+				value="{{value}}"
+				{{#disabled}}disabled{{/disabled}}
+				>
+					{{label}}
+				</button>
+			{{/and}}
+			{{#or}}
+				<button
+				class="wikibase-faceted-search__facet-toggle-button cdx-button {{#selected}}cdx-button--action-progressive cdx-button--weight-primary{{/selected}}"
+				value="{{value}}"
+				{{#disabled}}disabled{{/disabled}}
+				>
+					{{label}}
+				</button>
+			{{/or}}
+		</div>
+	{{/toggle}}
+	{{#checkboxes}}
+		<div class="wikibase-faceted-search__facet-items">
+			{{#visible}}{{>FacetItemCheckbox}}{{/visible}}
+		</div>
+		{{#showMore}}
+			<details class="wikibase-faceted-search__facet-items-overflow">
+				<summary class="wikibase-faceted-search__facet-items-overflow-buttons">
+					<div class="wikibase-faceted-search__facet-items-overflow-button-show cdx-button cdx-button--fake-button cdx-button--fake-button--enabled">{{msg-show-more}}</div>
+					<div class="wikibase-faceted-search__facet-items-overflow-button-hide cdx-button cdx-button--fake-button cdx-button--fake-button--enabled">{{msg-show-less}}</div>
+				</summary>
+				<div class="wikibase-faceted-search__facet-items">
+					{{#collapsed}}{{>FacetItemCheckbox}}{{/collapsed}}
+				</div>
+			</details>
+		{{/showMore}}
+	{{/checkboxes}}
+{{/showFacet}}

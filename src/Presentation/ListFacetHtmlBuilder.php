@@ -31,21 +31,26 @@ class ListFacetHtmlBuilder implements FacetHtmlBuilder {
 	}
 
 	public function buildHtml( FacetConfig $config, PropertyConstraints $state ): string {
+		$valueCounts = $this->getValuesAndCounts( $config );
+		if ( count( $valueCounts ) === 0 ) {
+			return '';
+		}
+
 		return $this->parser->processTemplate(
 			'ListFacet',
-			$this->buildViewModel( $config, $state )
+			$this->buildViewModel( $config, $state, $valueCounts )
 		);
 	}
 
 	/**
 	 * @return array<string, mixed>
 	 */
-	public function buildViewModel( FacetConfig $config, PropertyConstraints $state ): array {
+	public function buildViewModel( FacetConfig $config, PropertyConstraints $state, array $valueCounts ): array {
 		$combineWithAnd = $this->shouldCombineWithAnd( $config, $state );
 
 		return [
 			'toggle' => $this->buildToggleViewModel( $combineWithAnd, $this->hasCombineWithChoice( $config ) ),
-			'checkboxes' => $this->buildCheckboxesViewModel( $config, $state ),
+			'checkboxes' => $this->buildCheckboxesViewModel( $config, $state, $valueCounts ),
 			'msg-show-more' => wfMessage( 'wikibase-faceted-search-facet-show-more' )->text(),
 			'msg-show-less' => wfMessage( 'wikibase-faceted-search-facet-show-less' )->text()
 			// TODO: act on config: showNoneFilter https://github.com/ProfessionalWiki/WikibaseFacetedSearch/issues/117
@@ -99,7 +104,7 @@ class ListFacetHtmlBuilder implements FacetHtmlBuilder {
 		];
 	}
 
-	private function buildCheckboxesViewModel( FacetConfig $config, PropertyConstraints $state ): array {
+	private function buildCheckboxesViewModel( FacetConfig $config, PropertyConstraints $state, array $valueCounts ): array {
 		$maxVisibleCheckboxes = 5; // TODO: Make this configurable
 		$combineWithAnd = $this->shouldCombineWithAnd( $config, $state );
 
@@ -110,7 +115,7 @@ class ListFacetHtmlBuilder implements FacetHtmlBuilder {
 
 		$checkboxes = [];
 
-		foreach ( $this->getValuesAndCounts( $config ) as $i => $valueCount ) {
+		foreach ( $valueCounts as $i => $valueCount ) {
 			$checkboxes[] = $this->buildCheckboxViewModel( $config, $valueCount, $selectedValues, $state->propertyId, $i );
 		}
 
@@ -134,7 +139,7 @@ class ListFacetHtmlBuilder implements FacetHtmlBuilder {
 	/**
 	 * @return ValueCount[]
 	 */
-	private function getValuesAndCounts( FacetConfig $config ): array {
+	public function getValuesAndCounts( FacetConfig $config ): array {
 		return $this->valueCounter->countValues( $config->propertyId )->asArray();
 	}
 

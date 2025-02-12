@@ -74,12 +74,15 @@ class SidebarHtmlBuilder {
 	}
 
 	private function buildFacetViewModel( FacetConfig $facet, PropertyConstraints $state ): array {
+		$facetHtml = $this->facetHtmlBuilder->buildHtml( $facet, $state );
+
 		return [
 			'label' => $this->getFacetLabel( $facet->propertyId ),
 			'propertyId' => $facet->propertyId->getSerialization(),
 			'type' => $facet->type->value, // TODO: is this needed?
 			'expanded' => true, // TODO: get this from the URL somehow
-			'facetHtml' => $this->facetHtmlBuilder->buildHtml( $facet, $state )
+			'facetHtml' => $facetHtml,
+			'showFacet' => $facetHtml !== '',
 		];
 	}
 
