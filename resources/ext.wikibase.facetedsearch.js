@@ -116,7 +116,7 @@ function onRangeFacetInput( facet, propertyId ) {
 		return;
 	}
 
-	if ( minInput.value.length < 1 && maxInput.value.length < 1 ) {
+	if ( minInput.value === minInput.defaultValue && maxInput.value === maxInput.defaultValue ) {
 		applyButton.disabled = true;
 		return;
 	}
