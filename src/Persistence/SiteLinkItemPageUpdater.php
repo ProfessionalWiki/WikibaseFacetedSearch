@@ -20,17 +20,23 @@ class SiteLinkItemPageUpdater implements ItemPageUpdater {
 	}
 
 	public function updatePage( Item $item, UserIdentity $user ): void {
-		if ( $item->hasLinkToSite( $this->linkTargetSitelinkSiteId ) ) {
-			$this->getSiteLinkedPage( $item )
-				->newPageUpdater( $user )
-				->updateRevision();
+		$title = $this->getSiteLinkedTitle( $item );
+
+		if ( $title === null ) {
+			return;
 		}
+
+		$this->pageFactory->newFromTitle( $title )
+			->newPageUpdater( $user )
+			->updateRevision();
 	}
 
-	private function getSiteLinkedPage( Item $item ): WikiPage {
-		return $this->pageFactory->newFromTitle(
-			Title::newFromText( $item->getSiteLink( $this->linkTargetSitelinkSiteId )->getPageName() )
-		);
+	private function getSiteLinkedTitle( Item $item ): ?Title {
+		if ( $item->hasLinkToSite( $this->linkTargetSitelinkSiteId ) ) {
+			return Title::newFromText( $item->getSiteLink( $this->linkTargetSitelinkSiteId )->getPageName() );
+		}
+
+		return null;
 	}
 
 }
