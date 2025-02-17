@@ -16,6 +16,7 @@ use ProfessionalWiki\WikibaseFacetedSearch\Application\ConfigLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\DataValueTranslator;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\ElasticQueryFilter;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetType;
+use ProfessionalWiki\WikibaseFacetedSearch\Application\ItemPageUpdater;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\ItemTypeExtractor;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\ItemTypeLabelLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\PageItemLookup;
@@ -31,6 +32,8 @@ use ProfessionalWiki\WikibaseFacetedSearch\Persistence\ElasticQueryRunner;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\ElasticValueCounter;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\FallbackItemTypeLabelLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\FromPageStatementsLookup;
+use ProfessionalWiki\WikibaseFacetedSearch\Persistence\NoOpItemPageUpdater;
+use ProfessionalWiki\WikibaseFacetedSearch\Persistence\SiteLinkItemPageUpdater;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\PageContentConfigLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\PageContentFetcher;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\PageItemLookupFactory;
@@ -326,6 +329,17 @@ class WikibaseFacetedSearchExtension {
 
 	public function newElasticQueryFilter(): ElasticQueryFilter {
 		return new ElasticQueryFilter();
+	}
+
+	public function newItemPageUpdater(): ItemPageUpdater {
+		if ( $this->getConfig()->linkTargetSitelinkSiteId === null ) {
+			return new NoOpItemPageUpdater();
+		}
+
+		return new SiteLinkItemPageUpdater(
+			linkTargetSitelinkSiteId: $this->getConfig()->linkTargetSitelinkSiteId,
+			pageFactory: MediaWikiServices::getInstance()->getWikiPageFactory()
+		);
 	}
 
 }

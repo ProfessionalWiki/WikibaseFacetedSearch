@@ -47,7 +47,8 @@
 		"SpecialSearchResults": "ProfessionalWiki\\WikibaseFacetedSearch\\EntryPoints\\WikibaseFacetedSearchHooks::onSpecialSearchResults",
 		"CirrusSearchAddQueryFeatures": "ProfessionalWiki\\WikibaseFacetedSearch\\EntryPoints\\WikibaseFacetedSearchHooks::onCirrusSearchAddQueryFeatures",
 		"SearchIndexFields": "ProfessionalWiki\\WikibaseFacetedSearch\\EntryPoints\\WikibaseFacetedSearchHooks::onSearchIndexFields",
-		"SearchDataForIndex": "ProfessionalWiki\\WikibaseFacetedSearch\\EntryPoints\\WikibaseFacetedSearchHooks::onSearchDataForIndex"
+		"SearchDataForIndex": "ProfessionalWiki\\WikibaseFacetedSearch\\EntryPoints\\WikibaseFacetedSearchHooks::onSearchDataForIndex",
+		"PageSaveComplete": "ProfessionalWiki\\WikibaseFacetedSearch\\EntryPoints\\WikibaseFacetedSearchHooks::onPageSaveComplete"
 	},
 
 	"config": {

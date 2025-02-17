@@ -16,8 +16,11 @@ use MediaWiki\EditPage\EditPage;
 use MediaWiki\Html\Html;
 use MediaWiki\Output\OutputPage;
 use MediaWiki\Parser\ParserOutput;
+use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Specials\SpecialSearch;
+use MediaWiki\Storage\EditResult;
 use MediaWiki\Title\Title;
+use MediaWiki\User\UserIdentity;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\ConfigEditPageTextBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\ConfigJsonErrorFormatter;
 use ProfessionalWiki\WikibaseFacetedSearch\WikibaseFacetedSearchExtension;
@@ -25,6 +28,7 @@ use SearchEngine;
 use SearchIndexField;
 use SearchResult;
 use Skin;
+use Wikibase\Repo\Content\ItemContent;
 use WikiPage;
 
 class WikibaseFacetedSearchHooks {
@@ -220,4 +224,20 @@ class WikibaseFacetedSearchHooks {
 		}
 	}
 
+	public static function onPageSaveComplete(
+		WikiPage $wikiPage,
+		UserIdentity $user,
+		string $summary,
+		int $flags,
+		RevisionRecord $revisionRecord,
+		EditResult $editResult
+	) {
+		$content = $wikiPage->getContent();
+
+		if ( !( $content instanceof ItemContent ) ) {
+			return;
+		}
+
+		WikibaseFacetedSearchExtension::getInstance()->newItemPageUpdater()->updatePage( $content->getItem(), $user );
+	}
 }

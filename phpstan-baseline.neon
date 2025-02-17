@@ -53,3 +53,9 @@ parameters:
 			identifier: argument.type
 			count: 1
 			path: src/Persistence/Search/Query/ListFacetQueryBuilder.php
+
+		-
+			message: '#^Parameter \#1 \$pageIdentity of method MediaWiki\\Page\\WikiPageFactory\:\:newFromTitle\(\) expects MediaWiki\\Page\\PageIdentity, MediaWiki\\Title\\Title\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Persistence/SiteLinkItemPageUpdater.php
