@@ -7,6 +7,7 @@ namespace ProfessionalWiki\WikibaseFacetedSearch\Presentation;
 use MediaWiki\Html\TemplateParser;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetConfig;
+use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetType;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\PropertyConstraints;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Query;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\QueryStringParser;
@@ -64,25 +65,28 @@ class SidebarHtmlBuilder {
 		$facets = [];
 
 		foreach ( $this->config->getFacetConfigForItemType( $itemType ) as $facetConfig ) {
-			$facets[] = $this->buildFacetViewModel(
+			$facet = $this->buildFacetViewModel(
 				$facetConfig,
 				$query->getConstraintsForProperty( $facetConfig->propertyId ) ?? new PropertyConstraints( $facetConfig->propertyId )
 			);
+
+			if ( $facet['facetHtml'] === '' ) {
+				continue;
+			}
+
+			$facets[] = $facet;
 		}
 
 		return $facets;
 	}
 
 	private function buildFacetViewModel( FacetConfig $facet, PropertyConstraints $state ): array {
-		$facetHtml = $this->facetHtmlBuilder->buildHtml( $facet, $state );
-
 		return [
 			'label' => $this->getFacetLabel( $facet->propertyId ),
 			'propertyId' => $facet->propertyId->getSerialization(),
 			'type' => $facet->type->value, // TODO: is this needed?
 			'expanded' => true, // TODO: get this from the URL somehow
-			'facetHtml' => $facetHtml,
-			'showFacet' => $facetHtml !== '',
+			'facetHtml' => $this->facetHtmlBuilder->buildHtml( $facet, $state )
 		];
 	}
 
