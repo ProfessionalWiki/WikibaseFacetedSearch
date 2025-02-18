@@ -28,7 +28,7 @@ class SidebarHtmlBuilderIntegrationTest extends MediaWikiIntegrationTestCase {
 			"label": "People",
 			"facets": {
 				"P100": {
-					"type": "list"
+					"type": "range"
 				}
 			}
 		}
@@ -38,9 +38,7 @@ JSON
 		);
 
 		$html = $this->getSidebarHtmlBuilderFromGlobals()->createHtml( 'foo haswbfacet:P42=Q1' );
-		// TODO: Figure out a way to test $facetsViewModel > 0
-		// $this->assertStringContainsString( 'sidebar', $html );
-		$this->assertIsString( $html );
+		$this->assertStringContainsString( 'sidebar', $html );
 	}
 
 	private function getSidebarHtmlBuilderFromGlobals(): SidebarHtmlBuilder {
