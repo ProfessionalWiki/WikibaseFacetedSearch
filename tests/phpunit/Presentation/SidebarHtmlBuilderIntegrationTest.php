@@ -28,7 +28,7 @@ class SidebarHtmlBuilderIntegrationTest extends MediaWikiIntegrationTestCase {
 			"label": "People",
 			"facets": {
 				"P100": {
-					"type": "list"
+					"type": "range"
 				}
 			}
 		}

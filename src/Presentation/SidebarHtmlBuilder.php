@@ -64,10 +64,16 @@ class SidebarHtmlBuilder {
 		$facets = [];
 
 		foreach ( $this->config->getFacetConfigForItemType( $itemType ) as $facetConfig ) {
-			$facets[] = $this->buildFacetViewModel(
+			$facet = $this->buildFacetViewModel(
 				$facetConfig,
 				$query->getConstraintsForProperty( $facetConfig->propertyId ) ?? new PropertyConstraints( $facetConfig->propertyId )
 			);
+
+			if ( $facet['facetHtml'] === '' ) {
+				continue;
+			}
+
+			$facets[] = $facet;
 		}
 
 		return $facets;
