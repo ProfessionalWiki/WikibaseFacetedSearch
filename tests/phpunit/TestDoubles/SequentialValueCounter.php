@@ -17,6 +17,10 @@ class SequentialValueCounter implements ValueCounter {
 	}
 
 	public function countValues( PropertyId $property ): ValueCounts {
+		if ( $this->count === 0 ) {
+			return new ValueCounts( [] );
+		}
+
 		return new ValueCounts( ...[
 			array_map(
 				fn( $i ) => new ValueCount( self::valueFor( $i ), $this->count + 100 ),
