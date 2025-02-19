@@ -22,7 +22,6 @@ class Valid {
     "itemTypeProperty": "P42",
     "configPerItemType": {
         "Q100": {
-            "label": "Memes",
             "facets": {
                 "P1": {
                     "type": "list"
@@ -33,7 +32,6 @@ class Valid {
             }
         },
         "Q200": {
-            "label": "Cat Pictures",
             "facets": {
                 "P3": {
                     "type": "list"

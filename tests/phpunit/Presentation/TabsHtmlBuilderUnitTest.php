@@ -54,7 +54,6 @@ class TabsHtmlBuilderUnitTest extends TestCase {
 	"itemTypeProperty": "P1337",
 	"configPerItemType": {
 		"Q5976445": {
-			"label": "People",
 			"facets": {
 				"P592": {
 					"type": "list"
@@ -65,7 +64,6 @@ class TabsHtmlBuilderUnitTest extends TestCase {
 			}
 		},
 		"Q5976449": {
-			"label": "Documents",
 			"facets": {
 				"P22": {
 					"type": "list"
@@ -109,15 +107,12 @@ JSON );
 	"itemTypeProperty": "P1337",
 	"configPerItemType": {
 		"Q1": {
-			"label": "whatever1",
 			"facets": { "P1": { "type": "list" } }
 		},
 		"Q2": {
-			"label": "whatever2",
 			"facets": { "P1": { "type": "list" } }
 		},
 		"Q3": {
-			"label": "whatever3",
 			"facets": { "P1": { "type": "list" } }
 		}
 	}

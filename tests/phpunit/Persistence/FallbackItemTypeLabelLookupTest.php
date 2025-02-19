@@ -27,4 +27,12 @@ class FallbackItemTypeLabelLookupTest extends TestCase {
 		$this->assertSame( 'Q42', $lookup->getLabel( new ItemId( 'Q42' ) ) );
 	}
 
+	public function testReturnsMessageString(): void {
+		$this->markTestSkipped( 'TODO: set message key' );
+
+		$lookup = new FallbackItemTypeLabelLookup( new StubLabelLookup( label: null ) );
+
+		$this->assertSame( 'People', $lookup->getLabel( new ItemId( 'Q42' ) ) );
+	}
+
 }

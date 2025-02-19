@@ -95,7 +95,6 @@ class ConfigJsonValidatorTest extends TestCase {
 {
 	"configPerItemType": {
 		"P1": {
-			"label": "Memes",
 			"facets": []
 		}
 	}
@@ -122,7 +121,6 @@ class ConfigJsonValidatorTest extends TestCase {
 {
 	"configPerItemType": {
 		"Q1": {
-			"label": "Memes",
 			"facets": {
 				"invalid": {
 					"type": "list"
@@ -141,7 +139,6 @@ class ConfigJsonValidatorTest extends TestCase {
 {
 	"configPerItemType": {
 		"Q1": {
-			"label": "Memes",
 			"facets": {
 				"P1": {
 					"type": "invalid"
@@ -168,7 +165,6 @@ class ConfigJsonValidatorTest extends TestCase {
 {
 	"configPerItemType": {
 		"Q1": {
-			"label": "Memes",
 			"facets": {
 				"P1": {
 					"type": "list",
@@ -188,7 +184,6 @@ class ConfigJsonValidatorTest extends TestCase {
 {
 	"configPerItemType": {
 		"Q1": {
-			"label": "Memes",
 			"facets": {
 				"P1": {
 					"type": "list",
@@ -211,7 +206,6 @@ class ConfigJsonValidatorTest extends TestCase {
 {
 	"configPerItemType": {
 		"Q1": {
-			"label": "Memes",
 			"facets": {
 				"P1": {
 					"type": "list",

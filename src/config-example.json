@@ -3,7 +3,6 @@
 	"itemTypeProperty": "P42",
 	"configPerItemType": {
 		"Q100": {
-			"label": "Memes",
 			"facets": {
 				"P1": {
 					"type": "list"
@@ -14,7 +13,6 @@
 			}
 		},
 		"Q200": {
-			"label": "Cat Pictures",
 			"facets": {
 				"P2": {
 					"type": "range"

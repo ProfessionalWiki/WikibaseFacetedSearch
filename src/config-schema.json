@@ -18,11 +18,8 @@
 			"additionalProperties": {
 				"type": "object",
 				"additionalProperties": false,
-				"required": [ "label", "facets" ],
+				"required": [ "facets" ],
 				"properties": {
-					"label": {
-						"type": "string"
-					},
 					"facets": {
 						"type": "object",
 						"propertyNames": {
