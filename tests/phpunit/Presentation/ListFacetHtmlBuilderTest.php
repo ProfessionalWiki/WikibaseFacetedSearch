@@ -102,13 +102,16 @@ class ListFacetHtmlBuilderTest extends TestCase {
 				->withAdditionalAndValue( StubValueCounter::SIXTH_VALUE )
 		);
 
-		$this->assertFalse( $viewModel['checkboxes']['visible'][0]['checked'] );
+		$this->assertTrue( $viewModel['checkboxes']['visible'][0]['checked'] );
+		$this->assertSame( StubValueCounter::SECOND_VALUE, $viewModel['checkboxes']['visible'][0]['value'] );
 		$this->assertTrue( $viewModel['checkboxes']['visible'][1]['checked'] );
+		$this->assertSame( StubValueCounter::SIXTH_VALUE, $viewModel['checkboxes']['visible'][1]['value'] );
+
 		$this->assertFalse( $viewModel['checkboxes']['visible'][2]['checked'] );
 		$this->assertFalse( $viewModel['checkboxes']['visible'][3]['checked'] );
 		$this->assertFalse( $viewModel['checkboxes']['visible'][4]['checked'] );
 
-		$this->assertTrue( $viewModel['checkboxes']['collapsed'][0]['checked'] );
+		$this->assertFalse( $viewModel['checkboxes']['collapsed'][0]['checked'] );
 		$this->assertFalse( $viewModel['checkboxes']['collapsed'][1]['checked'] );
 	}
 
@@ -123,13 +126,16 @@ class ListFacetHtmlBuilderTest extends TestCase {
 			typeSpecificConfig: [ 'defaultCombineWith' => 'OR' ]
 		);
 
-		$this->assertFalse( $viewModel['checkboxes']['visible'][0]['checked'] );
+		$this->assertTrue( $viewModel['checkboxes']['visible'][0]['checked'] );
+		$this->assertSame( StubValueCounter::SECOND_VALUE, $viewModel['checkboxes']['visible'][0]['value'] );
 		$this->assertTrue( $viewModel['checkboxes']['visible'][1]['checked'] );
+		$this->assertSame( StubValueCounter::SIXTH_VALUE, $viewModel['checkboxes']['visible'][1]['value'] );
+
 		$this->assertFalse( $viewModel['checkboxes']['visible'][2]['checked'] );
 		$this->assertFalse( $viewModel['checkboxes']['visible'][3]['checked'] );
 		$this->assertFalse( $viewModel['checkboxes']['visible'][4]['checked'] );
 
-		$this->assertTrue( $viewModel['checkboxes']['collapsed'][0]['checked'] );
+		$this->assertFalse( $viewModel['checkboxes']['collapsed'][0]['checked'] );
 		$this->assertFalse( $viewModel['checkboxes']['collapsed'][1]['checked'] );
 	}
 
