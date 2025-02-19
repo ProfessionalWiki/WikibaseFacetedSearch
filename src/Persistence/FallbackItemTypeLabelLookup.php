@@ -16,7 +16,11 @@ class FallbackItemTypeLabelLookup implements ItemTypeLabelLookup {
 	}
 
 	public function getLabel( ItemId $itemType ): string {
-		// TODO: prefer item from internationalized source https://github.com/ProfessionalWiki/WikibaseFacetedSearch/issues/91
+		$message = wfMessage( 'WikibaseFacetedSearch-item-type-' . $itemType->getSerialization() );
+
+		if ( $message->exists() ) {
+			return $message->text();
+		}
 
 		return $this->labelLookup->getLabel( $itemType )?->getText() ?? $itemType->getSerialization();
 	}

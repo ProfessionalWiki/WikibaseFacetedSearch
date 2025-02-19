@@ -25,7 +25,6 @@ class SidebarHtmlBuilderIntegrationTest extends MediaWikiIntegrationTestCase {
 	"itemTypeProperty": "P42",
 	"configPerItemType": {
 		"Q1": {
-			"label": "People",
 			"facets": {
 				"P100": {
 					"type": "range"

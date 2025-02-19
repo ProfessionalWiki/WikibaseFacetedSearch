@@ -88,7 +88,6 @@ class ConfigDeserializerTest extends TestCase {
 		$config = $deserializer->deserialize( '{
 	"configPerItemType": {
 		"Q200": {
-			"label": "Cat Pictures",
 			"facets": {
 				"P2": {
 					"type": "list"
@@ -127,7 +126,6 @@ class ConfigDeserializerTest extends TestCase {
 		$config = $deserializer->deserialize( '{
 	"configPerItemType": {
 		"Q200": {
-			"label": "Cat Pictures",
 			"facets": {
 				"P2": {
 					"type": "list"

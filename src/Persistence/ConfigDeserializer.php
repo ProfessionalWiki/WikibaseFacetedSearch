@@ -51,7 +51,6 @@ class ConfigDeserializer {
 	}
 
 	/**
-	 * TODO: also return $itemTypeConfig['label']
 	 * @param array<string, array> $configPerItemType
 	 */
 	private function newFacetConfigList( array $configPerItemType ): ?FacetConfigList {
