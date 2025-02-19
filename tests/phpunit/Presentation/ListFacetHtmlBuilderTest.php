@@ -25,6 +25,41 @@ class ListFacetHtmlBuilderTest extends TestCase {
 
 	private const FACET_PROPERTY_ID = 'P42';
 
+	public function testRendersTemplate(): void {
+		$html = $this->newListFacetHtmlBuilder()->buildHtml(
+			config: $this->newFacetConfig(),
+			state: $this->newPropertyConstraints()
+		);
+
+		$this->assertStringContainsString( self::FACET_PROPERTY_ID, $html );
+		$this->assertStringContainsString( StubValueCounter::FIRST_VALUE, $html );
+		$this->assertStringContainsString( StubValueCounter::SECOND_VALUE, $html );
+		$this->assertStringContainsString( StubValueCounter::THIRD_VALUE, $html );
+		$this->assertStringContainsString( StubValueCounter::FOURTH_VALUE, $html );
+		$this->assertStringContainsString( StubValueCounter::FIFTH_VALUE, $html );
+		$this->assertStringContainsString( StubValueCounter::SIXTH_VALUE, $html );
+		$this->assertStringContainsString( StubValueCounter::SEVENTH_VALUE, $html );
+		$this->assertStringContainsString( 'count">' . StubValueCounter::FIRST_COUNT, $html );
+		$this->assertStringContainsString( 'count">' . StubValueCounter::SECOND_COUNT, $html );
+		$this->assertStringContainsString( 'count">' . StubValueCounter::THIRD_COUNT, $html );
+		$this->assertStringContainsString( 'count">' . StubValueCounter::FOURTH_COUNT, $html );
+		$this->assertStringContainsString( 'count">' . StubValueCounter::FIFTH_COUNT, $html );
+		$this->assertStringContainsString( 'count">' . StubValueCounter::SIXTH_COUNT, $html );
+		$this->assertStringContainsString( 'count">' . StubValueCounter::SEVENTH_COUNT, $html );
+		$this->assertStringContainsString( 'overflow-button-show', $html );
+	}
+
+	public function testRendersTemplateWhenNoValues(): void {
+		$html = $this->newListFacetHtmlBuilder(
+			valueCounter: new SequentialValueCounter( 0 )
+		)->buildHtml(
+			config: $this->newFacetConfig(),
+			state: $this->newPropertyConstraints()
+		);
+
+		$this->assertSame( '', $html );
+	}
+
 	private function newPropertyConstraints(): PropertyConstraints {
 		return new PropertyConstraints( propertyId: new NumericPropertyId( self::FACET_PROPERTY_ID ) );
 	}
