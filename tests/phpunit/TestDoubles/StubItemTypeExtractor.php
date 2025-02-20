@@ -20,4 +20,4 @@ class StubItemTypeExtractor extends ItemTypeExtractor {
 		return $this->itemType;
 	}
 
-} 
+}

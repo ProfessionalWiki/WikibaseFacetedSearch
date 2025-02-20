@@ -19,4 +19,4 @@ class StubStatementTranslator extends StatementTranslator {
 		return $this->returnValue;
 	}
 
-} 
+}
