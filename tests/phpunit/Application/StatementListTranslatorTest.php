@@ -118,7 +118,7 @@ class StatementListTranslatorTest extends TestCase {
 			)
 		);
 
-		$this->assertEquals(
+		$this->assertSame(
 			[
 				'wbfs_P100' => [],
 				'wbfs_P42' => [],
