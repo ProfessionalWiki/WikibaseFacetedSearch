@@ -105,6 +105,14 @@ class ListFacetHtmlBuilder implements FacetHtmlBuilder {
 	}
 
 	private function buildCheckboxesViewModel( FacetConfig $config, PropertyConstraints $state, array $valueCounts ): array {
+		if ( $valueCounts === [] ) {
+			return [
+				'visible' => [],
+				'collapsed' => [],
+				'showMore' => false
+			];
+		}
+
 		$maxVisibleCheckboxes = 5; // TODO: Make this configurable
 		$combineWithAnd = $this->shouldCombineWithAnd( $config, $state );
 
@@ -118,6 +126,8 @@ class ListFacetHtmlBuilder implements FacetHtmlBuilder {
 		foreach ( $valueCounts as $i => $valueCount ) {
 			$checkboxes[] = $this->buildCheckboxViewModel( $config, $valueCount, $selectedValues, $state->propertyId, $i );
 		}
+
+		usort( $checkboxes, fn( $a, $b ) => $b['checked'] <=> $a['checked'] );
 
 		return [
 			'visible' => array_slice( $checkboxes, 0, $maxVisibleCheckboxes ),
