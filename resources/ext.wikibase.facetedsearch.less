@@ -7,22 +7,39 @@
 	}
 
 	&__topbar {
+		font-size: @font-size-medium; // Make sure settings button is the same size as tabs
 		overflow-x: auto;
+
+		.cdx-tabs__header {
+			column-gap: @spacing-50;
+		}
+
+		.cdx-tabs__list {
+			flex-grow: 1;
+		}
+
+		.wikibase-faceted-search__settings-button {
+			flex-shrink: 0;
+
+			/* Turn into icon only button in narrow viewport */
+			@media ( max-width: @max-width-breakpoint-mobile ) {
+				font-size: 0;
+				gap: 0;
+			}
+		}
 	}
 
 	&__icon {
-		// Needed the specificity to override cdx-mixin-css-icon mixin
-		&.wikibase-faceted-search__icon.wikibase-faceted-search__icon.wikibase-faceted-search__icon {
-			// Icon should always stay in sync with the current text color
-			background-color: currentcolor;
-		}
-
 		&--check {
 			.cdx-mixin-css-icon( @cdx-icon-check );
 		}
 
 		&--filter {
 			.cdx-mixin-css-icon( @cdx-icon-funnel );
+		}
+
+		&--settings {
+			.cdx-mixin-css-icon( @cdx-icon-settings, @param-size-icon: @size-icon-small );
 		}
 	}
 

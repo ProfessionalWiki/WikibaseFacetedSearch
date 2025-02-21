@@ -11,6 +11,7 @@ use MediaWiki\Html\TemplateParser;
 use MediaWiki\Language\Language;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Title\Title;
+use MediaWiki\User\User;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\ConfigLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\DataValueTranslator;
@@ -320,12 +321,13 @@ class WikibaseFacetedSearchExtension {
 		);
 	}
 
-	public function getTabsHtmlBuilder( Language $language ): TabsHtmlBuilder {
+	public function getTabsHtmlBuilder( Language $language, User $user ): TabsHtmlBuilder {
 		return new TabsHtmlBuilder(
 			config: $this->getConfig(),
 			itemTypeLabelLookup: $this->getItemTypeLabelLookup( $language ),
 			templateParser: $this->getTemplateParser(),
-			queryStringParser: $this->getQueryStringParser()
+			queryStringParser: $this->getQueryStringParser(),
+			user: $user
 		);
 	}
 
