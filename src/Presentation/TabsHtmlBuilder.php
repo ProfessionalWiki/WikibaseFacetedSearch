@@ -12,8 +12,6 @@ use ProfessionalWiki\WikibaseFacetedSearch\Application\Query;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\QueryStringParser;
 use ProfessionalWiki\WikibaseFacetedSearch\WikibaseFacetedSearchExtension;
 use Wikibase\DataModel\Entity\ItemId;
-use MediaWiki\MediaWikiServices;
-use MediaWiki\Request\RequestContext;
 use MediaWiki\User\User;
 
 class TabsHtmlBuilder {
@@ -56,11 +54,10 @@ class TabsHtmlBuilder {
 	private function buildSettingsViewModel(): array {
 		$title = Title::newFromText( WikibaseFacetedSearchExtension::CONFIG_PAGE_TITLE, NS_MEDIAWIKI );
 
-		if ( !$title instanceof Title ) {
-			return [];
-		}
-
-		if ( !$this->user->isAllowed( 'editsitejson' ) ) {
+		if (
+			!$title instanceof Title
+			|| !$this->user->isAllowed( 'editsitejson' )
+		) {
 			return [];
 		}
 
