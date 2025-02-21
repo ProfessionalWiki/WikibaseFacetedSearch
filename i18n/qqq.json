@@ -14,6 +14,7 @@
 	"wikibase-faceted-search-config-help-example": "Help text heading displayed on \"MediaWiki:WikibaseFacetedSearch\"",
 	"wikibase-faceted-search-instance-type-all": "Label used for the tab for all instance types",
 	"wikibase-faceted-search-filters": "Label used for the Filters button to toggle the facets",
+	"wikibase-faceted-search-settings": "Label used for the Settings button to visit the configuration page",
 	"wikibase-faceted-search-and": "Label used for the And toggle button in the And/Or toggle",
 	"wikibase-faceted-search-or": "Label used for the Or toggle button in the And/Or toggle",
 	"wikibase-faceted-search-facet-apply": "Label used for the Apply button in the facet",

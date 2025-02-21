@@ -27,7 +27,11 @@ class TabsHtmlBuilderIntegrationTest extends MediaWikiIntegrationTestCase {
 	}
 
 	private function getTabsHtmlBuilderFromGlobals(): TabsHtmlBuilder {
-		return WikibaseFacetedSearchExtension::getInstance()->getTabsHtmlBuilder( MediaWikiServices::getInstance()->getContentLanguage() );
+		$services = MediaWikiServices::getInstance();
+		return WikibaseFacetedSearchExtension::getInstance()->getTabsHtmlBuilder(
+			language: $services->getContentLanguage(),
+			user: $services->getUserFactory()->newFromName( 'Test' )
+		);
 	}
 
 }
