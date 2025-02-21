@@ -5,6 +5,7 @@ declare( strict_types = 1 );
 namespace ProfessionalWiki\WikibaseFacetedSearch\Tests\Presentation;
 
 use MediaWiki\MediaWikiServices;
+use MediaWiki\User\User;
 use PHPUnit\Framework\TestCase;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\PropertyConstraintsList;
@@ -39,19 +40,49 @@ class TabsHtmlBuilderUnitTest extends TestCase {
 	private function newTabsHtmlBuilder(
 		?Config $config = null,
 		?SpyTemplateParser $templateSpy = null,
-		?QueryStringParser $queryStringParser = null
+		?QueryStringParser $queryStringParser = null,
+		?User $user = null
 	): TabsHtmlBuilder {
 		return new TabsHtmlBuilder(
-			$config ?? new Config(),
+			$config ?? $this->newConfig(),
 			new FakeItemTypeLabelLookup(),
 			$templateSpy ?? new SpyTemplateParser(),
 			$queryStringParser ?? new StubQueryStringParser(),
-			MediaWikiServices::getInstance()->getUserFactory()->newFromName( 'Test' )
+			$user ?? $this->newUser()
 		);
 	}
 
+	private function newConfig( ?string $json = null ): Config {
+		if ( $json === null ) {
+			$json = <<<JSON
+{
+	"itemTypeProperty": "P1337",
+	"configPerItemType": {
+		"Q5976445": {
+			"facets": {
+				"P592": {
+					"type": "list"
+				}
+			}
+		}
+	}
+}
+JSON;
+		}
+
+		return WikibaseFacetedSearchExtension::getInstance()->newConfigDeserializer()->deserialize( $json );
+	}
+
+	private function newUser( bool $canEditConfig = false ): User {
+		$user = $this->createMock( User::class );
+		$user->method( 'isAllowed' )
+			->with( 'editsitejson' )
+			->willReturn( $canEditConfig );
+		return $user;
+	}
+
 	public function testTabsViewModelContainsItemTypes(): void {
-		$config = WikibaseFacetedSearchExtension::getInstance()->newConfigDeserializer()->deserialize( <<<JSON
+		$config = $this->newConfig( <<<JSON
 {
 	"itemTypeProperty": "P1337",
 	"configPerItemType": {
@@ -104,7 +135,7 @@ JSON );
 	}
 
 	public function testTabsViewModelSelectsCurrentItemType(): void {
-		$config = WikibaseFacetedSearchExtension::getInstance()->newConfigDeserializer()->deserialize( <<<JSON
+		$config = $this->newConfig( <<<JSON
 {
 	"itemTypeProperty": "P1337",
 	"configPerItemType": {
@@ -156,6 +187,70 @@ JSON );
 				],
 			],
 			$templateSpy->getArgs()['instances']
+		);
+	}
+
+	public function testSettingsViewModelContainsValuesWhenUserCanEditConfigurations(): void {
+		$config = $this->newConfig( <<<JSON
+{
+	"itemTypeProperty": "P1337",
+	"configPerItemType": {
+		"Q5976445": {
+			"facets": {
+				"P592": {
+					"type": "list"
+				}
+			}
+		}
+	}
+}
+JSON );
+
+		$templateSpy = new SpyTemplateParser();
+
+		$this->newTabsHtmlBuilder(
+			config: $config,
+			templateSpy: $templateSpy,
+			user: $this->newUser( canEditConfig: true )
+		)->createHtml( 'unimportant' );
+
+		$settings = $templateSpy->getArgs()['settings'];
+
+		$this->assertArrayHasKey( 'url', $settings );
+		$this->assertArrayHasKey( 'label', $settings );
+		$this->assertStringContainsString(
+			WikibaseFacetedSearchExtension::CONFIG_PAGE_TITLE,
+			$settings['url']
+		);
+	}
+
+	public function testSettingsViewModelIsEmptyWhenUserCannotEditConfigurations(): void {
+		$config = $this->newConfig( <<<JSON
+{
+	"itemTypeProperty": "P1337",
+	"configPerItemType": {
+		"Q5976445": {
+			"facets": {
+				"P592": {
+					"type": "list"
+				}
+			}
+		}
+	}
+}
+JSON );
+
+		$templateSpy = new SpyTemplateParser();
+
+		$this->newTabsHtmlBuilder(
+			config: $config,
+			templateSpy: $templateSpy,
+			user: $this->newUser( canEditConfig: false )
+		)->createHtml( 'unimportant' );
+
+		$this->assertSame(
+			[],
+			$templateSpy->getArgs()['settings']
 		);
 	}
 
