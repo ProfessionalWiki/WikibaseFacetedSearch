@@ -4,6 +4,7 @@ declare( strict_types = 1 );
 
 namespace ProfessionalWiki\WikibaseFacetedSearch\Tests\Presentation;
 
+use MediaWiki\MediaWikiServices;
 use PHPUnit\Framework\TestCase;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\PropertyConstraintsList;
@@ -44,7 +45,8 @@ class TabsHtmlBuilderUnitTest extends TestCase {
 			$config ?? new Config(),
 			new FakeItemTypeLabelLookup(),
 			$templateSpy ?? new SpyTemplateParser(),
-			$queryStringParser ?? new StubQueryStringParser()
+			$queryStringParser ?? new StubQueryStringParser(),
+			MediaWikiServices::getInstance()->getUserFactory()->newFromName( 'Test' )
 		);
 	}
 

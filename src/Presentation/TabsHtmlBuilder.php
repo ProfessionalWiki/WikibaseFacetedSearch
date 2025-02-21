@@ -5,11 +5,16 @@ declare( strict_types = 1 );
 namespace ProfessionalWiki\WikibaseFacetedSearch\Presentation;
 
 use MediaWiki\Html\TemplateParser;
+use MediaWiki\Title\Title;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\ItemTypeLabelLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Query;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\QueryStringParser;
+use ProfessionalWiki\WikibaseFacetedSearch\WikibaseFacetedSearchExtension;
 use Wikibase\DataModel\Entity\ItemId;
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Request\RequestContext;
+use MediaWiki\User\User;
 
 class TabsHtmlBuilder {
 
@@ -18,6 +23,7 @@ class TabsHtmlBuilder {
 		private readonly ItemTypeLabelLookup $itemTypeLabelLookup,
 		private readonly TemplateParser $templateParser,
 		private readonly QueryStringParser $queryStringParser,
+		private readonly User $user,
 	) {
 	}
 
@@ -38,13 +44,30 @@ class TabsHtmlBuilder {
 			[
 				'instanceId' => $this->config->getItemTypeProperty()->getSerialization(),
 				'instances' => $instancesViewModel,
-				'msg-filters' => wfMessage( 'wikibase-faceted-search-filters' )->text(),
+				'settings' => $this->buildSettingsViewModel()
 			]
 		);
 	}
 
 	private function parseQuery( string $searchQuery ): Query {
 		return $this->queryStringParser->parse( $searchQuery );
+	}
+
+	private function buildSettingsViewModel(): array {
+		$title = Title::newFromText( WikibaseFacetedSearchExtension::CONFIG_PAGE_TITLE, NS_MEDIAWIKI );
+
+		if ( !$title instanceof Title ) {
+			return [];
+		}
+
+		if ( !$this->user->isAllowed( 'editsitejson' ) ) {
+			return [];
+		}
+
+		return [
+			'url' => $title->getFullURL(),
+			'label' => wfMessage( 'wikibase-faceted-search-settings' )->text(),
+		];
 	}
 
 	private function buildTabsViewModel( ?ItemId $selectedItemType ): array {

@@ -3,9 +3,13 @@
 	@see https://doc.wikimedia.org/codex/v1.14.0/components/demos/tabs.html#markup-structure
 }}
 <div class="wikibase-faceted-search__topbar">
-	<div class="wikibase-faceted-search__instances cdx-tabs" data-instance-id="{{instanceId}}">
+	<div class="cdx-tabs">
 		<div class="cdx-tabs__header">
-			<div class="cdx-tabs__list" tabindex="-1">
+			<div
+				class="wikibase-faceted-search__instances cdx-tabs__list"
+				tabindex="-1"
+				data-instance-id="{{instanceId}}"
+			>
 				{{#instances}}
 					<button
 						class="wikibase-faceted-search__instance cdx-tabs__list__item"
@@ -16,6 +20,15 @@
 					</button>
 				{{/instances}}
 			</div>
+			{{#settings}}
+				<a
+					class="wikibase-faceted-search__settings-button cdx-button cdx-button--fake-button cdx-button--fake-button--enabled cdx-button--weight-quiet"
+					href="{{url}}"
+				>
+					<span class="wikibase-faceted-search__icon wikibase-faceted-search__icon--settings cdx-button__icon"></span>
+					{{label}}
+				</a>
+			{{/settings}}
 		</div>
 	</div>
 </div>
