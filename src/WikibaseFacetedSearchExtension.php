@@ -19,6 +19,7 @@ use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetType;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\ItemPageUpdater;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\ItemTypeExtractor;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\ItemTypeLabelLookup;
+use ProfessionalWiki\WikibaseFacetedSearch\Application\MediaWikiMessageBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\PageItemLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\QueryStringParser;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\StatementListTranslator;
@@ -276,7 +277,8 @@ class WikibaseFacetedSearchExtension {
 
 	private function getItemTypeLabelLookup( Language $language ): ItemTypeLabelLookup {
 		return new FallbackItemTypeLabelLookup(
-			labelLookup: $this->getLabelLookup( $language )
+			labelLookup: $this->getLabelLookup( $language ),
+			messageBuilder: new MediaWikiMessageBuilder()
 		);
 	}
 
