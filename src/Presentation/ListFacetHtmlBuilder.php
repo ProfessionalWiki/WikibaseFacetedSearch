@@ -81,7 +81,7 @@ class ListFacetHtmlBuilder implements FacetHtmlBuilder {
 	}
 
 	private function hasCombineWithChoice( FacetConfig $config ): bool {
-		return (bool)( $config->typeSpecificConfig[self::CONFIG_KEY_ALLOW_COMBINE_WITH_CHOICE] ?? false );
+		return (bool)( $config->typeSpecificConfig[self::CONFIG_KEY_ALLOW_COMBINE_WITH_CHOICE] ?? true );
 	}
 
 	/**
