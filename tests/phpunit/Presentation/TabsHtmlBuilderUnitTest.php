@@ -44,33 +44,12 @@ class TabsHtmlBuilderUnitTest extends TestCase {
 		?User $user = null
 	): TabsHtmlBuilder {
 		return new TabsHtmlBuilder(
-			$config ?? $this->newConfig(),
+			$config ?? new Config(),
 			new FakeItemTypeLabelLookup(),
 			$templateSpy ?? new SpyTemplateParser(),
 			$queryStringParser ?? new StubQueryStringParser(),
 			$user ?? $this->newUser()
 		);
-	}
-
-	private function newConfig( ?string $json = null ): Config {
-		if ( $json === null ) {
-			$json = <<<JSON
-{
-	"itemTypeProperty": "P1337",
-	"configPerItemType": {
-		"Q5976445": {
-			"facets": {
-				"P592": {
-					"type": "list"
-				}
-			}
-		}
-	}
-}
-JSON;
-		}
-
-		return WikibaseFacetedSearchExtension::getInstance()->newConfigDeserializer()->deserialize( $json );
 	}
 
 	private function newUser( bool $canEditConfig = false ): User {
@@ -82,7 +61,7 @@ JSON;
 	}
 
 	public function testTabsViewModelContainsItemTypes(): void {
-		$config = $this->newConfig( <<<JSON
+		$config = $this->newConfigFromJson( <<<JSON
 {
 	"itemTypeProperty": "P1337",
 	"configPerItemType": {
@@ -135,7 +114,7 @@ JSON );
 	}
 
 	public function testTabsViewModelSelectsCurrentItemType(): void {
-		$config = $this->newConfig( <<<JSON
+		$config = $this->newConfigFromJson( <<<JSON
 {
 	"itemTypeProperty": "P1337",
 	"configPerItemType": {
@@ -191,7 +170,7 @@ JSON );
 	}
 
 	public function testSettingsViewModelContainsValuesWhenUserCanEditConfigurations(): void {
-		$config = $this->newConfig( <<<JSON
+		$config = $this->newConfigFromJson( <<<JSON
 {
 	"itemTypeProperty": "P1337",
 	"configPerItemType": {
@@ -225,7 +204,7 @@ JSON );
 	}
 
 	public function testSettingsViewModelIsEmptyWhenUserCannotEditConfigurations(): void {
-		$config = $this->newConfig( <<<JSON
+		$config = $this->newConfigFromJson( <<<JSON
 {
 	"itemTypeProperty": "P1337",
 	"configPerItemType": {
@@ -252,6 +231,10 @@ JSON );
 			[],
 			$templateSpy->getArgs()['settings']
 		);
+	}
+
+	private function newConfigFromJson( ?string $json = null ): Config {
+		return WikibaseFacetedSearchExtension::getInstance()->newConfigDeserializer()->deserialize( $json );
 	}
 
 }
