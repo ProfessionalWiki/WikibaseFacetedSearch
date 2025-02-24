@@ -4,6 +4,7 @@ declare( strict_types = 1 );
 
 namespace ProfessionalWiki\WikibaseFacetedSearch\Tests\Presentation;
 
+use MediaWiki\Permissions\PermissionManager;
 use MediaWiki\User\User;
 use PHPUnit\Framework\TestCase;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
@@ -39,6 +40,7 @@ class TabsHtmlBuilderUnitTest extends TestCase {
 	private function newTabsHtmlBuilder(
 		?Config $config = null,
 		bool $enableWikiConfig = true,
+		?PermissionManager $permissionManager = null,
 		?SpyTemplateParser $templateSpy = null,
 		?QueryStringParser $queryStringParser = null,
 		?User $user = null
@@ -47,18 +49,19 @@ class TabsHtmlBuilderUnitTest extends TestCase {
 			$config ?? new Config(),
 			$enableWikiConfig,
 			new FakeItemTypeLabelLookup(),
+			$permissionManager ?? $this->newPermissionManager(),
 			$templateSpy ?? new SpyTemplateParser(),
 			$queryStringParser ?? new StubQueryStringParser(),
-			$user ?? $this->newUser()
+			$user ?? $this->createMock( User::class )
 		);
 	}
 
-	private function newUser( bool $canEditConfig = false ): User {
-		$user = $this->createMock( User::class );
-		$user->method( 'isAllowed' )
-			->with( 'editsitejson' )
+	private function newPermissionManager( bool $canEditConfig = false ): PermissionManager {
+		$permissionManager = $this->createMock( PermissionManager::class );
+		$permissionManager->method( 'userCan' )
+			->with( 'edit' )
 			->willReturn( $canEditConfig );
-		return $user;
+		return $permissionManager;
 	}
 
 	public function testTabsViewModelContainsItemTypes(): void {
@@ -220,8 +223,8 @@ JSON );
 
 		$this->newTabsHtmlBuilder(
 			config: $config,
-			templateSpy: $templateSpy,
-			user: $this->newUser( canEditConfig: true )
+			permissionManager: $this->newPermissionManager( canEditConfig: true ),
+			templateSpy: $templateSpy
 		)->createHtml( 'unimportant' );
 
 		$settings = $templateSpy->getArgs()['settings'];
@@ -254,8 +257,8 @@ JSON );
 
 		$this->newTabsHtmlBuilder(
 			config: $config,
-			templateSpy: $templateSpy,
-			user: $this->newUser( canEditConfig: false )
+			permissionManager: $this->newPermissionManager( canEditConfig: false ),
+			templateSpy: $templateSpy
 		)->createHtml( 'unimportant' );
 
 		$this->assertSame(

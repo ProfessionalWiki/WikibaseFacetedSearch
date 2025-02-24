@@ -327,6 +327,7 @@ class WikibaseFacetedSearchExtension {
 			enableWikiConfig: (bool)MediaWikiServices::getInstance()->getMainConfig()->get( 'WikibaseFacetedSearchEnableInWikiConfig' ),
 			itemTypeLabelLookup: $this->getItemTypeLabelLookup( $language ),
 			templateParser: $this->getTemplateParser(),
+			permissionManager: MediaWikiServices::getInstance()->getPermissionManager(),
 			queryStringParser: $this->getQueryStringParser(),
 			user: $user
 		);

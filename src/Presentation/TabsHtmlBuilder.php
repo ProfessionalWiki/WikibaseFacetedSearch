@@ -4,6 +4,7 @@ declare( strict_types = 1 );
 
 namespace ProfessionalWiki\WikibaseFacetedSearch\Presentation;
 
+use MediaWiki\Permissions\PermissionManager;
 use MediaWiki\Html\TemplateParser;
 use MediaWiki\Title\Title;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
@@ -20,9 +21,10 @@ class TabsHtmlBuilder {
 		private readonly Config $config,
 		private readonly bool $enableWikiConfig,
 		private readonly ItemTypeLabelLookup $itemTypeLabelLookup,
+		private readonly PermissionManager $permissionManager,
 		private readonly TemplateParser $templateParser,
 		private readonly QueryStringParser $queryStringParser,
-		private readonly User $user,
+		private readonly User $user
 	) {
 	}
 
@@ -59,10 +61,7 @@ class TabsHtmlBuilder {
 
 		$title = Title::newFromText( WikibaseFacetedSearchExtension::CONFIG_PAGE_TITLE, NS_MEDIAWIKI );
 
-		if (
-			!$title instanceof Title
-			|| !$this->user->isAllowed( 'editsitejson' )
-		) {
+		if ( !$title instanceof Title || !$this->permissionManager->userCan( 'edit', $this->user, $title ) ) {
 			return [];
 		}
 
