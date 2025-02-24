@@ -4,8 +4,8 @@ declare( strict_types = 1 );
 
 namespace ProfessionalWiki\WikibaseFacetedSearch\Presentation;
 
-use MediaWiki\Permissions\PermissionManager;
 use MediaWiki\Html\TemplateParser;
+use MediaWiki\Permissions\PermissionManager;
 use MediaWiki\Title\Title;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\ItemTypeLabelLookup;
