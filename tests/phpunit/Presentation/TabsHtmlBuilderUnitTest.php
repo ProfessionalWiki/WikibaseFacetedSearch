@@ -267,7 +267,7 @@ JSON );
 		);
 	}
 
-	private function newConfigFromJson( ?string $json = null ): Config {
+	private function newConfigFromJson( string $json ): Config {
 		return WikibaseFacetedSearchExtension::getInstance()->newConfigDeserializer()->deserialize( $json );
 	}
 
