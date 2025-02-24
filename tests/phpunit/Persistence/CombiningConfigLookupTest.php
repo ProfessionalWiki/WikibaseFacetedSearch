@@ -26,40 +26,40 @@ class CombiningConfigLookupTest extends WikibaseFacetedSearchIntegrationTest {
 
 	public function testWikiConfigSupersedesBaseConfig(): void {
 		$lookup = $this->newLookup(
-			baseConfig: '{ "linkTargetSitelinkSiteId": "enwiki" }',
-			wikiConfig: new Config( linkTargetSitelinkSiteId: 'dewiki' ),
+			baseConfig: '{ "sitelinkSiteId": "enwiki" }',
+			wikiConfig: new Config( sitelinkSiteId: 'dewiki' ),
 			enableWikiConfig: true
 		);
 
 		$this->assertSame(
 			'dewiki',
-			$lookup->getConfig()->linkTargetSitelinkSiteId
+			$lookup->getConfig()->sitelinkSiteId
 		);
 	}
 
 	public function testUsesBaseConfigIfThereIsNoWikiConfig(): void {
 		$lookup = $this->newLookup(
-			baseConfig: '{ "linkTargetSitelinkSiteId": "enwiki" }',
+			baseConfig: '{ "sitelinkSiteId": "enwiki" }',
 			wikiConfig: new Config(),
 			enableWikiConfig: true
 		);
 
 		$this->assertSame(
 			'enwiki',
-			$lookup->getConfig()->linkTargetSitelinkSiteId
+			$lookup->getConfig()->sitelinkSiteId
 		);
 	}
 
 	public function testOnlyUsesWikiConfigWhenEnabled(): void {
 		$lookup = $this->newLookup(
-			baseConfig: '{ "linkTargetSitelinkSiteId": "enwiki" }',
-			wikiConfig: new Config( linkTargetSitelinkSiteId: 'dewiki' ),
+			baseConfig: '{ "sitelinkSiteId": "enwiki" }',
+			wikiConfig: new Config( sitelinkSiteId: 'dewiki' ),
 			enableWikiConfig: false
 		);
 
 		$this->assertSame(
 			'enwiki',
-			$lookup->getConfig()->linkTargetSitelinkSiteId
+			$lookup->getConfig()->sitelinkSiteId
 		);
 	}
 

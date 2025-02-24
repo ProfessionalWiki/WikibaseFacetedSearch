@@ -14,7 +14,7 @@ use WikiPage;
 class SitelinkBasedStatementsLookup implements StatementsLookup {
 
 	public function __construct(
-		private readonly string $linkTargetSitelinkSiteId,
+		private readonly string $sitelinkSiteId,
 		private readonly SiteLinkLookup $sitelinkLookup,
 		private readonly EntityLookup $entityLookup
 	) {
@@ -22,7 +22,7 @@ class SitelinkBasedStatementsLookup implements StatementsLookup {
 
 	public function getStatements( WikiPage $page ): StatementList {
 		$itemId = $this->sitelinkLookup->getItemIdForLink(
-			$this->linkTargetSitelinkSiteId,
+			$this->sitelinkSiteId,
 			$page->getTitle()->getText()
 		);
 

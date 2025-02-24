@@ -21,13 +21,13 @@ class ConfigTest extends TestCase {
 
 	private function createOriginalConfig(): Config {
 		return new Config(
-			linkTargetSitelinkSiteId: 'enwiki'
+			sitelinkSiteId: 'enwiki'
 		);
 	}
 
 	private function createNewConfig(): Config {
 		return new Config(
-			linkTargetSitelinkSiteId: 'dewiki'
+			sitelinkSiteId: 'dewiki'
 		);
 	}
 
@@ -152,7 +152,7 @@ class ConfigTest extends TestCase {
 
 	public function testFullConfigIsComplete(): void {
 		$config = new Config(
-			linkTargetSitelinkSiteId: 'enwiki',
+			sitelinkSiteId: 'enwiki',
 			itemTypeProperty: new NumericPropertyId( 'P1' ),
 			facets: new FacetConfigList(
 				new FacetConfig( new ItemId( 'Q1' ), new NumericPropertyId( 'P1' ), FacetType::LIST ),

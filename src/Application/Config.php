@@ -11,7 +11,7 @@ use Wikibase\DataModel\Entity\PropertyId;
 class Config {
 
 	public function __construct(
-		public readonly ?string $linkTargetSitelinkSiteId = null,
+		public readonly ?string $sitelinkSiteId = null,
 		private readonly ?PropertyId $itemTypeProperty = null,
 		private readonly ?FacetConfigList $facets = null
 	) {
@@ -19,7 +19,7 @@ class Config {
 
 	public function combine( Config $config ): self {
 		return new Config(
-			$config->linkTargetSitelinkSiteId ?? $this->linkTargetSitelinkSiteId,
+			$config->sitelinkSiteId ?? $this->sitelinkSiteId,
 			$config->itemTypeProperty ?? $this->itemTypeProperty,
 			$config->facets ?? $this->facets
 		);

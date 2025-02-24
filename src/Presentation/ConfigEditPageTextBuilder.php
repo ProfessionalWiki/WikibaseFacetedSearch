@@ -40,7 +40,7 @@ class ConfigEditPageTextBuilder {
 	</section>
 
 	<section>
-		<h2 id="LinkTargetSitelinkSiteId">Link target sitelink site ID</h2>
+		<h2 id="sitelinkSiteId">Link target sitelink site ID</h2>
 
 		<p>
 			By default search result items link to their item page (<code>Item:Q123</code>).
@@ -56,7 +56,7 @@ class ConfigEditPageTextBuilder {
 
 		<pre>
 {
-	"linkTargetSitelinkSiteId": "enwiki"
+	"sitelinkSiteId": "enwiki"
 }</pre>
 	</section>
 

@@ -18,7 +18,7 @@ class Valid {
 	public static function configJson(): string {
 		return '
 {
-    "linkTargetSitelinkSiteId": "enwiki",
+    "sitelinkSiteId": "enwiki",
     "itemTypeProperty": "P42",
     "configPerItemType": {
         "Q100": {
@@ -46,7 +46,7 @@ class Valid {
 
 	public static function config(): Config {
 		return new Config(
-			linkTargetSitelinkSiteId: 'enwiki',
+			sitelinkSiteId: 'enwiki',
 			itemTypeProperty: new NumericPropertyId( 'P42' ),
 			facets: new FacetConfigList(
 				new FacetConfig( new ItemId( self::ITEM_TYPE_WITH_FACETS ), new NumericPropertyId( 'P1' ), FacetType::LIST ),

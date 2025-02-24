@@ -17,13 +17,13 @@ class PageItemLookupFactory {
 	}
 
 	public function newPageItemLookup(): PageItemLookup {
-		if ( $this->config->linkTargetSitelinkSiteId === null ) {
+		if ( $this->config->sitelinkSiteId === null ) {
 			return new NullPageItemLookup();
 		}
 
 		return new SitelinkPageItemLookup(
 			$this->sitelinkLookup,
-			$this->config->linkTargetSitelinkSiteId
+			$this->config->sitelinkSiteId
 		);
 	}
 }

@@ -50,10 +50,10 @@ class ConfigJsonValidatorTest extends TestCase {
 	public function testInvalidJsonErrorsAreAvailable(): void {
 		$validator = $this->newValidator();
 
-		$validator->validate( '{ "linkTargetSitelinkSiteId": true }' );
+		$validator->validate( '{ "sitelinkSiteId": true }' );
 
 		$this->assertSame(
-			[ '/linkTargetSitelinkSiteId' => 'The data (boolean) must match the type: string, null' ],
+			[ '/sitelinkSiteId' => 'The data (boolean) must match the type: string, null' ],
 			$validator->getErrors()
 		);
 	}
@@ -62,7 +62,7 @@ class ConfigJsonValidatorTest extends TestCase {
 		$this->assertFalse(
 			$this->newValidator()->validate( '
 {
-	"linkTargetSitelinkSiteId": 123
+	"sitelinkSiteId": 123
 }
 			' )
 		);
