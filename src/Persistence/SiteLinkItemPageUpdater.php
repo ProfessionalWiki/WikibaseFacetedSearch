@@ -14,7 +14,7 @@ use WikiPage;
 class SiteLinkItemPageUpdater implements ItemPageUpdater {
 
 	public function __construct(
-		private readonly string $linkTargetSitelinkSiteId,
+		private readonly string $sitelinkSiteId,
 		private readonly WikiPageFactory $pageFactory
 	) {
 	}
@@ -32,8 +32,8 @@ class SiteLinkItemPageUpdater implements ItemPageUpdater {
 	}
 
 	private function getSiteLinkedTitle( Item $item ): ?Title {
-		if ( $item->hasLinkToSite( $this->linkTargetSitelinkSiteId ) ) {
-			return Title::newFromText( $item->getSiteLink( $this->linkTargetSitelinkSiteId )->getPageName() );
+		if ( $item->hasLinkToSite( $this->sitelinkSiteId ) ) {
+			return Title::newFromText( $item->getSiteLink( $this->sitelinkSiteId )->getPageName() );
 		}
 
 		return null;

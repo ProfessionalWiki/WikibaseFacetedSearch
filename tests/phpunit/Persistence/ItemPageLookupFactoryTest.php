@@ -28,7 +28,7 @@ class ItemPageLookupFactoryTest extends TestCase {
 	public function testReturnsSitelinkItemPageLookupWhenSiteIdIsConfigured(): void {
 		$factory = new PageItemLookupFactory(
 			new Config(
-				linkTargetSitelinkSiteId: 'enwiki'
+				sitelinkSiteId: 'enwiki'
 			),
 			sitelinkLookup: new HashSiteLinkStore()
 		);

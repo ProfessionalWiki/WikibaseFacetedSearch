@@ -66,7 +66,7 @@ class WikibaseFacetedSearchExtension {
 	public const QUERY_GLOBAL = 'wgWikibaseFacetedSearchCurrentQuery';
 
 	public const DEFAULT_CONFIG = '{
-	"linkTargetSitelinkSiteId": null,
+	"sitelinkSiteId": null,
 	"itemTypeProperty": null,
 	"configPerItemType": {}
 }';
@@ -151,12 +151,12 @@ class WikibaseFacetedSearchExtension {
 	}
 
 	public function newStatementsLookup(): StatementsLookup {
-		if ( $this->getConfig()->linkTargetSitelinkSiteId === null ) {
+		if ( $this->getConfig()->sitelinkSiteId === null ) {
 			return new FromPageStatementsLookup();
 		}
 
 		return new SitelinkBasedStatementsLookup(
-			linkTargetSitelinkSiteId: $this->getConfig()->linkTargetSitelinkSiteId,
+			sitelinkSiteId: $this->getConfig()->sitelinkSiteId,
 			sitelinkLookup: WikibaseRepo::getStore()->newSiteLinkStore(),
 			entityLookup: WikibaseRepo::getEntityLookup()
 		);
@@ -336,12 +336,12 @@ class WikibaseFacetedSearchExtension {
 	}
 
 	public function newItemPageUpdater(): ItemPageUpdater {
-		if ( $this->getConfig()->linkTargetSitelinkSiteId === null ) {
+		if ( $this->getConfig()->sitelinkSiteId === null ) {
 			return new NoOpItemPageUpdater();
 		}
 
 		return new SiteLinkItemPageUpdater(
-			linkTargetSitelinkSiteId: $this->getConfig()->linkTargetSitelinkSiteId,
+			sitelinkSiteId: $this->getConfig()->sitelinkSiteId,
 			pageFactory: MediaWikiServices::getInstance()->getWikiPageFactory()
 		);
 	}

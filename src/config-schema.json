@@ -3,7 +3,7 @@
 	"type": "object",
 	"additionalProperties": false,
 	"properties": {
-		"linkTargetSitelinkSiteId": {
+		"sitelinkSiteId": {
 			"type": [ "string", "null" ]
 		},
 		"itemTypeProperty": {

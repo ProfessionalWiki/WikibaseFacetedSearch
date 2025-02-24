@@ -25,7 +25,7 @@ parameters:
 			path: src/Persistence/ConfigDeserializer.php
 
 		-
-			message: '#^Parameter \$linkTargetSitelinkSiteId of class ProfessionalWiki\\WikibaseFacetedSearch\\Application\\Config constructor expects string\|null, mixed given\.$#'
+			message: '#^Parameter \$sitelinkSiteId of class ProfessionalWiki\\WikibaseFacetedSearch\\Application\\Config constructor expects string\|null, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/Persistence/ConfigDeserializer.php

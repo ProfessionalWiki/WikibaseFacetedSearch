@@ -1,5 +1,5 @@
 {
-	"linkTargetSitelinkSiteId": "enwiki",
+	"sitelinkSiteId": "enwiki",
 	"itemTypeProperty": "P42",
 	"configPerItemType": {
 		"Q100": {
