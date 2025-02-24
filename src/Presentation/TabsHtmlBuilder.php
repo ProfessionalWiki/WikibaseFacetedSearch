@@ -18,6 +18,7 @@ class TabsHtmlBuilder {
 
 	public function __construct(
 		private readonly Config $config,
+		private readonly bool $enableWikiConfig,
 		private readonly ItemTypeLabelLookup $itemTypeLabelLookup,
 		private readonly TemplateParser $templateParser,
 		private readonly QueryStringParser $queryStringParser,
@@ -52,6 +53,10 @@ class TabsHtmlBuilder {
 	}
 
 	private function buildSettingsViewModel(): array {
+		if ( !$this->enableWikiConfig ) {
+			return [];
+		}
+
 		$title = Title::newFromText( WikibaseFacetedSearchExtension::CONFIG_PAGE_TITLE, NS_MEDIAWIKI );
 
 		if (

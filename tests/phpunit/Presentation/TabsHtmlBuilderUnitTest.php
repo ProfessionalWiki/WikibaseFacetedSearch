@@ -4,7 +4,6 @@ declare( strict_types = 1 );
 
 namespace ProfessionalWiki\WikibaseFacetedSearch\Tests\Presentation;
 
-use MediaWiki\MediaWikiServices;
 use MediaWiki\User\User;
 use PHPUnit\Framework\TestCase;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
@@ -39,12 +38,14 @@ class TabsHtmlBuilderUnitTest extends TestCase {
 
 	private function newTabsHtmlBuilder(
 		?Config $config = null,
+		bool $enableWikiConfig = true,
 		?SpyTemplateParser $templateSpy = null,
 		?QueryStringParser $queryStringParser = null,
 		?User $user = null
 	): TabsHtmlBuilder {
 		return new TabsHtmlBuilder(
 			$config ?? new Config(),
+			$enableWikiConfig,
 			new FakeItemTypeLabelLookup(),
 			$templateSpy ?? new SpyTemplateParser(),
 			$queryStringParser ?? new StubQueryStringParser(),
@@ -166,6 +167,36 @@ JSON );
 				],
 			],
 			$templateSpy->getArgs()['instances']
+		);
+	}
+
+	public function testSettingsViewModelIsEmptyWhenWikiConfigIsDisabled(): void {
+		$config = $this->newConfigFromJson( <<<JSON
+{
+	"itemTypeProperty": "P1337",
+	"configPerItemType": {
+		"Q5976445": {
+			"facets": {
+				"P592": {
+					"type": "list"
+				}
+			}
+		}
+	}
+}
+JSON );
+
+		$templateSpy = new SpyTemplateParser();
+
+		$this->newTabsHtmlBuilder(
+			config: $config,
+			templateSpy: $templateSpy,
+			enableWikiConfig: false
+		)->createHtml( 'unimportant' );
+
+		$this->assertSame(
+			[],
+			$templateSpy->getArgs()['settings']
 		);
 	}
 
