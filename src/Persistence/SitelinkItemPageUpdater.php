@@ -9,9 +9,8 @@ use MediaWiki\Title\Title;
 use MediaWiki\User\UserIdentity;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\ItemPageUpdater;
 use Wikibase\DataModel\Entity\Item;
-use WikiPage;
 
-class SiteLinkItemPageUpdater implements ItemPageUpdater {
+class SitelinkItemPageUpdater implements ItemPageUpdater {
 
 	public function __construct(
 		private readonly string $sitelinkSiteId,
@@ -20,7 +19,7 @@ class SiteLinkItemPageUpdater implements ItemPageUpdater {
 	}
 
 	public function updatePage( Item $item, UserIdentity $user ): void {
-		$title = $this->getSiteLinkedTitle( $item );
+		$title = $this->getSitelinkedTitle( $item );
 
 		if ( $title === null ) {
 			return;
@@ -31,7 +30,7 @@ class SiteLinkItemPageUpdater implements ItemPageUpdater {
 			->updateRevision();
 	}
 
-	private function getSiteLinkedTitle( Item $item ): ?Title {
+	private function getSitelinkedTitle( Item $item ): ?Title {
 		if ( $item->hasLinkToSite( $this->sitelinkSiteId ) ) {
 			return Title::newFromText( $item->getSiteLink( $this->sitelinkSiteId )->getPageName() );
 		}
