@@ -23,4 +23,4 @@ class UserBasedConfigAuthorizer implements ConfigAuthorizer {
 		return $this->user->probablyCan( 'edit', $page );
 	}
 
-} 
+}
