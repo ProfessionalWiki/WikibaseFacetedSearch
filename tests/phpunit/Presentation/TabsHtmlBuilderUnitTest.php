@@ -42,9 +42,9 @@ class TabsHtmlBuilderUnitTest extends TestCase {
 
 	private function newTabsHtmlBuilder(
 		?Config $config = null,
-		?ConfigAuthorizer $configAuthorizer = null,
 		?SpyTemplateParser $templateSpy = null,
 		?QueryStringParser $queryStringParser = null,
+		?ConfigAuthorizer $configAuthorizer = null,
 		?TitleFactory $titleFactory = null
 	): TabsHtmlBuilder {
 		return new TabsHtmlBuilder(
@@ -175,8 +175,8 @@ JSON );
 
 		$this->newTabsHtmlBuilder(
 			config: Valid::config(),
+			templateSpy: $templateSpy,
 			configAuthorizer: $this->newConfigAuthorizer( canEditConfig: false ),
-			templateSpy: $templateSpy
 		)->createHtml( 'unimportant' );
 
 		$this->assertSame(
@@ -190,8 +190,8 @@ JSON );
 
 		$this->newTabsHtmlBuilder(
 			config: Valid::config(),
+			templateSpy: $templateSpy,
 			configAuthorizer: $this->newConfigAuthorizer( canEditConfig: true ),
-			templateSpy: $templateSpy
 		)->createHtml( 'unimportant' );
 
 		$settings = $templateSpy->getArgs()['settings'];
@@ -209,8 +209,8 @@ JSON );
 
 		$this->newTabsHtmlBuilder(
 			config: Valid::config(),
+			templateSpy: $templateSpy,
 			configAuthorizer: $this->newConfigAuthorizer( canEditConfig: false ),
-			templateSpy: $templateSpy
 		)->createHtml( 'unimportant' );
 
 		$this->assertSame(
