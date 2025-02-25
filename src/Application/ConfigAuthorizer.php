@@ -4,10 +4,10 @@ declare( strict_types = 1 );
 
 namespace ProfessionalWiki\WikibaseFacetedSearch\Application;
 
-use MediaWiki\Page\ProperPageIdentity;
+use MediaWiki\Page\PageIdentity;
 
 interface ConfigAuthorizer {
 
-	public function isAuthorized( ProperPageIdentity $page ): bool;
+	public function isAuthorized( PageIdentity $page ): bool;
 
 }

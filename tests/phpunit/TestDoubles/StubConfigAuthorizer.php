@@ -4,7 +4,7 @@ declare( strict_types = 1 );
 
 namespace ProfessionalWiki\WikibaseFacetedSearch\Tests\TestDoubles;
 
-use MediaWiki\Page\ProperPageIdentity;
+use MediaWiki\Page\PageIdentity;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\ConfigAuthorizer;
 
 class StubConfigAuthorizer implements ConfigAuthorizer {
@@ -14,7 +14,7 @@ class StubConfigAuthorizer implements ConfigAuthorizer {
 	) {
 	}
 
-	public function isAuthorized( ProperPageIdentity $page ): bool {
+	public function isAuthorized( PageIdentity $page ): bool {
 		return $this->isAuthorized;
 	}
 

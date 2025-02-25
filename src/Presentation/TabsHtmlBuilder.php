@@ -60,7 +60,7 @@ class TabsHtmlBuilder {
 			return [];
 		}
 
-		if ( !$this->configAuthorizer->isAuthorized( $title->toPageIdentity() ) ) {
+		if ( !$this->configAuthorizer->isAuthorized( $title ) ) {
 			return [];
 		}
 
