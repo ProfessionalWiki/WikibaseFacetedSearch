@@ -12,6 +12,7 @@ use ProfessionalWiki\WikibaseFacetedSearch\Application\PropertyConstraintsList;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Query;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\QueryStringParser;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\TabsHtmlBuilder;
+use ProfessionalWiki\WikibaseFacetedSearch\Tests\Valid;
 use ProfessionalWiki\WikibaseFacetedSearch\Tests\TestDoubles\FakeItemTypeLabelLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Tests\TestDoubles\SpyTemplateParser;
 use ProfessionalWiki\WikibaseFacetedSearch\Tests\TestDoubles\StubQueryStringParser;
@@ -174,25 +175,10 @@ JSON );
 	}
 
 	public function testSettingsViewModelIsEmptyWhenWikiConfigIsDisabled(): void {
-		$config = $this->newConfigFromJson( <<<JSON
-{
-	"itemTypeProperty": "P1337",
-	"configPerItemType": {
-		"Q5976445": {
-			"facets": {
-				"P592": {
-					"type": "list"
-				}
-			}
-		}
-	}
-}
-JSON );
-
 		$templateSpy = new SpyTemplateParser();
 
 		$this->newTabsHtmlBuilder(
-			config: $config,
+			config: Valid::config(),
 			templateSpy: $templateSpy,
 			enableWikiConfig: false
 		)->createHtml( 'unimportant' );
@@ -204,25 +190,10 @@ JSON );
 	}
 
 	public function testSettingsViewModelContainsValuesWhenUserCanEditConfigurations(): void {
-		$config = $this->newConfigFromJson( <<<JSON
-{
-	"itemTypeProperty": "P1337",
-	"configPerItemType": {
-		"Q5976445": {
-			"facets": {
-				"P592": {
-					"type": "list"
-				}
-			}
-		}
-	}
-}
-JSON );
-
 		$templateSpy = new SpyTemplateParser();
 
 		$this->newTabsHtmlBuilder(
-			config: $config,
+			config: Valid::config(),
 			permissionManager: $this->newPermissionManager( canEditConfig: true ),
 			templateSpy: $templateSpy
 		)->createHtml( 'unimportant' );
@@ -238,25 +209,10 @@ JSON );
 	}
 
 	public function testSettingsViewModelIsEmptyWhenUserCannotEditConfigurations(): void {
-		$config = $this->newConfigFromJson( <<<JSON
-{
-	"itemTypeProperty": "P1337",
-	"configPerItemType": {
-		"Q5976445": {
-			"facets": {
-				"P592": {
-					"type": "list"
-				}
-			}
-		}
-	}
-}
-JSON );
-
 		$templateSpy = new SpyTemplateParser();
 
 		$this->newTabsHtmlBuilder(
-			config: $config,
+			config: Valid::config(),
 			permissionManager: $this->newPermissionManager( canEditConfig: false ),
 			templateSpy: $templateSpy
 		)->createHtml( 'unimportant' );
