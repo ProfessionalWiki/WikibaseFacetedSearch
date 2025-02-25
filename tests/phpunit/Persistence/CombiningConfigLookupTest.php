@@ -15,12 +15,12 @@ use ProfessionalWiki\WikibaseFacetedSearch\WikibaseFacetedSearchExtension;
  */
 class CombiningConfigLookupTest extends WikibaseFacetedSearchIntegrationTest {
 
-	private function newLookup( string $baseConfig, Config $wikiConfig, bool $enableWikiConfig ): CombiningConfigLookup {
+	private function newLookup( string $baseConfig, Config $wikiConfig, bool $wikiConfigIsEnabled ): CombiningConfigLookup {
 		return new CombiningConfigLookup(
 			baseConfig: $baseConfig,
 			deserializer: WikibaseFacetedSearchExtension::getInstance()->newConfigDeserializer(),
 			configLookup: new StubConfigLookup( $wikiConfig ),
-			enableWikiConfig: $enableWikiConfig
+			wikiConfigIsEnabled: $wikiConfigIsEnabled
 		);
 	}
 
@@ -28,7 +28,7 @@ class CombiningConfigLookupTest extends WikibaseFacetedSearchIntegrationTest {
 		$lookup = $this->newLookup(
 			baseConfig: '{ "sitelinkSiteId": "enwiki" }',
 			wikiConfig: new Config( sitelinkSiteId: 'dewiki' ),
-			enableWikiConfig: true
+			wikiConfigIsEnabled: true
 		);
 
 		$this->assertSame(
@@ -41,7 +41,7 @@ class CombiningConfigLookupTest extends WikibaseFacetedSearchIntegrationTest {
 		$lookup = $this->newLookup(
 			baseConfig: '{ "sitelinkSiteId": "enwiki" }',
 			wikiConfig: new Config(),
-			enableWikiConfig: true
+			wikiConfigIsEnabled: true
 		);
 
 		$this->assertSame(
@@ -54,7 +54,7 @@ class CombiningConfigLookupTest extends WikibaseFacetedSearchIntegrationTest {
 		$lookup = $this->newLookup(
 			baseConfig: '{ "sitelinkSiteId": "enwiki" }',
 			wikiConfig: new Config( sitelinkSiteId: 'dewiki' ),
-			enableWikiConfig: false
+			wikiConfigIsEnabled: false
 		);
 
 		$this->assertSame(

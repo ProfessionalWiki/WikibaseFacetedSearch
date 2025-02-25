@@ -15,6 +15,7 @@ use MediaWiki\User\User;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\ConfigLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\ConfigAuthorizer;
+use ProfessionalWiki\WikibaseFacetedSearch\Application\UserBasedConfigAuthorizer;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\DataValueTranslator;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\ElasticQueryFilter;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetType;
@@ -114,7 +115,7 @@ class WikibaseFacetedSearchExtension {
 			baseConfig: (string)MediaWikiServices::getInstance()->getMainConfig()->get( self::CONFIG_VARIABLE_NAME ),
 			deserializer: $this->newConfigDeserializer(),
 			configLookup: $this->newPageContentConfigLookup(),
-			enableWikiConfig: (bool)MediaWikiServices::getInstance()->getMainConfig()->get( 'WikibaseFacetedSearchEnableInWikiConfig' )
+			wikiConfigIsEnabled: (bool)MediaWikiServices::getInstance()->getMainConfig()->get( 'WikibaseFacetedSearchEnableInWikiConfig' )
 		);
 	}
 
@@ -325,17 +326,17 @@ class WikibaseFacetedSearchExtension {
 	public function getTabsHtmlBuilder( Language $language, User $user ): TabsHtmlBuilder {
 		return new TabsHtmlBuilder(
 			config: $this->getConfig(),
-			configAuthorizer: $this->newConfigAuthorizer( $user ),
 			itemTypeLabelLookup: $this->getItemTypeLabelLookup( $language ),
 			templateParser: $this->getTemplateParser(),
-			titleFactory: MediaWikiServices::getInstance()->getTitleFactory(),
-			queryStringParser: $this->getQueryStringParser()
+			queryStringParser: $this->getQueryStringParser(),
+			configAuthorizer: $this->newConfigAuthorizer( $user ),
+			titleFactory: MediaWikiServices::getInstance()->getTitleFactory()
 		);
 	}
 
 	public function newConfigAuthorizer( User $user ): ConfigAuthorizer {
-		return new ConfigAuthorizer(
-			enableWikiConfig: (bool)MediaWikiServices::getInstance()->getMainConfig()->get( 'WikibaseFacetedSearchEnableInWikiConfig' ),
+		return new UserBasedConfigAuthorizer(
+			wikiConfigIsEnabled: (bool)MediaWikiServices::getInstance()->getMainConfig()->get( 'WikibaseFacetedSearchEnableInWikiConfig' ),
 			user: $user
 		);
 	}

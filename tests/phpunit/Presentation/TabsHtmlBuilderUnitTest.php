@@ -5,7 +5,7 @@ declare( strict_types = 1 );
 namespace ProfessionalWiki\WikibaseFacetedSearch\Tests\Presentation;
 
 use MediaWiki\MediaWikiServices;
-use MediaWiki\User\User;
+use MediaWiki\Title\TitleFactory;
 use PHPUnit\Framework\TestCase;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\ConfigAuthorizer;
@@ -16,6 +16,7 @@ use ProfessionalWiki\WikibaseFacetedSearch\Presentation\TabsHtmlBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Tests\Valid;
 use ProfessionalWiki\WikibaseFacetedSearch\Tests\TestDoubles\FakeItemTypeLabelLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Tests\TestDoubles\SpyTemplateParser;
+use ProfessionalWiki\WikibaseFacetedSearch\Tests\TestDoubles\StubConfigAuthorizer;
 use ProfessionalWiki\WikibaseFacetedSearch\Tests\TestDoubles\StubQueryStringParser;
 use ProfessionalWiki\WikibaseFacetedSearch\WikibaseFacetedSearchExtension;
 use Wikibase\DataModel\Entity\ItemId;
@@ -44,24 +45,20 @@ class TabsHtmlBuilderUnitTest extends TestCase {
 		?ConfigAuthorizer $configAuthorizer = null,
 		?SpyTemplateParser $templateSpy = null,
 		?QueryStringParser $queryStringParser = null,
-		?User $user = null
+		?TitleFactory $titleFactory = null
 	): TabsHtmlBuilder {
 		return new TabsHtmlBuilder(
 			$config ?? new Config(),
-			$configAuthorizer ?? $this->newConfigAuthorizer(),
 			new FakeItemTypeLabelLookup(),
 			$templateSpy ?? new SpyTemplateParser(),
-			$titleFactory ?? MediaWikiServices::getInstance()->getTitleFactory(),
 			$queryStringParser ?? new StubQueryStringParser(),
-			$user ?? $this->createMock( User::class )
+			$configAuthorizer ?? $this->newConfigAuthorizer(),
+			$titleFactory ?? MediaWikiServices::getInstance()->getTitleFactory()
 		);
 	}
 
 	private function newConfigAuthorizer( bool $canEditConfig = false ): ConfigAuthorizer {
-		$configAuthorizer = $this->createMock( ConfigAuthorizer::class );
-		$configAuthorizer->method( 'isAuthorized' )
-			->willReturn( $canEditConfig );
-		return $configAuthorizer;
+		return new StubConfigAuthorizer( isAuthorized: $canEditConfig );
 	}
 
 	public function testTabsViewModelContainsItemTypes(): void {

@@ -19,11 +19,11 @@ class TabsHtmlBuilder {
 
 	public function __construct(
 		private readonly Config $config,
-		private readonly ConfigAuthorizer $configAuthorizer,
 		private readonly ItemTypeLabelLookup $itemTypeLabelLookup,
 		private readonly TemplateParser $templateParser,
-		private readonly TitleFactory $titleFactory,
-		private readonly QueryStringParser $queryStringParser
+		private readonly QueryStringParser $queryStringParser,
+		private readonly ConfigAuthorizer $configAuthorizer,
+		private readonly TitleFactory $titleFactory
 	) {
 	}
 

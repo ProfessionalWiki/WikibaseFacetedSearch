@@ -19,7 +19,7 @@ class CombiningConfigLookup implements ConfigLookup {
 		private readonly string $baseConfig,
 		private readonly ConfigDeserializer $deserializer,
 		private readonly ConfigLookup $configLookup,
-		private readonly bool $enableWikiConfig
+		private readonly bool $wikiConfigIsEnabled
 	) {
 	}
 
@@ -28,7 +28,7 @@ class CombiningConfigLookup implements ConfigLookup {
 			$this->deserializer->deserialize( $this->baseConfig )
 		);
 
-		if ( !$this->enableWikiConfig ) {
+		if ( !$this->wikiConfigIsEnabled ) {
 			return $config;
 		}
 
