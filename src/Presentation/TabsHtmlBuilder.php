@@ -5,6 +5,7 @@ declare( strict_types = 1 );
 namespace ProfessionalWiki\WikibaseFacetedSearch\Presentation;
 
 use MediaWiki\Html\TemplateParser;
+use MediaWiki\Title\Title;
 use MediaWiki\Title\TitleFactory;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\ConfigAuthorizer;
@@ -18,7 +19,7 @@ class TabsHtmlBuilder {
 
 	public function __construct(
 		private readonly Config $config,
-		private readonly ConfigAuthorizer $ConfigAuthorizer,
+		private readonly ConfigAuthorizer $configAuthorizer,
 		private readonly ItemTypeLabelLookup $itemTypeLabelLookup,
 		private readonly TemplateParser $templateParser,
 		private readonly TitleFactory $titleFactory,
@@ -55,7 +56,11 @@ class TabsHtmlBuilder {
 	private function buildSettingsViewModel(): array {
 		$title = $this->titleFactory->newFromText( WikibaseFacetedSearchExtension::CONFIG_PAGE_TITLE, NS_MEDIAWIKI );
 
-		if ( !$this->ConfigAuthorizer->isAuthorized( $title->toPageIdentity() ) ) {
+		if ( !$title instanceof Title ) {
+			return [];
+		}
+
+		if ( !$this->configAuthorizer->isAuthorized( $title->toPageIdentity() ) ) {
 			return [];
 		}
 
