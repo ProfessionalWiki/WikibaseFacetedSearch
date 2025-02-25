@@ -342,7 +342,8 @@ class WikibaseFacetedSearchExtension {
 
 		return new SitelinkItemPageUpdater(
 			sitelinkSiteId: $this->getConfig()->sitelinkSiteId,
-			pageFactory: MediaWikiServices::getInstance()->getWikiPageFactory()
+			pageFactory: MediaWikiServices::getInstance()->getWikiPageFactory(),
+			titleFactory: MediaWikiServices::getInstance()->getTitleFactory()
 		);
 	}
 
