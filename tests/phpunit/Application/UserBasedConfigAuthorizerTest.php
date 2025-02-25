@@ -59,4 +59,4 @@ class UserBasedConfigAuthorizerTest extends TestCase {
 		$this->assertFalse( $authorizer->isAuthorized( $page ) );
 	}
 
-} 
+}

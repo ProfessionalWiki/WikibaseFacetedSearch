@@ -24,4 +24,4 @@ class StubUser extends User {
 		return $this->probablyCan;
 	}
 
-} 
+}

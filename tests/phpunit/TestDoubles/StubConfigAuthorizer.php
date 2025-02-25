@@ -18,4 +18,4 @@ class StubConfigAuthorizer implements ConfigAuthorizer {
 		return $this->isAuthorized;
 	}
 
-} 
+}
