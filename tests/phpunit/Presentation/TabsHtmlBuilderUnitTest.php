@@ -41,14 +41,14 @@ class TabsHtmlBuilderUnitTest extends TestCase {
 
 	private function newTabsHtmlBuilder(
 		?Config $config = null,
-		?ConfigAuthorizer $ConfigAuthorizer = null,
+		?ConfigAuthorizer $configAuthorizer = null,
 		?SpyTemplateParser $templateSpy = null,
 		?QueryStringParser $queryStringParser = null,
 		?User $user = null
 	): TabsHtmlBuilder {
 		return new TabsHtmlBuilder(
 			$config ?? new Config(),
-			$ConfigAuthorizer ?? $this->newConfigAuthorizer(),
+			$configAuthorizer ?? $this->newConfigAuthorizer(),
 			new FakeItemTypeLabelLookup(),
 			$templateSpy ?? new SpyTemplateParser(),
 			$titleFactory ?? MediaWikiServices::getInstance()->getTitleFactory(),
@@ -58,10 +58,10 @@ class TabsHtmlBuilderUnitTest extends TestCase {
 	}
 
 	private function newConfigAuthorizer( bool $canEditConfig = false ): ConfigAuthorizer {
-		$ConfigAuthorizer = $this->createMock( ConfigAuthorizer::class );
-		$ConfigAuthorizer->method( 'isAuthorized' )
+		$configAuthorizer = $this->createMock( ConfigAuthorizer::class );
+		$configAuthorizer->method( 'isAuthorized' )
 			->willReturn( $canEditConfig );
-		return $ConfigAuthorizer;
+		return $configAuthorizer;
 	}
 
 	public function testTabsViewModelContainsItemTypes(): void {
@@ -178,7 +178,7 @@ JSON );
 
 		$this->newTabsHtmlBuilder(
 			config: Valid::config(),
-			ConfigAuthorizer: $this->newConfigAuthorizer( canEditConfig: false ),
+			configAuthorizer: $this->newConfigAuthorizer( canEditConfig: false ),
 			templateSpy: $templateSpy
 		)->createHtml( 'unimportant' );
 
@@ -193,7 +193,7 @@ JSON );
 
 		$this->newTabsHtmlBuilder(
 			config: Valid::config(),
-			ConfigAuthorizer: $this->newConfigAuthorizer( canEditConfig: true ),
+			configAuthorizer: $this->newConfigAuthorizer( canEditConfig: true ),
 			templateSpy: $templateSpy
 		)->createHtml( 'unimportant' );
 
@@ -212,7 +212,7 @@ JSON );
 
 		$this->newTabsHtmlBuilder(
 			config: Valid::config(),
-			ConfigAuthorizer: $this->newConfigAuthorizer( canEditConfig: false ),
+			configAuthorizer: $this->newConfigAuthorizer( canEditConfig: false ),
 			templateSpy: $templateSpy
 		)->createHtml( 'unimportant' );
 

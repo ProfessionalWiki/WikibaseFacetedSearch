@@ -325,7 +325,7 @@ class WikibaseFacetedSearchExtension {
 	public function getTabsHtmlBuilder( Language $language, User $user ): TabsHtmlBuilder {
 		return new TabsHtmlBuilder(
 			config: $this->getConfig(),
-			ConfigAuthorizer: $this->newConfigAuthorizer( $user ),
+			configAuthorizer: $this->newConfigAuthorizer( $user ),
 			itemTypeLabelLookup: $this->getItemTypeLabelLookup( $language ),
 			templateParser: $this->getTemplateParser(),
 			titleFactory: MediaWikiServices::getInstance()->getTitleFactory(),
