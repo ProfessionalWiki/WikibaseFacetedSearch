@@ -35,7 +35,7 @@ use ProfessionalWiki\WikibaseFacetedSearch\Persistence\ElasticValueCounter;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\FallbackItemTypeLabelLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\FromPageStatementsLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\NoOpItemPageUpdater;
-use ProfessionalWiki\WikibaseFacetedSearch\Persistence\SiteLinkItemPageUpdater;
+use ProfessionalWiki\WikibaseFacetedSearch\Persistence\SitelinkItemPageUpdater;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\PageContentConfigLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\PageContentFetcher;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\PageItemLookupFactory;
@@ -340,7 +340,7 @@ class WikibaseFacetedSearchExtension {
 			return new NoOpItemPageUpdater();
 		}
 
-		return new SiteLinkItemPageUpdater(
+		return new SitelinkItemPageUpdater(
 			sitelinkSiteId: $this->getConfig()->sitelinkSiteId,
 			pageFactory: MediaWikiServices::getInstance()->getWikiPageFactory()
 		);
