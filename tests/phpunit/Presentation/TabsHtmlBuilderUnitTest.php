@@ -4,10 +4,11 @@ declare( strict_types = 1 );
 
 namespace ProfessionalWiki\WikibaseFacetedSearch\Tests\Presentation;
 
-use MediaWiki\Permissions\PermissionManager;
+use MediaWiki\MediaWikiServices;
 use MediaWiki\User\User;
 use PHPUnit\Framework\TestCase;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
+use ProfessionalWiki\WikibaseFacetedSearch\Application\ConfigAuthorizer;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\PropertyConstraintsList;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Query;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\QueryStringParser;
@@ -40,29 +41,27 @@ class TabsHtmlBuilderUnitTest extends TestCase {
 
 	private function newTabsHtmlBuilder(
 		?Config $config = null,
-		bool $enableWikiConfig = true,
-		?PermissionManager $permissionManager = null,
+		?ConfigAuthorizer $ConfigAuthorizer = null,
 		?SpyTemplateParser $templateSpy = null,
 		?QueryStringParser $queryStringParser = null,
 		?User $user = null
 	): TabsHtmlBuilder {
 		return new TabsHtmlBuilder(
 			$config ?? new Config(),
-			$enableWikiConfig,
+			$ConfigAuthorizer ?? $this->newConfigAuthorizer(),
 			new FakeItemTypeLabelLookup(),
-			$permissionManager ?? $this->newPermissionManager(),
 			$templateSpy ?? new SpyTemplateParser(),
+			$titleFactory ?? MediaWikiServices::getInstance()->getTitleFactory(),
 			$queryStringParser ?? new StubQueryStringParser(),
 			$user ?? $this->createMock( User::class )
 		);
 	}
 
-	private function newPermissionManager( bool $canEditConfig = false ): PermissionManager {
-		$permissionManager = $this->createMock( PermissionManager::class );
-		$permissionManager->method( 'userCan' )
-			->with( 'edit' )
+	private function newConfigAuthorizer( bool $canEditConfig = false ): ConfigAuthorizer {
+		$ConfigAuthorizer = $this->createMock( ConfigAuthorizer::class );
+		$ConfigAuthorizer->method( 'isAuthorized' )
 			->willReturn( $canEditConfig );
-		return $permissionManager;
+		return $ConfigAuthorizer;
 	}
 
 	public function testTabsViewModelContainsItemTypes(): void {
@@ -179,8 +178,8 @@ JSON );
 
 		$this->newTabsHtmlBuilder(
 			config: Valid::config(),
-			templateSpy: $templateSpy,
-			enableWikiConfig: false
+			ConfigAuthorizer: $this->newConfigAuthorizer( canEditConfig: false ),
+			templateSpy: $templateSpy
 		)->createHtml( 'unimportant' );
 
 		$this->assertSame(
@@ -194,7 +193,7 @@ JSON );
 
 		$this->newTabsHtmlBuilder(
 			config: Valid::config(),
-			permissionManager: $this->newPermissionManager( canEditConfig: true ),
+			ConfigAuthorizer: $this->newConfigAuthorizer( canEditConfig: true ),
 			templateSpy: $templateSpy
 		)->createHtml( 'unimportant' );
 
@@ -213,7 +212,7 @@ JSON );
 
 		$this->newTabsHtmlBuilder(
 			config: Valid::config(),
-			permissionManager: $this->newPermissionManager( canEditConfig: false ),
+			ConfigAuthorizer: $this->newConfigAuthorizer( canEditConfig: false ),
 			templateSpy: $templateSpy
 		)->createHtml( 'unimportant' );
 

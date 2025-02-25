@@ -5,26 +5,24 @@ declare( strict_types = 1 );
 namespace ProfessionalWiki\WikibaseFacetedSearch\Presentation;
 
 use MediaWiki\Html\TemplateParser;
-use MediaWiki\Permissions\PermissionManager;
-use MediaWiki\Title\Title;
+use MediaWiki\Title\TitleFactory;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
+use ProfessionalWiki\WikibaseFacetedSearch\Application\ConfigAuthorizer;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\ItemTypeLabelLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Query;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\QueryStringParser;
 use ProfessionalWiki\WikibaseFacetedSearch\WikibaseFacetedSearchExtension;
 use Wikibase\DataModel\Entity\ItemId;
-use MediaWiki\User\User;
 
 class TabsHtmlBuilder {
 
 	public function __construct(
 		private readonly Config $config,
-		private readonly bool $enableWikiConfig,
+		private readonly ConfigAuthorizer $ConfigAuthorizer,
 		private readonly ItemTypeLabelLookup $itemTypeLabelLookup,
-		private readonly PermissionManager $permissionManager,
 		private readonly TemplateParser $templateParser,
-		private readonly QueryStringParser $queryStringParser,
-		private readonly User $user
+		private readonly TitleFactory $titleFactory,
+		private readonly QueryStringParser $queryStringParser
 	) {
 	}
 
@@ -55,13 +53,9 @@ class TabsHtmlBuilder {
 	}
 
 	private function buildSettingsViewModel(): array {
-		if ( !$this->enableWikiConfig ) {
-			return [];
-		}
+		$title = $this->titleFactory->newFromText( WikibaseFacetedSearchExtension::CONFIG_PAGE_TITLE, NS_MEDIAWIKI );
 
-		$title = Title::newFromText( WikibaseFacetedSearchExtension::CONFIG_PAGE_TITLE, NS_MEDIAWIKI );
-
-		if ( !$title instanceof Title || !$this->permissionManager->userCan( 'edit', $this->user, $title ) ) {
+		if ( !$this->ConfigAuthorizer->isAuthorized( $title->toPageIdentity() ) ) {
 			return [];
 		}
 

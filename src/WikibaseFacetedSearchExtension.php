@@ -14,6 +14,7 @@ use MediaWiki\Title\Title;
 use MediaWiki\User\User;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\ConfigLookup;
+use ProfessionalWiki\WikibaseFacetedSearch\Application\ConfigAuthorizer;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\DataValueTranslator;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\ElasticQueryFilter;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetType;
@@ -324,11 +325,17 @@ class WikibaseFacetedSearchExtension {
 	public function getTabsHtmlBuilder( Language $language, User $user ): TabsHtmlBuilder {
 		return new TabsHtmlBuilder(
 			config: $this->getConfig(),
-			enableWikiConfig: (bool)MediaWikiServices::getInstance()->getMainConfig()->get( 'WikibaseFacetedSearchEnableInWikiConfig' ),
+			ConfigAuthorizer: $this->newConfigAuthorizer( $user ),
 			itemTypeLabelLookup: $this->getItemTypeLabelLookup( $language ),
 			templateParser: $this->getTemplateParser(),
-			permissionManager: MediaWikiServices::getInstance()->getPermissionManager(),
-			queryStringParser: $this->getQueryStringParser(),
+			titleFactory: MediaWikiServices::getInstance()->getTitleFactory(),
+			queryStringParser: $this->getQueryStringParser()
+		);
+	}
+
+	public function newConfigAuthorizer( User $user ): ConfigAuthorizer {
+		return new ConfigAuthorizer(
+			enableWikiConfig: (bool)MediaWikiServices::getInstance()->getMainConfig()->get( 'WikibaseFacetedSearchEnableInWikiConfig' ),
 			user: $user
 		);
 	}
