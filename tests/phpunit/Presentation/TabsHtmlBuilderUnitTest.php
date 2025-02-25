@@ -176,7 +176,7 @@ JSON );
 		$this->newTabsHtmlBuilder(
 			config: Valid::config(),
 			templateSpy: $templateSpy,
-			configAuthorizer: $this->newConfigAuthorizer( canEditConfig: false ),
+			configAuthorizer: $this->newConfigAuthorizer( canEditConfig: false )
 		)->createHtml( 'unimportant' );
 
 		$this->assertSame(
@@ -191,7 +191,7 @@ JSON );
 		$this->newTabsHtmlBuilder(
 			config: Valid::config(),
 			templateSpy: $templateSpy,
-			configAuthorizer: $this->newConfigAuthorizer( canEditConfig: true ),
+			configAuthorizer: $this->newConfigAuthorizer( canEditConfig: true )
 		)->createHtml( 'unimportant' );
 
 		$settings = $templateSpy->getArgs()['settings'];
@@ -210,7 +210,7 @@ JSON );
 		$this->newTabsHtmlBuilder(
 			config: Valid::config(),
 			templateSpy: $templateSpy,
-			configAuthorizer: $this->newConfigAuthorizer( canEditConfig: false ),
+			configAuthorizer: $this->newConfigAuthorizer( canEditConfig: false )
 		)->createHtml( 'unimportant' );
 
 		$this->assertSame(
