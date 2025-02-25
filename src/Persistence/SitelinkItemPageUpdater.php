@@ -6,6 +6,7 @@ namespace ProfessionalWiki\WikibaseFacetedSearch\Persistence;
 
 use MediaWiki\Page\WikiPageFactory;
 use MediaWiki\Title\Title;
+use MediaWiki\Title\TitleFactory;
 use MediaWiki\User\UserIdentity;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\ItemPageUpdater;
 use Wikibase\DataModel\Entity\Item;
@@ -14,7 +15,8 @@ class SitelinkItemPageUpdater implements ItemPageUpdater {
 
 	public function __construct(
 		private readonly string $sitelinkSiteId,
-		private readonly WikiPageFactory $pageFactory
+		private readonly WikiPageFactory $pageFactory,
+		private readonly TitleFactory $titleFactory
 	) {
 	}
 
@@ -32,7 +34,7 @@ class SitelinkItemPageUpdater implements ItemPageUpdater {
 
 	private function getSitelinkedTitle( Item $item ): ?Title {
 		if ( $item->hasLinkToSite( $this->sitelinkSiteId ) ) {
-			return Title::newFromText( $item->getSiteLink( $this->sitelinkSiteId )->getPageName() );
+			return $this->titleFactory->newFromText( $item->getSiteLink( $this->sitelinkSiteId )->getPageName() );
 		}
 
 		return null;
