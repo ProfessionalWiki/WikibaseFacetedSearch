@@ -5,113 +5,38 @@ declare( strict_types = 1 );
 namespace ProfessionalWiki\WikibaseFacetedSearch\Presentation;
 
 use MediaWiki\Context\IContextSource;
+use MediaWiki\Html\TemplateParser;
+use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
 
 class ConfigEditPageTextBuilder {
 
 	public function __construct(
 		private readonly IContextSource $context,
-		private readonly string $exampleConfigPath
+		private readonly string $exampleConfigPath,
+		private readonly TemplateParser $templateParser,
+		private readonly Config $config
 	) {
 	}
 
 	public function createTopHtml(): string {
-		return '<div id="wikibase-faceted-search-config-help-top">' .
-			$this->createDocumentationLink() .
-			'</div>';
-	}
-
-	private function createDocumentationLink(): string {
-		return '<p>'
-			. $this->context->msg( 'wikibase-faceted-search-config-help-documentation' )->parse()
-			. '</p>';
+		return $this->templateParser->processTemplate(
+			'ConfigEditPageTop',
+			[
+				'msg-wikibase-faceted-search-config-help-documentation' => $this->context->msg( 'wikibase-faceted-search-config-help-documentation' )->parse()
+			]
+		);
 	}
 
 	public function createBottomHtml(): string {
-		return <<<HTML
-<div id="Documentation">
-	<section>
-		<h2 id="ConfigurationDocumentation">{$this->context->msg( 'wikibase-faceted-search-config-help' )->escaped()}</h2>
-
-		<p>
-			Besides the configuration reference below, you can consult the Wikibase Faceted Search
-			<a href="https://professional.wiki/en/extension/wikibase-faceted-search">usage documentation</a> and
-			<a href="https://facetedsearch.wikibase.wiki">demo wiki</a>.
-		</p>
-	</section>
-
-	<section>
-		<h2 id="sitelinkSiteId">Link target sitelink site ID</h2>
-
-		<p>
-			By default search result items link to their item page (<code>Item:Q123</code>).
-		</p>
-
-		<p>
-			You can change the link to use a sitelink of the item instead.
-		</p>
-
-		<p>
-			Example configuration:
-		</p>
-
-		<pre>
-{
-	"sitelinkSiteId": "enwiki"
-}</pre>
-	</section>
-
-	<section>
-		<h2 id="ItemTypeProperty">Instance Of property ID</h2>
-
-		<p>
-			The property ID for the "instance of" property.
-		</p>
-
-		<p>
-			Example configuration:
-		</p>
-
-		<pre>
-{
-	"itemTypeProperty": "P1"
-}</pre>
-	</section>
-
-	<section>
-		<h2 id="Facets">Facets</h2>
-
-		<p>
-			The avilable facets per item type ("instance of"). Each facet is defined by a property ID and a type.
-		</p>
-
-		<p>
-			Example configuration:
-		</p>
-
-		<pre>
-{
-	"facets": {
-		"Q1": [
-			{
-				"property": "P1",
-				"type": "list"
-			},
-			{
-				"property": "P2",
-				"type": "range"
-			}
-		]
-	}
-}</pre>
-	</section>
-
-	<section>
-		<h2 id="FullExample">{$this->context->msg( 'wikibase-faceted-search-config-help-example' )->escaped()}</h2>
-
-		<pre>{$this->getExampleContents()}</pre>
-	</section>
-</div>
-HTML;
+		return $this->templateParser->processTemplate(
+			'ConfigEditPageBottom',
+			[
+				'msg-wikibase-faceted-search-config-help' => $this->context->msg( 'wikibase-faceted-search-config-help' )->escaped(),
+				'msg-wikibase-faceted-search-config-help-example' => $this->context->msg( 'wikibase-faceted-search-config-help-example' )->escaped(),
+				'exampleContents' => $this->getExampleContents(),
+				'array-itemTypes' => $this->getItemTypesData()
+			]
+		);
 	}
 
 	private function getExampleContents(): string {
@@ -122,6 +47,33 @@ HTML;
 		}
 
 		return $example;
+	}
+
+	private function getItemTypesData(): array {
+		$itemTypes = $this->config->getItemTypes();
+		if ( $itemTypes === [] ) {
+			return [];
+		}
+
+		$data = [];
+		foreach ( $itemTypes as $itemType ) {
+			$id = $itemType->getSerialization();
+			if ( !$id ) {
+				continue;
+			}
+
+			$exists = $this->context->msg( "WikibaseFacetedSearch-item-type-$id" )->exists();
+			$actionKey = $exists ? 'edit' : 'create';
+
+			$data[] = [
+				'id' => $id,
+				'exists' => $exists,
+				'label' => $exists ? $this->context->msg( "WikibaseFacetedSearch-item-type-$id" )->plain() : null,
+				'action' => $this->context->msg( $actionKey )->plain(),
+			];
+		}
+
+		return $data;
 	}
 
 }

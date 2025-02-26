@@ -41,6 +41,12 @@ class ConfigPageTest extends WikibaseFacetedSearchIntegrationTest {
 			'Configuration documentation',
 			$html
 		);
+
+		// Item types table
+		$this->assertStringContainsString(
+			'wikibase-faceted-search-config-help__itemtypes-table',
+			$html
+		);
 	}
 
 	public function testEditingTabShowsDefaultValues(): void {

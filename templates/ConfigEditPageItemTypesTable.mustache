@@ -1,0 +1,30 @@
+<table class="wikibase-faceted-search-config-help__itemtypes-table wikitable">
+    <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Label</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#array-itemTypes}}
+            <tr>
+                <td>{{id}}</td>
+                <td>
+                    {{#label}}
+                        {{.}}
+                    {{/label}}
+                    {{^label}}
+                        <em>No label defined</em>
+                    {{/label}}
+                    <a
+                        class="wikibase-faceted-search-config-help__itemtypes-table-action"
+                        href="{{wgScript}}?title=MediaWiki:WikibaseFacetedSearch-item-type-{{id}}&action=edit"
+                        title="{{action}} label for {{id}}"
+                    >
+                        {{action}}
+                    </a>
+                </td>
+            </tr>
+        {{/array-itemTypes}}
+    </tbody>
+</table>
