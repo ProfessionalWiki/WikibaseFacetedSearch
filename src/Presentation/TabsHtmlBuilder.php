@@ -6,13 +6,14 @@ namespace ProfessionalWiki\WikibaseFacetedSearch\Presentation;
 
 use MediaWiki\Html\TemplateParser;
 use MediaWiki\Title\Title;
+use MediaWiki\Title\TitleFactory;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
+use ProfessionalWiki\WikibaseFacetedSearch\Application\ConfigAuthorizer;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\ItemTypeLabelLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Query;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\QueryStringParser;
 use ProfessionalWiki\WikibaseFacetedSearch\WikibaseFacetedSearchExtension;
 use Wikibase\DataModel\Entity\ItemId;
-use MediaWiki\User\User;
 
 class TabsHtmlBuilder {
 
@@ -21,7 +22,8 @@ class TabsHtmlBuilder {
 		private readonly ItemTypeLabelLookup $itemTypeLabelLookup,
 		private readonly TemplateParser $templateParser,
 		private readonly QueryStringParser $queryStringParser,
-		private readonly User $user,
+		private readonly ConfigAuthorizer $configAuthorizer,
+		private readonly TitleFactory $titleFactory
 	) {
 	}
 
@@ -52,12 +54,13 @@ class TabsHtmlBuilder {
 	}
 
 	private function buildSettingsViewModel(): array {
-		$title = Title::newFromText( WikibaseFacetedSearchExtension::CONFIG_PAGE_TITLE, NS_MEDIAWIKI );
+		$title = $this->titleFactory->newFromText( WikibaseFacetedSearchExtension::CONFIG_PAGE_TITLE, NS_MEDIAWIKI );
 
-		if (
-			!$title instanceof Title
-			|| !$this->user->isAllowed( 'editsitejson' )
-		) {
+		if ( !$title instanceof Title ) {
+			return [];
+		}
+
+		if ( !$this->configAuthorizer->isAuthorized( $title ) ) {
 			return [];
 		}
 
