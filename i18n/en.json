@@ -1,12 +1,13 @@
 {
 	"@metadata": {
 		"authors": [
+			"alistair3149",
 			"Jeroen De Dauw",
 			"Karsten Hoffmeyer",
 			"Morne Alberts"
 		]
 	},
-	"wikibasefacetedsearch-description": "Enhances [[Special:Search]] with faceted search capabilities. Filter results based on instance type or statement values.",
+	"wikibasefacetedsearch-description": "Enhances [[Special:Search]] with faceted search capabilities. Filter results based on instance type or statement values",
 
 	"special-wikibase-faceted-search-config": "Faceted search configuration",
 
