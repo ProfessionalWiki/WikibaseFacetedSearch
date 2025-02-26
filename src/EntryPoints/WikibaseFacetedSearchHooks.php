@@ -209,12 +209,13 @@ class WikibaseFacetedSearchHooks {
 		}
 	}
 
-	public static function onSearchDataForIndex(
+	public static function onSearchDataForIndex2(
 		array &$fields,
 		ContentHandler $handler,
 		WikiPage $page,
 		ParserOutput $output,
-		SearchEngine $engine
+		SearchEngine $engine,
+		RevisionRecord $revision
 	): void {
 		if ( !( $engine instanceof CirrusSearch ) ) {
 			return;
