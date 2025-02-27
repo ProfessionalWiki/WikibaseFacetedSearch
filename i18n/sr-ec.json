@@ -1,0 +1,18 @@
+{
+	"@metadata": {
+		"authors": [
+			"Milicevic01"
+		]
+	},
+	"wikibase-faceted-search-config-help-example": "Цео пример",
+	"wikibase-faceted-search-instance-type-all": "Све",
+	"wikibase-faceted-search-filters": "Филтери",
+	"wikibase-faceted-search-settings": "Подешавања",
+	"wikibase-faceted-search-and": "И",
+	"wikibase-faceted-search-or": "Или",
+	"wikibase-faceted-search-facet-apply": "Примени",
+	"wikibase-faceted-search-facet-show-more": "Прикажи више",
+	"wikibase-faceted-search-facet-show-less": "Прикажи мање",
+	"wikibase-faceted-search-facet-range-min": "Минимум",
+	"wikibase-faceted-search-facet-range-max": "Максимум"
+}

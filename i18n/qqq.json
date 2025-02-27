@@ -1,10 +1,10 @@
 {
 	"@metadata": {
 		"authors": [
-			"alistair3149",
 			"Jeroen De Dauw",
 			"Karsten Hoffmeyer",
-			"Morne Alberts"
+			"Morne Alberts",
+			"alistair3149"
 		]
 	},
 	"wikibasefacetedsearch-description": "{{Desc|name=WikibaseFacetedSearch|url=https://github.com/ProfessionalWiki/WikibaseFacetedSearch}}",

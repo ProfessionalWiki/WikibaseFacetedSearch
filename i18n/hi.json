@@ -1,0 +1,17 @@
+{
+	"@metadata": {
+		"authors": [
+			"Abijeet Patro"
+		]
+	},
+	"wikibase-faceted-search-instance-type-all": "सभी",
+	"wikibase-faceted-search-filters": "फिल्टर",
+	"wikibase-faceted-search-settings": "सेटिंग्स",
+	"wikibase-faceted-search-and": "और",
+	"wikibase-faceted-search-or": "या",
+	"wikibase-faceted-search-facet-apply": "लागू करें",
+	"wikibase-faceted-search-facet-show-more": "और दिखायें",
+	"wikibase-faceted-search-facet-show-less": "कम दिखाएँ",
+	"wikibase-faceted-search-facet-range-min": "न्यूनतम",
+	"wikibase-faceted-search-facet-range-max": "अधिकतम"
+}
