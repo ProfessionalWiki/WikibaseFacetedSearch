@@ -9,8 +9,10 @@ use CirrusSearch\SearchConfig;
 use Elastica\Query\AbstractQuery;
 use MediaWiki\Html\TemplateParser;
 use MediaWiki\Language\Language;
+use MediaWiki\Linker\LinkRendererFactory;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Title\Title;
+use MediaWiki\Title\TitleFactory;
 use MediaWiki\User\User;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\ConfigLookup;
@@ -138,6 +140,14 @@ class WikibaseFacetedSearchExtension {
 
 	public function getTemplateParser(): TemplateParser {
 		return new TemplateParser( __DIR__ . '/../templates' );
+	}
+
+	public function getTitleFactory(): TitleFactory {
+		return MediaWikiServices::getInstance()->getTitleFactory();
+	}
+
+	public function getLinkRendererFactory(): LinkRendererFactory {
+		return MediaWikiServices::getInstance()->getLinkRendererFactory();
 	}
 
 	public function newSearchIndexFieldsBuilder( CirrusSearch $engine ): SearchIndexFieldsBuilder {
@@ -330,7 +340,7 @@ class WikibaseFacetedSearchExtension {
 			templateParser: $this->getTemplateParser(),
 			queryStringParser: $this->getQueryStringParser(),
 			configAuthorizer: $this->newConfigAuthorizer( $user ),
-			titleFactory: MediaWikiServices::getInstance()->getTitleFactory()
+			titleFactory: $this->getTitleFactory()
 		);
 	}
 
@@ -353,7 +363,7 @@ class WikibaseFacetedSearchExtension {
 		return new SitelinkItemPageUpdater(
 			sitelinkSiteId: $this->getConfig()->sitelinkSiteId,
 			pageFactory: MediaWikiServices::getInstance()->getWikiPageFactory(),
-			titleFactory: MediaWikiServices::getInstance()->getTitleFactory()
+			titleFactory: $this->getTitleFactory()
 		);
 	}
 

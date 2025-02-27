@@ -6,7 +6,13 @@ namespace ProfessionalWiki\WikibaseFacetedSearch\Presentation;
 
 use MediaWiki\Context\IContextSource;
 use MediaWiki\Html\TemplateParser;
+use MediaWiki\Linker\LinkRenderer;
+use MediaWiki\Linker\LinkTarget;
+use MediaWiki\Title\TitleFactory;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
+use RuntimeException;
+use Wikibase\DataModel\Entity\ItemId;
+use Wikibase\DataModel\Services\Lookup\LabelLookup;
 
 class ConfigEditPageTextBuilder {
 
@@ -14,7 +20,10 @@ class ConfigEditPageTextBuilder {
 		private readonly IContextSource $context,
 		private readonly string $exampleConfigPath,
 		private readonly TemplateParser $templateParser,
-		private readonly Config $config
+		private readonly Config $config,
+		private readonly TitleFactory $titleFactory,
+		private readonly LinkRenderer $linkRenderer,
+		private readonly LabelLookup $labelLookup
 	) {
 	}
 
@@ -31,6 +40,9 @@ class ConfigEditPageTextBuilder {
 		return $this->templateParser->processTemplate(
 			'ConfigEditPageBottom',
 			[
+				'msg-wikibase-entity-item' => $this->context->msg( 'wikibase-entity-item' )->plain(),
+				'msg-wikibase-faceted-search-config-tab-name' => $this->context->msg( 'wikibase-faceted-search-config-tab-name' )->plain(),
+				'msg-wikibase-faceted-search-config-tab-name-missing' => $this->context->msg( 'wikibase-faceted-search-config-tab-name-missing' )->plain(),
 				'msg-wikibase-faceted-search-config-help' => $this->context->msg( 'wikibase-faceted-search-config-help' )->escaped(),
 				'msg-wikibase-faceted-search-config-help-example' => $this->context->msg( 'wikibase-faceted-search-config-help-example' )->escaped(),
 				'exampleContents' => $this->getExampleContents(),
@@ -51,29 +63,56 @@ class ConfigEditPageTextBuilder {
 
 	private function getItemTypesData(): array {
 		$itemTypes = $this->config->getItemTypes();
-		if ( $itemTypes === [] ) {
-			return [];
-		}
-
-		$data = [];
-		foreach ( $itemTypes as $itemType ) {
-			$id = $itemType->getSerialization();
-			if ( !$id ) {
-				continue;
-			}
-
-			$exists = $this->context->msg( "WikibaseFacetedSearch-item-type-$id" )->exists();
-			$actionKey = $exists ? 'edit' : 'create';
-
-			$data[] = [
-				'id' => $id,
-				'exists' => $exists,
-				'label' => $exists ? $this->context->msg( "WikibaseFacetedSearch-item-type-$id" )->plain() : null,
-				'action' => $this->context->msg( $actionKey )->plain(),
-			];
-		}
-
-		return $data;
+		return array_map(
+			fn( ItemId $itemType ) => $this->getItemTypeData( $itemType ),
+			$itemTypes
+		);
 	}
 
+	private function getItemTypeData( ItemId $itemType ): array {
+		$id = $itemType->getSerialization();
+		$tabNameMsg = $this->context->msg( "WikibaseFacetedSearch-item-type-$id" );
+		$exists = $tabNameMsg->exists();
+
+		return [
+			'id' => $id,
+			'exists' => $exists,
+			'itemLink' => $this->getItemLink( $id, $this->labelLookup->getLabel( $itemType )?->getText() ),
+			'tabName' => $exists ? $tabNameMsg->plain() : null,
+			'actionLink' => $this->getActionLink( $id, $exists ),
+		];
+	}
+
+	private function getItemLink( string $id, ?string $label ): string {
+		return $this->linkRenderer->makeLink(
+			$this->getLinkTarget( "Item:$id" ),
+			$label ? "$id ($label)" : $id,
+			[
+				'class' => 'wikibase-faceted-search-config-help__itemtypes-table-item',
+			]
+		);
+	}
+
+	private function getActionLink( string $id, bool $exists ): string {
+		$action = $exists ? 'edit' : 'create';
+		return $this->linkRenderer->makeLink(
+			$this->getLinkTarget( "MediaWiki:WikibaseFacetedSearch-item-type-$id" ),
+			$this->context->msg( $action )->plain(),
+			[
+				'class' => 'wikibase-faceted-search-config-help__itemtypes-table-action',
+				'title' => $this->context->msg( "wikibase-faceted-search-config-tab-name-$action-title", $id )->plain(),
+			],
+			[ 'action' => $action ]
+		);
+	}
+
+	private function getLinkTarget( string $pageName ): LinkTarget {
+		$title = $this->titleFactory->newFromText( $pageName );
+
+		if ( $title === null ) {
+			throw new RuntimeException( "Invalid page name: $pageName" );
+		}
+
+		return $title;
+	}
 }

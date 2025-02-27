@@ -149,7 +149,10 @@ class WikibaseFacetedSearchHooks {
 				context: $editPage->getContext(),
 				exampleConfigPath: WikibaseFacetedSearchExtension::getInstance()->getExampleConfigPath(),
 				templateParser: WikibaseFacetedSearchExtension::getInstance()->getTemplateParser(),
-				config: WikibaseFacetedSearchExtension::getInstance()->getConfig()
+				config: WikibaseFacetedSearchExtension::getInstance()->getConfig(),
+				titleFactory: WikibaseFacetedSearchExtension::getInstance()->getTitleFactory(),
+				linkRenderer: WikibaseFacetedSearchExtension::getInstance()->getLinkRendererFactory()->create(),
+				labelLookup: WikibaseFacetedSearchExtension::getInstance()->getLabelLookup( $editPage->getContext()->getLanguage() )
 			);
 			$editPage->editFormTextTop = $textBuilder->createTopHtml();
 			$editPage->editFormTextBottom = $textBuilder->createBottomHtml();
