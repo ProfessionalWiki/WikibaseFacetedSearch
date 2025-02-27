@@ -3,6 +3,7 @@
 	"itemTypeProperty": "P42",
 	"configPerItemType": {
 		"Q100": {
+			"icon": "person",
 			"facets": {
 				"P1": {
 					"type": "list"
@@ -13,6 +14,7 @@
 			}
 		},
 		"Q200": {
+			"icon": "book",
 			"facets": {
 				"P2": {
 					"type": "range"

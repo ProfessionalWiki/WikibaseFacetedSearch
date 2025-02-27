@@ -13,7 +13,8 @@ class Config {
 	public function __construct(
 		public readonly ?string $sitelinkSiteId = null,
 		private readonly ?PropertyId $itemTypeProperty = null,
-		private readonly ?FacetConfigList $facets = null
+		private readonly ?FacetConfigList $facets = null,
+		private readonly ?array $icons = null
 	) {
 	}
 
@@ -21,7 +22,8 @@ class Config {
 		return new Config(
 			$config->sitelinkSiteId ?? $this->sitelinkSiteId,
 			$config->itemTypeProperty ?? $this->itemTypeProperty,
-			$config->facets ?? $this->facets
+			$config->facets ?? $this->facets,
+			$config->icons ?? $this->icons
 		);
 	}
 
@@ -35,6 +37,10 @@ class Config {
 
 	public function getFacets(): FacetConfigList {
 		return $this->facets ?? new FacetConfigList();
+	}
+
+	public function getIconForItemType( ItemId $itemType ): ?string {
+		return $this->icons[$itemType->getSerialization()] ?? null;
 	}
 
 	/**
