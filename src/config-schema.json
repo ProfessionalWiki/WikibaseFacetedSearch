@@ -20,6 +20,9 @@
 				"additionalProperties": false,
 				"required": [ "facets" ],
 				"properties": {
+					"icon": {
+						"type": "string"
+					},
 					"facets": {
 						"type": "object",
 						"propertyNames": {

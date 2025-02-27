@@ -23,7 +23,8 @@ class TabsHtmlBuilder {
 		private readonly TemplateParser $templateParser,
 		private readonly QueryStringParser $queryStringParser,
 		private readonly ConfigAuthorizer $configAuthorizer,
-		private readonly TitleFactory $titleFactory
+		private readonly TitleFactory $titleFactory,
+		private readonly IconBuilder $iconBuilder
 	) {
 	}
 
@@ -74,11 +75,7 @@ class TabsHtmlBuilder {
 		$tabs = [];
 
 		foreach ( $this->config->getItemTypes() as $itemType ) {
-			$tabs[] = [
-				'label' => $this->itemTypeLabelLookup->getLabel( $itemType ),
-				'value' => $itemType->getSerialization(),
-				'selected' => $itemType->equals( $selectedItemType )
-			];
+			$tabs[] = $this->buildTabViewModel( $itemType, $selectedItemType );
 		}
 
 		return [
@@ -91,9 +88,31 @@ class TabsHtmlBuilder {
 		];
 	}
 
-	/**
-	 * @param array<array{selected: bool}> $tabs
-	 */
+	private function buildTabViewModel( ItemId $itemType, ?ItemId $selectedItemType ): array {
+		$tab = [	
+			'label' => $this->itemTypeLabelLookup->getLabel( $itemType ),
+			'value' => $itemType->getSerialization(),
+			'selected' => $itemType->equals( $selectedItemType )
+		];
+
+		$icon = $this->buildTabIcon( $itemType );
+		if ( $icon !== null ) {
+			$tab['icon'] = $icon;
+		}
+
+		return $tab;
+	}
+
+	private function buildTabIcon( ItemId $itemType ): ?string {
+		$icon = $this->config->getIconForItemType( $itemType );
+
+		if ( $icon ) {
+			return $this->iconBuilder->buildHtml( $icon );
+		}
+
+		return null;
+	}
+
 	private function noTabsAreSelected( array $tabs ): bool {
 		return !array_reduce( $tabs, ( fn( $carry, $tab ) => $carry || $tab['selected'] ), false );
 	}

@@ -35,10 +35,16 @@ class ConfigDeserializer {
 	 * @param array<string, mixed> $configArray
 	 */
 	private function newConfig( array $configArray ): Config {
+		// Need to stop phpstan from complaining about the type of $configPerItemType
+		$configPerItemType = isset( $configArray['configPerItemType'] ) && is_array( $configArray['configPerItemType'] )
+			? $configArray['configPerItemType']
+			: [];
+
 		return new Config(
 			sitelinkSiteId: $configArray['sitelinkSiteId'] ?? null,
 			itemTypeProperty: $this->newPropertyId( $configArray['itemTypeProperty'] ?? null ),
-			facets: $this->newFacetConfigList( $configArray['configPerItemType'] ?? [] )
+			facets: $this->newFacetConfigList( $configPerItemType ),
+			icons: $this->newIconsList( $configPerItemType )
 		);
 	}
 
@@ -50,9 +56,24 @@ class ConfigDeserializer {
 		return new NumericPropertyId( $propertyId );
 	}
 
-	/**
-	 * @param array<string, array> $configPerItemType
-	 */
+	private function newIconsList( array $configPerItemType ): ?array {
+		if ( $configPerItemType === [] ) {
+			return null;
+		}
+
+		$icons = [];
+
+		foreach ( $configPerItemType as $itemId => $itemTypeConfig ) {
+			if ( !isset( $itemTypeConfig['icon'] ) ) {
+				continue;
+			}
+
+			$icons[$itemId] = $itemTypeConfig['icon'];
+		}
+
+		return $icons === [] ? null : $icons;
+	}
+
 	private function newFacetConfigList( array $configPerItemType ): ?FacetConfigList {
 		if ( $configPerItemType === [] ) {
 			return null;

@@ -53,6 +53,8 @@ use ProfessionalWiki\WikibaseFacetedSearch\Persistence\SitelinkBasedStatementsLo
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\DelegatingFacetHtmlBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\FacetHtmlBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\FacetValueFormatter;
+use ProfessionalWiki\WikibaseFacetedSearch\Presentation\FontAwesomeIconBuilder;
+use ProfessionalWiki\WikibaseFacetedSearch\Presentation\IconBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\ListFacetHtmlBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\RangeFacetHtmlBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\SidebarHtmlBuilder;
@@ -340,7 +342,8 @@ class WikibaseFacetedSearchExtension {
 			templateParser: $this->getTemplateParser(),
 			queryStringParser: $this->getQueryStringParser(),
 			configAuthorizer: $this->newConfigAuthorizer( $user ),
-			titleFactory: $this->getTitleFactory()
+			titleFactory: $this->getTitleFactory(),
+			iconBuilder: $this->newIconBuilder()
 		);
 	}
 
@@ -349,6 +352,10 @@ class WikibaseFacetedSearchExtension {
 			wikiConfigIsEnabled: (bool)MediaWikiServices::getInstance()->getMainConfig()->get( 'WikibaseFacetedSearchEnableInWikiConfig' ),
 			user: $user
 		);
+	}
+
+	public function newIconBuilder(): IconBuilder {
+		return new FontAwesomeIconBuilder();
 	}
 
 	public function newElasticQueryFilter(): ElasticQueryFilter {
