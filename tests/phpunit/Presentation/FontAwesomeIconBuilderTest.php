@@ -56,4 +56,10 @@ class FontAwesomeIconBuilderTest extends TestCase {
 		$this->assertStringContainsString( 'fas', $html );
 	}
 
+	public function testBuildHtmlWithClassicFamily(): void {
+		$html = $this->newFontAwesomeIconBuilder( family: 'classic' )->buildHtml( 'bug-slash' );
+
+		$this->assertStringNotContainsString( 'fa-classic', $html );
+	}
+
 }
