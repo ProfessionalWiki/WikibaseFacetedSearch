@@ -7,7 +7,13 @@ parameters:
 			path: src/Persistence/ConfigDeserializer.php
 
 		-
-			message: '#^Parameter \#1 \$configPerItemType of method ProfessionalWiki\\WikibaseFacetedSearch\\Persistence\\ConfigDeserializer\:\:newFacetConfigList\(\) expects array\<string, array\>, mixed given\.$#'
+			message: '#^Parameter \#1 \$configPerItemType of method ProfessionalWiki\\WikibaseFacetedSearch\\Persistence\\ConfigDeserializer\:\:newFacetConfigList\(\) expects array, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Persistence/ConfigDeserializer.php
+
+		-
+			message: '#^Parameter \#1 \$configPerItemType of method ProfessionalWiki\\WikibaseFacetedSearch\\Persistence\\ConfigDeserializer\:\:newIconsList\(\) expects array, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/Persistence/ConfigDeserializer.php

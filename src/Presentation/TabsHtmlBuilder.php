@@ -106,11 +106,11 @@ class TabsHtmlBuilder {
 	private function buildTabIcon( ItemId $itemType ): ?string {
 		$icon = $this->config->getIconForItemType( $itemType );
 
-		if ( $icon ) {
-			return $this->iconBuilder->buildHtml( $icon );
+		if ( $icon === null ) {
+			return null;
 		}
 
-		return null;
+		return $this->iconBuilder->buildHtml( $icon );
 	}
 
 	private function noTabsAreSelected( array $tabs ): bool {

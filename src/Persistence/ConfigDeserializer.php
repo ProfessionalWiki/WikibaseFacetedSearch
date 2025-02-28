@@ -35,16 +35,11 @@ class ConfigDeserializer {
 	 * @param array<string, mixed> $configArray
 	 */
 	private function newConfig( array $configArray ): Config {
-		// Need to stop phpstan from complaining about the type of $configPerItemType
-		$configPerItemType = isset( $configArray['configPerItemType'] ) && is_array( $configArray['configPerItemType'] )
-			? $configArray['configPerItemType']
-			: [];
-
 		return new Config(
 			sitelinkSiteId: $configArray['sitelinkSiteId'] ?? null,
 			itemTypeProperty: $this->newPropertyId( $configArray['itemTypeProperty'] ?? null ),
-			facets: $this->newFacetConfigList( $configPerItemType ),
-			icons: $this->newIconsList( $configPerItemType )
+			facets: $this->newFacetConfigList( $configArray['configPerItemType'] ?? [] ),
+			icons: $this->newIconsList( $configArray['configPerItemType'] ?? [] )
 		);
 	}
 
@@ -57,10 +52,6 @@ class ConfigDeserializer {
 	}
 
 	private function newIconsList( array $configPerItemType ): ?array {
-		if ( $configPerItemType === [] ) {
-			return null;
-		}
-
 		$icons = [];
 
 		foreach ( $configPerItemType as $itemId => $itemTypeConfig ) {
