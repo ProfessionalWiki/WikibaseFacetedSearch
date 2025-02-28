@@ -36,7 +36,7 @@ class FontAwesomeIconBuilder implements IconBuilder {
 
 	public function __construct(
 		private readonly string $style = 'solid',
-		private readonly string $family = 'classic'
+		private readonly string $family = 'classic',
 	) {
 	}
 
@@ -47,7 +47,7 @@ class FontAwesomeIconBuilder implements IconBuilder {
 		$classes = [
 			'wikibase-faceted-search__icon-fontawesome',
 			"fa-$style",
-			"fa-$iconName"
+			"fa-$iconName",
 		];
 
 		if ( isset( self::STYLE_SHORT_FORMS[$style] ) ) {

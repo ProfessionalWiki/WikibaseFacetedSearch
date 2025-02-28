@@ -24,7 +24,7 @@ class TabsHtmlBuilder {
 		private readonly QueryStringParser $queryStringParser,
 		private readonly ConfigAuthorizer $configAuthorizer,
 		private readonly TitleFactory $titleFactory,
-		private readonly IconBuilder $iconBuilder
+		private readonly IconBuilder $iconBuilder,
 	) {
 	}
 
@@ -92,7 +92,7 @@ class TabsHtmlBuilder {
 		$tab = [	
 			'label' => $this->itemTypeLabelLookup->getLabel( $itemType ),
 			'value' => $itemType->getSerialization(),
-			'selected' => $itemType->equals( $selectedItemType )
+			'selected' => $itemType->equals( $selectedItemType ),
 		];
 
 		$icon = $this->buildTabIcon( $itemType );

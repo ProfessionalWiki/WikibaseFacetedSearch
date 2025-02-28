@@ -171,7 +171,7 @@ class ConfigTest extends TestCase {
 		$config = new Config(
 			icons: [
 				'Q1' => 'star',
-				'Q2' => 'circle'
+				'Q2' => 'circle',
 			]
 		);
 

@@ -54,7 +54,7 @@ class TabsHtmlBuilderUnitTest extends TestCase {
 			$queryStringParser ?? new StubQueryStringParser(),
 			$configAuthorizer ?? $this->newConfigAuthorizer(),
 			$titleFactory ?? MediaWikiServices::getInstance()->getTitleFactory(),
-			WikibaseFacetedSearchExtension::getInstance()->newIconBuilder()
+			WikibaseFacetedSearchExtension::getInstance()->newIconBuilder(),
 		);
 	}
 
