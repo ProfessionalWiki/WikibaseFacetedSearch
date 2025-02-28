@@ -343,7 +343,7 @@ class WikibaseFacetedSearchExtension {
 			queryStringParser: $this->getQueryStringParser(),
 			configAuthorizer: $this->newConfigAuthorizer( $user ),
 			titleFactory: $this->getTitleFactory(),
-			iconBuilder: $this->newIconBuilder()
+			iconBuilder: $this->newIconBuilder(),
 		);
 	}
 

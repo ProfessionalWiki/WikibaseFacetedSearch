@@ -14,7 +14,7 @@ class Config {
 		public readonly ?string $sitelinkSiteId = null,
 		private readonly ?PropertyId $itemTypeProperty = null,
 		private readonly ?FacetConfigList $facets = null,
-		private readonly ?array $icons = null
+		private readonly ?array $icons = null,
 	) {
 	}
 
@@ -23,7 +23,7 @@ class Config {
 			$config->sitelinkSiteId ?? $this->sitelinkSiteId,
 			$config->itemTypeProperty ?? $this->itemTypeProperty,
 			$config->facets ?? $this->facets,
-			$config->icons ?? $this->icons
+			$config->icons ?? $this->icons,
 		);
 	}
 

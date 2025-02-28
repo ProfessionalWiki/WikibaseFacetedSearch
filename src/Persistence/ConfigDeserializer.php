@@ -39,7 +39,7 @@ class ConfigDeserializer {
 			sitelinkSiteId: $configArray['sitelinkSiteId'] ?? null,
 			itemTypeProperty: $this->newPropertyId( $configArray['itemTypeProperty'] ?? null ),
 			facets: $this->newFacetConfigList( $configArray['configPerItemType'] ?? [] ),
-			icons: $this->newIconsList( $configArray['configPerItemType'] ?? [] )
+			icons: $this->newIconsList( $configArray['configPerItemType'] ?? [] ),
 		);
 	}
 

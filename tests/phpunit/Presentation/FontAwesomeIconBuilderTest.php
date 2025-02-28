@@ -33,7 +33,7 @@ class FontAwesomeIconBuilderTest extends TestCase {
 	public function testBuildHtmlWithCustomOptions(): void {
 		$html = $this->newFontAwesomeIconBuilder(
 			style: 'regular',
-			family: 'duotone'
+			family: 'duotone',
 		)->buildHtml( 'bug-slash' );
 
 		$this->assertStringContainsString( 'fa-duotone', $html );
@@ -43,7 +43,7 @@ class FontAwesomeIconBuilderTest extends TestCase {
 	public function testBuildHtmlWithCustomLocalOptions(): void {
 		$html = $this->newFontAwesomeIconBuilder()->buildHtml( 'bug-slash', [
 			'style' => 'regular',
-			'family' => 'duotone'
+			'family' => 'duotone',
 		] );
 
 		$this->assertStringContainsString( 'fa-duotone', $html );
