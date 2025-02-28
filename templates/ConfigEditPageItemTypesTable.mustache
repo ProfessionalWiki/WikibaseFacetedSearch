@@ -1,0 +1,24 @@
+<table class="wikibase-faceted-search-config-help__itemtypes-table wikitable">
+    <thead>
+        <tr>
+            <th scope="col">{{msg-wikibase-entity-item}}</th>
+            <th scope="col">{{msg-wikibase-faceted-search-config-tab-name}}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#array-itemTypes}}
+            <tr>
+                <td>{{{itemLink}}}</td>
+                <td>
+                    {{#tabName}}
+                        {{.}}
+                    {{/tabName}}
+                    {{^tabName}}
+                        <em>{{msg-wikibase-faceted-search-config-tab-name-missing}}</em>
+                    {{/tabName}}
+                    {{{actionLink}}}
+                </td>
+            </tr>
+        {{/array-itemTypes}}
+    </tbody>
+</table>
