@@ -17,6 +17,7 @@ use ProfessionalWiki\WikibaseFacetedSearch\Tests\Valid;
 use ProfessionalWiki\WikibaseFacetedSearch\Tests\TestDoubles\FakeItemTypeLabelLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Tests\TestDoubles\SpyTemplateParser;
 use ProfessionalWiki\WikibaseFacetedSearch\Tests\TestDoubles\StubConfigAuthorizer;
+use ProfessionalWiki\WikibaseFacetedSearch\Tests\TestDoubles\StubIconBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Tests\TestDoubles\StubQueryStringParser;
 use ProfessionalWiki\WikibaseFacetedSearch\WikibaseFacetedSearchExtension;
 use Wikibase\DataModel\Entity\ItemId;
@@ -45,7 +46,8 @@ class TabsHtmlBuilderUnitTest extends TestCase {
 		?SpyTemplateParser $templateSpy = null,
 		?QueryStringParser $queryStringParser = null,
 		?ConfigAuthorizer $configAuthorizer = null,
-		?TitleFactory $titleFactory = null
+		?TitleFactory $titleFactory = null,
+		?StubIconBuilder $iconBuilder = null
 	): TabsHtmlBuilder {
 		return new TabsHtmlBuilder(
 			$config ?? new Config(),
@@ -54,7 +56,7 @@ class TabsHtmlBuilderUnitTest extends TestCase {
 			$queryStringParser ?? new StubQueryStringParser(),
 			$configAuthorizer ?? $this->newConfigAuthorizer(),
 			$titleFactory ?? MediaWikiServices::getInstance()->getTitleFactory(),
-			WikibaseFacetedSearchExtension::getInstance()->newIconBuilder(),
+			$iconBuilder ?? new StubIconBuilder(),
 		);
 	}
 
@@ -218,6 +220,35 @@ JSON );
 			[],
 			$templateSpy->getArgs()['settings']
 		);
+	}
+
+	public function testTabsViewModelContainsIcon(): void {
+		$config = $this->newConfigFromJson( <<<JSON
+{
+	"itemTypeProperty": "P1337",
+	"configPerItemType": {
+		"Q1": {
+			"icon": "bug-slash",
+			"facets": { "P1": { "type": "list" } }
+		}
+	}
+}
+JSON );
+
+		$templateSpy = new SpyTemplateParser();
+
+		$iconBuilder = new StubIconBuilder( '<span class="icon"></span>' );
+
+		$this->newTabsHtmlBuilder(
+			config: $config,
+			templateSpy: $templateSpy,
+			iconBuilder: $iconBuilder
+		)->createHtml( 'unimportant' );
+
+		$itemTypeTab = $templateSpy->getArgs()['instances'][1];
+
+		$this->assertArrayHasKey( 'icon', $itemTypeTab );
+		$this->assertSame( '<span class="icon"></span>', $itemTypeTab['icon'] );
 	}
 
 	private function newConfigFromJson( string $json ): Config {
