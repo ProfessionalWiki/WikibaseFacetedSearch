@@ -163,4 +163,21 @@ class ConfigTest extends TestCase {
 		$this->assertTrue( $config->isComplete() );
 	}
 
+	public function testGetIconForItemType(): void {
+		$q1 = new ItemId( 'Q1' );
+		$q2 = new ItemId( 'Q2' );
+		$q3 = new ItemId( 'Q3' );
+
+		$config = new Config(
+			icons: [
+				'Q1' => 'star',
+				'Q2' => 'circle'
+			]
+		);
+
+		$this->assertSame( 'star', $config->getIconForItemType( $q1 ) );
+		$this->assertSame( 'circle', $config->getIconForItemType( $q2 ) );
+		$this->assertNull( $config->getIconForItemType( $q3 ) );
+	}
+
 }
