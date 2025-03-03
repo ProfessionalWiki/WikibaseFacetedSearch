@@ -1,0 +1,27 @@
+{
+	"@metadata": {
+		"authors": [
+			"JLTRY"
+		]
+	},
+	"wikibasefacetedsearch-description": "Améliore [[Special:Search]] avec des fonctionnalités de recherche à facettes. Filtrez les résultats en fonction du type d'instance ou des valeurs d'instruction.",
+	"special-wikibase-faceted-search-config": "Configuration de la recherche à facettes",
+	"wikibase-faceted-search-config-invalid": "Vos modifications n’ont pas été enregistrées. Elles comportent {{PLURAL:$1|l’erreur suivante|les erreurs suivantes}} :",
+	"wikibase-faceted-search-config-tab-name": "Nom de l’onglet",
+	"wikibase-faceted-search-config-tab-name-missing": "Aucun nom d'onglet défini",
+	"wikibase-faceted-search-config-tab-name-create-title": "Créer un nom d'onglet pour $1",
+	"wikibase-faceted-search-config-tab-name-edit-title": "Modifier le nom de l'onglet pour $1",
+	"wikibase-faceted-search-config-help-documentation": "Vous pouvez [[#Documentation|afficher la documentation de la configuration]] sous la zone de modification.",
+	"wikibase-faceted-search-config-help": "Documentation de la configuration",
+	"wikibase-faceted-search-config-help-example": "Exemple complet",
+	"wikibase-faceted-search-instance-type-all": "Tous",
+	"wikibase-faceted-search-filters": "Filtres",
+	"wikibase-faceted-search-settings": "Paramètres",
+	"wikibase-faceted-search-and": "Et",
+	"wikibase-faceted-search-or": "Ou",
+	"wikibase-faceted-search-facet-apply": "Appliquer",
+	"wikibase-faceted-search-facet-show-more": "Afficher plus",
+	"wikibase-faceted-search-facet-show-less": "Afficher moins",
+	"wikibase-faceted-search-facet-range-min": "Minimum",
+	"wikibase-faceted-search-facet-range-max": "Maximum"
+}

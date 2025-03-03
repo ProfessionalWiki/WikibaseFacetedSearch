@@ -1,0 +1,27 @@
+{
+	"@metadata": {
+		"authors": [
+			"Amire80"
+		]
+	},
+	"wikibasefacetedsearch-description": "שיפור של [[Special:Search]] עם יכולות חיפוש רב־פנים. אפשר לסנן תוצאות על סמך סוג מופע או ערכי קביעה",
+	"special-wikibase-faceted-search-config": "תצורת חיפוש רב־פנים",
+	"wikibase-faceted-search-config-invalid": "השינויים שלך לא נשמרו. הם מכילים את {{PLURAL:$1|השגיאה הבאה|השגיאות הבאות}}:",
+	"wikibase-faceted-search-config-tab-name": "שם הלשונית",
+	"wikibase-faceted-search-config-tab-name-missing": "לא הוגדר שם לשונית",
+	"wikibase-faceted-search-config-tab-name-create-title": "ליצור שם לשונית עבור $1",
+	"wikibase-faceted-search-config-tab-name-edit-title": "לערוך את שם הלשונית עבור $1",
+	"wikibase-faceted-search-config-help-documentation": "באפשרותך [[#Documentation|להציג את תיעוד התצורה]] מתחת לאזור העריכה.",
+	"wikibase-faceted-search-config-help": "תיעוד תצורה",
+	"wikibase-faceted-search-config-help-example": "דוגמה מלאה",
+	"wikibase-faceted-search-instance-type-all": "הכול",
+	"wikibase-faceted-search-filters": "מסננים",
+	"wikibase-faceted-search-settings": "הגדרות",
+	"wikibase-faceted-search-and": "וגם",
+	"wikibase-faceted-search-or": "או",
+	"wikibase-faceted-search-facet-apply": "החלה",
+	"wikibase-faceted-search-facet-show-more": "להציג עוד",
+	"wikibase-faceted-search-facet-show-less": "להציג פחות",
+	"wikibase-faceted-search-facet-range-min": "לכל הפחות",
+	"wikibase-faceted-search-facet-range-max": "לכל היותר"
+}

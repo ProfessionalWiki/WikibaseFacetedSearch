@@ -1,0 +1,19 @@
+{
+	"@metadata": {
+		"authors": [
+			"Ykhwong"
+		]
+	},
+	"wikibase-faceted-search-config-help": "구성 문서",
+	"wikibase-faceted-search-config-help-example": "전체 예시",
+	"wikibase-faceted-search-instance-type-all": "모두",
+	"wikibase-faceted-search-filters": "필터",
+	"wikibase-faceted-search-settings": "설정",
+	"wikibase-faceted-search-and": "그리고",
+	"wikibase-faceted-search-or": "또는",
+	"wikibase-faceted-search-facet-apply": "적용",
+	"wikibase-faceted-search-facet-show-more": "더 보기",
+	"wikibase-faceted-search-facet-show-less": "덜 보기",
+	"wikibase-faceted-search-facet-range-min": "최소",
+	"wikibase-faceted-search-facet-range-max": "최대"
+}

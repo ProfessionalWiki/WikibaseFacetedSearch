@@ -1,0 +1,20 @@
+{
+	"@metadata": {
+		"authors": [
+			"Cabal"
+		]
+	},
+	"wikibase-faceted-search-config-invalid": "ਤੁਹਾਡੀਆਂ ਤਬਦੀਲੀਆਂ ਸੰਭਾਲੀਆਂ ਨਹੀਂ ਗਈਆਂ। ਇਹਨਾਂ ਵਿੱਚ ਹੇਠ {{PLURAL:$1| ਲਿਖੀ ਗਲਤੀ ਐ| ਲਿਖੀਆਂ ਗਲਤੀਆਂ ਹਨ}}:",
+	"wikibase-faceted-search-config-help": "ਬਣਤਰ ਲਿਖਤਾਂ",
+	"wikibase-faceted-search-config-help-example": "ਪੂਰਾ ਉਦਾਹਰਨ",
+	"wikibase-faceted-search-instance-type-all": "ਸਾਰੇ",
+	"wikibase-faceted-search-filters": "ਛਾਨਣੀਆਂ",
+	"wikibase-faceted-search-settings": "ਤਰਜੀਹਾਂ",
+	"wikibase-faceted-search-and": "ਅਤੇ",
+	"wikibase-faceted-search-or": "ਜਾਂ",
+	"wikibase-faceted-search-facet-apply": "ਲਾਗੂ ਕਰੋ",
+	"wikibase-faceted-search-facet-show-more": "ਹੋਰ ਵਿਖਾਓ",
+	"wikibase-faceted-search-facet-show-less": "ਘੱਟ ਵਿਖਾਓ",
+	"wikibase-faceted-search-facet-range-min": "ਘੱਟੋ-ਘੱਟ",
+	"wikibase-faceted-search-facet-range-max": "ਵੱਧ ਤੋਂ ਵੱਧ"
+}

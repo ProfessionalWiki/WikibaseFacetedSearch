@@ -1,0 +1,27 @@
+{
+	"@metadata": {
+		"authors": [
+			"McDutchie"
+		]
+	},
+	"wikibasefacetedsearch-description": "Verbetert [[Special:Search|Speciaal:Zoeken]] met facetgerichte zoekmogelijkheden. Filter resultaten op basis van instantietype of verklaringswaarden",
+	"special-wikibase-faceted-search-config": "Instellingen voor facetgericht zoeken",
+	"wikibase-faceted-search-config-invalid": "Uw wijzigingen zijn niet opgeslagen. Ze bevatten de volgende fout{{PLURAL:$1||en}}:",
+	"wikibase-faceted-search-config-tab-name": "Tabbladnaam",
+	"wikibase-faceted-search-config-tab-name-missing": "Geen tabbladnaam gedefinieerd",
+	"wikibase-faceted-search-config-tab-name-create-title": "Tabbladnaam voor $1 aanmaken",
+	"wikibase-faceted-search-config-tab-name-edit-title": "Tabbladnaam voor $1 bewerken",
+	"wikibase-faceted-search-config-help-documentation": "Onder het bewerkingsgebied kunt u [[#Documentation|de configuratiedocumentatie bekijken]].",
+	"wikibase-faceted-search-config-help": "Configuratiedocumentatie",
+	"wikibase-faceted-search-config-help-example": "Volledig voorbeeld",
+	"wikibase-faceted-search-instance-type-all": "Alle",
+	"wikibase-faceted-search-filters": "Filters",
+	"wikibase-faceted-search-settings": "Instellingen",
+	"wikibase-faceted-search-and": "En",
+	"wikibase-faceted-search-or": "Of",
+	"wikibase-faceted-search-facet-apply": "Toepassen",
+	"wikibase-faceted-search-facet-show-more": "Meer weergeven",
+	"wikibase-faceted-search-facet-show-less": "Minder weergeven",
+	"wikibase-faceted-search-facet-range-min": "Minimum",
+	"wikibase-faceted-search-facet-range-max": "Maximum"
+}

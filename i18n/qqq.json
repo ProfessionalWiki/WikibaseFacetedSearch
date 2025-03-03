@@ -3,13 +3,14 @@
 		"authors": [
 			"Jeroen De Dauw",
 			"Karsten Hoffmeyer",
+			"Kghbln",
 			"Morne Alberts",
 			"alistair3149"
 		]
 	},
 	"wikibasefacetedsearch-description": "{{Desc|name=WikibaseFacetedSearch|url=https://github.com/ProfessionalWiki/WikibaseFacetedSearch}}",
 	"special-wikibase-faceted-search-config": "This is the label on \"Special:WikibaseFacetedSearchConfig\" linking to \"MediaWiki:WikibaseFacetedSearch\".",
-	"wikibase-faceted-search-config-invalid": "Error message shown when attempting to save invalid configuration on MediaWiki:WikibaseFacetedSearch",
+	"wikibase-faceted-search-config-invalid": "Error message shown when attempting to save invalid configuration on MediaWiki:WikibaseFacetedSearch\n\nParameter: \n* $1 - Listing of the error(s)",
 	"wikibase-faceted-search-config-tab-name": "Label used for the tab name in the configuration page",
 	"wikibase-faceted-search-config-tab-name-missing": "Label used for the tab name when no tab name is defined",
 	"wikibase-faceted-search-config-tab-name-create-title": "Label used for the create action on the tab name",
@@ -18,13 +19,13 @@
 	"wikibase-faceted-search-config-help": "Help text heading displayed on \"MediaWiki:WikibaseFacetedSearch\"",
 	"wikibase-faceted-search-config-help-example": "Help text heading displayed on \"MediaWiki:WikibaseFacetedSearch\"",
 	"wikibase-faceted-search-instance-type-all": "Label used for the tab for all instance types",
-	"wikibase-faceted-search-filters": "Label used for the Filters button to toggle the facets",
+	"wikibase-faceted-search-filters": "Label used for the Filters button to toggle the facets. Translate as a noun.",
 	"wikibase-faceted-search-settings": "Label used for the Settings button to visit the configuration page",
 	"wikibase-faceted-search-and": "Label used for the And toggle button in the And/Or toggle",
 	"wikibase-faceted-search-or": "Label used for the Or toggle button in the And/Or toggle",
 	"wikibase-faceted-search-facet-apply": "Label used for the Apply button in the facet",
 	"wikibase-faceted-search-facet-show-more": "Label used for the Show more button in the facet",
 	"wikibase-faceted-search-facet-show-less": "Label used for the Show less button in the facet",
-	"wikibase-faceted-search-facet-range-min": "Minimum value label displayed on range facet",
-	"wikibase-faceted-search-facet-range-max": "Maximum value label displayed on range facet"
+	"wikibase-faceted-search-facet-range-min": "Minimum data value label displayed on range facet",
+	"wikibase-faceted-search-facet-range-max": "Maximum data value label displayed on range facet"
 }

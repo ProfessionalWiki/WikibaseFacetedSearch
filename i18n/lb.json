@@ -1,0 +1,18 @@
+{
+	"@metadata": {
+		"authors": [
+			"Volvox"
+		]
+	},
+	"wikibase-faceted-search-config-invalid": "Är Ännerunge goufen net gespäichert. Si enthalen déi follgend {{PLURAL:$1|Feeler}}:",
+	"wikibase-faceted-search-config-help": "Konfiguratiounsdokumentatioun",
+	"wikibase-faceted-search-filters": "Filteren",
+	"wikibase-faceted-search-settings": "Astellungen",
+	"wikibase-faceted-search-and": "An",
+	"wikibase-faceted-search-or": "Oder",
+	"wikibase-faceted-search-facet-apply": "Uwenden",
+	"wikibase-faceted-search-facet-show-more": "Méi weisen",
+	"wikibase-faceted-search-facet-show-less": "Manner weisen",
+	"wikibase-faceted-search-facet-range-min": "Minimum",
+	"wikibase-faceted-search-facet-range-max": "Maximum"
+}
