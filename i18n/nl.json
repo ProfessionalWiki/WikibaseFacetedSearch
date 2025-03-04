@@ -11,7 +11,7 @@
 	"wikibase-faceted-search-config-tab-name-missing": "Geen tabbladnaam gedefinieerd",
 	"wikibase-faceted-search-config-tab-name-create-title": "Tabbladnaam voor $1 aanmaken",
 	"wikibase-faceted-search-config-tab-name-edit-title": "Tabbladnaam voor $1 bewerken",
-	"wikibase-faceted-search-config-help-documentation": "Onder het bewerkingsgebied kunt u [[#Documentation|de configuratiedocumentatie bekijken]].",
+	"wikibase-faceted-search-config-help-documentation": "Onder het bewerkingsgebied kunt u [[#ConfigurationDocumentation|de configuratiedocumentatie bekijken]].",
 	"wikibase-faceted-search-config-help": "Configuratiedocumentatie",
 	"wikibase-faceted-search-config-help-example": "Volledig voorbeeld",
 	"wikibase-faceted-search-instance-type-all": "Alle",

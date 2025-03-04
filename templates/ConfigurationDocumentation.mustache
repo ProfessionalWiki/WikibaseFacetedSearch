@@ -1,14 +1,30 @@
 <div id="Documentation">
-    {{>ConfigEditPageItemTypesTable}}
 	<section>
-		<h2 id="ConfigurationOverview">Configuration Overview</h2>
+		<h2 id="ConfigureTabHeaders">Configure Tab Headers</h2>
+
+    	{{>ConfigEditPageItemTypesTable}}
+
+		<p>
+			You can add a label to an item type by editing the <code>MediaWiki:WikibaseFacetedSearch-item-type-{Q}</code> page.
+			Replace <code>{Q}</code> with the Q-ID of the item type (<code>MediaWiki:WikibaseFacetedSearch-item-type-Q1</code> for <code>Q1</code>).
+		</p>
+		<p>
+			To add a label in a different language, edit the subpage of the page you created above (<code>MediaWiki:WikibaseFacetedSearch-item-type-Q1/de</code> for German).
+		</p>
+	</section>
+	<section>
+		<h2 id="ConfigurationDocumentation">Configuration Documentation</h2>
+
+		<p>
+			The configuration defined on this page affects the <a href="TODO">search interface</a>.
+		</p>
 
 		<p>
 			Besides the configuration reference below, you can consult the
 			<a href="https://professional.wiki/en/extension/wikibase-faceted-search">Wikibase Faceted Search documentation</a>.
 		</p>
 
-		<h3>Table of Contents</h3>
+		<h3 id="TableOfContents">Table of Contents</h3>
 
 		<ul>
 			<li>
@@ -40,10 +56,10 @@
 	</section>
 
 	<section>
-		<h2 id="ItemTypeProperty">Item Type Property</h2>
+		<h3 id="ItemTypeProperty">Item Type Property</h3>
 
 		<p>
-			The property ID of the "item type" (often "instance of") property.
+			The Property ID of the "item type" (often "instance of") property.
 		</p>
 
 		<p>
@@ -52,48 +68,138 @@
 
 		<pre>
 {
-	"itemTypeProperty": "P1"
+	"itemTypeProperty": "P31"
 }</pre>
+
+		<p>
+			This is used to filter results for the tabs. The Property ID is combined with the
+			Item IDs that are keys in the <code>configPerItemType</code>
+			map part of the <a href="#ItemTypes">item types configuration</a>.
+			For instance, a tab might filter for items where P31 is Q1, if Q1 is the key in the map.
+		</p>
 	</section>
 
 	<section>
-		<h2 id="Facets">Facets</h2>
+		<h3 id="ItemTypes">Item Types (Tabs)</h3>
 
 		<p>
-			The available facets per item type ("instance of"). Each facet is defined by a property ID and a type.
+			Defines the tabs that are shown in the search interface.
 		</p>
 
 		<p>
-			Example configuration:
+			Each tab shows only items of a specific type. An items type is determined by the value its Statements for
+			the "item type" Property.
+		</p>
+
+		<p>
+			Suppose you have Q1 that represents a "Person" and Q2 that represents a "City". This is minimal configuration
+			to show both tabs:
 		</p>
 
 		<pre>
-{
-	"facets": {
-		"Q1": [
-			{
-				"property": "P1",
-				"type": "list"
-			},
-			{
-				"property": "P2",
-				"type": "range"
-			}
-		]
+"configPerItemType": {
+	"Q1": {},
+	"Q2": {}
+}</pre>
+
+		<p>
+			Per item type you can configure an optional icon and an optional list of facets.
+		</p>
+
+		<pre>
+"configPerItemType": {
+	"Q1": {
+		"icon": "user",
+		"facets": {}
 	}
 }</pre>
-		<h3>Item type labels</h3>
+
 		<p>
-			You can add a label to an item type by editing the <code>MediaWiki:WikibaseFacetedSearch-item-type-Q{N}</code> page.
-			Replace <code>{N}</code> with the numeric ID of the item type (<code>MediaWiki:WikibaseFacetedSearch-item-type-Q1</code> for <code>Q1</code>).
-		</p>
-		<p>
-			To add a label in a different language, edit the subpage of the page you created above (<code>MediaWiki:WikibaseFacetedSearch-item-type-Q1/de</code> for German).
+			The icon is a string that represents a <a href="https://fontawesome.com/icons?d=gallery" rel="nofollow">Font Awesome icon</a>.
+			The facets define one or more facets that are shown on the tab. See the <a href="#Facets">Facets</a> section for more information.
 		</p>
 	</section>
 
+	<section>
+		<h3 id="Facets">Facets</h3>
+
+		<p>
+			Facets are defined per item type and are shown only in the tab for that item type.
+			They are defined inside of the <code>facets</code> element inside of the <code>configPerItemType</code> map.
+			See the <a href="#ItemTypes">Item Types</a> section for more information.
+		</p>
+
+		<p>
+			The below example defines a tab for items of type Q1 (say "people") with a
+			facet that allows filtering by the value of property P42 (say "birth date")
+			and a facet that allows filtering by the value of property P43 (say "occupation").
+		</p>
+
+		<pre>
+"configPerItemType": {
+	"Q1": {
+		"facets": {
+			"P42": {
+				"type": "range"
+			},
+			"P43": {
+				"type": "list"
+			}
+		}
+	}
+}</pre>
+
+		<p>
+			There are two types of facets: range facets are list facets.
+		</p>
+
+		<p>
+			Range facets allow filtering numeric values by setting a minimum and/or maximum value.
+			For instance, you could filter for people with a birth date before 1900 or a birth date between 1900 and 1950.
+		</p>
+
+		<p>
+			List facets show values that are present in the search results, together with the number of items that have that value.
+			You can select one or more values to filter by.
+		</p>
+
+		<p>
+			List facets support both string and item values. If the value is an item, the label of the item is shown.
+			if there is no label, the ID is shown.
+		</p>
+
+		<p>
+			List facets support the following optional configuration options:
+		</p>
+
+		<ul>
+			<li>
+				<code>defaultCombineWith</code>:
+				The logical operator with which to combine multiple selected values.
+				Either <code>"AND"</code> or <code>"OR"</code>. The default is <code>"AND"</code>.
+			</li>
+			<li>
+				<code>allowCombineWithChoice</code>:
+				If users should be able to the logical operator to use via the UI.
+				Either <code>true</code> or <code>false</code>. The default is <code>true</code>.
+			</li>
+		</ul>
+
+		<p>
+			Example list facet:
+		</p>
+
+		<pre>
+"P43": {
+	"type": "list",
+	"defaultCombineWith": "OR",
+	"allowCombineWithChoice": false
+}</pre>
+
+	</section>
+
     <section>
-        <h2 id="sitelinkSiteId">Index Wikitext Via Sitelinks</h2>
+        <h3 id="sitelinkSiteId">Index Wikitext Via Sitelinks</h3>
 
         <p>
             By default search result items link to their item page (<code>Item:Q123</code>).
@@ -114,7 +220,7 @@
     </section>
 
     <section>
-        <h2 id="FullExample">{{msg-wikibase-faceted-search-config-help-example}}</h2>
+        <h3 id="FullExample">{{msg-wikibase-faceted-search-config-help-example}}</h3>
 
         <pre>{{exampleContents}}</pre>
     </section>

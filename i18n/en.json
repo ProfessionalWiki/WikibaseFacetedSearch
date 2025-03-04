@@ -13,11 +13,11 @@
 
 	"wikibase-faceted-search-config-invalid": "Your changes were not saved. They contain the following {{PLURAL:$1|error|errors}}:",
 
-	"wikibase-faceted-search-config-tab-name": "Tab name",
-	"wikibase-faceted-search-config-tab-name-missing": "No tab name defined",
-	"wikibase-faceted-search-config-tab-name-create-title": "Create tab name for $1",
-	"wikibase-faceted-search-config-tab-name-edit-title": "Edit tab name for $1",
-	"wikibase-faceted-search-config-help-documentation": "You can [[#Documentation|view the configuration documentation]] below the edit area.",
+	"wikibase-faceted-search-config-tab-name": "Tab Header",
+	"wikibase-faceted-search-config-tab-name-missing": "No tab header defined",
+	"wikibase-faceted-search-config-tab-name-create-title": "Create tab header for $1",
+	"wikibase-faceted-search-config-tab-name-edit-title": "Edit tab header for $1",
+	"wikibase-faceted-search-config-help-documentation": "You can [[#ConfigurationDocumentation|view the configuration documentation]] below the edit area.",
 	"wikibase-faceted-search-config-help-example": "Full Example JSON",
 
 	"wikibase-faceted-search-instance-type-all": "All",
