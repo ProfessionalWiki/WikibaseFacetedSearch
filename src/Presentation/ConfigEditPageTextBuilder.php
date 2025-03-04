@@ -38,7 +38,7 @@ class ConfigEditPageTextBuilder {
 
 	public function createBottomHtml(): string {
 		return $this->templateParser->processTemplate(
-			'ConfigEditPageBottom',
+			'ConfigurationDocumentation',
 			[
 				'msg-wikibase-entity-item' => $this->context->msg( 'wikibase-entity-item' )->plain(),
 				'msg-wikibase-faceted-search-config-tab-name' => $this->context->msg( 'wikibase-faceted-search-config-tab-name' )->plain(),
