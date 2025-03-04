@@ -38,7 +38,7 @@ class ConfigPageTest extends WikibaseFacetedSearchIntegrationTest {
 
 		// Documentation section
 		$this->assertStringContainsString(
-			'Configuration documentation',
+			'Configuration Documentation',
 			$html
 		);
 

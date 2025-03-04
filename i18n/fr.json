@@ -11,7 +11,7 @@
 	"wikibase-faceted-search-config-tab-name-missing": "Aucun nom d'onglet défini",
 	"wikibase-faceted-search-config-tab-name-create-title": "Créer un nom d'onglet pour $1",
 	"wikibase-faceted-search-config-tab-name-edit-title": "Modifier le nom de l'onglet pour $1",
-	"wikibase-faceted-search-config-help-documentation": "Vous pouvez [[#Documentation|afficher la documentation de la configuration]] sous la zone de modification.",
+	"wikibase-faceted-search-config-help-documentation": "Vous pouvez [[#ConfigurationDocumentation|afficher la documentation de la configuration]] sous la zone de modification.",
 	"wikibase-faceted-search-config-help": "Documentation de la configuration",
 	"wikibase-faceted-search-config-help-example": "Exemple complet",
 	"wikibase-faceted-search-instance-type-all": "Tous",

@@ -43,7 +43,6 @@ class ConfigEditPageTextBuilder {
 				'msg-wikibase-entity-item' => $this->context->msg( 'wikibase-entity-item' )->plain(),
 				'msg-wikibase-faceted-search-config-tab-name' => $this->context->msg( 'wikibase-faceted-search-config-tab-name' )->plain(),
 				'msg-wikibase-faceted-search-config-tab-name-missing' => $this->context->msg( 'wikibase-faceted-search-config-tab-name-missing' )->plain(),
-				'msg-wikibase-faceted-search-config-help' => $this->context->msg( 'wikibase-faceted-search-config-help' )->escaped(),
 				'msg-wikibase-faceted-search-config-help-example' => $this->context->msg( 'wikibase-faceted-search-config-help-example' )->escaped(),
 				'exampleContents' => $this->getExampleContents(),
 				'array-itemTypes' => $this->getItemTypesData()

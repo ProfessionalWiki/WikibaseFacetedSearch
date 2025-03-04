@@ -11,7 +11,7 @@
 	"wikibase-faceted-search-config-tab-name-missing": "לא הוגדר שם לשונית",
 	"wikibase-faceted-search-config-tab-name-create-title": "ליצור שם לשונית עבור $1",
 	"wikibase-faceted-search-config-tab-name-edit-title": "לערוך את שם הלשונית עבור $1",
-	"wikibase-faceted-search-config-help-documentation": "באפשרותך [[#Documentation|להציג את תיעוד התצורה]] מתחת לאזור העריכה.",
+	"wikibase-faceted-search-config-help-documentation": "באפשרותך [[#ConfigurationDocumentation|להציג את תיעוד התצורה]] מתחת לאזור העריכה.",
 	"wikibase-faceted-search-config-help": "תיעוד תצורה",
 	"wikibase-faceted-search-config-help-example": "דוגמה מלאה",
 	"wikibase-faceted-search-instance-type-all": "הכול",
