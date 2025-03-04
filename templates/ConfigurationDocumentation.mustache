@@ -1,64 +1,73 @@
 <div id="Documentation">
     {{>ConfigEditPageItemTypesTable}}
-    <section>
-        <h2 id="ConfigurationDocumentation">{{msg-wikibase-faceted-search-config-help}}</h2>
+	<section>
+		<h2 id="ConfigurationOverview">Configuration Overview</h2>
 
-        <p>
-            Besides the configuration reference below, you can consult the
+		<p>
+			Besides the configuration reference below, you can consult the
 			<a href="https://professional.wiki/en/extension/wikibase-faceted-search">Wikibase Faceted Search documentation</a>.
-        </p>
-    </section>
+		</p>
 
-    <section>
-        <h2 id="sitelinkSiteId">Index Wikitext Via Sitelinks</h2>
+		<h3>Table of Contents</h3>
 
-        <p>
-            By default search result items link to their item page (<code>Item:Q123</code>).
-        </p>
+		<ul>
+			<li>
+				<a href="#ItemTypeProperty">
+					Item Type Property (<code>itemTypeProperty</code>)
+				</a>
+			</li>
+			<li>
+				<a href="#ItemTypes">
+					Item Types (Tabs) (<code>configPerItemType</code>)
+				</a>
+			</li>
+			<li>
+				<a href="#Facets">
+					Facets (<code>facets</code>)
+				</a>
+			</li>
+			<li>
+				<a href="#WikitextPages">
+					Use Wikitext Pages (<code>sitelinkSiteId</code>)
+				</a>
+			</li>
+			<li>
+				<a href="#FullExample">
+					{{msg-wikibase-faceted-search-config-help-example}}
+				</a>
+			</li>
+		</ul>
+	</section>
 
-        <p>
-            You can change the link to use a sitelink of the item instead.
-        </p>
+	<section>
+		<h2 id="ItemTypeProperty">Item Type Property</h2>
 
-        <p>
-            Example configuration:
-        </p>
+		<p>
+			The property ID of the "item type" (often "instance of") property.
+		</p>
 
-        <pre>
-{
-	"sitelinkSiteId": "enwiki"
-}</pre>
-    </section>
+		<p>
+			Example configuration:
+		</p>
 
-    <section>
-        <h2 id="ItemTypeProperty">Item Type Property</h2>
-
-        <p>
-            The property ID of the "item type" (often "instance of") property.
-        </p>
-
-        <p>
-            Example configuration:
-        </p>
-
-        <pre>
+		<pre>
 {
 	"itemTypeProperty": "P1"
 }</pre>
-    </section>
+	</section>
 
-    <section>
-        <h2 id="Facets">Facets</h2>
+	<section>
+		<h2 id="Facets">Facets</h2>
 
-        <p>
-            The available facets per item type ("instance of"). Each facet is defined by a property ID and a type.
-        </p>
+		<p>
+			The available facets per item type ("instance of"). Each facet is defined by a property ID and a type.
+		</p>
 
-        <p>
-            Example configuration:
-        </p>
+		<p>
+			Example configuration:
+		</p>
 
-        <pre>
+		<pre>
 {
 	"facets": {
 		"Q1": [
@@ -81,6 +90,27 @@
 		<p>
 			To add a label in a different language, edit the subpage of the page you created above (<code>MediaWiki:WikibaseFacetedSearch-item-type-Q1/de</code> for German).
 		</p>
+	</section>
+
+    <section>
+        <h2 id="sitelinkSiteId">Index Wikitext Via Sitelinks</h2>
+
+        <p>
+            By default search result items link to their item page (<code>Item:Q123</code>).
+        </p>
+
+        <p>
+            You can change the link to use a sitelink of the item instead.
+        </p>
+
+        <p>
+            Example configuration:
+        </p>
+
+        <pre>
+{
+	"sitelinkSiteId": "enwiki"
+}</pre>
     </section>
 
     <section>
