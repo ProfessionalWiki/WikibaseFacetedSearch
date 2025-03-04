@@ -18,8 +18,7 @@
 	"wikibase-faceted-search-config-tab-name-create-title": "Create tab name for $1",
 	"wikibase-faceted-search-config-tab-name-edit-title": "Edit tab name for $1",
 	"wikibase-faceted-search-config-help-documentation": "You can [[#Documentation|view the configuration documentation]] below the edit area.",
-	"wikibase-faceted-search-config-help": "Configuration documentation",
-	"wikibase-faceted-search-config-help-example": "Full example",
+	"wikibase-faceted-search-config-help-example": "Full Example JSON",
 
 	"wikibase-faceted-search-instance-type-all": "All",
 

@@ -16,7 +16,6 @@
 	"wikibase-faceted-search-config-tab-name-create-title": "Label used for the create action on the tab name",
 	"wikibase-faceted-search-config-tab-name-edit-title": "Label used for the edit action on the tab name",
 	"wikibase-faceted-search-config-help-documentation": "Link to documentation displayed on \"MediaWiki:WikibaseFacetedSearch\"",
-	"wikibase-faceted-search-config-help": "Help text heading displayed on \"MediaWiki:WikibaseFacetedSearch\"",
 	"wikibase-faceted-search-config-help-example": "Help text heading displayed on \"MediaWiki:WikibaseFacetedSearch\"",
 	"wikibase-faceted-search-instance-type-all": "Label used for the tab for all instance types",
 	"wikibase-faceted-search-filters": "Label used for the Filters button to toggle the facets. Translate as a noun.",
