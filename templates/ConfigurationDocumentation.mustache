@@ -199,14 +199,30 @@
 	</section>
 
     <section>
-        <h3 id="sitelinkSiteId">Index Wikitext Via Sitelinks</h3>
+        <h3 id="WikitextPages">Use Wikitext Pages</h3>
+
+		<p>
+			This optional configuration is for wikis on which you have regular wiki pages (with wikitext)
+			that represent items. For instance, an Author:Q1337 page that shows data from Item:Q1337.
+			This approach is often used to provide a more user friendly view on Wikibase data. If you
+			do not have such a wiki, this configuration should be omitted.
+		</p>
 
         <p>
-            By default search result items link to their item page (<code>Item:Q123</code>).
+            By default, Wikibase Faceted Search indexes your Wikibase Item pages. This means the search results
+			will link to these Item pages.
         </p>
 
+		<p>
+			You can use this configuration to instead index your Wikibase Item data on the wikitext pages. This means
+			the search results will link to these wikitext pages instead of to the Item pages. It also means that you
+			can combine structured search based on Wikibase values with full-text search for whatever is on your
+			wikitext pages.
+		</p>
+
         <p>
-            You can change the link to use a sitelink of the item instead.
+            You will need to create sitelinks from the Wikibase Item pages to the wikitext pages. In the
+			Wikibase Faceted Search configuration, you need to specify the site ID used in those sitelinks.
         </p>
 
         <p>
