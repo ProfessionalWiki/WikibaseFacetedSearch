@@ -22,9 +22,7 @@
 				"P3": {
 					"type": "list",
 					"defaultCombineWith": "OR",
-					"allowCombineWithChoice": true,
-					"showNoneFilter": true,
-					"showAnyFilter": true
+					"allowCombineWithChoice": true
 				}
 			}
 		}
