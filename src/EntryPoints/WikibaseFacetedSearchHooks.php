@@ -4,6 +4,7 @@ declare( strict_types = 1 );
 
 namespace ProfessionalWiki\WikibaseFacetedSearch\EntryPoints;
 
+use Action;
 use CirrusSearch\CirrusSearch;
 use CirrusSearch\Query\KeywordFeature;
 use CirrusSearch\Search\CirrusSearchResultSet;
@@ -21,7 +22,6 @@ use MediaWiki\Specials\SpecialSearch;
 use MediaWiki\Storage\EditResult;
 use MediaWiki\Title\Title;
 use MediaWiki\User\UserIdentity;
-use ProfessionalWiki\WikibaseFacetedSearch\Presentation\ConfigEditPageTextBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\ConfigJsonErrorFormatter;
 use ProfessionalWiki\WikibaseFacetedSearch\WikibaseFacetedSearchExtension;
 use SearchEngine;
@@ -145,15 +145,7 @@ class WikibaseFacetedSearchHooks {
 		if ( WikibaseFacetedSearchExtension::getInstance()->isConfigTitle( $editPage->getTitle() ) ) {
 			$editPage->suppressIntro = true;
 
-			$textBuilder = new ConfigEditPageTextBuilder(
-				context: $editPage->getContext(),
-				exampleConfigPath: WikibaseFacetedSearchExtension::getInstance()->getExampleConfigPath(),
-				templateParser: WikibaseFacetedSearchExtension::getInstance()->getTemplateParser(),
-				config: WikibaseFacetedSearchExtension::getInstance()->getConfig(),
-				titleFactory: WikibaseFacetedSearchExtension::getInstance()->getTitleFactory(),
-				linkRenderer: WikibaseFacetedSearchExtension::getInstance()->getLinkRendererFactory()->create(),
-				labelLookup: WikibaseFacetedSearchExtension::getInstance()->getLabelLookup( $editPage->getContext()->getLanguage() )
-			);
+			$textBuilder = WikibaseFacetedSearchExtension::getInstance()->newConfigEditPageTextBuilder( $editPage->getContext() );
 			$editPage->editFormTextTop = $textBuilder->createTopHtml();
 			$editPage->editFormTextBottom = $textBuilder->createBottomHtml();
 
@@ -174,10 +166,18 @@ class WikibaseFacetedSearchHooks {
 			return;
 		}
 
-		if ( WikibaseFacetedSearchExtension::getInstance()->isConfigTitle( $title ) ) {
-			$html = $out->getHTML();
-			$out->clearHTML();
-			$out->addHTML( self::getConfigPageHtml( $html ) );
+		if ( !WikibaseFacetedSearchExtension::getInstance()->isConfigTitle( $title ) ) {
+			return;
+		}
+
+		$html = $out->getHTML();
+		$out->clearHTML();
+		$out->addHTML( self::getConfigPageHtml( $html ) );
+
+		if ( Action::getActionName( $out->getContext() ) === 'view' ) {
+			$out->addHTML(
+				WikibaseFacetedSearchExtension::getInstance()->newConfigEditPageTextBuilder( $out->getContext() )->createBottomHtml()
+			);
 		}
 	}
 

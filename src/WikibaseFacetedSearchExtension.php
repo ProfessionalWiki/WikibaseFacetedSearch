@@ -7,6 +7,7 @@ namespace ProfessionalWiki\WikibaseFacetedSearch;
 use CirrusSearch\CirrusSearch;
 use CirrusSearch\SearchConfig;
 use Elastica\Query\AbstractQuery;
+use MediaWiki\Context\IContextSource;
 use MediaWiki\Html\TemplateParser;
 use MediaWiki\Language\Language;
 use MediaWiki\Linker\LinkRendererFactory;
@@ -50,6 +51,7 @@ use ProfessionalWiki\WikibaseFacetedSearch\Persistence\Search\Query\ListFacetQue
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\Search\Query\RangeFacetQueryBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\Search\SearchIndexFieldsBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\SitelinkBasedStatementsLookup;
+use ProfessionalWiki\WikibaseFacetedSearch\Presentation\ConfigEditPageTextBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\DelegatingFacetHtmlBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\FacetHtmlBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\FacetValueFormatter;
@@ -371,6 +373,18 @@ class WikibaseFacetedSearchExtension {
 			sitelinkSiteId: $this->getConfig()->sitelinkSiteId,
 			pageFactory: MediaWikiServices::getInstance()->getWikiPageFactory(),
 			titleFactory: $this->getTitleFactory()
+		);
+	}
+
+	public function newConfigEditPageTextBuilder( IContextSource $context ): ConfigEditPageTextBuilder {
+		return new ConfigEditPageTextBuilder(
+			context: $context,
+			exampleConfigPath: $this->getExampleConfigPath(),
+			templateParser: $this->getTemplateParser(),
+			config: $this->getConfig(),
+			titleFactory: $this->getTitleFactory(),
+			linkRenderer: $this->getLinkRendererFactory()->create(),
+			labelLookup: $this->getLabelLookup( $context->getLanguage() )
 		);
 	}
 
