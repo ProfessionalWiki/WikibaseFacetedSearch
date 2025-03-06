@@ -51,7 +51,7 @@ use ProfessionalWiki\WikibaseFacetedSearch\Persistence\Search\Query\ListFacetQue
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\Search\Query\RangeFacetQueryBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\Search\SearchIndexFieldsBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\SitelinkBasedStatementsLookup;
-use ProfessionalWiki\WikibaseFacetedSearch\Presentation\ConfigEditPageTextBuilder;
+use ProfessionalWiki\WikibaseFacetedSearch\Presentation\ConfigDocumentationBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\DelegatingFacetHtmlBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\FacetHtmlBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\FacetValueFormatter;
@@ -376,8 +376,8 @@ class WikibaseFacetedSearchExtension {
 		);
 	}
 
-	public function newConfigEditPageTextBuilder( IContextSource $context ): ConfigEditPageTextBuilder {
-		return new ConfigEditPageTextBuilder(
+	public function newConfigDocumentationBuilder( IContextSource $context ): ConfigDocumentationBuilder {
+		return new ConfigDocumentationBuilder(
 			context: $context,
 			exampleConfigPath: $this->getExampleConfigPath(),
 			templateParser: $this->getTemplateParser(),

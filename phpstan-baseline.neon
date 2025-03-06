@@ -64,4 +64,4 @@ parameters:
 			message: '#^Cannot call method getFullURL\(\) on MediaWiki\\Title\\Title\|null\.$#'
 			identifier: method.nonObject
 			count: 1
-			path: src/Presentation/ConfigEditPageTextBuilder.php
+			path: src/Presentation/ConfigDocumentationBuilder.php
