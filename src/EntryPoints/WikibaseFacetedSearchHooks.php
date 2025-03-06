@@ -145,9 +145,9 @@ class WikibaseFacetedSearchHooks {
 		if ( WikibaseFacetedSearchExtension::getInstance()->isConfigTitle( $editPage->getTitle() ) ) {
 			$editPage->suppressIntro = true;
 
-			$textBuilder = WikibaseFacetedSearchExtension::getInstance()->newConfigEditPageTextBuilder( $editPage->getContext() );
-			$editPage->editFormTextTop = $textBuilder->createTopHtml();
-			$editPage->editFormTextBottom = $textBuilder->createBottomHtml();
+			$textBuilder = WikibaseFacetedSearchExtension::getInstance()->newConfigDocumentationBuilder( $editPage->getContext() );
+			$editPage->editFormTextTop = $textBuilder->createDocumentationLink();
+			$editPage->editFormTextBottom = $textBuilder->createDocumentation();
 
 			$editPage->getContext()->getOutput()->addModuleStyles( [ 'ext.wikibase.facetedsearch.docs.styles' ] );
 		}
@@ -176,7 +176,7 @@ class WikibaseFacetedSearchHooks {
 
 		if ( Action::getActionName( $out->getContext() ) === 'view' ) {
 			$out->addHTML(
-				WikibaseFacetedSearchExtension::getInstance()->newConfigEditPageTextBuilder( $out->getContext() )->createBottomHtml()
+				WikibaseFacetedSearchExtension::getInstance()->newConfigDocumentationBuilder( $out->getContext() )->createDocumentation()
 			);
 		}
 	}

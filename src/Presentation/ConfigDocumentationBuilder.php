@@ -14,7 +14,7 @@ use RuntimeException;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Services\Lookup\LabelLookup;
 
-class ConfigEditPageTextBuilder {
+class ConfigDocumentationBuilder {
 
 	public function __construct(
 		private readonly IContextSource $context,
@@ -27,7 +27,7 @@ class ConfigEditPageTextBuilder {
 	) {
 	}
 
-	public function createTopHtml(): string {
+	public function createDocumentationLink(): string {
 		return $this->templateParser->processTemplate(
 			'ConfigEditPageTop',
 			[
@@ -36,7 +36,7 @@ class ConfigEditPageTextBuilder {
 		);
 	}
 
-	public function createBottomHtml(): string {
+	public function createDocumentation(): string {
 		return $this->templateParser->processTemplate(
 			'ConfigurationDocumentation',
 			[
