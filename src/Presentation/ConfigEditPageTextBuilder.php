@@ -45,7 +45,8 @@ class ConfigEditPageTextBuilder {
 				'msg-wikibase-faceted-search-config-tab-name-missing' => $this->context->msg( 'wikibase-faceted-search-config-tab-name-missing' )->plain(),
 				'msg-wikibase-faceted-search-config-help-example' => $this->context->msg( 'wikibase-faceted-search-config-help-example' )->escaped(),
 				'exampleContents' => $this->getExampleContents(),
-				'array-itemTypes' => $this->getItemTypesData()
+				'array-itemTypes' => $this->getItemTypesData(),
+				'searchUrl' => $this->getSearchUrl(),
 			]
 		);
 	}
@@ -114,4 +115,9 @@ class ConfigEditPageTextBuilder {
 
 		return $title;
 	}
+
+	private function getSearchUrl(): string {
+		return $this->titleFactory->newFromText( 'Special:Search' )->getFullURL();
+	}
+
 }
