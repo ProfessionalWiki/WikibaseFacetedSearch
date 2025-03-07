@@ -6,25 +6,17 @@ namespace ProfessionalWiki\WikibaseFacetedSearch\Tests\Presentation;
 
 use PHPUnit\Framework\TestCase;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
-use ProfessionalWiki\WikibaseFacetedSearch\Application\PropertyConstraintsList;
-use ProfessionalWiki\WikibaseFacetedSearch\Application\Query;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\QueryStringParser;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\SidebarHtmlBuilder;
-use ProfessionalWiki\WikibaseFacetedSearch\Tests\TestDoubles\FakeItemTypeLabelLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Tests\TestDoubles\SpyFacetHtmlBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Tests\TestDoubles\SpyTemplateParser;
 use ProfessionalWiki\WikibaseFacetedSearch\Tests\TestDoubles\StubLabelLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Tests\TestDoubles\StubQueryStringParser;
-use ProfessionalWiki\WikibaseFacetedSearch\WikibaseFacetedSearchExtension;
-use Wikibase\DataModel\Entity\ItemId;
-use Wikibase\DataModel\Entity\NumericPropertyId;
 
 /**
  * @covers \ProfessionalWiki\WikibaseFacetedSearch\Presentation\SidebarHtmlBuilder
  */
 class SidebarHtmlBuilderUnitTest extends TestCase {
-
-	// TODO: tests
 
 	private function newSidebarHtmlBuilder(
 		?Config $config = null,
@@ -39,5 +31,25 @@ class SidebarHtmlBuilderUnitTest extends TestCase {
 			$queryStringParser ?? new StubQueryStringParser()
 		);
 	}
+
+	public function testRendersEmptyStringWhenThereAreNoFacets(): void {
+		$this->assertStringContainsString(
+			'',
+			$this->newSidebarHtmlBuilder()->createHtml( '' )
+		);
+	}
+
+	//public function testRendersTemplate(): void {
+	//	$this->assertStringContainsString(
+	//		'wikibase-faceted-search__sidebar',
+	//		$this->newSidebarHtmlBuilder(
+	//			queryStringParser: new StubQueryStringParser(
+	//				query: new Query( new PropertyConstraintsList() )
+	//			)
+	//		)->createHtml( '' )
+	//	);
+	//}
+
+	// TODO: tests
 
 }
