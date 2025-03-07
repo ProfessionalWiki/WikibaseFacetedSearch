@@ -47,6 +47,10 @@ class WikibaseFacetedSearchHooks {
 		array &$query,
 		array &$attributes
 	): void {
+		if ( !WikibaseFacetedSearchExtension::getInstance()->getConfig()->isComplete() ) {
+			return;
+		}
+
 		$itemId = WikibaseFacetedSearchExtension::getInstance()->getPageItemLookup()->getItemId( $result->getTitle() );
 
 		if ( $itemId === null ) {
@@ -64,6 +68,10 @@ class WikibaseFacetedSearchHooks {
 		OutputPage $output,
 		string $term
 	): void {
+		if ( !WikibaseFacetedSearchExtension::getInstance()->getConfig()->isComplete() ) {
+			return;
+		}
+
 		$output->addModuleStyles( 'ext.wikibase.facetedsearch.styles' );
 		$output->addModules( 'ext.wikibase.facetedsearch' );
 
@@ -82,6 +90,10 @@ class WikibaseFacetedSearchHooks {
 		?ISearchResultSet $titleMatches,
 		?ISearchResultSet $textMatches
 	): void {
+		if ( !WikibaseFacetedSearchExtension::getInstance()->getConfig()->isComplete() ) {
+			return;
+		}
+
 		if ( $textMatches instanceof CirrusSearchResultSet ) {
 			self::setCurrentQuery( $textMatches->getElasticaResultSet()->getQuery()->getQuery() );
 		}
@@ -96,6 +108,10 @@ class WikibaseFacetedSearchHooks {
 		OutputPage $output,
 		string $term
 	): void {
+		if ( !WikibaseFacetedSearchExtension::getInstance()->getConfig()->isComplete() ) {
+			return;
+		}
+
 		$output->addHTML(
 			WikibaseFacetedSearchExtension::getInstance()
 				->getSidebarHtmlBuilder(
@@ -241,6 +257,10 @@ class WikibaseFacetedSearchHooks {
 		RevisionRecord $revisionRecord,
 		EditResult $editResult
 	) {
+		if ( !WikibaseFacetedSearchExtension::getInstance()->getConfig()->isComplete() ) {
+			return;
+		}
+
 		$content = $wikiPage->getContent();
 
 		if ( !( $content instanceof ItemContent ) ) {
