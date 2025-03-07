@@ -29,7 +29,7 @@ class Config {
 
 	public function getItemTypeProperty(): PropertyId {
 		if ( $this->itemTypeProperty === null ) {
-			throw new RuntimeException( 'No instance of ID configured' );
+			throw new RuntimeException( 'No Item Type Property configured' );
 		}
 
 		return $this->itemTypeProperty;
