@@ -78,7 +78,7 @@ class ConfigDocumentationBuilder {
 			'id' => $id,
 			'exists' => $exists,
 			'itemLink' => $this->getItemLink( $id, $this->labelLookup->getLabel( $itemType )?->getText() ),
-			'tabName' => $exists ? $tabNameMsg->plain() : null,
+			'tabName' => $exists ? $tabNameMsg->text() : null,
 			'actionLink' => $this->getActionLink( $id, $exists ),
 		];
 	}
