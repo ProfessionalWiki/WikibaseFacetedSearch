@@ -102,7 +102,7 @@ class ConfigDocumentationBuilder {
 				'class' => 'wikibase-faceted-search-config-help__itemtypes-table-action',
 				'title' => $this->context->msg( "wikibase-faceted-search-config-tab-name-$action-title", $id )->plain(),
 			],
-			[ 'action' => $action ]
+			[ 'action' => 'edit' ]
 		);
 	}
 
