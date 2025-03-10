@@ -28,12 +28,12 @@ stan-baseline:
 # Commands run from the host machine #######################################################################
 
 npm-install:
-	docker run -it --rm -v "$(CURDIR)":/home/node/app -w /home/node/app -u node node:20 npm install
+	docker run -it --rm -v "$(CURDIR)":/home/node/app -w /home/node/app -u node node:22 npm install
 
 lint:
-	docker run -it --rm -v "$(CURDIR)":/home/node/app -w /home/node/app -u node node:20 npm run lint
+	docker run -it --rm -v "$(CURDIR)":/home/node/app -w /home/node/app -u node node:22 npm run lint
 
 jest:
-	docker run -it --rm -v "$(CURDIR)":/home/node/app -w /home/node/app -u node node:20 npm run test:unit
+	docker run -it --rm -v "$(CURDIR)":/home/node/app -w /home/node/app -u node node:22 npm run test:unit
 
 js: lint jest
