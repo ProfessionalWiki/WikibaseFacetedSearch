@@ -132,6 +132,16 @@ function onRangeFacetInput( facet, propertyId ) {
 	}
 
 	applyButton.disabled = false;
+
+	const clickOnEnter = ( event ) => {
+		if ( event.key === 'Enter' ) {
+			applyButton.click();
+		}
+	};
+
+	minInput.addEventListener( 'keydown', clickOnEnter );
+	maxInput.addEventListener( 'keydown', clickOnEnter );
+
 	applyButton.addEventListener( 'click', () => {
 		const newQueries = getRangeFacetQuerySegments( minInput.value, maxInput.value, propertyId );
 		submitSearchForm(
