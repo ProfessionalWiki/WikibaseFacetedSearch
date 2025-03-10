@@ -4,11 +4,13 @@
 			"Ykhwong"
 		]
 	},
-	"wikibase-faceted-search-config-help": "구성 문서",
-	"wikibase-faceted-search-config-help-example": "전체 예시",
+	"wikibase-faceted-search-config-tab-name": "탭 헤더",
+	"wikibase-faceted-search-config-tab-name-missing": "탭 헤더가 정의되지 않았습니다",
+	"wikibase-faceted-search-config-tab-name-create-title": "$1에 대한 탭 헤더 만들기",
+	"wikibase-faceted-search-config-help-example": "전체 예제 JSON",
 	"wikibase-faceted-search-instance-type-all": "모두",
 	"wikibase-faceted-search-filters": "필터",
-	"wikibase-faceted-search-settings": "설정",
+	"wikibase-faceted-search-settings": "구성",
 	"wikibase-faceted-search-and": "그리고",
 	"wikibase-faceted-search-or": "또는",
 	"wikibase-faceted-search-facet-apply": "적용",

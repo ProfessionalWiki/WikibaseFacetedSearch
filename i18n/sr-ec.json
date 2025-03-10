@@ -4,10 +4,10 @@
 			"Milicevic01"
 		]
 	},
-	"wikibase-faceted-search-config-help-example": "Цео пример",
+	"wikibase-faceted-search-config-help-example": "Цео пример JSON",
 	"wikibase-faceted-search-instance-type-all": "Све",
 	"wikibase-faceted-search-filters": "Филтери",
-	"wikibase-faceted-search-settings": "Подешавања",
+	"wikibase-faceted-search-settings": "Конфигуриши",
 	"wikibase-faceted-search-and": "И",
 	"wikibase-faceted-search-or": "Или",
 	"wikibase-faceted-search-facet-apply": "Примени",

@@ -9,7 +9,6 @@
 	"special-wikibase-faceted-search-config": "Konfiguration der Facettensuche",
 	"wikibase-faceted-search-config-invalid": "Die Änderungen wurden nicht gespeichert. Sie enthalten {{PLURAL:$1|den folgenden Fehler|die folgenden Fehler}}:",
 	"wikibase-faceted-search-config-help-documentation": "Die [[#ConfigurationDocumentation|Dokumentation zu den Konfigurationsmöglichkeiten]] ist unterhalb des Bearbeitungsbereichs einsehbar.",
-	"wikibase-faceted-search-config-help": "Dokumentation der Konfigurationsmöglichkeiten",
 	"wikibase-faceted-search-config-help-example": "Vollständiges Beispiel",
 	"wikibase-faceted-search-instance-type-all": "Alle",
 	"wikibase-faceted-search-filters": "Filter",

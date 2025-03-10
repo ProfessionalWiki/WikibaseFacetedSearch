@@ -1,0 +1,17 @@
+{
+	"@metadata": {
+		"authors": [
+			"Yurina Tatiana"
+		]
+	},
+	"wikibase-faceted-search-instance-type-all": "Все",
+	"wikibase-faceted-search-filters": "Фильтры",
+	"wikibase-faceted-search-settings": "Настроить",
+	"wikibase-faceted-search-and": "И",
+	"wikibase-faceted-search-or": "Или",
+	"wikibase-faceted-search-facet-apply": "Применить",
+	"wikibase-faceted-search-facet-show-more": "Показать больше",
+	"wikibase-faceted-search-facet-show-less": "Показать меньше",
+	"wikibase-faceted-search-facet-range-min": "Минимум",
+	"wikibase-faceted-search-facet-range-max": "Максимум"
+}

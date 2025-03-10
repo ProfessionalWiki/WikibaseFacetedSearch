@@ -1,0 +1,20 @@
+{
+	"@metadata": {
+		"authors": [
+			"Jeeputer"
+		]
+	},
+	"wikibase-faceted-search-config-tab-name": "سرآیند زبانه",
+	"wikibase-faceted-search-config-tab-name-missing": "سرآیندی برای زبانه تعریف نشده است",
+	"wikibase-faceted-search-config-tab-name-edit-title": "ویرایش سرآیند زبانهٔ $1",
+	"wikibase-faceted-search-instance-type-all": "همه",
+	"wikibase-faceted-search-filters": "پالایه‌ها",
+	"wikibase-faceted-search-settings": "پیکربندی",
+	"wikibase-faceted-search-and": "و",
+	"wikibase-faceted-search-or": "یا",
+	"wikibase-faceted-search-facet-apply": "اعمال",
+	"wikibase-faceted-search-facet-show-more": "نمایش بیشتر",
+	"wikibase-faceted-search-facet-show-less": "نمایش کمتر",
+	"wikibase-faceted-search-facet-range-min": "حداقل",
+	"wikibase-faceted-search-facet-range-max": "حداکثر"
+}

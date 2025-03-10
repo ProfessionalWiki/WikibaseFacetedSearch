@@ -1,19 +1,19 @@
 {
 	"@metadata": {
 		"authors": [
-			"McDutchie"
+			"McDutchie",
+			"Siebrand"
 		]
 	},
 	"wikibasefacetedsearch-description": "Verbetert [[Special:Search|Speciaal:Zoeken]] met facetgerichte zoekmogelijkheden. Filter resultaten op basis van instantietype of verklaringswaarden",
 	"special-wikibase-faceted-search-config": "Instellingen voor facetgericht zoeken",
 	"wikibase-faceted-search-config-invalid": "Uw wijzigingen zijn niet opgeslagen. Ze bevatten de volgende fout{{PLURAL:$1||en}}:",
-	"wikibase-faceted-search-config-tab-name": "Tabbladnaam",
-	"wikibase-faceted-search-config-tab-name-missing": "Geen tabbladnaam gedefinieerd",
-	"wikibase-faceted-search-config-tab-name-create-title": "Tabbladnaam voor $1 aanmaken",
-	"wikibase-faceted-search-config-tab-name-edit-title": "Tabbladnaam voor $1 bewerken",
+	"wikibase-faceted-search-config-tab-name": "Tabbladkop",
+	"wikibase-faceted-search-config-tab-name-missing": "Geen tabbladkop gedefinieerd",
+	"wikibase-faceted-search-config-tab-name-create-title": "Tabbladkop maken voor $1",
+	"wikibase-faceted-search-config-tab-name-edit-title": "Tabbladkop bewerken voor $1",
 	"wikibase-faceted-search-config-help-documentation": "Onder het bewerkingsgebied kunt u [[#ConfigurationDocumentation|de configuratiedocumentatie bekijken]].",
-	"wikibase-faceted-search-config-help": "Configuratiedocumentatie",
-	"wikibase-faceted-search-config-help-example": "Volledig voorbeeld",
+	"wikibase-faceted-search-config-help-example": "Volledig voorbeeld JSON",
 	"wikibase-faceted-search-instance-type-all": "Alle",
 	"wikibase-faceted-search-filters": "Filters",
 	"wikibase-faceted-search-settings": "Instellingen",

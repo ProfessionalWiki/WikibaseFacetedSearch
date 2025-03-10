@@ -1,0 +1,14 @@
+{
+	"@metadata": {
+		"authors": [
+			"Rivoz"
+		]
+	},
+	"wikibase-faceted-search-instance-type-all": "Kõik",
+	"wikibase-faceted-search-filters": "Filtrid",
+	"wikibase-faceted-search-and": "Ja",
+	"wikibase-faceted-search-or": "Või",
+	"wikibase-faceted-search-facet-show-more": "Näita lisa",
+	"wikibase-faceted-search-facet-range-min": "Minimaalne",
+	"wikibase-faceted-search-facet-range-max": "Maksimaalne"
+}

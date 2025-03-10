@@ -1,0 +1,13 @@
+{
+	"@metadata": {
+		"authors": [
+			"BOKOBA VEROLY"
+		]
+	},
+	"wikibase-faceted-search-config-tab-name": "Ntu ya Tab",
+	"wikibase-faceted-search-config-tab-name-missing": "Ntu-diambu ya mesa kele ve",
+	"wikibase-faceted-search-config-tab-name-create-title": "Sala ntu ya mesa sambu na $1",
+	"wikibase-faceted-search-config-tab-name-edit-title": "Yidika ntu ya tablo sambu na $1",
+	"wikibase-faceted-search-config-help-documentation": "You can [[#ConfigurationDocumentation|view the configuration documentation]] below the edit area.",
+	"wikibase-faceted-search-config-help-example": "Mbandu ya mvimba ya JSON"
+}

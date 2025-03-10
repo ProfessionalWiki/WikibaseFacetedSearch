@@ -1,0 +1,14 @@
+{
+	"@metadata": {
+		"authors": [
+			"BOKOBA VEROLY"
+		]
+	},
+	"wikibase-faceted-search-config-tab-name": "Motó ya Tab",
+	"wikibase-faceted-search-config-tab-name-missing": "Motó ya lokasa moko te",
+	"wikibase-faceted-search-config-tab-name-create-title": "Kobimisa motó ya lokasa mpo na $1",
+	"wikibase-faceted-search-config-tab-name-edit-title": "Ebongiseli ya motó ya lokasa mpo na $1",
+	"wikibase-faceted-search-config-help-documentation": "Okoki [[#ConfigurationDocumentation|tala mikanda ya bobongisi]] na nse ya esika ya bobongisi.",
+	"wikibase-faceted-search-config-help-example": "Ndakisa mobimba ya JSON",
+	"wikibase-faceted-search-settings": "Ndenge ya kosala"
+}
