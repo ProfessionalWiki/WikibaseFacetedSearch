@@ -19,8 +19,7 @@
 		"MediaWiki": ">= 1.43.0",
 		"extensions": {
 			"WikibaseRepository": "*",
-			"CirrusSearch": "*",
-			"WikibaseCirrusSearch": "*"
+			"CirrusSearch": "*"
 		}
 	},
 

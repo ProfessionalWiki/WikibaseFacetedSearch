@@ -31,9 +31,6 @@ wfLoadExtension( 'CirrusSearch' );
 wfLoadExtension( 'WikibaseRepository', __DIR__ . '/extensions/Wikibase/extension-repo.json' );
 require_once __DIR__ . '/extensions/Wikibase/repo/ExampleSettings.php';
 
-wfLoadExtension( 'WikibaseCirrusSearch' );
-\$wgWBCSUseCirrus = true;
-
 wfLoadExtension( "$EXTENSION_NAME" );
 EOT
 
@@ -56,7 +53,6 @@ EOT
 cd extensions
 git clone https://gerrit.wikimedia.org/r/mediawiki/extensions/Elastica --depth=1  --branch=$MW_BRANCH --recurse-submodules -j8
 git clone https://gerrit.wikimedia.org/r/mediawiki/extensions/CirrusSearch --depth=1  --branch=$MW_BRANCH --recurse-submodules -j8
-git clone https://gerrit.wikimedia.org/r/mediawiki/extensions/WikibaseCirrusSearch --depth=1  --branch=$MW_BRANCH --recurse-submodules -j8
 
 git clone https://gerrit.wikimedia.org/r/mediawiki/extensions/Wikibase --depth=1 --branch=$MW_BRANCH -j8 && \
   cd Wikibase && \
