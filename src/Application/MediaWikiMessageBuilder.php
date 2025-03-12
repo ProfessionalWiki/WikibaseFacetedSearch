@@ -13,7 +13,7 @@ class MediaWikiMessageBuilder implements MessageBuilder {
 		$message = wfMessage( $messageKey, ...$arguments );
 
 		if ( $message->exists() ) {
-			return $message->text();
+			return $message->parse();
 		}
 
 		throw new UnknownMessageKey();
