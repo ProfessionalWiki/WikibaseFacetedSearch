@@ -1,0 +1,26 @@
+{
+	"@metadata": {
+		"authors": [
+			"McDutchie"
+		]
+	},
+	"wikibasefacetedsearch-description": "Meliora [[Special:Search]] con capabilitates de recerca in faciettas. Filtra resultatos per typo de instantia o valores de declaration",
+	"special-wikibase-faceted-search-config": "Configuration del recerca in faciettas",
+	"wikibase-faceted-search-config-invalid": "Tu cambiamentos non ha essite salveguardate. Illos contine le sequente error{{PLURAL:$1||es}}:",
+	"wikibase-faceted-search-config-tab-name": "Titulo de scheda",
+	"wikibase-faceted-search-config-tab-name-missing": "Necun titulo de scheda definite",
+	"wikibase-faceted-search-config-tab-name-create-title": "Crear titulo de scheda pro $1",
+	"wikibase-faceted-search-config-tab-name-edit-title": "Modificar titulo de scheda pro $1",
+	"wikibase-faceted-search-config-help-documentation": "Tu pote [[#ConfigurationDocumentation|vider le documentation del configuration]] sub le area de modification.",
+	"wikibase-faceted-search-config-help-example": "Exemplo complete in JSON",
+	"wikibase-faceted-search-instance-type-all": "Totes",
+	"wikibase-faceted-search-filters": "Filtros",
+	"wikibase-faceted-search-settings": "Configurar",
+	"wikibase-faceted-search-and": "E",
+	"wikibase-faceted-search-or": "O",
+	"wikibase-faceted-search-facet-apply": "Applicar",
+	"wikibase-faceted-search-facet-show-more": "Monstrar plus",
+	"wikibase-faceted-search-facet-show-less": "Monstrar minus",
+	"wikibase-faceted-search-facet-range-min": "Minimo",
+	"wikibase-faceted-search-facet-range-max": "Maximo"
+}
