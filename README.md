@@ -8,7 +8,7 @@
 
 Wikibase Faceted Search enhances MediaWiki's search with faceted search capabilities. Filter results based on instance type or statement values.
 
-- [Introduction to the extension](TODO)
+- [Introduction to the extension](https://professional.wiki/en/extension/wikibase-faceted-search#Overview)
 - [Usage documentation](https://professional.wiki/en/extension/wikibase-faceted-search#Usage)
 - [Installation](https://professional.wiki/en/extension/wikibase-faceted-search#Installation)
 - [Configuration](https://professional.wiki/en/extension/wikibase-faceted-search#Configuration)
