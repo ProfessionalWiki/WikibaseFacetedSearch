@@ -26,6 +26,7 @@ class SitelinkBasedStatementsLookupTest extends WikibaseFacetedSearchIntegration
 	private const SITE_ID = 'testSiteId';
 	private const OTHER_SITE_ID = 'otherSiteId';
 	private const ANOTHER_SITE_ID = 'anotherSiteId';
+	private const CUSTOM_NAMESPACE = 3000;
 
 	private HashSiteLinkStore $sitelinkStore;
 	private InMemoryEntityLookup $entityLookup;
@@ -39,6 +40,10 @@ class SitelinkBasedStatementsLookupTest extends WikibaseFacetedSearchIntegration
 			$this->sitelinkStore,
 			$this->entityLookup
 		);
+
+		$this->setMwGlobals( 'wgExtraNamespaces', [
+			self::CUSTOM_NAMESPACE => 'Custom'
+		] );
 	}
 
 	public function testPageWithoutSitelinkReturnsNoStatements(): void {
@@ -170,7 +175,7 @@ class SitelinkBasedStatementsLookupTest extends WikibaseFacetedSearchIntegration
 				new Statement( new PropertyValueSnak( new NumericPropertyId( 'P2' ), new StringValue( 'bar' ) ) )
 			)
 		);
-		$page = $this->createPage( namespace: 1337 );
+		$page = $this->createPage( namespace: self::CUSTOM_NAMESPACE );
 
 		$this->entityLookup->addEntity( $item );
 		$this->createSitelink( $item, $page );
