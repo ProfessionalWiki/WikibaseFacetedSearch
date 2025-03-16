@@ -18,7 +18,7 @@ class SitelinkPageItemLookup implements PageItemLookup {
 	}
 
 	public function getItemId( Title $title ): ?ItemId {
-		return $this->sitelinkLookup->getItemIdForLink( $this->sitelinkSiteId, $title->getText() );
+		return $this->sitelinkLookup->getItemIdForLink( $this->sitelinkSiteId, $title->getPrefixedText() );
 	}
 
 }
