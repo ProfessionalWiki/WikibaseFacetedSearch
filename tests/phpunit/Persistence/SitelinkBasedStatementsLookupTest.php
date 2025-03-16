@@ -41,18 +41,18 @@ class SitelinkBasedStatementsLookupTest extends WikibaseFacetedSearchIntegration
 		);
 	}
 
-	public function testPageWithoutSitelinkReturnsNoStatements(): void {
-		$this->assertPageHasStatements( $this->createPage(), [] );
+	public function testReturnsNoStatementsForPageWithoutIncomingSitelink(): void {
+		$this->assertFindsStatementsForPage( $this->createPage(), [] );
 	}
 
-	private function assertPageHasStatements( WikiPage $page, array $statements ): void {
+	private function assertFindsStatementsForPage( WikiPage $page, array $statements ): void {
 		$this->assertEquals(
 			$statements,
 			$this->lookup->getStatements( $page )->toArray()
 		);
 	}
 
-	public function testPageWithSitelinkToItemWithStatementsReturnsStatements(): void {
+	public function testReturnsStatementsOfSitelinkingItem(): void {
 		$item = new Item(
 			id: new ItemId( 'Q1' ),
 			statements: new StatementList(
@@ -65,7 +65,7 @@ class SitelinkBasedStatementsLookupTest extends WikibaseFacetedSearchIntegration
 		$this->entityLookup->addEntity( $item );
 		$this->createSitelink( $item, $page );
 
-		$this->assertPageHasStatements(
+		$this->assertFindsStatementsForPage(
 			$page,
 			[
 				new Statement( new PropertyValueSnak( new NumericPropertyId( 'P1' ), new StringValue( 'foo' ) ) ),
@@ -79,7 +79,7 @@ class SitelinkBasedStatementsLookupTest extends WikibaseFacetedSearchIntegration
 		$this->sitelinkStore->saveLinksOfItem( $item );
 	}
 
-	public function testPageWithSitelinkToItemWithoutStatementsReturnsNoStatements(): void {
+	public function testReturnsNoStatementsIfSitelinkingItemHasNone(): void {
 		$item = new Item(
 			id: new ItemId( 'Q1' )
 		);
@@ -88,10 +88,10 @@ class SitelinkBasedStatementsLookupTest extends WikibaseFacetedSearchIntegration
 		$this->entityLookup->addEntity( $item );
 		$this->createSitelink( $item, $page );
 
-		$this->assertPageHasStatements( $page, [] );
+		$this->assertFindsStatementsForPage( $page, [] );
 	}
 
-	public function testPageWithDifferentSitelinkToItemWithStatementsReturnsNoStatements(): void {
+	public function testReturnsOnlyStatementsForItemsThatSitelinkPageWithCorrectSiteId(): void {
 		$item = new Item(
 			id: new ItemId( 'Q1' ),
 			statements: new StatementList(
@@ -105,7 +105,7 @@ class SitelinkBasedStatementsLookupTest extends WikibaseFacetedSearchIntegration
 
 		$this->createSitelink( $item, $page, self::OTHER_SITE_ID );
 
-		$this->assertPageHasStatements( $page, [] );
+		$this->assertFindsStatementsForPage( $page, [] );
 	}
 
 	public function testReturnsStatementsOfOnlyTheItemThatSitelinksThePageWithCorrectSiteId(): void {
@@ -140,7 +140,7 @@ class SitelinkBasedStatementsLookupTest extends WikibaseFacetedSearchIntegration
 		$this->createSitelink( $item2, $page );
 		$this->createSitelink( $item3, $page, self::ANOTHER_SITE_ID );
 
-		$this->assertPageHasStatements(
+		$this->assertFindsStatementsForPage(
 			$page,
 			[
 				new Statement( new PropertyValueSnak( new NumericPropertyId( 'P3' ), new StringValue( 'foo' ) ) ),
@@ -162,7 +162,7 @@ class SitelinkBasedStatementsLookupTest extends WikibaseFacetedSearchIntegration
 		$this->entityLookup->addEntity( $item );
 		$this->createSitelink( $item, $page );
 
-		$this->assertPageHasStatements(
+		$this->assertFindsStatementsForPage(
 			$page,
 			[
 				new Statement( new PropertyValueSnak( new NumericPropertyId( 'P1' ), new StringValue( 'foo' ) ) ),
