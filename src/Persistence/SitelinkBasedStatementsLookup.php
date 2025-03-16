@@ -23,7 +23,7 @@ class SitelinkBasedStatementsLookup implements StatementsLookup {
 	public function getStatements( WikiPage $page ): StatementList {
 		$itemId = $this->sitelinkLookup->getItemIdForLink(
 			$this->sitelinkSiteId,
-			$page->getTitle()->getText()
+			$page->getTitle()->getPrefixedText()
 		);
 
 		if ( $itemId === null ) {
