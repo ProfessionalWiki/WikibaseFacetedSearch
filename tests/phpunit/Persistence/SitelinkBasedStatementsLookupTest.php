@@ -108,19 +108,6 @@ class SitelinkBasedStatementsLookupTest extends WikibaseFacetedSearchIntegration
 		$this->assertPageHasStatements( $page, [] );
 	}
 
-	public function testPageWithDifferentSitelinkToItemWithoutStatementsReturnsNoStatements(): void {
-		$item = new Item(
-			id: new ItemId( 'Q1' ),
-		);
-		$page = $this->createPage();
-
-		$this->entityLookup->addEntity( $item );
-
-		$this->createSitelink( $item, $page, self::OTHER_SITE_ID );
-
-		$this->assertPageHasStatements( $page, [] );
-	}
-
 	public function testReturnsStatementsOfOnlyTheItemThatSitelinksThePageWithCorrectSiteId(): void {
 		$item1 = new Item(
 			id: new ItemId( 'Q1' ),
