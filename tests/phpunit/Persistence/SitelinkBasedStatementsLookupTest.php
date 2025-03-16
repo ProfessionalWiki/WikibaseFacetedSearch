@@ -121,7 +121,7 @@ class SitelinkBasedStatementsLookupTest extends WikibaseFacetedSearchIntegration
 		$this->assertPageHasStatements( $page, [] );
 	}
 
-	public function testPageWithMultipleSitelinksToItemsWithStatementsReturnsStatementsOfConfiguredSitelink(): void {
+	public function testReturnsStatementsOfOnlyTheItemThatSitelinksThePageWithCorrectSiteId(): void {
 		$item1 = new Item(
 			id: new ItemId( 'Q1' ),
 			statements: new StatementList(
@@ -162,7 +162,7 @@ class SitelinkBasedStatementsLookupTest extends WikibaseFacetedSearchIntegration
 		);
 	}
 
-	public function testCustomNamespacePageWithSitelinkToItemWithStatementsReturnsStatements(): void {
+	public function testReturnsStatementsEvenIfTheSitelinkedPageIsNamespaced(): void {
 		$item = new Item(
 			id: new ItemId( 'Q1' ),
 			statements: new StatementList(
