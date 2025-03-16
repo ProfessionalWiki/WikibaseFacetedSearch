@@ -61,8 +61,8 @@ class WikibaseFacetedSearchIntegrationTest extends MediaWikiIntegrationTestCase 
 		return $editPage->getContext()->getOutput()->getHTML();
 	}
 
-	protected function createPage( string $title = 'Test page' ): WikiPage {
-		$page = new WikiPage( Title::newFromText( $title ) );
+	protected function createPage( string $title = 'Test page', int $namespace = NS_MAIN ): WikiPage {
+		$page = new WikiPage( Title::newFromText( $title, $namespace ) );
 		$this->editPage( $page, 'Wikitext content' );
 		return $page;
 	}

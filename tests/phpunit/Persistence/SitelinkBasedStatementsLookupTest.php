@@ -75,7 +75,7 @@ class SitelinkBasedStatementsLookupTest extends WikibaseFacetedSearchIntegration
 	}
 
 	private function createSitelink( Item $item, WikiPage $page, string $siteId = self::SITE_ID ): void {
-		$item->getSiteLinkList()->addNewSiteLink( $siteId, $page->getTitle()->getText() );
+		$item->getSiteLinkList()->addNewSiteLink( $siteId, $page->getTitle()->getPrefixedText() );
 		$this->sitelinkStore->saveLinksOfItem( $item );
 	}
 
@@ -158,6 +158,28 @@ class SitelinkBasedStatementsLookupTest extends WikibaseFacetedSearchIntegration
 			[
 				new Statement( new PropertyValueSnak( new NumericPropertyId( 'P3' ), new StringValue( 'foo' ) ) ),
 				new Statement( new PropertyValueSnak( new NumericPropertyId( 'P4' ), new StringValue( 'bar' ) ) )
+			]
+		);
+	}
+
+	public function testCustomNamespacePageWithSitelinkToItemWithStatementsReturnsStatements(): void {
+		$item = new Item(
+			id: new ItemId( 'Q1' ),
+			statements: new StatementList(
+				new Statement( new PropertyValueSnak( new NumericPropertyId( 'P1' ), new StringValue( 'foo' ) ) ),
+				new Statement( new PropertyValueSnak( new NumericPropertyId( 'P2' ), new StringValue( 'bar' ) ) )
+			)
+		);
+		$page = $this->createPage( namespace: 1337 );
+
+		$this->entityLookup->addEntity( $item );
+		$this->createSitelink( $item, $page );
+
+		$this->assertPageHasStatements(
+			$page,
+			[
+				new Statement( new PropertyValueSnak( new NumericPropertyId( 'P1' ), new StringValue( 'foo' ) ) ),
+				new Statement( new PropertyValueSnak( new NumericPropertyId( 'P2' ), new StringValue( 'bar' ) ) )
 			]
 		);
 	}
