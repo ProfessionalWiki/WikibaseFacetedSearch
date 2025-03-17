@@ -11,6 +11,7 @@ use MediaWiki\Context\IContextSource;
 use MediaWiki\Html\TemplateParser;
 use MediaWiki\Language\Language;
 use MediaWiki\Linker\LinkRendererFactory;
+use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Title\Title;
 use MediaWiki\Title\TitleFactory;
@@ -61,6 +62,7 @@ use ProfessionalWiki\WikibaseFacetedSearch\Presentation\ListFacetHtmlBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\RangeFacetHtmlBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\SidebarHtmlBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\TabsHtmlBuilder;
+use Psr\Log\LoggerInterface;
 use RuntimeException;
 use Wikibase\DataModel\Services\Lookup\LabelLookup;
 use Wikibase\DataModel\Services\Lookup\PropertyDataTypeLookup;
@@ -174,7 +176,8 @@ class WikibaseFacetedSearchExtension {
 		return new SitelinkBasedStatementsLookup(
 			sitelinkSiteId: $this->getConfig()->sitelinkSiteId,
 			sitelinkLookup: WikibaseRepo::getStore()->newSiteLinkStore(),
-			entityLookup: WikibaseRepo::getEntityLookup()
+			entityLookup: WikibaseRepo::getEntityLookup(),
+			logger: $this->getLogger()
 		);
 	}
 
@@ -386,6 +389,10 @@ class WikibaseFacetedSearchExtension {
 			linkRenderer: $this->getLinkRendererFactory()->create(),
 			labelLookup: $this->getLabelLookup( $context->getLanguage() )
 		);
+	}
+
+	private function getLogger(): LoggerInterface {
+		return LoggerFactory::getInstance( 'WikibaseFacetedSearch' );
 	}
 
 }
