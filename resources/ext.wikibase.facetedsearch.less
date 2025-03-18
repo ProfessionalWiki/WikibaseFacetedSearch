@@ -54,6 +54,11 @@
 		position: sticky;
 		top: @spacing-100;
 
+		@media ( min-width: @min-width-breakpoint-tablet ) {
+			max-height: calc( 100vh - @spacing-100 * 2 );
+			overflow-y: auto;
+		}
+
 		@media ( max-width: @max-width-breakpoint-tablet ) {
 			display: none;
 
