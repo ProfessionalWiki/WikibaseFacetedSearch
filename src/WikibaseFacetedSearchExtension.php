@@ -185,8 +185,7 @@ class WikibaseFacetedSearchExtension {
 		return new StatementListTranslator(
 			statementTranslator: $this->newStatementTranslator(),
 			itemTypeExtractor: $this->newItemTypeExtractor(),
-			config: $this->getConfig(),
-			logger: $this->getLogger()
+			config: $this->getConfig()
 		);
 	}
 
