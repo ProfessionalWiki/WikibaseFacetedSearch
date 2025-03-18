@@ -29,6 +29,15 @@ class SitelinkItemPageLookupTest extends TestCase {
 		);
 	}
 
+	public function testReturnsNullWhenNoSitelinkSiteIdIsConfigured(): void {
+		$this->assertNull(
+			( new SitelinkPageItemLookup(
+				$this->sitelinkStore,
+				null
+			) )->getItemId( Title::newFromText( 'Foo' ) )
+		);
+	}
+
 	public function testReturnsPageWhenSitelinkExists(): void {
 		$this->createItemWithSitelink( 'Q42', self::SITE_ID, 'Page for Q42' );
 
