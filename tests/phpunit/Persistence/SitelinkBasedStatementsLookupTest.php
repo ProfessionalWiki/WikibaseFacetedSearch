@@ -7,7 +7,6 @@ namespace ProfessionalWiki\WikibaseFacetedSearch\Tests\Persistence;
 use DataValues\StringValue;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\SitelinkBasedStatementsLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Tests\WikibaseFacetedSearchIntegrationTest;
-use Psr\Log\NullLogger;
 use Wikibase\DataModel\Entity\Item;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\NumericPropertyId;
@@ -39,8 +38,7 @@ class SitelinkBasedStatementsLookupTest extends WikibaseFacetedSearchIntegration
 		$this->lookup = new SitelinkBasedStatementsLookup(
 			self::SITE_ID,
 			$this->sitelinkStore,
-			$this->entityLookup,
-			new NullLogger()
+			$this->entityLookup
 		);
 
 		$this->setMwGlobals( 'wgExtraNamespaces', [

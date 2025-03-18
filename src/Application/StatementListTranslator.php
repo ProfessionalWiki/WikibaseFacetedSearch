@@ -4,7 +4,6 @@ declare( strict_types = 1 );
 
 namespace ProfessionalWiki\WikibaseFacetedSearch\Application;
 
-use Psr\Log\LoggerInterface;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\Statement\Statement;
@@ -15,8 +14,7 @@ class StatementListTranslator {
 	public function __construct(
 		private readonly StatementTranslator $statementTranslator,
 		private readonly ItemTypeExtractor $itemTypeExtractor,
-		private readonly Config $config,
-		private readonly LoggerInterface $logger
+		private readonly Config $config
 	) {
 	}
 
@@ -25,19 +23,13 @@ class StatementListTranslator {
 	 * @return array<string, mixed>
 	 */
 	public function translateStatements( StatementList $statements ): array {
-		$this->logger->debug( 'Translating statements' );
-
 		$itemType = $this->itemTypeExtractor->getItemType( $statements );
-
-		$this->logger->debug( 'itemType: ' . ( $itemType?->getSerialization() ?? 'MISSING' ) );
 
 		if ( $itemType === null ) {
 			return [];
 		}
 
 		$propertyIds = $this->getPropertiesToIndex( $itemType );
-
-		$this->logger->debug( 'propertyIds: ' . implode( ',', $propertyIds ) );
 
 		$values = [];
 

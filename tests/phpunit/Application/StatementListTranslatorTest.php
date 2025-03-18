@@ -14,7 +14,6 @@ use ProfessionalWiki\WikibaseFacetedSearch\Application\FacetType;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\StatementListTranslator;
 use ProfessionalWiki\WikibaseFacetedSearch\Tests\TestDoubles\StubItemTypeExtractor;
 use ProfessionalWiki\WikibaseFacetedSearch\Tests\TestDoubles\StubStatementTranslator;
-use Psr\Log\NullLogger;
 use Wikibase\DataModel\Entity\EntityIdValue;
 use Wikibase\DataModel\Entity\ItemId;
 use Wikibase\DataModel\Entity\NumericPropertyId;
@@ -36,8 +35,7 @@ class StatementListTranslatorTest extends TestCase {
 		return new StatementListTranslator(
 			$statementTranslator ?? new StubStatementTranslator(),
 			$itemTypeExtractor ?? new StubItemTypeExtractor(),
-			$config ?? new Config(),
-			new NullLogger()
+			$config ?? new Config()
 		);
 	}
 
