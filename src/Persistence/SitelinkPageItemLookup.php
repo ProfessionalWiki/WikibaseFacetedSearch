@@ -13,11 +13,15 @@ class SitelinkPageItemLookup implements PageItemLookup {
 
 	public function __construct(
 		private readonly SiteLinkLookup $sitelinkLookup,
-		private readonly string $sitelinkSiteId
+		private readonly ?string $sitelinkSiteId
 	) {
 	}
 
 	public function getItemId( Title $title ): ?ItemId {
+		if ( $this->sitelinkSiteId === null ) {
+			return null;
+		}
+
 		return $this->sitelinkLookup->getItemIdForLink( $this->sitelinkSiteId, $title->getPrefixedText() );
 	}
 

@@ -43,7 +43,6 @@ use ProfessionalWiki\WikibaseFacetedSearch\Persistence\NoOpItemPageUpdater;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\SitelinkItemPageUpdater;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\PageContentConfigLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\PageContentFetcher;
-use ProfessionalWiki\WikibaseFacetedSearch\Persistence\PageItemLookupFactory;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\Search\Query\DelegatingFacetQueryBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\Search\Query\HasWbFacetFeature;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\Search\Query\ItemTypeQueryBuilder;
@@ -51,6 +50,7 @@ use ProfessionalWiki\WikibaseFacetedSearch\Persistence\Search\Query\ListFacetQue
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\Search\Query\RangeFacetQueryBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\Search\SearchIndexFieldsBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\SitelinkBasedStatementsLookup;
+use ProfessionalWiki\WikibaseFacetedSearch\Persistence\SitelinkPageItemLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\ConfigDocumentationBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\DelegatingFacetHtmlBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\FacetHtmlBuilder;
@@ -88,14 +88,10 @@ class WikibaseFacetedSearchExtension {
 		return $instance;
 	}
 
-	public function getPageItemLookup(): PageItemLookup {
-		return $this->newPageItemLookupFactory()->newPageItemLookup();
-	}
-
-	private function newPageItemLookupFactory(): PageItemLookupFactory {
-		return new PageItemLookupFactory(
-			config: $this->getConfig(),
-			sitelinkLookup: $this->getSiteLinkStore()
+	public function getPageItemLookup(): SitelinkPageItemLookup {
+		return new SitelinkPageItemLookup(
+			sitelinkLookup: $this->getSiteLinkStore(),
+			sitelinkSiteId: $this->getConfig()->sitelinkSiteId
 		);
 	}
 
