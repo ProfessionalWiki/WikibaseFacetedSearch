@@ -32,7 +32,15 @@ class ListFacetHtmlBuilder implements FacetHtmlBuilder {
 
 	public function buildHtml( FacetConfig $config, PropertyConstraints $state ): string {
 		$valueCounts = $this->getValuesAndCounts( $config );
-		if ( count( $valueCounts ) === 0 ) {
+
+		if ( $valueCounts === [] && $state->getAndSelectedValues() !== [] ) {
+			$valueCounts = array_map(
+				fn( $value ) => new ValueCount( $value, 0 ),
+				$state->getAndSelectedValues()
+			);
+		}
+
+		if ( $valueCounts === [] ) {
 			return '';
 		}
 
