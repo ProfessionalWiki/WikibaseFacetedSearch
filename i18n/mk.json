@@ -1,0 +1,26 @@
+{
+	"@metadata": {
+		"authors": [
+			"Bjankuloski06"
+		]
+	},
+	"wikibasefacetedsearch-description": "Ја подобрува [[Special:Search|Специјална:Пребарување]] со фацетно пребарување. Филтрирајте го исходот во зависност од видот на примерок или вредности на исказот",
+	"special-wikibase-faceted-search-config": "Поставки за фацетното пребарување",
+	"wikibase-faceted-search-config-invalid": "Вашите промени не се зачувани. {{PLURAL:$1|Ја содржат следнава грешка|Ги содржат следниве грешки}}:",
+	"wikibase-faceted-search-config-tab-name": "Заглавие на јазичето",
+	"wikibase-faceted-search-config-tab-name-missing": "Нема зададено заглавие на јазичето",
+	"wikibase-faceted-search-config-tab-name-create-title": "Создај заглавие на јазичето за $1",
+	"wikibase-faceted-search-config-tab-name-edit-title": "Уреди заглавие на јазичето за $1",
+	"wikibase-faceted-search-config-help-documentation": "Можете да [[#ConfigurationDocumentation|ја погледате документацијата за поставки]] под полето за уредување.",
+	"wikibase-faceted-search-config-help-example": "JSON за целосен пример",
+	"wikibase-faceted-search-instance-type-all": "Сè",
+	"wikibase-faceted-search-filters": "Филтри",
+	"wikibase-faceted-search-settings": "Нагоди",
+	"wikibase-faceted-search-and": "И",
+	"wikibase-faceted-search-or": "Или",
+	"wikibase-faceted-search-facet-apply": "Примени",
+	"wikibase-faceted-search-facet-show-more": "Прикажи повеќе",
+	"wikibase-faceted-search-facet-show-less": "Прикажи помалку",
+	"wikibase-faceted-search-facet-range-min": "Најмалку",
+	"wikibase-faceted-search-facet-range-max": "Највеќе"
+}
