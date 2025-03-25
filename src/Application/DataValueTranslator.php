@@ -22,7 +22,8 @@ class DataValueTranslator {
 		}
 
 		if ( $dataValue instanceof TimeValue ) {
-			return ltrim( $dataValue->getTime(), '+-' );
+			// TODO: handle date precision explicitly.
+			return str_replace( '-00', '-01', ltrim( $dataValue->getTime(), '+-' ) );
 		}
 
 		if ( $dataValue instanceof EntityIdValue ) {
