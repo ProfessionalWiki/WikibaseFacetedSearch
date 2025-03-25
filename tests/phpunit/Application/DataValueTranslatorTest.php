@@ -33,13 +33,45 @@ class DataValueTranslatorTest extends TestCase {
 		$this->assertSame( 'Foo', $this->newTranslator()->translate( $value ) );
 	}
 
-	public function testTranslatesTimeValue(): void {
+	public function testTranslatesTimeValuewithDayPrecision(): void {
 		$value = new TimeValue(
 			'+2020-01-01T00:00:00Z',
 			0,
 			0,
 			0,
 			TimeValue::PRECISION_DAY,
+			TimeValue::CALENDAR_GREGORIAN
+		);
+
+		$this->assertSame(
+			'2020-01-01T00:00:00Z',
+			$this->newTranslator()->translate( $value )
+		);
+	}
+
+	public function testTranslatesTimeValueWithMonthPrecision(): void {
+		$value = new TimeValue(
+			'+2020-01-00T00:00:00Z',
+			0,
+			0,
+			0,
+			TimeValue::PRECISION_MONTH,
+			TimeValue::CALENDAR_GREGORIAN
+		);
+
+		$this->assertSame(
+			'2020-01-01T00:00:00Z',
+			$this->newTranslator()->translate( $value )
+		);
+	}
+
+	public function testTranslatesTimeValueWithYearPrecision(): void {
+		$value = new TimeValue(
+			'+2020-00-00T00:00:00Z',
+			0,
+			0,
+			0,
+			TimeValue::PRECISION_YEAR,
 			TimeValue::CALENDAR_GREGORIAN
 		);
 
