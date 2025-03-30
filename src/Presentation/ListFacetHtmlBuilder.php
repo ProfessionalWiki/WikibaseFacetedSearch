@@ -31,7 +31,7 @@ class ListFacetHtmlBuilder implements FacetHtmlBuilder {
 	}
 
 	public function buildHtml( FacetConfig $config, PropertyConstraints $state ): string {
-		$valueCounts = $this->getValuesAndCounts( $config );
+		$valueCounts = $this->getValuesAndCounts( $config, $state );
 		if ( count( $valueCounts ) === 0 ) {
 			return '';
 		}
@@ -149,8 +149,8 @@ class ListFacetHtmlBuilder implements FacetHtmlBuilder {
 	/**
 	 * @return ValueCount[]
 	 */
-	public function getValuesAndCounts( FacetConfig $config ): array {
-		return $this->valueCounter->countValues( $config->propertyId )->asArray();
+	public function getValuesAndCounts( FacetConfig $config, PropertyConstraints $state ): array {
+		return $this->valueCounter->countValues( $config->propertyId, $state )->asArray();
 	}
 
 }

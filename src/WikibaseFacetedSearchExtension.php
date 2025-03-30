@@ -258,7 +258,8 @@ class WikibaseFacetedSearchExtension {
 	public function getValueCounter( AbstractQuery $currentQuery ): ValueCounter {
 		return new ElasticValueCounter(
 			queryRunner: $this->getElasticQueryRunner(),
-			currentQuery: $currentQuery
+			currentQuery: $currentQuery,
+			queryFilter: new ElasticQueryFilter(),
 		);
 	}
 

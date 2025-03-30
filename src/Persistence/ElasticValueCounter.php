@@ -5,6 +5,8 @@ declare( strict_types = 1 );
 namespace ProfessionalWiki\WikibaseFacetedSearch\Persistence;
 
 use Elastica\Query\AbstractQuery;
+use ProfessionalWiki\WikibaseFacetedSearch\Application\ElasticQueryFilter;
+use ProfessionalWiki\WikibaseFacetedSearch\Application\PropertyConstraints;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\ValueCount;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\ValueCounter;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\ValueCounts;
@@ -14,7 +16,8 @@ class ElasticValueCounter implements ValueCounter {
 
 	public function __construct(
 		private readonly ElasticQueryRunner $queryRunner,
-		private readonly AbstractQuery $currentQuery
+		private readonly AbstractQuery $currentQuery,
+		private readonly ElasticQueryFilter $queryFilter,
 	) {
 	}
 
@@ -22,10 +25,10 @@ class ElasticValueCounter implements ValueCounter {
 	 * Count the values for a given property, highest occurrences first.
 	 * Values are indexed per property at wbfs_P123, where P123 is the serialization of the property id.
 	 */
-	public function countValues( PropertyId $property ): ValueCounts {
+	public function countValues( PropertyId $property, PropertyConstraints $constraints ): ValueCounts {
 		$query = [
 			'size' => 0,
-			'query' => $this->currentQuery->toArray(),
+			'query' => $this->getFilteredQuery( $property, $constraints )->toArray(),
 			'aggs' => [
 				'valueCounts' => [
 					'terms' => [
@@ -53,6 +56,13 @@ class ElasticValueCounter implements ValueCounter {
 		}
 
 		return new ValueCounts( $valueCounts );
+	}
+
+	private function getFilteredQuery( PropertyId $property, PropertyConstraints $constraints ): AbstractQuery {
+		if ( $constraints->getOrSelectedValues() !== [] ) {
+			return $this->queryFilter->removeFacet( $this->currentQuery, $property );
+		}
+		return $this->currentQuery;
 	}
 
 }

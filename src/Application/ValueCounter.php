@@ -8,6 +8,6 @@ use Wikibase\DataModel\Entity\PropertyId;
 
 interface ValueCounter {
 
-	public function countValues( PropertyId $property ): ValueCounts;
+	public function countValues( PropertyId $property, PropertyConstraints $constraints ): ValueCounts;
 
 }

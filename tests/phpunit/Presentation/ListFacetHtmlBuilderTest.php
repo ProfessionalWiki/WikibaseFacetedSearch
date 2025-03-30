@@ -112,11 +112,12 @@ class ListFacetHtmlBuilderTest extends TestCase {
 	): array {
 		$htmlBuilder = $this->newListFacetHtmlBuilder( $valueCounter );
 		$facetConfig = $this->newFacetConfig( $typeSpecificConfig );
+		$state = $constraints ?? $this->newPropertyConstraints();
 
 		return $htmlBuilder->buildViewModel(
 			config: $facetConfig,
-			state: $constraints ?? $this->newPropertyConstraints(),
-			valueCounts: $htmlBuilder->getValuesAndCounts( $facetConfig )
+			state: $state,
+			valueCounts: $htmlBuilder->getValuesAndCounts( $facetConfig, $state )
 		);
 	}
 

@@ -7,14 +7,11 @@ namespace ProfessionalWiki\WikibaseFacetedSearch\Application;
 use Elastica\Query\AbstractQuery;
 use Elastica\Query\BoolQuery;
 use Elastica\Query\Terms;
+use Wikibase\DataModel\Entity\PropertyId;
 
 class ElasticQueryFilter {
 
-	public function removeOrFacets( AbstractQuery $currentQuery, Query $parsedQuery ): AbstractQuery {
-		if ( $parsedQuery->getItemTypes() === [] ) {
-			return $currentQuery;
-		}
-
+	public function removeFacet( AbstractQuery $currentQuery, PropertyId $propertyId ): AbstractQuery {
 		if ( !$currentQuery->hasParam( 'filter' ) ) {
 			return $currentQuery;
 		}
@@ -29,10 +26,8 @@ class ElasticQueryFilter {
 		/** @var AbstractQuery[] $currentQueryConditions */
 		$currentQueryConditions = $currentQueryFilter[0]->getParam( 'must' );
 
-		$orFieldNames = $this->getOrFieldNames( $this->getOrConstraints( $parsedQuery ) );
-
 		$newQueryFilter = new BoolQuery();
-		$newQueryFilter->setParam( 'must', $this->getNonOrQueryConditions( $currentQueryConditions, $orFieldNames ) );
+		$newQueryFilter->setParam( 'must', $this->getFilteredConditions( $currentQueryConditions, $propertyId ) );
 
 		$newQuery = new BoolQuery();
 		$newQuery->setParams( $currentQuery->getParams() );
@@ -41,50 +36,22 @@ class ElasticQueryFilter {
 		return $newQuery;
 	}
 
-	private function getOrConstraints( Query $parsedQuery ): array {
-		return array_filter(
-			$parsedQuery->getConstraintsPerProperty(),
-			fn( PropertyConstraints $constraints ) => $constraints->getOrSelectedValues() !== []
-		);
-	}
-
-	/**
-	 * @param PropertyConstraints[] $orConstraints
-	 * @return string[]
-	 */
-	private function getOrFieldNames( array $orConstraints ): array {
-		return array_map(
-			fn( PropertyConstraints $constraints ) => 'wbfs_' . $constraints->propertyId->getSerialization(),
-			$orConstraints
-		);
-	}
-
 	/**
 	 * @param AbstractQuery[] $conditions
-	 * @param string[] $orFieldNames
 	 * @return AbstractQuery[]
 	 */
-	private function getNonOrQueryConditions( array $conditions, array $orFieldNames ): array {
+	private function getFilteredConditions( array $conditions, PropertyId $propertyId ): array {
 		return array_values(
 			array_filter(
 				$conditions,
-				fn( AbstractQuery $condition ) => !$this->isOrCondition( $condition, $orFieldNames )
+				fn( AbstractQuery $condition ) => !$this->shouldRemoveCondition( $condition, $propertyId )
 			)
 		);
 	}
 
-	/**
-	 * @param string[] $orFieldNames
-	 */
-	private function isOrCondition( AbstractQuery $condition, array $orFieldNames ): bool {
-		if ( !( $condition instanceof Terms ) ) {
-			return false;
-		}
-
-		// An "or" Term query has the field name as the key in the params array.
-		return count(
-			array_intersect_key( $condition->getParams(), array_flip( $orFieldNames ) )
-		) > 0;
+	private function shouldRemoveCondition( AbstractQuery $condition, PropertyId $propertyId ): bool {
+		return $condition instanceof Terms
+			&& array_key_exists( 'wbfs_' . $propertyId->getSerialization(), $condition->getParams() );
 	}
 
 }

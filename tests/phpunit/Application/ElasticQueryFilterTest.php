@@ -6,6 +6,7 @@ namespace ProfessionalWiki\WikibaseFacetedSearch\Tests\Application;
 
 use Elastica\Query\BoolQuery;
 use Elastica\Query\MatchAll;
+use Elastica\Query\Range;
 use Elastica\Query\Terms;
 use PHPUnit\Framework\TestCase;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\ElasticQueryFilter;
@@ -20,7 +21,7 @@ use Wikibase\DataModel\Entity\NumericPropertyId;
  */
 class ElasticQueryFilterTest extends TestCase {
 
-	public function testRemovesOrQueriesInSearchWithOrConditions(): void {
+	public function testRemovesFacetQueryIfItExists(): void {
 		$filter = new BoolQuery();
 		$filter->addMust( new Terms( 'wbfs_P42', [ 'Q1' ] ) );
 		$filter->addMust( new Terms( 'wbfs_P1337', [ 'Q100', 'Q200' ] ) );
@@ -31,21 +32,9 @@ class ElasticQueryFilterTest extends TestCase {
 		$query->addMust( new MatchAll() );
 		$query->addFilter( $filter );
 
-		$newQuery = $this->newElasticQueryFilter()->removeOrFacets(
+		$newQuery = $this->newElasticQueryFilter()->removeFacet(
 			currentQuery: $query,
-			parsedQuery: new Query(
-				constraints: new PropertyConstraintsList(
-					new PropertyConstraints(
-						propertyId: new NumericPropertyId( 'P1337' ),
-						orSelectedValues: [ new ItemId( 'Q100' ), new ItemId( 'Q200' ) ]
-					),
-					new PropertyConstraints(
-						propertyId: new NumericPropertyId( 'P9000' ),
-						orSelectedValues: [ new ItemId( 'Q500' ), new ItemId( 'Q600' ) ]
-					)
-				),
-				itemTypes: [ new ItemId( 'Q1' ) ]
-			)
+			propertyId: new NumericPropertyId( 'P1337' )
 		);
 
 		$this->assertSame(
@@ -55,6 +44,11 @@ class ElasticQueryFilterTest extends TestCase {
 						[
 							'terms' => [
 								'wbfs_P42' => [ 'Q1' ]
+							]
+						],
+						[
+							'terms' => [
+								'wbfs_P9000' => [ 'Q500', 'Q600' ]
 							]
 						],
 						[
@@ -73,7 +67,7 @@ class ElasticQueryFilterTest extends TestCase {
 		return new ElasticQueryFilter();
 	}
 
-	public function testRemovesNothingInSearchWithAndConditions(): void {
+	public function testRemovesNothingIfFacetQueryDoesNotExist(): void {
 		$filter = new BoolQuery();
 		$filter->addMust( new Terms( 'wbfs_P42', [ 'Q1' ] ) );
 		$filter->addMust( new Terms( 'wbfs_P1337', [ 'Q100', 'Q200' ] ) );
@@ -84,21 +78,9 @@ class ElasticQueryFilterTest extends TestCase {
 		$query->addMust( new MatchAll() );
 		$query->addFilter( $filter );
 
-		$newQuery = $this->newElasticQueryFilter()->removeOrFacets(
+		$newQuery = $this->newElasticQueryFilter()->removeFacet(
 			currentQuery: $query,
-			parsedQuery: new Query(
-				constraints: new PropertyConstraintsList(
-					new PropertyConstraints(
-						propertyId: new NumericPropertyId( 'P1337' ),
-						andSelectedValues: [ new ItemId( 'Q100' ), new ItemId( 'Q200' ) ]
-					),
-					new PropertyConstraints(
-						propertyId: new NumericPropertyId( 'P9000' ),
-						andSelectedValues: [ new ItemId( 'Q500' ), new ItemId( 'Q600' ) ]
-					)
-				),
-				itemTypes: [ new ItemId( 'Q1' ) ]
-			)
+			propertyId: new NumericPropertyId( 'P404' )
 		);
 
 		$this->assertSame(
@@ -132,32 +114,19 @@ class ElasticQueryFilterTest extends TestCase {
 		);
 	}
 
-	public function testRemovesOrQueryInSearchWithOrAndAndConditions(): void {
+	public function testDoesNotRemoveRangeFacetQuery(): void {
 		$filter = new BoolQuery();
 		$filter->addMust( new Terms( 'wbfs_P42', [ 'Q1' ] ) );
-		$filter->addMust( new Terms( 'wbfs_P1337', [ 'Q100', 'Q200' ] ) );
-		$filter->addMust( new Terms( 'wbfs_P9000', [ 'Q500', 'Q600' ] ) );
+		$filter->addMust( new Range( 'wbfs_P1337', [ 'gte' => 1000, 'lte' => 2000 ] ) );
 		$filter->addMust( new Terms( 'namespace', [ 0, 120 ] ) );
 
 		$query = new BoolQuery();
 		$query->addMust( new MatchAll() );
 		$query->addFilter( $filter );
 
-		$newQuery = $this->newElasticQueryFilter()->removeOrFacets(
+		$newQuery = $this->newElasticQueryFilter()->removeFacet(
 			currentQuery: $query,
-			parsedQuery: new Query(
-				constraints: new PropertyConstraintsList(
-					new PropertyConstraints(
-						propertyId: new NumericPropertyId( 'P1337' ),
-						andSelectedValues: [ new ItemId( 'Q100' ), new ItemId( 'Q200' ) ]
-					),
-					new PropertyConstraints(
-						propertyId: new NumericPropertyId( 'P9000' ),
-						orSelectedValues: [ new ItemId( 'Q500' ), new ItemId( 'Q600' ) ]
-					)
-				),
-				itemTypes: [ new ItemId( 'Q1' ) ]
-			)
+			propertyId: new NumericPropertyId( 'P1337' )
 		);
 
 		$this->assertSame(
@@ -170,43 +139,8 @@ class ElasticQueryFilterTest extends TestCase {
 							]
 						],
 						[
-							'terms' => [
-								'wbfs_P1337' => [ 'Q100', 'Q200' ]
-							]
-						],
-						[
-							'terms' => [
-								'namespace' => [ 0, 120 ]
-							]
-						]
-					]
-				]
-			],
-			$newQuery->getParam( 'filter' )->toArray()
-		);
-	}
-
-	public function testRemovesNothingInSearchWithoutConditions(): void {
-		$filter = new BoolQuery();
-		$filter->addMust( new Terms( 'wbfs_P42', [ 'Q1' ] ) );
-		$filter->addMust( new Terms( 'namespace', [ 0, 120 ] ) );
-
-		$query = new BoolQuery();
-		$query->addMust( new MatchAll() );
-		$query->addFilter( $filter );
-
-		$newQuery = $this->newElasticQueryFilter()->removeOrFacets(
-			currentQuery: $query,
-			parsedQuery: new Query( new PropertyConstraintsList(), itemTypes: [ new ItemId( 'Q1' ) ] )
-		);
-
-		$this->assertSame(
-			[
-				'bool' => [
-					'must' => [
-						[
-							'terms' => [
-								'wbfs_P42' => [ 'Q1' ]
+							'range' => [
+								'wbfs_P1337' => [ 'gte' => 1000, 'lte' => 2000 ]
 							]
 						],
 						[
