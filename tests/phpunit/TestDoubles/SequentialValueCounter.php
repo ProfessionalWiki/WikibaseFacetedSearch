@@ -8,7 +8,6 @@ use ProfessionalWiki\WikibaseFacetedSearch\Application\PropertyConstraints;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\ValueCount;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\ValueCounter;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\ValueCounts;
-use Wikibase\DataModel\Entity\PropertyId;
 
 class SequentialValueCounter implements ValueCounter {
 
@@ -17,7 +16,7 @@ class SequentialValueCounter implements ValueCounter {
 	) {
 	}
 
-	public function countValues( PropertyId $property, PropertyConstraints $constraints ): ValueCounts {
+	public function countValues( PropertyConstraints $constraints ): ValueCounts {
 		if ( $this->count === 0 ) {
 			return new ValueCounts( [] );
 		}

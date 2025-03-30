@@ -117,7 +117,7 @@ class ListFacetHtmlBuilderTest extends TestCase {
 		return $htmlBuilder->buildViewModel(
 			config: $facetConfig,
 			state: $state,
-			valueCounts: $htmlBuilder->getValuesAndCounts( $facetConfig, $state )
+			valueCounts: $htmlBuilder->getValuesAndCounts( $state )
 		);
 	}
 

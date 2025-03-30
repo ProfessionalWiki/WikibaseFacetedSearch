@@ -25,14 +25,14 @@ class ElasticValueCounter implements ValueCounter {
 	 * Count the values for a given property, highest occurrences first.
 	 * Values are indexed per property at wbfs_P123, where P123 is the serialization of the property id.
 	 */
-	public function countValues( PropertyId $property, PropertyConstraints $constraints ): ValueCounts {
+	public function countValues( PropertyConstraints $constraints ): ValueCounts {
 		$query = [
 			'size' => 0,
-			'query' => $this->getFilteredQuery( $property, $constraints )->toArray(),
+			'query' => $this->getFilteredQuery( $constraints )->toArray(),
 			'aggs' => [
 				'valueCounts' => [
 					'terms' => [
-						'field' => 'wbfs_' . $property->getSerialization(),
+						'field' => 'wbfs_' . $constraints->propertyId->getSerialization(),
 						'size' => 100,
 					],
 				],
@@ -58,9 +58,9 @@ class ElasticValueCounter implements ValueCounter {
 		return new ValueCounts( $valueCounts );
 	}
 
-	private function getFilteredQuery( PropertyId $property, PropertyConstraints $constraints ): AbstractQuery {
+	private function getFilteredQuery( PropertyConstraints $constraints ): AbstractQuery {
 		if ( $constraints->getOrSelectedValues() !== [] ) {
-			return $this->queryFilter->removeFacet( $this->currentQuery, $property );
+			return $this->queryFilter->removeFacet( $this->currentQuery, $constraints->propertyId );
 		}
 		return $this->currentQuery;
 	}
