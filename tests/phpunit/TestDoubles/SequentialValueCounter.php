@@ -4,6 +4,7 @@ declare( strict_types = 1 );
 
 namespace ProfessionalWiki\WikibaseFacetedSearch\Tests\TestDoubles;
 
+use ProfessionalWiki\WikibaseFacetedSearch\Application\PropertyConstraints;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\ValueCount;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\ValueCounter;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\ValueCounts;
@@ -16,7 +17,7 @@ class SequentialValueCounter implements ValueCounter {
 	) {
 	}
 
-	public function countValues( PropertyId $property ): ValueCounts {
+	public function countValues( PropertyId $property, PropertyConstraints $constraints ): ValueCounts {
 		if ( $this->count === 0 ) {
 			return new ValueCounts( [] );
 		}

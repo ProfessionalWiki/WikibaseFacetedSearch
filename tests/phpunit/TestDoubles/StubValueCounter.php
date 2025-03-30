@@ -4,6 +4,7 @@ declare( strict_types = 1 );
 
 namespace ProfessionalWiki\WikibaseFacetedSearch\Tests\TestDoubles;
 
+use ProfessionalWiki\WikibaseFacetedSearch\Application\PropertyConstraints;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\ValueCount;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\ValueCounter;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\ValueCounts;
@@ -32,7 +33,7 @@ class StubValueCounter implements ValueCounter {
 	public const SEVENTH_VALUE = 'Grace';
 	public const SEVENTH_COUNT = 3;
 
-	public function countValues( PropertyId $property ): ValueCounts {
+	public function countValues( PropertyId $property, PropertyConstraints $constraints ): ValueCounts {
 		return new ValueCounts( [
 			new ValueCount( self::FIRST_VALUE, self::FIRST_COUNT ),
 			new ValueCount( self::SECOND_VALUE, self::SECOND_COUNT ),

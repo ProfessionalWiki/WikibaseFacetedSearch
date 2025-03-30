@@ -116,18 +116,11 @@ class WikibaseFacetedSearchHooks {
 			WikibaseFacetedSearchExtension::getInstance()
 				->getSidebarHtmlBuilder(
 					language: $specialSearch->getLanguage(),
-					currentQuery: self::getFilteredCurrentQuery( $term )
+					currentQuery: self::getCurrentQuery()
 				)
 				->createHtml(
 					searchQuery: $term
 				)
-		);
-	}
-
-	private static function getFilteredCurrentQuery( string $searchQuery ): AbstractQuery {
-		return WikibaseFacetedSearchExtension::getInstance()->newElasticQueryFilter()->removeOrFacets(
-			self::getCurrentQuery(),
-			WikibaseFacetedSearchExtension::getInstance()->getQueryStringParser()->parse( $searchQuery )
 		);
 	}
 

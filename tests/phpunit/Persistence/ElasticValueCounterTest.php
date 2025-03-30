@@ -6,6 +6,7 @@ namespace ProfessionalWiki\WikibaseFacetedSearch\Tests\Persistence;
 
 use Elastica\Query\MatchAll;
 use PHPUnit\Framework\TestCase;
+use ProfessionalWiki\WikibaseFacetedSearch\Application\PropertyConstraints;
 use ProfessionalWiki\WikibaseFacetedSearch\WikibaseFacetedSearchExtension;
 use Wikibase\DataModel\Entity\NumericPropertyId;
 
@@ -16,8 +17,9 @@ use Wikibase\DataModel\Entity\NumericPropertyId;
 class ElasticValueCounterTest extends TestCase {
 
 	public function testCanExecuteValueCountQuery(): void {
+		$propertyId = new NumericPropertyId( 'P22' );
 		$counter = WikibaseFacetedSearchExtension::getInstance()->getValueCounter( new MatchAll() );
-		$counter->countValues( new NumericPropertyId( 'P22' ) );
+		$counter->countValues( $propertyId, new PropertyConstraints( $propertyId ) );
 		$this->assertTrue( true );
 	}
 
