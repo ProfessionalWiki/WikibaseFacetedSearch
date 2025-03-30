@@ -33,7 +33,7 @@ class StubValueCounter implements ValueCounter {
 	public const SEVENTH_VALUE = 'Grace';
 	public const SEVENTH_COUNT = 3;
 
-	public function countValues( PropertyId $property, PropertyConstraints $constraints ): ValueCounts {
+	public function countValues( PropertyConstraints $constraints ): ValueCounts {
 		return new ValueCounts( [
 			new ValueCount( self::FIRST_VALUE, self::FIRST_COUNT ),
 			new ValueCount( self::SECOND_VALUE, self::SECOND_COUNT ),
