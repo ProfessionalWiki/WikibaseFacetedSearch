@@ -321,4 +321,80 @@ class ListFacetHtmlBuilderTest extends TestCase {
 		$this->assertTrue( $viewModel['checkboxes']['showMore'] );
 	}
 
+	public function testContainsAnyValueCheckbox(): void {
+		$viewModel = $this->buildViewModel(
+			constraints: $this->newPropertyConstraints()->requireAnyValue(),
+			typeSpecificConfig: [ 'showAnyFilter' => true ]
+		);
+
+		$this->assertArrayHasKey( 'formattedValue', $viewModel['any-value-checkbox'] );
+		$this->assertArrayHasKey( 'count', $viewModel['any-value-checkbox'] );
+		$this->assertTrue( $viewModel['any-value-checkbox']['checked'] );
+		$this->assertSame( '__anyvalue__', $viewModel['any-value-checkbox']['value'] );
+		$this->assertSame( self::FACET_PROPERTY_ID . '-any-value', $viewModel['any-value-checkbox']['id'] );
+	}
+
+	public function testDoesNotContainAnyValueCheckbox(): void {
+		$viewModel = $this->buildViewModel(
+			constraints: $this->newPropertyConstraints()->requireAnyValue(),
+			typeSpecificConfig: [ 'showAnyFilter' => false ]
+		);
+
+		$this->assertSame(
+			[],
+			$viewModel['any-value-checkbox']
+		);
+	}
+
+	public function testContainsNoValueCheckbox(): void {
+		$viewModel = $this->buildViewModel(
+			constraints: $this->newPropertyConstraints()->requireNoValue(),
+			typeSpecificConfig: [ 'showNoneFilter' => true ]
+		);
+
+		$this->assertArrayHasKey( 'formattedValue', $viewModel['no-value-checkbox'] );
+		$this->assertArrayHasKey( 'count', $viewModel['no-value-checkbox'] );
+		$this->assertTrue( $viewModel['no-value-checkbox']['checked'] );
+		$this->assertSame( '__novalue__', $viewModel['no-value-checkbox']['value'] );
+		$this->assertSame( self::FACET_PROPERTY_ID . '-no-value', $viewModel['no-value-checkbox']['id'] );
+	}
+
+	public function testDoesNotContainNoValueCheckbox(): void {
+		$viewModel = $this->buildViewModel(
+			constraints: $this->newPropertyConstraints()->requireNoValue(),
+			typeSpecificConfig: [ 'showNoneFilter' => false ]
+		);
+
+		$this->assertSame(
+			[],
+			$viewModel['no-value-checkbox']
+		);
+	}
+
+	public function testRendersTemplateWhenNoValuesExistAndAnyValueCheckboxSelected(): void {
+		$html = $this->newListFacetHtmlBuilder(
+			valueCounter: new SequentialValueCounter( 0 )
+		)->buildHtml(
+			config: $this->newFacetConfig(
+				typeSpecificConfig: [ 'showAnyFilter' => true ]
+			),
+			state: $this->newPropertyConstraints()->requireAnyValue()
+		);
+
+		$this->assertStringContainsString( '-any-value', $html );
+	}
+
+	public function testRendersTemplateWhenNoValuesExistAndNoValueCheckboxSelected(): void {
+		$html = $this->newListFacetHtmlBuilder(
+			valueCounter: new SequentialValueCounter( 0 )
+		)->buildHtml(
+			config: $this->newFacetConfig(
+				typeSpecificConfig: [ 'showNoneFilter' => true ]
+			),
+			state: $this->newPropertyConstraints()->requireNoValue()
+		);
+
+		$this->assertStringContainsString( '-no-value', $html );
+	}
+
 }
