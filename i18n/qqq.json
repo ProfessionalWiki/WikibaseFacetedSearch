@@ -26,5 +26,7 @@
 	"wikibase-faceted-search-facet-show-more": "Label used for the Show more button in the facet",
 	"wikibase-faceted-search-facet-show-less": "Label used for the Show less button in the facet",
 	"wikibase-faceted-search-facet-range-min": "Minimum data value label displayed on range facet",
-	"wikibase-faceted-search-facet-range-max": "Maximum data value label displayed on range facet"
+	"wikibase-faceted-search-facet-range-max": "Maximum data value label displayed on range facet",
+	"wikibase-faceted-search-facet-any-value": "Label used for the any value checkbox in the facet",
+	"wikibase-faceted-search-facet-no-value": "Label used for the no value checkbox in the facet"
 }

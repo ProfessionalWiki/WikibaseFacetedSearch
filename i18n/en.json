@@ -34,5 +34,8 @@
 	"wikibase-faceted-search-facet-show-less": "Show less",
 
 	"wikibase-faceted-search-facet-range-min": "Minimum",
-	"wikibase-faceted-search-facet-range-max": "Maximum"
+	"wikibase-faceted-search-facet-range-max": "Maximum",
+
+	"wikibase-faceted-search-facet-any-value": "Any value",
+	"wikibase-faceted-search-facet-no-value": "No value"
 }

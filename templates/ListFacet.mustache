@@ -1,7 +1,7 @@
 {{#toggle}}
 	<div class="wikibase-faceted-search__facet-toggle">
 		{{#and}}
-			<button 
+			<button
 			class="wikibase-faceted-search__facet-toggle-button cdx-button {{#selected}}cdx-button--action-progressive cdx-button--weight-primary{{/selected}}"
 			value="{{value}}"
 			{{#disabled}}disabled{{/disabled}}
@@ -22,6 +22,8 @@
 {{/toggle}}
 {{#checkboxes}}
 	<div class="wikibase-faceted-search__facet-items">
+		{{#any-value-checkbox}}{{>FacetItemCheckbox}}{{/any-value-checkbox}}
+		{{#no-value-checkbox}}{{>FacetItemCheckbox}}{{/no-value-checkbox}}
 		{{#visible}}{{>FacetItemCheckbox}}{{/visible}}
 	</div>
 	{{#showMore}}

@@ -1,3 +1,6 @@
+const HAS_ANY_VALUE = '__anyvalue__';
+const HAS_NO_VALUE = '__novalue__';
+
 let specialSearchInput;
 
 /**
@@ -52,9 +55,9 @@ function onFacetsInput( event ) {
 
 	// TODO: Clean up the facet type detection logic after MVP or when we have more facet types
 	if ( target.classList.contains( 'wikibase-faceted-search__facet-item-checkbox' ) ) {
-		onListFacetInput( facet, propertyId );
-	} else if ( target.classList.contains( 'wikibase-faceted-search__facet-toggle-button' ) ) {
 		onListFacetInput( facet, propertyId, target.value );
+	} else if ( target.classList.contains( 'wikibase-faceted-search__facet-toggle-button' ) ) {
+		onToggleInput( facet, propertyId, target.value );
 	} else if ( target.classList.contains( 'wikibase-faceted-search__facet-item-input' ) ) {
 		onRangeFacetInput( facet, propertyId );
 	}
@@ -81,9 +84,28 @@ function onInstancesClick( event, instanceId ) {
  *
  * @param {HTMLDivElement} facet
  * @param {string} propertyId
- * @param {?string} mode
+ * @param {string} value
  */
-function onListFacetInput( facet, propertyId, mode ) {
+function onListFacetInput( facet, propertyId, value ) {
+	let selectedValues = getListFacetSelectedValues( facet );
+	if ( value === HAS_ANY_VALUE || value === HAS_NO_VALUE ) {
+		selectedValues = selectedValues.indexOf( value ) !== -1 ? [ value ] : [];
+	} else {
+		selectedValues = selectedValues.filter( ( v ) => v !== HAS_ANY_VALUE && v !== HAS_NO_VALUE );
+	}
+
+	const newQueries = getListFacetQuerySegments( selectedValues, propertyId, getListFacetQueryMode( facet ) );
+	submitSearchForm( buildQueryString( specialSearchInput.value, newQueries, propertyId ) );
+}
+
+/**
+ * Handles the input event for the toggle button.
+ *
+ * @param {HTMLDivElement} facet
+ * @param {string} propertyId
+ * @param {string} mode
+ */
+function onToggleInput( facet, propertyId, mode ) {
 	const selectedValues = getListFacetSelectedValues( facet );
 	mode = mode || getListFacetQueryMode( facet );
 	const newQueries = getListFacetQuerySegments( selectedValues, propertyId, mode );
@@ -192,6 +214,15 @@ function getListFacetSelectedValues( facet ) {
  * @return {string[]}
  */
 function getListFacetQuerySegments( selectedValues, propertyId, mode ) {
+	if ( selectedValues.length === 1 ) {
+		if ( selectedValues[ 0 ] === HAS_ANY_VALUE ) {
+			return [ `haswbfacet:${ propertyId }` ];
+		}
+		if ( selectedValues[ 0 ] === HAS_NO_VALUE ) {
+			return [ `-haswbfacet:${ propertyId }` ];
+		}
+	}
+
 	const segments = [];
 	if ( mode === 'AND' ) {
 		if ( selectedValues.length === 0 ) {
@@ -255,7 +286,7 @@ function buildQueryString( oldQuery, newQueries, propertyId ) {
 function getFilteredQueries( query, propertyId ) {
 	const propertyIdPattern = propertyId || 'P\\d+';
 	return query.split( /\s+/ ).filter(
-		( item ) => !( new RegExp( `^(haswbfacet|\\-haswbfacet):${ propertyIdPattern }(=|>=|<=)` ) ).test( item )
+		( item ) => !( new RegExp( `^(haswbfacet|\\-haswbfacet):${ propertyIdPattern }(=|>=|<=)?\\b` ) ).test( item )
 	);
 }
 

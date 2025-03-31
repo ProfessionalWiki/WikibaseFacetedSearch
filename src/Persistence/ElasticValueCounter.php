@@ -59,7 +59,7 @@ class ElasticValueCounter implements ValueCounter {
 	}
 
 	private function getFilteredQuery( PropertyConstraints $constraints ): AbstractQuery {
-		if ( $constraints->getOrSelectedValues() !== [] ) {
+		if ( $constraints->hasNoValue() || $constraints->getOrSelectedValues() !== [] ) {
 			return $this->queryFilter->removeFacet( $this->currentQuery, $constraints->propertyId );
 		}
 		return $this->currentQuery;

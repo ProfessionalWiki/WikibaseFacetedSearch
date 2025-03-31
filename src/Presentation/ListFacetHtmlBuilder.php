@@ -20,6 +20,8 @@ class ListFacetHtmlBuilder implements FacetHtmlBuilder {
 	private const CONFIG_KEY_DEFAULT_COMBINE_WITH = 'defaultCombineWith';
 	private const CONFIG_VALUE_COMBINE_WITH_AND = 'AND';
 	private const CONFIG_VALUE_COMBINE_WITH_OR = 'OR';
+	private const CONFIG_KEY_SHOW_ANY_FILTER = 'showAnyFilter';
+	private const CONFIG_KEY_SHOW_NONE_FILTER = 'showNoneFilter';
 
 	private const COMBINE_WITH_AND_BY_DEFAULT = true; // Maybe this gets turned into (constructor-injected) config
 
@@ -32,7 +34,7 @@ class ListFacetHtmlBuilder implements FacetHtmlBuilder {
 
 	public function buildHtml( FacetConfig $config, PropertyConstraints $state ): string {
 		$valueCounts = $this->getValuesAndCounts( $state );
-		if ( count( $valueCounts ) === 0 ) {
+		if ( count( $valueCounts ) === 0 && !$state->hasAnyValue() && !$state->hasNoValue() ) {
 			return '';
 		}
 
@@ -50,6 +52,8 @@ class ListFacetHtmlBuilder implements FacetHtmlBuilder {
 
 		return [
 			'toggle' => $this->buildToggleViewModel( $combineWithAnd, $this->hasCombineWithChoice( $config ) ),
+			'any-value-checkbox' => $this->buildAnyValueCheckboxViewModel( $config, $state->hasAnyValue() ),
+			'no-value-checkbox' => $this->buildNoValueCheckboxViewModel( $config, $state->hasNoValue() ),
 			'checkboxes' => $this->buildCheckboxesViewModel( $config, $state, $valueCounts ),
 			'msg-show-more' => wfMessage( 'wikibase-faceted-search-facet-show-more' )->text(),
 			'msg-show-less' => wfMessage( 'wikibase-faceted-search-facet-show-less' )->text()
@@ -143,6 +147,34 @@ class ListFacetHtmlBuilder implements FacetHtmlBuilder {
 			'checked' => in_array( $valueCount->value, $selectedValues ), // TODO: test with multiple types of values
 			'value' => $valueCount->value,
 			'id' => $propertyId->getSerialization() . "-$index",
+		];
+	}
+
+	private function buildAnyValueCheckboxViewModel( FacetConfig $config, bool $isSelected ): array {
+		if ( ( $config->typeSpecificConfig[self::CONFIG_KEY_SHOW_ANY_FILTER] ?? false ) !== true ) {
+			return [];
+		}
+
+		return [
+			'formattedValue' => wfMessage( 'wikibase-faceted-search-facet-any-value' )->text(),
+			'count' => '',
+			'checked' => $isSelected,
+			'value' => '__anyvalue__',
+			'id' => $config->propertyId->getSerialization() . "-any-value",
+		];
+	}
+
+	private function buildNoValueCheckboxViewModel( FacetConfig $config, bool $isSelected ): array {
+		if ( ( $config->typeSpecificConfig[self::CONFIG_KEY_SHOW_NONE_FILTER] ?? false ) !== true ) {
+			return [];
+		}
+
+		return [
+			'formattedValue' => wfMessage( 'wikibase-faceted-search-facet-no-value' )->text(),
+			'count' => '',
+			'checked' => $isSelected,
+			'value' => '__novalue__',
+			'id' => $config->propertyId->getSerialization() . "-no-value",
 		];
 	}
 
