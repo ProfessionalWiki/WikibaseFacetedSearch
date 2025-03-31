@@ -190,6 +190,16 @@
 				If users should be able to change the logical operator to use via the UI.
 				Either <code>true</code> or <code>false</code>. The default is <code>true</code>.
 			</li>
+			<li>
+				<code>showAnyFilter</code>:
+				If users should be able to filter items where the specific property has any value.
+				Either <code>true</code> or <code>false</code>. The default is <code>false</code>.
+			</li>
+			<li>
+				<code>showNoneFilter</code>:
+				If users should be able to filter items where the specific property does not have a value.
+				Either <code>true</code> or <code>false</code>. The default is <code>false</code>.
+			</li>
 		</ul>
 
 		<p>
@@ -200,7 +210,9 @@
 "P43": {
 	"type": "list",
 	"defaultCombineWith": "OR",
-	"allowCombineWithChoice": false
+	"allowCombineWithChoice": false,
+	"showAnyFilter": true,
+	"showNoneFilter": true
 }</pre>
 
 	</section>
