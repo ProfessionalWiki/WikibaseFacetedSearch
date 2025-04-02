@@ -25,8 +25,10 @@
 	"wikibase-faceted-search-filters": "Filters",
 	"wikibase-faceted-search-settings": "Configure",
 
-	"wikibase-faceted-search-and": "And",
-	"wikibase-faceted-search-or": "Or",
+	"wikibase-faceted-search-facet-all-selected-values": "All selected values",
+	"wikibase-faceted-search-facet-any-selected-values": "Any selected value",
+	"wikibase-faceted-search-facet-any-value": "Any value",
+	"wikibase-faceted-search-facet-no-value": "No value",
 
 	"wikibase-faceted-search-facet-apply": "Apply",
 
@@ -34,8 +36,5 @@
 	"wikibase-faceted-search-facet-show-less": "Show less",
 
 	"wikibase-faceted-search-facet-range-min": "Minimum",
-	"wikibase-faceted-search-facet-range-max": "Maximum",
-
-	"wikibase-faceted-search-facet-any-value": "Any value",
-	"wikibase-faceted-search-facet-no-value": "No value"
+	"wikibase-faceted-search-facet-range-max": "Maximum"
 }

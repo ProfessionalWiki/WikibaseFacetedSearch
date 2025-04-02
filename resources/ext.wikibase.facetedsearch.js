@@ -55,9 +55,9 @@ function onFacetsInput( event ) {
 
 	// TODO: Clean up the facet type detection logic after MVP or when we have more facet types
 	if ( target.classList.contains( 'wikibase-faceted-search__facet-item-checkbox' ) ) {
-		onListFacetInput( facet, propertyId, target.value );
-	} else if ( target.classList.contains( 'wikibase-faceted-search__facet-toggle-button' ) ) {
-		onToggleInput( facet, propertyId, target.value );
+		onListFacetInput( facet, propertyId );
+	} else if ( target.classList.contains( 'wikibase-faceted-search__facet-mode' ) ) {
+		onModeSelectInput( facet, propertyId, target.value, target.dataset.defaultValue );
 	} else if ( target.classList.contains( 'wikibase-faceted-search__facet-item-input' ) ) {
 		onRangeFacetInput( facet, propertyId );
 	}
@@ -84,43 +84,40 @@ function onInstancesClick( event, instanceId ) {
  *
  * @param {HTMLDivElement} facet
  * @param {string} propertyId
- * @param {string} value
  */
-function onListFacetInput( facet, propertyId, value ) {
-	let selectedValues = getListFacetSelectedValues( facet );
-	if ( value === HAS_ANY_VALUE || value === HAS_NO_VALUE ) {
-		selectedValues = selectedValues.indexOf( value ) !== -1 ? [ value ] : [];
-	} else {
-		selectedValues = selectedValues.filter( ( v ) => v !== HAS_ANY_VALUE && v !== HAS_NO_VALUE );
-	}
-
+function onListFacetInput( facet, propertyId ) {
+	const selectedValues = getListFacetSelectedValues( facet );
 	const newQueries = getListFacetQuerySegments( selectedValues, propertyId, getListFacetQueryMode( facet ) );
 	submitSearchForm( buildQueryString( specialSearchInput.value, newQueries, propertyId ) );
 }
 
 /**
- * Handles the input event for the toggle button.
+ * Handles the input event for the mode select.
  *
  * @param {HTMLDivElement} facet
  * @param {string} propertyId
  * @param {string} mode
+ * @param {string} defaultMode
  */
-function onToggleInput( facet, propertyId, mode ) {
+function onModeSelectInput( facet, propertyId, mode, defaultMode ) {
+	if ( mode === defaultMode ) {
+		return;
+	}
+
 	const selectedValues = getListFacetSelectedValues( facet );
-	mode = mode || getListFacetQueryMode( facet );
 	const newQueries = getListFacetQuerySegments( selectedValues, propertyId, mode );
 	submitSearchForm( buildQueryString( specialSearchInput.value, newQueries, propertyId ) );
 }
 
 /**
- * Determines the query mode for a list facet based on the selected toggle button.
+ * Determines the query mode for a list facet based on the selected mode.
  *
  * @param {HTMLDivElement} facet
  * @return {string}
  */
 function getListFacetQueryMode( facet ) {
-	const selectedButton = facet.querySelector( '.wikibase-faceted-search__facet-toggle > .cdx-button--action-progressive' );
-	return selectedButton ? selectedButton.value : 'AND';
+	const selectElement = facet.querySelector( '.wikibase-faceted-search__facet-mode' );
+	return selectElement ? selectElement.value : 'AND';
 }
 
 /**
@@ -214,26 +211,28 @@ function getListFacetSelectedValues( facet ) {
  * @return {string[]}
  */
 function getListFacetQuerySegments( selectedValues, propertyId, mode ) {
-	if ( selectedValues.length === 1 ) {
-		if ( selectedValues[ 0 ] === HAS_ANY_VALUE ) {
-			return [ `haswbfacet:${ propertyId }` ];
-		}
-		if ( selectedValues[ 0 ] === HAS_NO_VALUE ) {
-			return [ `-haswbfacet:${ propertyId }` ];
-		}
-	}
-
 	const segments = [];
-	if ( mode === 'AND' ) {
-		if ( selectedValues.length === 0 ) {
-			segments.push( `haswbfacet:${ propertyId }=` );
-		}
-		selectedValues.forEach( ( value ) => {
-			segments.push( `haswbfacet:${ propertyId }=${ value }` );
-		} );
-	} else {
-		const suffix = selectedValues.length <= 1 ? '|' : '';
-		segments.push( `haswbfacet:${ propertyId }=${ selectedValues.join( '|' ) }${ suffix }` );
+	switch ( mode ) {
+		case 'AND':
+			if ( selectedValues.length === 0 ) {
+				segments.push( `haswbfacet:${ propertyId }=` );
+			}
+			selectedValues.forEach( ( value ) => {
+				segments.push( `haswbfacet:${ propertyId }=${ value }` );
+			} );
+			break;
+		case 'OR':
+			const suffix = selectedValues.length <= 1 ? '|' : '';
+			segments.push( `haswbfacet:${ propertyId }=${ selectedValues.join( '|' ) }${ suffix }` );
+			break;
+		case 'ANY':
+			segments.push( `haswbfacet:${ propertyId }` );
+			break;
+		case 'NONE':
+			segments.push( `-haswbfacet:${ propertyId }` );
+			break;
+		default:
+			segments.push( `haswbfacet:${ propertyId }=|` );
 	}
 
 	return segments;

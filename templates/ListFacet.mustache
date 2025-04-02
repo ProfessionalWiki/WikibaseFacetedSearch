@@ -1,25 +1,6 @@
-{{#toggle}}
-	<div class="wikibase-faceted-search__facet-toggle">
-		{{#and}}
-			<button
-			class="wikibase-faceted-search__facet-toggle-button cdx-button {{#selected}}cdx-button--action-progressive cdx-button--weight-primary{{/selected}}"
-			value="{{value}}"
-			{{#disabled}}disabled{{/disabled}}
-			>
-				{{label}}
-			</button>
-		{{/and}}
-		{{#or}}
-			<button
-			class="wikibase-faceted-search__facet-toggle-button cdx-button {{#selected}}cdx-button--action-progressive cdx-button--weight-primary{{/selected}}"
-			value="{{value}}"
-			{{#disabled}}disabled{{/disabled}}
-			>
-				{{label}}
-			</button>
-		{{/or}}
-	</div>
-{{/toggle}}
+{{#select}}
+	{{>FacetModeSelect}}
+{{/select}}
 {{#checkboxes}}
 	<div class="wikibase-faceted-search__facet-items">
 		{{#any-value-checkbox}}{{>FacetItemCheckbox}}{{/any-value-checkbox}}
