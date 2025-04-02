@@ -1,6 +1,3 @@
-const HAS_ANY_VALUE = '__anyvalue__';
-const HAS_NO_VALUE = '__novalue__';
-
 let specialSearchInput;
 
 /**
@@ -221,10 +218,11 @@ function getListFacetQuerySegments( selectedValues, propertyId, mode ) {
 				segments.push( `haswbfacet:${ propertyId }=${ value }` );
 			} );
 			break;
-		case 'OR':
+		case 'OR': {
 			const suffix = selectedValues.length <= 1 ? '|' : '';
 			segments.push( `haswbfacet:${ propertyId }=${ selectedValues.join( '|' ) }${ suffix }` );
 			break;
+		}
 		case 'ANY':
 			segments.push( `haswbfacet:${ propertyId }` );
 			break;

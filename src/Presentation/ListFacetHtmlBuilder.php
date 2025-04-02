@@ -59,8 +59,6 @@ class ListFacetHtmlBuilder implements FacetHtmlBuilder {
 
 		return [
 			'select' => $this->buildModeSelectViewModel( $config, $facetMode ),
-			'any-value-checkbox' => $this->buildAnyValueCheckboxViewModel( $config, $state->hasAnyValue() ),
-			'no-value-checkbox' => $this->buildNoValueCheckboxViewModel( $config, $state->hasNoValue() ),
 			'checkboxes' => $this->buildCheckboxesViewModel( $config, $state, $valueCounts, $facetMode ),
 			'msg-show-more' => wfMessage( 'wikibase-faceted-search-facet-show-more' )->text(),
 			'msg-show-less' => wfMessage( 'wikibase-faceted-search-facet-show-less' )->text()
@@ -195,34 +193,6 @@ class ListFacetHtmlBuilder implements FacetHtmlBuilder {
 			'checked' => in_array( $valueCount->value, $selectedValues ), // TODO: test with multiple types of values
 			'value' => $valueCount->value,
 			'id' => $propertyId->getSerialization() . "-$index",
-		];
-	}
-
-	private function buildAnyValueCheckboxViewModel( FacetConfig $config, bool $isSelected ): array {
-		if ( ( $config->typeSpecificConfig[self::CONFIG_KEY_SHOW_ANY_FILTER] ?? false ) !== true ) {
-			return [];
-		}
-
-		return [
-			'formattedValue' => wfMessage( 'wikibase-faceted-search-facet-any-value' )->text(),
-			'count' => '',
-			'checked' => $isSelected,
-			'value' => '__anyvalue__',
-			'id' => $config->propertyId->getSerialization() . "-any-value",
-		];
-	}
-
-	private function buildNoValueCheckboxViewModel( FacetConfig $config, bool $isSelected ): array {
-		if ( ( $config->typeSpecificConfig[self::CONFIG_KEY_SHOW_NONE_FILTER] ?? false ) !== true ) {
-			return [];
-		}
-
-		return [
-			'formattedValue' => wfMessage( 'wikibase-faceted-search-facet-no-value' )->text(),
-			'count' => '',
-			'checked' => $isSelected,
-			'value' => '__novalue__',
-			'id' => $config->propertyId->getSerialization() . "-no-value",
 		];
 	}
 
