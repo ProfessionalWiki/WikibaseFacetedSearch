@@ -279,6 +279,42 @@ class ListFacetHtmlBuilderTest extends TestCase {
 		$this->assertTrue( true );
 	}
 
+	public function testContainsAnyValueOption(): void {
+		$viewModel = $this->buildViewModel(
+			constraints: $this->newPropertyConstraints()->requireAnyValue(),
+			typeSpecificConfig: [ 'showAnyFilter' => true ]
+		);
+
+		$this->assertFacetModeHasOption( $viewModel['select'], ListFacetHtmlBuilder::CONFIG_VALUE_SHOW_ANY_FILTER );
+	}
+
+	public function testDoesNotContainAnyValueOption(): void {
+		$viewModel = $this->buildViewModel(
+			constraints: $this->newPropertyConstraints()->requireAnyValue(),
+			typeSpecificConfig: [ 'showAnyFilter' => false ]
+		);
+
+		$this->assertFacetModeDoesNotHaveOption( $viewModel['select'], ListFacetHtmlBuilder::CONFIG_VALUE_SHOW_ANY_FILTER );
+	}
+
+	public function testContainsNoValueOption(): void {
+		$viewModel = $this->buildViewModel(
+			constraints: $this->newPropertyConstraints()->requireNoValue(),
+			typeSpecificConfig: [ 'showNoneFilter' => true ]
+		);
+
+		$this->assertFacetModeHasOption( $viewModel['select'], ListFacetHtmlBuilder::CONFIG_VALUE_SHOW_NONE_FILTER );
+	}
+
+	public function testDoesNotContainNoValueOption(): void {
+		$viewModel = $this->buildViewModel(
+			constraints: $this->newPropertyConstraints()->requireNoValue(),
+			typeSpecificConfig: [ 'showNoneFilter' => false ]
+		);
+
+		$this->assertFacetModeDoesNotHaveOption( $viewModel['select'], ListFacetHtmlBuilder::CONFIG_VALUE_SHOW_NONE_FILTER );
+	}
+
 	public function testOrIsDisabledWhenAndIsSelectedAndChoiceIsDisabled(): void {
 		$viewModel = $this->buildViewModel(
 			constraints: $this->newPropertyConstraints(),
@@ -305,7 +341,7 @@ class ListFacetHtmlBuilderTest extends TestCase {
 			typeSpecificConfig: [ 'allowCombineWithChoice' => true ]
 		);
 
-		$this->assertFacetMode( $viewModel['select'], ListFacetHtmlBuilder::CONFIG_VALUE_COMBINE_WITH_AND );
+		$this->assertFacetModeHasOption( $viewModel['select'], ListFacetHtmlBuilder::CONFIG_VALUE_COMBINE_WITH_AND );
 		$this->assertFacetModeHasOption( $viewModel['select'], ListFacetHtmlBuilder::CONFIG_VALUE_COMBINE_WITH_OR );
 	}
 
@@ -355,57 +391,7 @@ class ListFacetHtmlBuilderTest extends TestCase {
 		$this->assertTrue( $viewModel['checkboxes']['showMore'] );
 	}
 
-	public function testContainsAnyValueCheckbox(): void {
-		$viewModel = $this->buildViewModel(
-			constraints: $this->newPropertyConstraints()->requireAnyValue(),
-			typeSpecificConfig: [ 'showAnyFilter' => true ]
-		);
-
-		$this->assertArrayHasKey( 'formattedValue', $viewModel['any-value-checkbox'] );
-		$this->assertArrayHasKey( 'count', $viewModel['any-value-checkbox'] );
-		$this->assertTrue( $viewModel['any-value-checkbox']['checked'] );
-		$this->assertSame( '__anyvalue__', $viewModel['any-value-checkbox']['value'] );
-		$this->assertSame( self::FACET_PROPERTY_ID . '-any-value', $viewModel['any-value-checkbox']['id'] );
-	}
-
-	public function testDoesNotContainAnyValueCheckbox(): void {
-		$viewModel = $this->buildViewModel(
-			constraints: $this->newPropertyConstraints()->requireAnyValue(),
-			typeSpecificConfig: [ 'showAnyFilter' => false ]
-		);
-
-		$this->assertSame(
-			[],
-			$viewModel['any-value-checkbox']
-		);
-	}
-
-	public function testContainsNoValueCheckbox(): void {
-		$viewModel = $this->buildViewModel(
-			constraints: $this->newPropertyConstraints()->requireNoValue(),
-			typeSpecificConfig: [ 'showNoneFilter' => true ]
-		);
-
-		$this->assertArrayHasKey( 'formattedValue', $viewModel['no-value-checkbox'] );
-		$this->assertArrayHasKey( 'count', $viewModel['no-value-checkbox'] );
-		$this->assertTrue( $viewModel['no-value-checkbox']['checked'] );
-		$this->assertSame( '__novalue__', $viewModel['no-value-checkbox']['value'] );
-		$this->assertSame( self::FACET_PROPERTY_ID . '-no-value', $viewModel['no-value-checkbox']['id'] );
-	}
-
-	public function testDoesNotContainNoValueCheckbox(): void {
-		$viewModel = $this->buildViewModel(
-			constraints: $this->newPropertyConstraints()->requireNoValue(),
-			typeSpecificConfig: [ 'showNoneFilter' => false ]
-		);
-
-		$this->assertSame(
-			[],
-			$viewModel['no-value-checkbox']
-		);
-	}
-
-	public function testRendersTemplateWhenNoValuesExistAndAnyValueCheckboxSelected(): void {
+	public function testRendersTemplateWhenNoValuesExistAndAnyValueOptionSelected(): void {
 		$html = $this->newListFacetHtmlBuilder(
 			valueCounter: new SequentialValueCounter( 0 )
 		)->buildHtml(
@@ -415,10 +401,10 @@ class ListFacetHtmlBuilderTest extends TestCase {
 			state: $this->newPropertyConstraints()->requireAnyValue()
 		);
 
-		$this->assertStringContainsString( '-any-value', $html );
+		$this->assertStringContainsString( 'data-default-value="' . ListFacetHtmlBuilder::CONFIG_VALUE_SHOW_ANY_FILTER . '"', $html );
 	}
 
-	public function testRendersTemplateWhenNoValuesExistAndNoValueCheckboxSelected(): void {
+	public function testRendersTemplateWhenNoValuesExistAndNoValueOptionSelected(): void {
 		$html = $this->newListFacetHtmlBuilder(
 			valueCounter: new SequentialValueCounter( 0 )
 		)->buildHtml(
@@ -428,7 +414,7 @@ class ListFacetHtmlBuilderTest extends TestCase {
 			state: $this->newPropertyConstraints()->requireNoValue()
 		);
 
-		$this->assertStringContainsString( '-no-value', $html );
+		$this->assertStringContainsString( 'data-default-value="' . ListFacetHtmlBuilder::CONFIG_VALUE_SHOW_NONE_FILTER . '"', $html );
 	}
 
 }
