@@ -3,10 +3,10 @@ const actual = require( '../../resources/ext.wikibase.facetedsearch.js' );
 describe( 'getListFacetQueryMode', () => {
 	test( 'Get list facet query mode when AND is selected', () => {
 		document.body.innerHTML = `
-			<div class="wikibase-faceted-search__facet-toggle">
-				<button class="cdx-button--action-progressive" value="AND"></button>
-				<button value="OR"></button>
-			</div>
+			<select class="wikibase-faceted-search__facet-mode" data-default-value="AND">
+				<option value="AND" selected>AND</option>
+				<option value="OR">OR</option>
+			</select>
 		`;
 
 		expect( actual.getListFacetQueryMode( document.body ) )
@@ -15,22 +15,49 @@ describe( 'getListFacetQueryMode', () => {
 
 	test( 'Get list facet query mode when OR is selected', () => {
 		document.body.innerHTML = `
-			<div class="wikibase-faceted-search__facet-toggle">
-				<button value="AND"></button>
-				<button class="cdx-button--action-progressive" value="OR"></button>
-			</div>
+			<select class="wikibase-faceted-search__facet-mode" data-default-value="AND">
+				<option value="AND"></option>
+				<option value="OR" selected>OR</option>
+			</select>
 		`;
 
 		expect( actual.getListFacetQueryMode( document.body ) )
 			.toEqual( 'OR' );
 	} );
 
-	test( 'Get list facet query mode when selectedButton is missing', () => {
+	test( 'Get list facet query mode when ANY is selected', () => {
 		document.body.innerHTML = `
-			<div class="wikibase-faceted-search__facet-toggle">
-				<button value="AND"></button>
-				<button value="OR"></button>
-			</div>
+			<select class="wikibase-faceted-search__facet-mode" data-default-value="AND">
+				<option value="AND"></option>
+				<option value="OR"></option>
+				<option value="ANY" selected>ANY</option>
+			</select>
+		`;
+
+		expect( actual.getListFacetQueryMode( document.body ) )
+			.toEqual( 'ANY' );
+	} );
+
+	test( 'Get list facet query mode when NONE is selected', () => {
+		document.body.innerHTML = `
+			<select class="wikibase-faceted-search__facet-mode" data-default-value="AND">
+				<option value="AND"></option>
+				<option value="OR"></option>
+				<option value="ANY"></option>
+				<option value="NONE" selected>NONE</option>
+			</select>
+		`;
+
+		expect( actual.getListFacetQueryMode( document.body ) )
+			.toEqual( 'NONE' );
+	} );
+
+	test( 'Get list facet query mode when selected option is missing', () => {
+		document.body.innerHTML = `
+			<select class="wikibase-faceted-search__facet-mode" data-default-value="AND">
+				<option value="AND">AND</option>
+				<option value="OR">OR</option>
+			</select>
 		`;
 
 		expect( actual.getListFacetQueryMode( document.body ) )

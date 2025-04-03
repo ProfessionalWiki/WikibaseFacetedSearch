@@ -17,11 +17,20 @@ use Wikibase\DataModel\Entity\PropertyId;
 class ListFacetHtmlBuilder implements FacetHtmlBuilder {
 
 	private const CONFIG_KEY_ALLOW_COMBINE_WITH_CHOICE = 'allowCombineWithChoice';
-	private const CONFIG_KEY_DEFAULT_COMBINE_WITH = 'defaultCombineWith';
-	private const CONFIG_VALUE_COMBINE_WITH_AND = 'AND';
-	private const CONFIG_VALUE_COMBINE_WITH_OR = 'OR';
 
-	private const COMBINE_WITH_AND_BY_DEFAULT = true; // Maybe this gets turned into (constructor-injected) config
+	private const CONFIG_KEY_DEFAULT_COMBINE_WITH = 'defaultCombineWith';
+
+	private const CONFIG_KEY_SHOW_ANY_FILTER = 'showAnyFilter';
+
+	private const CONFIG_KEY_SHOW_NONE_FILTER = 'showNoneFilter';
+
+	public const CONFIG_VALUE_COMBINE_WITH_AND = 'AND';
+
+	public const CONFIG_VALUE_COMBINE_WITH_OR = 'OR';
+
+	public const CONFIG_VALUE_SHOW_ANY_FILTER = 'ANY';
+
+	public const CONFIG_VALUE_SHOW_NONE_FILTER = 'NONE';
 
 	public function __construct(
 		private readonly TemplateParser $parser,
@@ -32,7 +41,7 @@ class ListFacetHtmlBuilder implements FacetHtmlBuilder {
 
 	public function buildHtml( FacetConfig $config, PropertyConstraints $state ): string {
 		$valueCounts = $this->getValuesAndCounts( $state );
-		if ( count( $valueCounts ) === 0 ) {
+		if ( count( $valueCounts ) === 0 && !$state->hasAnyValue() && !$state->hasNoValue() ) {
 			return '';
 		}
 
@@ -46,66 +55,108 @@ class ListFacetHtmlBuilder implements FacetHtmlBuilder {
 	 * @return array<string, mixed>
 	 */
 	public function buildViewModel( FacetConfig $config, PropertyConstraints $state, array $valueCounts ): array {
-		$combineWithAnd = $this->shouldCombineWithAnd( $config, $state );
+		$facetMode = $this->getFacetMode( $config, $state );
 
 		return [
-			'toggle' => $this->buildToggleViewModel( $combineWithAnd, $this->hasCombineWithChoice( $config ) ),
-			'checkboxes' => $this->buildCheckboxesViewModel( $config, $state, $valueCounts ),
+			'select' => $this->buildModeSelectViewModel( $config, $facetMode ),
+			'checkboxes' => $this->buildCheckboxesViewModel( $config, $state, $valueCounts, $facetMode ),
 			'msg-show-more' => wfMessage( 'wikibase-faceted-search-facet-show-more' )->text(),
 			'msg-show-less' => wfMessage( 'wikibase-faceted-search-facet-show-less' )->text()
-			// TODO: act on config: showNoneFilter https://github.com/ProfessionalWiki/WikibaseFacetedSearch/issues/117
-			// TODO: act on config: showAnyFilter https://github.com/ProfessionalWiki/WikibaseFacetedSearch/issues/119
 		];
 	}
 
-	public function shouldCombineWithAnd( FacetConfig $config, PropertyConstraints $state ): bool {
+	public function getFacetMode( FacetConfig $config, PropertyConstraints $state ): string {
+		if ( $state->hasAnyValue() ) {
+			return self::CONFIG_VALUE_SHOW_ANY_FILTER;
+		}
+
+		if ( $state->hasNoValue() ) {
+			return self::CONFIG_VALUE_SHOW_NONE_FILTER;
+		}
+
 		if ( $this->hasCombineWithChoice( $config ) ) {
 			if ( $state->getOrSelectedValues() !== [] ) {
-				return false;
+				return self::CONFIG_VALUE_COMBINE_WITH_OR;
 			}
 
 			if ( $state->getAndSelectedValues() !== [] ) {
-				return true;
+				return self::CONFIG_VALUE_COMBINE_WITH_AND;
 			}
 		}
 
+		return $this->getDefaultCombineWithValue( $config );
+	}
+
+	private function getDefaultCombineWithValue( FacetConfig $config ): string {
 		if ( ( $config->typeSpecificConfig[self::CONFIG_KEY_DEFAULT_COMBINE_WITH] ?? null ) === self::CONFIG_VALUE_COMBINE_WITH_OR ) {
-			return false;
+			return self::CONFIG_VALUE_COMBINE_WITH_OR;
 		}
 
 		if ( ( $config->typeSpecificConfig[self::CONFIG_KEY_DEFAULT_COMBINE_WITH] ?? null ) === self::CONFIG_VALUE_COMBINE_WITH_AND ) {
-			return true;
+			return self::CONFIG_VALUE_COMBINE_WITH_AND;
 		}
 
-		return self::COMBINE_WITH_AND_BY_DEFAULT;
+		return self::CONFIG_VALUE_COMBINE_WITH_AND;
 	}
 
 	private function hasCombineWithChoice( FacetConfig $config ): bool {
 		return (bool)( $config->typeSpecificConfig[self::CONFIG_KEY_ALLOW_COMBINE_WITH_CHOICE] ?? true );
 	}
 
-	/**
-	 * @return array<array<string, mixed>>
-	 */
-	private function buildToggleViewModel( bool $combineWithAnd, bool $canChoose ): array {
-		return [
-			'and' => [
-				'label' => wfMessage( 'wikibase-faceted-search-and' )->text(),
+	private function buildModeSelectViewModel( FacetConfig $config, string $facetMode ): array {
+		$canChoose = $this->hasCombineWithChoice( $config );
+		$defaultCombineWithValue = $this->getDefaultCombineWithValue( $config );
+
+		$options = [
+			[
+				'label' => wfMessage( 'wikibase-faceted-search-facet-all-selected-values' )->text(),
 				'value' => self::CONFIG_VALUE_COMBINE_WITH_AND,
-				'selected' => $combineWithAnd,
-				'disabled' => !$canChoose && !$combineWithAnd
+				'selected' => $facetMode === self::CONFIG_VALUE_COMBINE_WITH_AND,
+				'disabled' => !$canChoose && $defaultCombineWithValue !== self::CONFIG_VALUE_COMBINE_WITH_AND
 			],
-			'or' => [
-				'label' => wfMessage( 'wikibase-faceted-search-or' )->text(),
+			[
+				'label' => wfMessage( 'wikibase-faceted-search-facet-any-selected-values' )->text(),
 				'value' => self::CONFIG_VALUE_COMBINE_WITH_OR,
-				'selected' => !$combineWithAnd,
-				'disabled' => !$canChoose && $combineWithAnd
+				'selected' => $facetMode === self::CONFIG_VALUE_COMBINE_WITH_OR,
+				'disabled' => !$canChoose && $defaultCombineWithValue !== self::CONFIG_VALUE_COMBINE_WITH_OR
+			],
+			[
+				'label' => wfMessage( 'wikibase-faceted-search-facet-any-value' )->text(),
+				'value' => self::CONFIG_VALUE_SHOW_ANY_FILTER,
+				'selected' => $facetMode === self::CONFIG_VALUE_SHOW_ANY_FILTER,
+				'disabled' => !$this->hasAnyValueFilter( $config )
+			],
+			[
+				'label' => wfMessage( 'wikibase-faceted-search-facet-no-value' )->text(),
+				'value' => self::CONFIG_VALUE_SHOW_NONE_FILTER,
+				'selected' => $facetMode === self::CONFIG_VALUE_SHOW_NONE_FILTER,
+				'disabled' => !$this->hasNoValueFilter( $config )
 			]
+		];
+
+		return [
+			'defaultValue' => $facetMode,
+			'options' => array_values( array_filter(
+				$options,
+				fn( $option ) => !$option['disabled']
+			) )
 		];
 	}
 
-	private function buildCheckboxesViewModel( FacetConfig $config, PropertyConstraints $state, array $valueCounts ): array {
-		if ( $valueCounts === [] ) {
+	private function hasAnyValueFilter( FacetConfig $config ): bool {
+		return (bool)( $config->typeSpecificConfig[self::CONFIG_KEY_SHOW_ANY_FILTER] ?? true );
+	}
+
+	private function hasNoValueFilter( FacetConfig $config ): bool {
+		return (bool)( $config->typeSpecificConfig[self::CONFIG_KEY_SHOW_NONE_FILTER] ?? true );
+	}
+
+	private function buildCheckboxesViewModel( FacetConfig $config, PropertyConstraints $state, array $valueCounts, string $facetMode ): array {
+		if (
+			$valueCounts === [] ||
+			$facetMode === self::CONFIG_VALUE_SHOW_ANY_FILTER ||
+			$facetMode === self::CONFIG_VALUE_SHOW_NONE_FILTER
+		) {
 			return [
 				'visible' => [],
 				'collapsed' => [],
@@ -114,10 +165,9 @@ class ListFacetHtmlBuilder implements FacetHtmlBuilder {
 		}
 
 		$maxVisibleCheckboxes = 5; // TODO: Make this configurable
-		$combineWithAnd = $this->shouldCombineWithAnd( $config, $state );
 
 		$selectedValues = array_filter(
-			$combineWithAnd ? $state->getAndSelectedValues() : $state->getOrSelectedValues(),
+			$facetMode === self::CONFIG_VALUE_COMBINE_WITH_AND ? $state->getAndSelectedValues() : $state->getOrSelectedValues(),
 			fn( $value ) => $value !== ''
 		);
 
