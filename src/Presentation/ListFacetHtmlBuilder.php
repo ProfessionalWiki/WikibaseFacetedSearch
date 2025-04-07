@@ -17,19 +17,13 @@ use Wikibase\DataModel\Entity\PropertyId;
 class ListFacetHtmlBuilder implements FacetHtmlBuilder {
 
 	private const CONFIG_KEY_ALLOW_COMBINE_WITH_CHOICE = 'allowCombineWithChoice';
-
 	private const CONFIG_KEY_DEFAULT_COMBINE_WITH = 'defaultCombineWith';
-
 	private const CONFIG_KEY_SHOW_ANY_FILTER = 'showAnyFilter';
-
 	private const CONFIG_KEY_SHOW_NONE_FILTER = 'showNoneFilter';
 
 	public const CONFIG_VALUE_COMBINE_WITH_AND = 'AND';
-
 	public const CONFIG_VALUE_COMBINE_WITH_OR = 'OR';
-
 	public const CONFIG_VALUE_SHOW_ANY_FILTER = 'ANY';
-
 	public const CONFIG_VALUE_SHOW_NONE_FILTER = 'NONE';
 
 	public function __construct(
