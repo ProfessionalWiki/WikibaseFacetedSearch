@@ -18,6 +18,8 @@
 	"wikibase-faceted-search-settings": "הגדרות",
 	"wikibase-faceted-search-facet-all-selected-values": "וגם",
 	"wikibase-faceted-search-facet-any-selected-values": "או",
+	"wikibase-faceted-search-facet-any-value": "כל ערך",
+	"wikibase-faceted-search-facet-no-value": "אין ערך",
 	"wikibase-faceted-search-facet-apply": "החלה",
 	"wikibase-faceted-search-facet-show-more": "להציג עוד",
 	"wikibase-faceted-search-facet-show-less": "להציג פחות",

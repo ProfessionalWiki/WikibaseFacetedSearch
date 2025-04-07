@@ -18,6 +18,8 @@
 	"wikibase-faceted-search-settings": "Configurer",
 	"wikibase-faceted-search-facet-all-selected-values": "Et",
 	"wikibase-faceted-search-facet-any-selected-values": "Ou",
+	"wikibase-faceted-search-facet-any-value": "N’importe quelle valeur",
+	"wikibase-faceted-search-facet-no-value": "Aucune valeur",
 	"wikibase-faceted-search-facet-apply": "Appliquer",
 	"wikibase-faceted-search-facet-show-more": "Afficher plus",
 	"wikibase-faceted-search-facet-show-less": "Afficher moins",

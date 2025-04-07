@@ -18,6 +18,8 @@
 	"wikibase-faceted-search-settings": "Configurar",
 	"wikibase-faceted-search-facet-all-selected-values": "E",
 	"wikibase-faceted-search-facet-any-selected-values": "O",
+	"wikibase-faceted-search-facet-any-value": "Qualcunque valor",
+	"wikibase-faceted-search-facet-no-value": "Necun valor",
 	"wikibase-faceted-search-facet-apply": "Applicar",
 	"wikibase-faceted-search-facet-show-more": "Monstrar plus",
 	"wikibase-faceted-search-facet-show-less": "Monstrar minus",
