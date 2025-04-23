@@ -112,20 +112,23 @@ class WikibaseFacetedSearchHooks {
 			return;
 		}
 
-		$output->addHTML(
-			WikibaseFacetedSearchExtension::getInstance()
-				->getSidebarHtmlBuilder(
-					language: $specialSearch->getLanguage(),
-					currentQuery: self::getCurrentQuery()
-				)
-				->createHtml(
-					searchQuery: $term
-				)
-		);
+		$currentQuery = self::getCurrentQuery();
+		if ( $currentQuery !== null ) {
+			$output->addHTML(
+				WikibaseFacetedSearchExtension::getInstance()
+					->getSidebarHtmlBuilder(
+						language: $specialSearch->getLanguage(),
+						currentQuery: $currentQuery
+					)
+					->createHtml(
+						searchQuery: $term
+					)
+			);
+		}
 	}
 
-	private static function getCurrentQuery(): AbstractQuery {
-		return $GLOBALS[WikibaseFacetedSearchExtension::QUERY_GLOBAL];
+	private static function getCurrentQuery(): ?AbstractQuery {
+		return $GLOBALS[WikibaseFacetedSearchExtension::QUERY_GLOBAL] ?? null;
 	}
 
 	public static function onContentHandlerDefaultModelFor( Title $title, ?string &$model ): void {
