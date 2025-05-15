@@ -7,8 +7,8 @@
 	},
 	"wikibase-faceted-search-instance-type-all": "Kõik",
 	"wikibase-faceted-search-filters": "Filtrid",
-	"wikibase-faceted-search-facet-all-selected-values": "Ja",
-	"wikibase-faceted-search-facet-any-selected-values": "Või",
+	"wikibase-faceted-search-facet-all-selected-values": "Kõik valitud väärtused",
+	"wikibase-faceted-search-facet-any-selected-values": "Mis tahes valitud väärtus",
 	"wikibase-faceted-search-facet-show-more": "Näita veel",
 	"wikibase-faceted-search-facet-range-min": "Minimaalne",
 	"wikibase-faceted-search-facet-range-max": "Maksimaalne"

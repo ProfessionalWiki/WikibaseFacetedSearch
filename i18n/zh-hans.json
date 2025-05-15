@@ -1,13 +1,20 @@
 {
 	"@metadata": {
 		"authors": [
+			"Administrator66",
 			"沈澄心"
 		]
 	},
+	"wikibase-faceted-search-config-tab-name-missing": "未定义标签页标题",
+	"wikibase-faceted-search-config-tab-name-create-title": "创建标签页标题需支付$1",
 	"wikibase-faceted-search-config-help-example": "完整示例JSON",
 	"wikibase-faceted-search-instance-type-all": "全部",
 	"wikibase-faceted-search-filters": "过滤器",
 	"wikibase-faceted-search-settings": "配置",
+	"wikibase-faceted-search-facet-all-selected-values": "所有选定的值",
+	"wikibase-faceted-search-facet-any-selected-values": "任何选定的值",
+	"wikibase-faceted-search-facet-any-value": "任意值",
+	"wikibase-faceted-search-facet-no-value": "没有值",
 	"wikibase-faceted-search-facet-apply": "应用",
 	"wikibase-faceted-search-facet-show-more": "显示更多",
 	"wikibase-faceted-search-facet-show-less": "显示更少",
