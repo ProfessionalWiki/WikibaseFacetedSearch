@@ -1,0 +1,16 @@
+{
+	"@metadata": {
+		"authors": []
+	},
+	"wikibase-faceted-search-config-help-example": "Ceo primer JSON",
+	"wikibase-faceted-search-instance-type-all": "Sve",
+	"wikibase-faceted-search-filters": "Filteri",
+	"wikibase-faceted-search-settings": "Konfiguriši",
+	"wikibase-faceted-search-facet-all-selected-values": "I",
+	"wikibase-faceted-search-facet-any-selected-values": "Ili",
+	"wikibase-faceted-search-facet-apply": "Primeni",
+	"wikibase-faceted-search-facet-show-more": "Prikaži više",
+	"wikibase-faceted-search-facet-show-less": "Prikaži manje",
+	"wikibase-faceted-search-facet-range-min": "Minimum",
+	"wikibase-faceted-search-facet-range-max": "Maksimum"
+}
