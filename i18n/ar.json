@@ -1,0 +1,27 @@
+{
+	"@metadata": {
+		"authors": [
+			"Meno25"
+		]
+	},
+	"wikibasefacetedsearch-description": "يُحسّن [[Special:Search]] بإمكانيات بحث متعددة الأوجه. تصفية النتائج بناءً على نوع المثيل أو قيم العبارة.",
+	"special-wikibase-faceted-search-config": "تكوين البحث المتعدد الأوجه",
+	"wikibase-faceted-search-config-tab-name": "رأس علامة التبويب",
+	"wikibase-faceted-search-config-tab-name-missing": "لم يتم تعريف رأس علامة التبويب",
+	"wikibase-faceted-search-config-tab-name-create-title": "إنشاء رأس علامة التبويب مقابل $1",
+	"wikibase-faceted-search-config-tab-name-edit-title": "تعديل رأس علامة التبويب مقابل $1",
+	"wikibase-faceted-search-config-help-documentation": "يمكنك [[#ConfigurationDocumentation|عرض وثائق التكوين]] أسفل منطقة التحرير.",
+	"wikibase-faceted-search-config-help-example": "مثال كامل لـ JSON",
+	"wikibase-faceted-search-instance-type-all": "الكل",
+	"wikibase-faceted-search-filters": "المرشحات",
+	"wikibase-faceted-search-settings": "تكوين",
+	"wikibase-faceted-search-facet-all-selected-values": "جميع القيم المحددة",
+	"wikibase-faceted-search-facet-any-selected-values": "أي قيمة محددة",
+	"wikibase-faceted-search-facet-any-value": "أي قيمة",
+	"wikibase-faceted-search-facet-no-value": "لا قيمة",
+	"wikibase-faceted-search-facet-apply": "تطبيق",
+	"wikibase-faceted-search-facet-show-more": "إظهار المزيد",
+	"wikibase-faceted-search-facet-show-less": "إظهار أقل",
+	"wikibase-faceted-search-facet-range-min": "الحد الأدنى",
+	"wikibase-faceted-search-facet-range-max": "الحد الأقصى"
+}
