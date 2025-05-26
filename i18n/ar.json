@@ -6,6 +6,7 @@
 	},
 	"wikibasefacetedsearch-description": "يُحسّن [[Special:Search]] بإمكانيات بحث متعددة الأوجه. تصفية النتائج بناءً على نوع المثيل أو قيم العبارة.",
 	"special-wikibase-faceted-search-config": "تكوين البحث المتعدد الأوجه",
+	"wikibase-faceted-search-config-invalid": "لم يتم حفظ تغييراتك. تحتوي على {{PLURAL:$1|الخطأ التالي|الأخطاء التالية}}:",
 	"wikibase-faceted-search-config-tab-name": "رأس علامة التبويب",
 	"wikibase-faceted-search-config-tab-name-missing": "لم يتم تعريف رأس علامة التبويب",
 	"wikibase-faceted-search-config-tab-name-create-title": "إنشاء رأس علامة التبويب مقابل $1",
