@@ -18,6 +18,11 @@ Wikibase Faceted Search enhances MediaWiki's search with faceted search capabili
 Get professional support for this extension via [Professional Wiki], its creators and maintainers.
 We provide [MediaWiki Development], [MediaWiki Hosting], and [MediaWiki Consulting] services.
 
+## Demo
+
+Quickly get an idea about what this extension does by checking out the [demo video](https://www.youtube.com/watch?v=CxKWpTQBrqk)
+or [MaRDI Portal search](https://portal.mardi4nfdi.de/wiki/Special:Search).
+
 ## Development
 
 Run `composer install` in `extensions/WikibaseFacetedSearch/` to make the code quality tools available.
