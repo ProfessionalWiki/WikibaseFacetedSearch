@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Cabal"
+			"Cabal",
+			"McDutchie"
 		]
 	},
 	"wikibase-faceted-search-config-invalid": "ਤੁਹਾਡੀਆਂ ਤਬਦੀਲੀਆਂ ਸੰਭਾਲੀਆਂ ਨਹੀਂ ਗਈਆਂ। ਇਹਨਾਂ ਵਿੱਚ ਹੇਠ {{PLURAL:$1| ਲਿਖੀ ਗਲਤੀ ਐ| ਲਿਖੀਆਂ ਗਲਤੀਆਂ ਹਨ}}:",

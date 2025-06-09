@@ -1,6 +1,8 @@
 {
 	"@metadata": {
-		"authors": []
+		"authors": [
+			"McDutchie"
+		]
 	},
 	"wikibase-faceted-search-config-help-example": "Ceo primer JSON",
 	"wikibase-faceted-search-instance-type-all": "Sve",

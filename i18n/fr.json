@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"JLTRY"
+			"JLTRY",
+			"McDutchie"
 		]
 	},
 	"wikibasefacetedsearch-description": "Améliore [[Special:Search]] avec des fonctionnalités de recherche à facettes. Filtrez les résultats en fonction du type d'instance ou des valeurs d'instruction.",
@@ -16,8 +17,8 @@
 	"wikibase-faceted-search-instance-type-all": "Tous",
 	"wikibase-faceted-search-filters": "Filtres",
 	"wikibase-faceted-search-settings": "Configurer",
-	"wikibase-faceted-search-facet-all-selected-values": "Et",
-	"wikibase-faceted-search-facet-any-selected-values": "Ou",
+	"wikibase-faceted-search-facet-all-selected-values": "Toutes les valeurs sélectionnées",
+	"wikibase-faceted-search-facet-any-selected-values": "N’importe quelle valeur sélectionnée",
 	"wikibase-faceted-search-facet-any-value": "N’importe quelle valeur",
 	"wikibase-faceted-search-facet-no-value": "Aucune valeur",
 	"wikibase-faceted-search-facet-apply": "Appliquer",

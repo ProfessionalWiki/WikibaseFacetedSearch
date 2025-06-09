@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"Brettchenweber",
-			"Kghbln"
+			"Kghbln",
+			"McDutchie"
 		]
 	},
 	"wikibasefacetedsearch-description": "Erweitert die [[Special:Search|Spezialseite „Suche“]] um eine Facettensuche, die das Filtern nach Instanztypen und Aussagedatenwerten ermöglicht",
@@ -17,8 +18,8 @@
 	"wikibase-faceted-search-instance-type-all": "Alle",
 	"wikibase-faceted-search-filters": "Filter",
 	"wikibase-faceted-search-settings": "Konfigurieren",
-	"wikibase-faceted-search-facet-all-selected-values": "Und",
-	"wikibase-faceted-search-facet-any-selected-values": "Oder",
+	"wikibase-faceted-search-facet-all-selected-values": "Alle ausgewählten Werte",
+	"wikibase-faceted-search-facet-any-selected-values": "Beliebiger ausgewählter Wert",
 	"wikibase-faceted-search-facet-apply": "Anwenden",
 	"wikibase-faceted-search-facet-show-more": "Mehr anzeigen",
 	"wikibase-faceted-search-facet-show-less": "Weniger anzeigen",
