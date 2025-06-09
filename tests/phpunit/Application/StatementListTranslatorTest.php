@@ -63,10 +63,12 @@ class StatementListTranslatorTest extends TestCase {
 		$itemType = new ItemId( 'Q100' );
 		$propertyP1 = new NumericPropertyId( 'P100' );
 		$propertyP2 = new NumericPropertyId( 'P200' );
+		$propertyP3 = new NumericPropertyId( 'P300' );
 
 		$statements = new StatementList(
 			$this->newStatement( $propertyP1, new StringValue( 'unimportant' ) ),
 			$this->newStatement( $propertyP2, new StringValue( 'unimportant' ) ),
+			$this->newStatement( $propertyP3, new StringValue( 'unimportant' ) ),
 		);
 
 		$config = new Config(
@@ -78,8 +80,13 @@ class StatementListTranslatorTest extends TestCase {
 					type: FacetType::LIST
 				),
 				new FacetConfig(
-					itemType: $itemType,
+					itemType: new ItemId( 'Q404' ), // Different item type, so not indexed
 					propertyId: $propertyP2,
+					type: FacetType::LIST
+				),
+				new FacetConfig(
+					itemType: $itemType,
+					propertyId: $propertyP3,
 					type: FacetType::LIST
 				),
 			)
@@ -88,7 +95,7 @@ class StatementListTranslatorTest extends TestCase {
 		$this->assertEquals(
 			[
 				'wbfs_P100' => [ 'translated value' ],
-				'wbfs_P200' => [ 'translated value' ],
+				'wbfs_P300' => [ 'translated value' ],
 				'wbfs_P42' => [],
 			],
 			$this->newTranslator(
@@ -126,6 +133,46 @@ class StatementListTranslatorTest extends TestCase {
 			$this->newTranslator(
 				statementTranslator: new StubStatementTranslator( null ),
 				itemTypeExtractor: new StubItemTypeExtractor( $itemType ),
+				config: $config
+			)->translateStatements( $statements )
+		);
+	}
+
+	public function testTranslatesAllStatementsWhenIndexAllPropertiesIsTrue(): void {
+		$propertyP1 = new NumericPropertyId( 'P100' );
+		$propertyP2 = new NumericPropertyId( 'P200' );
+
+		$statements = new StatementList(
+			$this->newStatement( $propertyP1, new StringValue( 'unimportant' ) ),
+			$this->newStatement( $propertyP2, new StringValue( 'unimportant' ) ),
+		);
+
+		$config = new Config(
+			itemTypeProperty: new NumericPropertyId( 'P42' ),
+			facets: new FacetConfigList(
+				new FacetConfig(
+					itemType: new ItemId( 'Q100' ),
+					propertyId: $propertyP1,
+					type: FacetType::LIST
+				),
+				new FacetConfig(
+					itemType: new ItemId( 'Q200' ),
+					propertyId: $propertyP2,
+					type: FacetType::LIST
+				),
+			),
+			indexAllProperties: true
+		);
+
+		$this->assertEquals(
+			[
+				'wbfs_P100' => [ 'translated value' ],
+				'wbfs_P200' => [ 'translated value' ],
+				'wbfs_P42' => [],
+			],
+			$this->newTranslator(
+				statementTranslator: new StubStatementTranslator( 'translated value' ),
+				itemTypeExtractor: new StubItemTypeExtractor( new ItemId( 'Q300' ) ),
 				config: $config
 			)->translateStatements( $statements )
 		);

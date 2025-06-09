@@ -146,4 +146,30 @@ class ConfigDeserializerTest extends TestCase {
 		);
 	}
 
+	public function testCanSetIndexAllProperties(): void {
+		$config = $this->newDeserializer()->deserialize( '{
+	"indexAllProperties": true
+}
+' );
+
+		$this->assertTrue( $config->indexAllProperties );
+	}
+
+	public function testDefaultsToNotIndexAllProperties(): void {
+		$config = $this->newDeserializer()->deserialize( '{
+}
+' );
+
+		$this->assertFalse( $config->indexAllProperties );
+	}
+
+	public function testCanSetIndexAllPropertiesToFalse(): void {
+		$config = $this->newDeserializer()->deserialize( '{
+	"indexAllProperties": false
+}
+' );
+
+		$this->assertFalse( $config->indexAllProperties );
+	}
+
 }
