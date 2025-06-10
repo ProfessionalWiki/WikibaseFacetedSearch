@@ -12,6 +12,8 @@ jobs:
       matrix:
         include:
           - mw: 'REL1_43'
+            php: '8.1'
+          - mw: 'REL1_43'
             php: '8.2'
           - mw: 'master'
             php: '8.3'
