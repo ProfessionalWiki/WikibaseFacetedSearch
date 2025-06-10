@@ -49,11 +49,19 @@ Commands that use Docker:
 
 ## Release Notes
 
-### Version 1.0.0 - TBD
+### Version 1.0.0 - 2025-06-10
 
-* TODO
-* Compatibility with MediaWiki 1.43
-* Compatibility with PHP 8.1 up to (at least) 8.3
+* Added tab and sidebar-based facet UI to `Special:Search`
+* Added range facets for numerical and date values
+* Added list facets with available values listed by occurrence counts
+* Added special support for values of type Wikibase Item to list facets
+* Added support for "any of", "all of", "no value", "any value" to list facets
+* Added a mobile version of the facet UI
+* Added comprehensive Elasticsearch indexing of Wikibase values
+* Added support for attaching indexed Wikibase values to a normal wiki page for combined full-text and structured queries
+* Added on-wiki configuration UI at `MediaWiki:WikibaseFacetedSearch`
+* Compatibility with MediaWiki 1.43 up to (at least) 1.44
+* Compatibility with PHP 8.1 up to (at least) 8.4
 
 [Professional Wiki]: https://professional.wiki
 [MediaWiki Hosting]: https://pro.wiki
