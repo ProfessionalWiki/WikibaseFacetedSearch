@@ -2,14 +2,15 @@
 	"@metadata": {
 		"authors": [
 			"McDutchie",
+			"Okras",
 			"Yurina Tatiana"
 		]
 	},
 	"wikibase-faceted-search-instance-type-all": "Все",
 	"wikibase-faceted-search-filters": "Фильтры",
 	"wikibase-faceted-search-settings": "Настроить",
-	"wikibase-faceted-search-facet-all-selected-values": "И",
-	"wikibase-faceted-search-facet-any-selected-values": "Или",
+	"wikibase-faceted-search-facet-all-selected-values": "Все выбранные значения",
+	"wikibase-faceted-search-facet-any-selected-values": "Любое выбранное значение",
 	"wikibase-faceted-search-facet-apply": "Применить",
 	"wikibase-faceted-search-facet-show-more": "Показать больше",
 	"wikibase-faceted-search-facet-show-less": "Показать меньше",
