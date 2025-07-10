@@ -1,0 +1,19 @@
+{
+	"@metadata": {
+		"authors": [
+			"Умар"
+		]
+	},
+	"wikibase-faceted-search-instance-type-all": "Массо а",
+	"wikibase-faceted-search-filters": "Фильтраш",
+	"wikibase-faceted-search-settings": "Нисйан",
+	"wikibase-faceted-search-facet-all-selected-values": "Дерриге а хаьржина маьӀнаш",
+	"wikibase-faceted-search-facet-any-selected-values": "Муьлхха а хаьржина маьӀна",
+	"wikibase-faceted-search-facet-any-value": "Муьлхха а маьӀна",
+	"wikibase-faceted-search-facet-no-value": "МаьӀна дац",
+	"wikibase-faceted-search-facet-apply": "Кхочушдан",
+	"wikibase-faceted-search-facet-show-more": "Гайта кхин",
+	"wikibase-faceted-search-facet-show-less": "Гайта кӀезга",
+	"wikibase-faceted-search-facet-range-min": "Минимум",
+	"wikibase-faceted-search-facet-range-max": "Максимум"
+}
