@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"*surak*",
 			"Brettchenweber",
 			"Kghbln",
 			"McDutchie"
@@ -20,6 +21,8 @@
 	"wikibase-faceted-search-settings": "Konfigurieren",
 	"wikibase-faceted-search-facet-all-selected-values": "Alle ausgewählten Werte",
 	"wikibase-faceted-search-facet-any-selected-values": "Beliebiger ausgewählter Wert",
+	"wikibase-faceted-search-facet-any-value": "Ein beliebiger Wert",
+	"wikibase-faceted-search-facet-no-value": "Kein Wert",
 	"wikibase-faceted-search-facet-apply": "Anwenden",
 	"wikibase-faceted-search-facet-show-more": "Mehr anzeigen",
 	"wikibase-faceted-search-facet-show-less": "Weniger anzeigen",
