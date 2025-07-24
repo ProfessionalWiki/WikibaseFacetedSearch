@@ -1,0 +1,17 @@
+{
+	"@metadata": {
+		"authors": [
+			"Eduardoaddad"
+		]
+	},
+	"wikibase-faceted-search-config-tab-name": "Cabeçalho da guia",
+	"wikibase-faceted-search-instance-type-all": "Todos",
+	"wikibase-faceted-search-filters": "Filtros",
+	"wikibase-faceted-search-settings": "Configurar",
+	"wikibase-faceted-search-facet-no-value": "Nenhum valor",
+	"wikibase-faceted-search-facet-apply": "Aplicar",
+	"wikibase-faceted-search-facet-show-more": "Mostrar mais",
+	"wikibase-faceted-search-facet-show-less": "Mostrar menos",
+	"wikibase-faceted-search-facet-range-min": "Mínimo",
+	"wikibase-faceted-search-facet-range-max": "Máximo"
+}

@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"McDutchie",
+			"YeBoy371",
 			"Ykhwong"
 		]
 	},
@@ -12,8 +13,8 @@
 	"wikibase-faceted-search-instance-type-all": "모두",
 	"wikibase-faceted-search-filters": "필터",
 	"wikibase-faceted-search-settings": "구성",
-	"wikibase-faceted-search-facet-all-selected-values": "그리고",
-	"wikibase-faceted-search-facet-any-selected-values": "또는",
+	"wikibase-faceted-search-facet-all-selected-values": "선택된 모든 값",
+	"wikibase-faceted-search-facet-any-selected-values": "선택된 값",
 	"wikibase-faceted-search-facet-apply": "적용",
 	"wikibase-faceted-search-facet-show-more": "더 보기",
 	"wikibase-faceted-search-facet-show-less": "덜 보기",
