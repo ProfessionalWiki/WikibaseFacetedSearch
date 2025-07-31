@@ -4,7 +4,12 @@
 			"Умар"
 		]
 	},
+	"special-wikibase-faceted-search-config": "Фасетийн лехаман конфигураци",
 	"wikibase-faceted-search-config-tab-name": "Вкладкин корта",
+	"wikibase-faceted-search-config-tab-name-missing": "Вкладкин корта билгалбаьккхина бац",
+	"wikibase-faceted-search-config-tab-name-create-title": "$1 вкладкин корта кхолла.",
+	"wikibase-faceted-search-config-tab-name-edit-title": "Вкладкин корта хийца $1",
+	"wikibase-faceted-search-config-help-example": "Дуьззина масал JSON",
 	"wikibase-faceted-search-instance-type-all": "Массо а",
 	"wikibase-faceted-search-filters": "Фильтраш",
 	"wikibase-faceted-search-settings": "Нисйан",
