@@ -2,12 +2,15 @@
 	"@metadata": {
 		"authors": [
 			"Administrator66",
+			"Lakejason0",
 			"沈澄心"
 		]
 	},
+	"wikibase-faceted-search-config-invalid": "您的更改未保存。更改包含以下{{PLURAL:$1|错误}}：",
 	"wikibase-faceted-search-config-tab-name": "标签页眉",
 	"wikibase-faceted-search-config-tab-name-missing": "未定义标签页标题",
 	"wikibase-faceted-search-config-tab-name-create-title": "创建标签页标题需支付$1",
+	"wikibase-faceted-search-config-help-documentation": "您可以在编辑区域下方[[#ConfigurationDocumentation|查看配置文档]]。",
 	"wikibase-faceted-search-config-help-example": "完整示例JSON",
 	"wikibase-faceted-search-instance-type-all": "全部",
 	"wikibase-faceted-search-filters": "过滤器",

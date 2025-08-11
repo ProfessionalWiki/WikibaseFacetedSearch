@@ -1,0 +1,28 @@
+{
+	"@metadata": {
+		"authors": [
+			"JeffreyKim"
+		]
+	},
+	"wikibasefacetedsearch-description": "透過多面搜尋功能嚟增強[[Special:Search]]。根據返實例類型或者語句值篩選結果",
+	"special-wikibase-faceted-search-config": "分面搜尋配置",
+	"wikibase-faceted-search-config-invalid": "你嘅變更未儲存。佢哋包含以下{{PLURAL:$1|錯誤}}:",
+	"wikibase-faceted-search-config-tab-name": "標籤個標題",
+	"wikibase-faceted-search-config-tab-name-missing": "冇定義咗標籤嘅標題",
+	"wikibase-faceted-search-config-tab-name-create-title": "用$1嚟建立標籤標題",
+	"wikibase-faceted-search-config-tab-name-edit-title": "編輯標籤標題，淨係需要$1",
+	"wikibase-faceted-search-config-help-documentation": "你可以喺編輯區域下面[[#ConfigurationDocumentation|睇返配置文件]]。",
+	"wikibase-faceted-search-config-help-example": "完整嘅JSON例子",
+	"wikibase-faceted-search-instance-type-all": "全部",
+	"wikibase-faceted-search-filters": "過濾器",
+	"wikibase-faceted-search-settings": "設定",
+	"wikibase-faceted-search-facet-all-selected-values": "所有揀咗嘅值",
+	"wikibase-faceted-search-facet-any-selected-values": "任何揀咗嘅值",
+	"wikibase-faceted-search-facet-any-value": "任何數値",
+	"wikibase-faceted-search-facet-no-value": "冇數値",
+	"wikibase-faceted-search-facet-apply": "申請",
+	"wikibase-faceted-search-facet-show-more": "睇多啲",
+	"wikibase-faceted-search-facet-show-less": "睇少啲",
+	"wikibase-faceted-search-facet-range-min": "最少",
+	"wikibase-faceted-search-facet-range-max": "最多"
+}
