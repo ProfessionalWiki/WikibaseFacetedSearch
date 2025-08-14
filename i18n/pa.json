@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"Cabal",
+			"Kuldeepburjbhalaike",
 			"McDutchie"
 		]
 	},
@@ -10,8 +11,8 @@
 	"wikibase-faceted-search-instance-type-all": "ਸਾਰੇ",
 	"wikibase-faceted-search-filters": "ਛਾਨਣੀਆਂ",
 	"wikibase-faceted-search-settings": "ਤਰਜੀਹਾਂ",
-	"wikibase-faceted-search-facet-all-selected-values": "ਅਤੇ",
-	"wikibase-faceted-search-facet-any-selected-values": "ਜਾਂ",
+	"wikibase-faceted-search-facet-all-selected-values": "ਸਾਰੇ ਚੁਣੇ ਹੋਏ ਮੁੱਲ",
+	"wikibase-faceted-search-facet-any-selected-values": "ਕੋਈ ਵੀ ਚੁਣਿਆ ਗਿਆ ਮੁੱਲ",
 	"wikibase-faceted-search-facet-apply": "ਲਾਗੂ ਕਰੋ",
 	"wikibase-faceted-search-facet-show-more": "ਹੋਰ ਵਿਖਾਓ",
 	"wikibase-faceted-search-facet-show-less": "ਘੱਟ ਵਿਖਾਓ",
