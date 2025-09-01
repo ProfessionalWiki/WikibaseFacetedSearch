@@ -4,11 +4,14 @@
 			"Умар"
 		]
 	},
+	"wikibasefacetedsearch-description": "[[Special:Search]] лакхадоккху фасетан лехаман таронашца. Фильтрацин жамӀаш инстанцин тайпанан йа операторан маьӀнийн буха тӀехь бо",
 	"special-wikibase-faceted-search-config": "Фасетийн лехаман конфигураци",
+	"wikibase-faceted-search-config-invalid": "Хьан хийцамаш Ӏалашбина бацара. Царна йукъахь ду хӀара {{PLURAL:$1|гӀалат|гӀалаташ}}:",
 	"wikibase-faceted-search-config-tab-name": "Вкладкин корта",
 	"wikibase-faceted-search-config-tab-name-missing": "Вкладкин корта билгалбаьккхина бац",
 	"wikibase-faceted-search-config-tab-name-create-title": "$1 вкладкин корта кхолла.",
 	"wikibase-faceted-search-config-tab-name-edit-title": "Вкладкин корта хийца $1",
+	"wikibase-faceted-search-config-help-documentation": "Хьан йиш йу [[#ConfigurationDocumentation|хьажа конфигурацин документаци]] хийцаран меттигна бухахь.",
 	"wikibase-faceted-search-config-help-example": "Дуьззина масал JSON",
 	"wikibase-faceted-search-instance-type-all": "Массо а",
 	"wikibase-faceted-search-filters": "Фильтраш",
