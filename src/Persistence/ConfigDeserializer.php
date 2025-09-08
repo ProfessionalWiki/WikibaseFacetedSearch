@@ -40,6 +40,7 @@ class ConfigDeserializer {
 			itemTypeProperty: $this->newPropertyId( $configArray['itemTypeProperty'] ?? null ),
 			facets: $this->newFacetConfigList( $configArray['configPerItemType'] ?? [] ),
 			icons: $this->newIconsList( $configArray['configPerItemType'] ?? [] ),
+			indexAllProperties: (bool)( $configArray['indexAllProperties'] ?? false ),
 		);
 	}
 
