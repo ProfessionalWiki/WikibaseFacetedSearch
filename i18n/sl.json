@@ -1,0 +1,28 @@
+{
+	"@metadata": {
+		"authors": [
+			"Eleassar"
+		]
+	},
+	"wikibasefacetedsearch-description": "Izboljša [[Special:Search]] z možnostmi fasetnega iskanja. Rezultate filtrirajte po vrsti primerka ali vrednostih izjav.",
+	"special-wikibase-faceted-search-config": "Konfiguracija fasetnega iskanja",
+	"wikibase-faceted-search-config-invalid": "Vaše spremembe niso bile shranjene. Vsebujejo {{PLURAL:$1|naslednjo napako|naslednje napake}}:",
+	"wikibase-faceted-search-config-tab-name": "Glava zavihka",
+	"wikibase-faceted-search-config-tab-name-missing": "Glava zavihka ni definirana",
+	"wikibase-faceted-search-config-tab-name-create-title": "Ustvari glavo zavihka za $1",
+	"wikibase-faceted-search-config-tab-name-edit-title": "Uredi glavo zavihka za $1",
+	"wikibase-faceted-search-config-help-documentation": "Pod območjem urejanja si lahko [[#ConfigurationDocumentation|ogledate konfiguracijo dokumentacije]].",
+	"wikibase-faceted-search-config-help-example": "Celotni primer JSON",
+	"wikibase-faceted-search-instance-type-all": "Vse",
+	"wikibase-faceted-search-filters": "Filtri",
+	"wikibase-faceted-search-settings": "Konfiguriraj",
+	"wikibase-faceted-search-facet-all-selected-values": "Vse izbrane vrednosti",
+	"wikibase-faceted-search-facet-any-selected-values": "Katera koli izbrana vrednost",
+	"wikibase-faceted-search-facet-any-value": "Katera koli vrednost",
+	"wikibase-faceted-search-facet-no-value": "Brez vrednosti",
+	"wikibase-faceted-search-facet-apply": "Uporabi",
+	"wikibase-faceted-search-facet-show-more": "Prikaži več",
+	"wikibase-faceted-search-facet-show-less": "Prikaži manj",
+	"wikibase-faceted-search-facet-range-min": "Minimum",
+	"wikibase-faceted-search-facet-range-max": "Maksimum"
+}
