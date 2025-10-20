@@ -1,0 +1,29 @@
+{
+	"@metadata": {
+		"authors": [
+			"Kly",
+			"SupaplexTW"
+		]
+	},
+	"wikibasefacetedsearch-description": "增強 [[Special:Search]] 的分面搜尋功能。可根據實例類型或是語句值篩選結果",
+	"special-wikibase-faceted-search-config": "分面搜尋組態",
+	"wikibase-faceted-search-config-invalid": "尚未保存您做出的更改。因為有包含以下{{PLURAL:$1|錯誤}}：",
+	"wikibase-faceted-search-config-tab-name": "分頁標頭",
+	"wikibase-faceted-search-config-tab-name-missing": "未定義分頁標頭",
+	"wikibase-faceted-search-config-tab-name-create-title": "建立 $1 的分頁標頭",
+	"wikibase-faceted-search-config-tab-name-edit-title": "編輯 $1 的分頁標頭",
+	"wikibase-faceted-search-config-help-documentation": "您可以在編輯區下方[[#ConfigurationDocumentation|查看組態文件]]。",
+	"wikibase-faceted-search-config-help-example": "完整範例 JSON",
+	"wikibase-faceted-search-instance-type-all": "全部",
+	"wikibase-faceted-search-filters": "篩選",
+	"wikibase-faceted-search-settings": "組態",
+	"wikibase-faceted-search-facet-all-selected-values": "所有已選的值",
+	"wikibase-faceted-search-facet-any-selected-values": "任何已選的值",
+	"wikibase-faceted-search-facet-any-value": "任意值",
+	"wikibase-faceted-search-facet-no-value": "沒有值",
+	"wikibase-faceted-search-facet-apply": "套用",
+	"wikibase-faceted-search-facet-show-more": "顯示更多",
+	"wikibase-faceted-search-facet-show-less": "顯示較少",
+	"wikibase-faceted-search-facet-range-min": "最少",
+	"wikibase-faceted-search-facet-range-max": "最多"
+}
