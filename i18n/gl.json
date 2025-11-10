@@ -1,0 +1,28 @@
+{
+	"@metadata": {
+		"authors": [
+			"Toliño"
+		]
+	},
+	"wikibasefacetedsearch-description": "Mellora a páxina [[Special:Search]] con capacidades de busca por facetas. Filtra os resultados segundo o tipo de instancia ou os valores das declaracións.",
+	"special-wikibase-faceted-search-config": "Configuración da busca por facetas",
+	"wikibase-faceted-search-config-invalid": "Non se gardaron os cambios. Conteñen {{PLURAL:$1|o seguinte erro|os seguintes erros}}:",
+	"wikibase-faceted-search-config-tab-name": "Cabeceira da lapela",
+	"wikibase-faceted-search-config-tab-name-missing": "Non se definiu ningunha cabeceira para a lapela",
+	"wikibase-faceted-search-config-tab-name-create-title": "Crear unha cabeceira de lapela para «$1»",
+	"wikibase-faceted-search-config-tab-name-edit-title": "Editar a cabeceira de lapela de «$1»",
+	"wikibase-faceted-search-config-help-documentation": "Podes [[#ConfigurationDocumentation|ver a documentación da configuración]] debaixo da área de edición.",
+	"wikibase-faceted-search-config-help-example": "Exemplo completo de JSON",
+	"wikibase-faceted-search-instance-type-all": "Todos",
+	"wikibase-faceted-search-filters": "Filtros",
+	"wikibase-faceted-search-settings": "Configurar",
+	"wikibase-faceted-search-facet-all-selected-values": "Todos os valores seleccionados",
+	"wikibase-faceted-search-facet-any-selected-values": "Calquera valor seleccionado",
+	"wikibase-faceted-search-facet-any-value": "Calquera valor",
+	"wikibase-faceted-search-facet-no-value": "Sen valor",
+	"wikibase-faceted-search-facet-apply": "Aplicar",
+	"wikibase-faceted-search-facet-show-more": "Mostrar máis",
+	"wikibase-faceted-search-facet-show-less": "Mostrar menos",
+	"wikibase-faceted-search-facet-range-min": "Mínimo",
+	"wikibase-faceted-search-facet-range-max": "Máximo"
+}
