@@ -49,6 +49,10 @@ Commands that use Docker:
 
 ## Release Notes
 
+### Version 1.0.1 - 2025-12-05
+
+* Updated translations
+
 ### Version 1.0.0 - 2025-06-10
 
 * Added tab and sidebar-based facet UI to `Special:Search`
