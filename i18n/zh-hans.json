@@ -3,13 +3,17 @@
 		"authors": [
 			"Administrator66",
 			"Lakejason0",
+			"Peterxy12",
 			"沈澄心"
 		]
 	},
+	"wikibasefacetedsearch-description": "增强[[Special:Search]]的分面搜索功能。可根据实例类型或是语句值筛选结果",
+	"special-wikibase-faceted-search-config": "分面搜索配置",
 	"wikibase-faceted-search-config-invalid": "您的更改未保存。更改包含以下{{PLURAL:$1|错误}}：",
 	"wikibase-faceted-search-config-tab-name": "标签页眉",
 	"wikibase-faceted-search-config-tab-name-missing": "未定义标签页标题",
 	"wikibase-faceted-search-config-tab-name-create-title": "创建标签页标题需支付$1",
+	"wikibase-faceted-search-config-tab-name-edit-title": "编辑$1的标签页标头",
 	"wikibase-faceted-search-config-help-documentation": "您可以在编辑区域下方[[#ConfigurationDocumentation|查看配置文档]]。",
 	"wikibase-faceted-search-config-help-example": "完整示例JSON",
 	"wikibase-faceted-search-instance-type-all": "全部",
