@@ -7,18 +7,31 @@ on:
 jobs:
   test:
     name: "PHPUnit: MW ${{ matrix.mw }}, PHP ${{ matrix.php }}"
+    continue-on-error: ${{ matrix.experimental }}
 
     strategy:
       matrix:
         include:
           - mw: 'REL1_43'
             php: '8.1'
+            experimental: false
+            coverage: false
           - mw: 'REL1_43'
             php: '8.2'
-          - mw: 'master'
+            experimental: false
+            coverage: true
+          - mw: 'REL1_44'
             php: '8.3'
-          - mw: 'master'
+            experimental: false
+            coverage: false
+          - mw: 'REL1_45'
             php: '8.4'
+            experimental: false
+            coverage: false
+          - mw: 'master'
+            php: '8.5'
+            experimental: true
+            coverage: false
 
     runs-on: ubuntu-latest
 
@@ -52,7 +65,7 @@ jobs:
             mediawiki
             !mediawiki/extensions/
             !mediawiki/vendor/
-          key: mw_${{ matrix.mw }}-php${{ matrix.php }}_v1
+          key: mw_${{ matrix.mw }}-php${{ matrix.php }}_v2
 
       - name: Cache Composer cache
         uses: actions/cache@v4
@@ -89,17 +102,17 @@ jobs:
 
       - name: Run PHPUnit
         run: php tests/phpunit/phpunit.php -c extensions/WikibaseFacetedSearch/
-        if: matrix.mw != 'master'
+        if: ${{ ! matrix.coverage }}
 
       - name: Run PHPUnit with code coverage
         run: php tests/phpunit/phpunit.php -c extensions/WikibaseFacetedSearch/ --coverage-clover coverage.xml
-        if: matrix.mw == 'master'
+        if: ${{ matrix.coverage }}
 
       - name: Upload code coverage
         uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-        if: matrix.mw == 'master'
+        if: ${{ matrix.coverage }}
 
   PHPStan:
     name: "PHPStan: MW ${{ matrix.mw }}, PHP ${{ matrix.php }}"
@@ -132,7 +145,7 @@ jobs:
             mediawiki
             mediawiki/extensions/
             mediawiki/vendor/
-          key: mw_${{ matrix.mw }}-php${{ matrix.php }}_v1
+          key: mw_${{ matrix.mw }}-php${{ matrix.php }}_v2
 
       - name: Cache Composer cache
         uses: actions/cache@v4
@@ -201,7 +214,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.composer/cache
-          key: mw_${{ matrix.mw }}-php${{ matrix.php }}_v1
+          key: mw_${{ matrix.mw }}-php${{ matrix.php }}_v2
 
       - name: Install MediaWiki
         if: steps.cache-mediawiki.outputs.cache-hit != 'true'
