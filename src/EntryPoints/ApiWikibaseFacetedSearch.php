@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare( strict_types=1 );
 
 namespace ProfessionalWiki\WikibaseFacetedSearch\EntryPoints;
 
@@ -12,120 +12,130 @@ use MediaWiki\Status\Status;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\PropertyConstraints;
 use ProfessionalWiki\WikibaseFacetedSearch\WikibaseFacetedSearchExtension;
 
-class ApiWikibaseFacetedSearch extends ApiBase
-{
+class ApiWikibaseFacetedSearch extends ApiBase {
 
-    public function execute()
-    {
-        try {
-            $params = $this->extractRequestParams();
-            $term = $params['search'];
-            $namespaces = $params['namespaces'];
+	public function execute(): void {
+		try {
+			$params = $this->extractRequestParams();
+			$term = $params['search'];
+			$namespaces = $params['namespaces'];
 
-            $facets = $this->getFacets($term, $namespaces);
+			$facets = $this->getFacets( $term, $namespaces );
 
-            $this->getResult()->addValue(null, $this->getModuleName(), $facets);
-        } catch (\Throwable $e) {
-            $this->getResult()->addValue(null, 'error', [
-                'message' => $e->getMessage(),
-                'trace' => $e->getTraceAsString(),
-                'file' => $e->getFile(),
-                'line' => $e->getLine()
-            ]);
-        }
-    }
+			$this->getResult()->addValue( null, $this->getModuleName(), $facets );
+		} catch ( \Throwable $e ) {
+			$this->getResult()->addValue( null, 'error', [
+				'message' => $e->getMessage(),
+				'trace' => $e->getTraceAsString(),
+				'file' => $e->getFile(),
+				'line' => $e->getLine()
+			] );
+		}
+	}
 
-    private function getFacets(string $term, ?array $namespaces): array
-    {
-        $searchEngine = MediaWikiServices::getInstance()->newSearchEngine();
-        // We limit to 0 because we only need the query structure, but CirrusSearch might need 1 or execution.
-        // However, ElasticValueCounter needs the original query.
-        // SearchEngine::searchText executes the query.
-        $searchEngine->setLimitOffset(1);
-        if ($namespaces) {
-            $searchEngine->setNamespaces($namespaces);
-        }
-        $results = $searchEngine->searchText($term);
+	private function getFacets( string $term, ?array $namespaces ): array {
+		$results = $this->runSearch( $term, $namespaces );
 
-        if ($results instanceof Status) {
-            if (!$results->isOK()) {
-                return [];
-            }
-            $results = $results->getValue();
-        }
+		if ( $results instanceof Status ) {
+			if ( !$results->isOK() ) {
+				return [];
+			}
+			$results = $results->getValue();
+		}
 
-        if (!$results instanceof CirrusSearchResultSet) {
-            return [];
-        }
+		if ( !$results instanceof CirrusSearchResultSet ) {
+			return [];
+		}
 
-        $query = $results->getElasticaResultSet()->getQuery()->getQuery();
+		$elasticaResultSet = $results->getElasticaResultSet();
+		if ( $elasticaResultSet === null ) {
+			return [];
+		}
+		$query = $elasticaResultSet->getQuery()->getQuery();
 
-        if (is_array($query)) {
-            $queryArr = $query;
-            $query = new class ($queryArr) extends AbstractQuery {
-                public function __construct(private array $arr)
-                {
-                }
-                public function toArray(): array
-                {
-                    return $this->arr;
-                }
-            };
-        }
+		if ( is_array( $query ) ) {
+			$queryArr = $query;
+			$query = new class ( $queryArr ) extends AbstractQuery {
+				public function __construct( private array $arr ) {
+				}
 
-        $extension = WikibaseFacetedSearchExtension::getInstance();
-        $queryStringParser = $extension->getQueryStringParser();
-        $parsedQuery = $queryStringParser->parse($term);
+				public function toArray(): array {
+					return $this->arr;
+				}
+			};
+		}
 
-        $itemType = $parsedQuery->getItemTypes()[0] ?? null;
-        if (!$itemType) {
-            return [];
-        }
+		$extension = WikibaseFacetedSearchExtension::getInstance();
+		$queryStringParser = $extension->getQueryStringParser();
+		$parsedQuery = $queryStringParser->parse( $term );
 
-        $config = $extension->getConfig();
-        $facetConfigs = $config->getFacetConfigForItemType($itemType);
+		$itemType = $parsedQuery->getItemTypes()[0] ?? null;
+		if ( !$itemType ) {
+			return [];
+		}
 
-        $data = [];
-        $valueCounter = $extension->getValueCounter($query);
-        $labelLookup = $extension->getLabelLookup($this->getLanguage());
-        $formatter = $extension->getFacetValueFormatter($this->getLanguage());
+		$config = $extension->getConfig();
+		$facetConfigs = $config->getFacetConfigForItemType( $itemType );
 
-        foreach ($facetConfigs as $facetConfig) {
-            $constraints = $parsedQuery->getConstraintsForProperty($facetConfig->propertyId)
-                ?? new PropertyConstraints($facetConfig->propertyId);
+		$data = [];
+		$valueCounter = $extension->getValueCounter( $query );
+		$labelLookup = $extension->getLabelLookup( $this->getLanguage() );
+		$formatter = $extension->getFacetValueFormatter( $this->getLanguage() );
 
-            $counts = $valueCounter->countValues($constraints);
+		$data = [];
+		foreach ( $facetConfigs as $facetConfig ) {
+			$data[] = $this->buildFacetData(
+				$facetConfig,
+				$parsedQuery,
+				$valueCounter,
+				$labelLookup,
+				$formatter
+			);
+		}
 
-            $facetData = [
-                'property' => $facetConfig->propertyId->getSerialization(),
-                'label' => $labelLookup->getLabel($facetConfig->propertyId)?->getText() ?? $facetConfig->propertyId->getSerialization(),
-                'values' => []
-            ];
+		return $data;
+	}
 
-            foreach ($counts->asArray() as $valCount) {
-                $facetData['values'][] = [
-                    'value' => $valCount->value,
-                    'count' => $valCount->count,
-                    'label' => $formatter->getLabel((string) $valCount->value, $facetConfig->propertyId)
-                ];
-            }
-            $data[] = $facetData;
-        }
+	private function runSearch( string $term, ?array $namespaces ) {
+		$searchEngine = MediaWikiServices::getInstance()->newSearchEngine();
+		$searchEngine->setLimitOffset( 1 );
 
-        return $data;
-    }
+		if ( $namespaces ) {
+			$searchEngine->setNamespaces( $namespaces );
+		}
 
-    public function getAllowedParams()
-    {
-        return [
-            'search' => [
-                ApiBase::PARAM_TYPE => 'string',
-                ApiBase::PARAM_REQUIRED => true,
-            ],
-            'namespaces' => [
-                ApiBase::PARAM_TYPE => 'integer',
-                ApiBase::PARAM_ISMULTI => true,
-            ],
-        ];
-    }
+		return $searchEngine->searchText( $term );
+	}
+
+	private function buildFacetData(
+		$facetConfig,
+		$parsedQuery,
+		$valueCounter,
+		$labelLookup,
+		$formatter
+	): array {
+		$constraints = $parsedQuery->getConstraintsForProperty( $facetConfig->propertyId )
+			?? new PropertyConstraints( $facetConfig->propertyId );
+
+		$counts = $valueCounter->countValues( $constraints );
+
+		$propertyId = $facetConfig->propertyId;
+		$propertySerialization = $propertyId->getSerialization();
+
+		$facetData = [
+			'property' => $propertySerialization,
+			'label' => $labelLookup->getLabel( $propertyId )?->getText() ?? $propertySerialization,
+			'values' => [],
+		];
+
+		foreach ( $counts->asArray() as $valCount ) {
+			$facetData['values'][] = [
+				'value' => $valCount->value,
+				'count' => $valCount->count,
+				'label' => $formatter->getLabel( (string)$valCount->value, $propertyId ),
+			];
+		}
+
+		return $facetData;
+	}
 }
