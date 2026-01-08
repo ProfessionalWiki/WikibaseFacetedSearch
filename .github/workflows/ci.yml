@@ -229,7 +229,7 @@ jobs:
           node-version: 22
 
       - name: Setup NPM dependencies
-        run: npm install
+        run: npm ci
 
       - name: Lint i18n
         run: npm run lint:i18n
@@ -252,7 +252,7 @@ jobs:
           node-version: 22
 
       - name: Setup NPM dependencies
-        run: npm install
+        run: npm ci
 
       - name: Run Jest with code coverage
         run: npm run test:unit
