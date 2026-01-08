@@ -67,7 +67,6 @@ function init( button, content, teleportTarget ) {
 		return;
 	}
 
-	// eslint-disable-next-line mediawiki/no-unlabeled-buttonwidget
 	new Dialog( button, content, teleportTarget ).init();
 }
 
