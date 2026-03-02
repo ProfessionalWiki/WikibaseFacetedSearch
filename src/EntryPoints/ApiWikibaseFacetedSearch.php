@@ -14,6 +14,20 @@ use ProfessionalWiki\WikibaseFacetedSearch\WikibaseFacetedSearchExtension;
 
 class ApiWikibaseFacetedSearch extends ApiBase {
 
+	public function getAllowedParams(): array {
+		return [
+			'search' => [
+				self::PARAM_TYPE => 'string',
+				self::PARAM_REQUIRED => true,
+			],
+			'namespaces' => [
+				self::PARAM_TYPE => 'namespace',
+				self::PARAM_ISMULTI => true,
+				self::PARAM_REQUIRED => false,
+			],
+		];
+	}
+
 	public function execute(): void {
 		try {
 			$params = $this->extractRequestParams();
