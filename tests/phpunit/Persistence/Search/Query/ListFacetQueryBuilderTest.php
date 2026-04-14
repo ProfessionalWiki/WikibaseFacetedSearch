@@ -25,6 +25,8 @@ class ListFacetQueryBuilderTest extends TestCase {
 	private const STRING_PROPERTY = 'P200';
 	private const TIME_PROPERTY = 'P300';
 	private const ITEM_PROPERTY = 'P400';
+	private const EXTERNAL_ID_PROPERTY = 'P500';
+	private const EDTF_PROPERTY = 'P600';
 
 	public function testBuildsQueryForStringList(): void {
 		$query = $this->newFacetQueryBuilder()->buildQuery(
@@ -55,7 +57,9 @@ class ListFacetQueryBuilderTest extends TestCase {
 			self::QUANTITY_PROPERTY => 'quantity',
 			self::STRING_PROPERTY => 'string',
 			self::TIME_PROPERTY => 'time',
-			self::ITEM_PROPERTY => 'wikibase-item'
+			self::ITEM_PROPERTY => 'wikibase-item',
+			self::EXTERNAL_ID_PROPERTY => 'external-id',
+			self::EDTF_PROPERTY => 'edtf'
 		];
 
 		foreach ( $types as $pId => $type ) {
@@ -166,6 +170,38 @@ class ListFacetQueryBuilderTest extends TestCase {
 				'field' => 'wbfs_' . self::STRING_PROPERTY
 			],
 			$query->getParams()
+		);
+	}
+
+	public function testBuildsQueryForExternalIdList(): void {
+		$query = $this->newFacetQueryBuilder()->buildQuery(
+			$this->newListFacetConfig( self::EXTERNAL_ID_PROPERTY ),
+			new PropertyConstraints(
+				new NumericPropertyId( self::EXTERNAL_ID_PROPERTY ),
+				orSelectedValues: [ 'ID-001', 'ID-002' ]
+			)
+		);
+
+		$this->assertIsTermsQueryWithParams(
+			self::EXTERNAL_ID_PROPERTY,
+			[ 'ID-001', 'ID-002' ],
+			$query
+		);
+	}
+
+	public function testBuildsQueryForEdtfList(): void {
+		$query = $this->newFacetQueryBuilder()->buildQuery(
+			$this->newListFacetConfig( self::EDTF_PROPERTY ),
+			new PropertyConstraints(
+				new NumericPropertyId( self::EDTF_PROPERTY ),
+				orSelectedValues: [ '1850', '1920-03-15' ]
+			)
+		);
+
+		$this->assertIsTermsQueryWithParams(
+			self::EDTF_PROPERTY,
+			[ '1850', '1920-03-15' ],
+			$query
 		);
 	}
 
