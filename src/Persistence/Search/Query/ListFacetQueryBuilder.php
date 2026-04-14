@@ -36,7 +36,7 @@ class ListFacetQueryBuilder implements FacetQueryBuilder {
 		}
 
 		return match ( $this->dataTypeLookup->getDataTypeIdForProperty( $config->propertyId ) ) {
-			'string' => $this->buildStringQuery( $name, $values ),
+			'string', 'external-id', 'edtf' => $this->buildStringQuery( $name, $values ),
 			'wikibase-item' => $this->buildStringQuery( $name, $values ),
 			'quantity' => $this->buildQuantityQuery( $name, $values ),
 			'time' => $this->buildTimeQuery( $name, $values ),

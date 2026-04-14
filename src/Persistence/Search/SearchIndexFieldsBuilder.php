@@ -53,7 +53,7 @@ class SearchIndexFieldsBuilder {
 	private function getFieldTypeForDataTypeId( string $dataTypeId ): ?string {
 		return match ( $dataTypeId ) {
 			'quantity' => SearchIndexField::INDEX_TYPE_NUMBER,
-			'string' => SearchIndexField::INDEX_TYPE_KEYWORD,
+			'string', 'external-id', 'edtf' => SearchIndexField::INDEX_TYPE_KEYWORD,
 			'time' => SearchIndexField::INDEX_TYPE_DATETIME,
 			'wikibase-item' => SearchIndexField::INDEX_TYPE_KEYWORD,
 			default => null

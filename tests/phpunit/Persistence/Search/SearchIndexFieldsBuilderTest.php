@@ -66,7 +66,9 @@ class SearchIndexFieldsBuilderTest extends TestCase {
 			'P100' => 'quantity',
 			'P200' => 'string',
 			'P300' => 'time',
-			'P400' => 'wikibase-item'
+			'P400' => 'wikibase-item',
+			'P500' => 'external-id',
+			'P600' => 'edtf'
 		];
 
 		foreach ( $types as $pId => $type ) {
@@ -130,6 +132,42 @@ class SearchIndexFieldsBuilderTest extends TestCase {
 
 	private function newProperty( string $id, string $dataType ): Property {
 		return new Property( new NumericPropertyId( $id ), null, $dataType );
+	}
+
+	public function testCreatesKeywordFieldForExternalIdProperty(): void {
+		$builder = $this->newBuilder(
+			new Config(
+				itemTypeProperty: new NumericPropertyId( 'P1' ),
+				facets: new FacetConfigList(
+					$this->newFacetConfig( 'Q1', 'P500' )
+				)
+			)
+		);
+
+		$fields = $builder->createFieldObjects();
+
+		$this->assertEquals(
+			new AggregatableKeywordIndexField( 'wbfs_P500', SearchIndexField::INDEX_TYPE_KEYWORD, $this->cirrusSearch->getConfig() ),
+			$fields['wbfs_P500']
+		);
+	}
+
+	public function testCreatesKeywordFieldForEdtfProperty(): void {
+		$builder = $this->newBuilder(
+			new Config(
+				itemTypeProperty: new NumericPropertyId( 'P1' ),
+				facets: new FacetConfigList(
+					$this->newFacetConfig( 'Q1', 'P600' )
+				)
+			)
+		);
+
+		$fields = $builder->createFieldObjects();
+
+		$this->assertEquals(
+			new AggregatableKeywordIndexField( 'wbfs_P600', SearchIndexField::INDEX_TYPE_KEYWORD, $this->cirrusSearch->getConfig() ),
+			$fields['wbfs_P600']
+		);
 	}
 
 	public function testDoesNotReturnFieldsForMissingProperties(): void {
