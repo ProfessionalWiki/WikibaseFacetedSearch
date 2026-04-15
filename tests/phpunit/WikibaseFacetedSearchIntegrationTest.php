@@ -33,7 +33,9 @@ class WikibaseFacetedSearchIntegrationTest extends MediaWikiIntegrationTestCase 
 		 */
 		$title = Title::newFromText( 'MediaWiki:' . WikibaseFacetedSearchExtension::CONFIG_PAGE_TITLE );
 
-		$this->deletePage( new WikiPage( $title ) );
+		if ( $title->exists() ) {
+			$this->deletePage( new WikiPage( $title ) );
+		}
 	}
 
 	protected function getPageHtml( string $pageTitle ): string {

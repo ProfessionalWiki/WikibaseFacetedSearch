@@ -4,28 +4,22 @@ declare( strict_types = 1 );
 
 namespace ProfessionalWiki\WikibaseFacetedSearch\Tests\EntryPoints;
 
-use MediaWiki\SpecialPage\SpecialPage;
 use MediaWiki\Title\Title;
 use ProfessionalWiki\WikibaseFacetedSearch\WikibaseFacetedSearchExtension;
-use SpecialPageTestBase;
 
 /**
  * @covers \ProfessionalWiki\WikibaseFacetedSearch\EntryPoints\SpecialWikibaseFacetedSearchConfig
  */
-class SpecialWikibaseFacetedSearchConfigTest extends SpecialPageTestBase {
-
-	protected function newSpecialPage(): SpecialPage {
-		return $this->getServiceContainer()->getSpecialPageFactory()->getPage( 'WikibaseFacetedSearchConfig' );
-	}
+class SpecialWikibaseFacetedSearchConfigTest extends \MediaWikiIntegrationTestCase {
 
 	public function testRedirect(): void {
-		$specialRules = $this->newSpecialPage();
+		$specialPage = $this->getServiceContainer()->getSpecialPageFactory()->getPage( 'WikibaseFacetedSearchConfig' );
 
-		$specialRules->execute( null );
+		$specialPage->execute( null );
 
 		$this->assertEquals(
 			Title::newFromText( WikibaseFacetedSearchExtension::CONFIG_PAGE_TITLE, NS_MEDIAWIKI )->getFullURL(),
-			$specialRules->getOutput()->getRedirect()
+			$specialPage->getOutput()->getRedirect()
 		);
 	}
 

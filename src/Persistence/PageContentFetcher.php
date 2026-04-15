@@ -8,6 +8,7 @@ use Content;
 use MediaWiki\Revision\RevisionLookup;
 use MediaWiki\Revision\SlotRecord;
 use MediaWiki\Title\MalformedTitleException;
+use MediaWiki\Title\Title;
 use MediaWiki\Title\TitleParser;
 
 class PageContentFetcher {
@@ -20,7 +21,7 @@ class PageContentFetcher {
 
 	public function getPageContent( string $pageTitle ): ?Content {
 		try {
-			$title = $this->titleParser->parseTitle( $pageTitle );
+			$title = Title::newFromLinkTarget( $this->titleParser->parseTitle( $pageTitle ) );
 		} catch ( MalformedTitleException ) {
 			return null;
 		}

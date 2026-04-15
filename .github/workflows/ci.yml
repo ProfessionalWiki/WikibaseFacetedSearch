@@ -16,34 +16,40 @@ jobs:
             php: '8.1'
             experimental: false
             coverage: false
+            search-image: 'docker-registry.wikimedia.org/repos/search-platform/cirrussearch-elasticsearch-image:v7.10.2-12'
           - mw: 'REL1_43'
             php: '8.2'
             experimental: false
             coverage: true
+            search-image: 'docker-registry.wikimedia.org/repos/search-platform/cirrussearch-elasticsearch-image:v7.10.2-12'
           - mw: 'REL1_44'
             php: '8.3'
             experimental: false
             coverage: false
+            search-image: 'docker-registry.wikimedia.org/repos/search-platform/cirrussearch-elasticsearch-image:v7.10.2-12'
           - mw: 'REL1_45'
             php: '8.4'
             experimental: false
             coverage: false
+            search-image: 'docker-registry.wikimedia.org/repos/search-platform/cirrussearch-elasticsearch-image:v7.10.2-12'
           - mw: 'master'
             php: '8.5'
-            experimental: true
+            experimental: false
             coverage: false
+            search-image: 'docker-registry.wikimedia.org/repos/search-platform/cirrussearch-opensearch-image:v1.3.20-12'
 
     runs-on: ubuntu-latest
 
     services:
       elasticsearch:
-        image: docker-registry.wikimedia.org/releng/cirrus-elasticsearch:7.10.2-s0 # Compatibility info at https://www.mediawiki.org/wiki/Extension:CirrusSearch
+        image: ${{ matrix.search-image }}
         ports:
           - 9200:9200
           - 9300:9300
         env:
           discovery.type: single-node
           ES_JAVA_OPTS: "-Xms512m -Xmx512m -Dlog4j2.formatMsgNoLookups=true"
+          OPENSEARCH_JAVA_OPTS: "-Xms512m -Xmx512m"
 
     defaults:
       run:
@@ -65,7 +71,7 @@ jobs:
             mediawiki
             !mediawiki/extensions/
             !mediawiki/vendor/
-          key: mw_${{ matrix.mw }}-php${{ matrix.php }}_v2
+          key: mw_${{ matrix.mw }}-php${{ matrix.php }}_v3
 
       - name: Cache Composer cache
         uses: actions/cache@v4
@@ -101,11 +107,21 @@ jobs:
           php maintenance/runJobs.php
 
       - name: Run PHPUnit
-        run: php tests/phpunit/phpunit.php -c extensions/WikibaseFacetedSearch/
+        run: |
+          if [ -f tests/phpunit/phpunit.php ]; then
+            php tests/phpunit/phpunit.php -c extensions/WikibaseFacetedSearch/
+          else
+            composer phpunit -- extensions/WikibaseFacetedSearch/tests/
+          fi
         if: ${{ ! matrix.coverage }}
 
       - name: Run PHPUnit with code coverage
-        run: php tests/phpunit/phpunit.php -c extensions/WikibaseFacetedSearch/ --coverage-clover coverage.xml
+        run: |
+          if [ -f tests/phpunit/phpunit.php ]; then
+            php tests/phpunit/phpunit.php -c extensions/WikibaseFacetedSearch/ --coverage-clover coverage.xml
+          else
+            composer phpunit -- extensions/WikibaseFacetedSearch/tests/ --coverage-clover coverage.xml
+          fi
         if: ${{ matrix.coverage }}
 
       - name: Upload code coverage
@@ -145,7 +161,7 @@ jobs:
             mediawiki
             mediawiki/extensions/
             mediawiki/vendor/
-          key: mw_${{ matrix.mw }}-php${{ matrix.php }}_v2
+          key: mw_${{ matrix.mw }}-php${{ matrix.php }}_v3
 
       - name: Cache Composer cache
         uses: actions/cache@v4
@@ -214,7 +230,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.composer/cache
-          key: mw_${{ matrix.mw }}-php${{ matrix.php }}_v2
+          key: mw_${{ matrix.mw }}-php${{ matrix.php }}_v3
 
       - name: Install MediaWiki
         if: steps.cache-mediawiki.outputs.cache-hit != 'true'
