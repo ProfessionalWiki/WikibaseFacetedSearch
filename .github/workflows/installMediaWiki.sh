@@ -12,6 +12,12 @@ mv mediawiki-$MW_BRANCH mediawiki
 
 cd mediawiki
 
+# phpunit.xml.template is excluded from GitHub tarballs via .gitattributes export-ignore.
+# Download it directly from the repo if missing.
+if [ ! -f phpunit.xml.template ]; then
+    wget "https://raw.githubusercontent.com/wikimedia/mediawiki/$MW_BRANCH/phpunit.xml.template" -nv -O phpunit.xml.template 2>/dev/null || true
+fi
+
 composer install
 php maintenance/install.php --dbtype sqlite --dbuser root --dbname mw --dbpath $(pwd) --pass AdminPassword WikiName AdminUser
 

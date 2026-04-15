@@ -33,6 +33,8 @@ class SitelinkBasedStatementsLookupTest extends WikibaseFacetedSearchIntegration
 	private SitelinkBasedStatementsLookup $lookup;
 
 	protected function setUp(): void {
+		parent::setUp();
+
 		$this->sitelinkStore = new HashSiteLinkStore();
 		$this->entityLookup = new InMemoryEntityLookup();
 		$this->lookup = new SitelinkBasedStatementsLookup(
