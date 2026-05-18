@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"McDutchie",
+			"Tensama0415",
 			"YeBoy371",
 			"Ykhwong"
 		]
@@ -15,6 +16,8 @@
 	"wikibase-faceted-search-settings": "구성",
 	"wikibase-faceted-search-facet-all-selected-values": "선택된 모든 값",
 	"wikibase-faceted-search-facet-any-selected-values": "선택된 값",
+	"wikibase-faceted-search-facet-any-value": "모든 값",
+	"wikibase-faceted-search-facet-no-value": "값 없음",
 	"wikibase-faceted-search-facet-apply": "적용",
 	"wikibase-faceted-search-facet-show-more": "더 보기",
 	"wikibase-faceted-search-facet-show-less": "덜 보기",
