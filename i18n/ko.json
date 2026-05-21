@@ -7,9 +7,14 @@
 			"Ykhwong"
 		]
 	},
+	"wikibasefacetedsearch-description": "[[Special:Search]]에 패싯 검색 기능을 추가합니다. 인스턴스 유형 또는 문장 값을 기준으로 검색 결과를 필터링할 수 있습니다.",
+	"special-wikibase-faceted-search-config": "패싯 검색 구성",
+	"wikibase-faceted-search-config-invalid": "변경 내용이 저장되지 않았습니다. 다음 {{PLURAL:$1|오류}}가 포함되어 있습니다:",
 	"wikibase-faceted-search-config-tab-name": "탭 헤더",
 	"wikibase-faceted-search-config-tab-name-missing": "탭 헤더가 정의되지 않았습니다",
 	"wikibase-faceted-search-config-tab-name-create-title": "$1에 대한 탭 헤더 만들기",
+	"wikibase-faceted-search-config-tab-name-edit-title": "$1에 대한 탭 헤더 편집하기",
+	"wikibase-faceted-search-config-help-documentation": "편집 영역 아래에서 [[#ConfigurationDocumentation|구성 설명문서를 볼 수 있습니다]].",
 	"wikibase-faceted-search-config-help-example": "전체 예제 JSON",
 	"wikibase-faceted-search-instance-type-all": "모두",
 	"wikibase-faceted-search-filters": "필터",
