@@ -65,6 +65,10 @@
 		"WikibaseFacetedSearchConfig": "ProfessionalWiki\\WikibaseFacetedSearch\\EntryPoints\\SpecialWikibaseFacetedSearchConfig"
 	},
 
+	"APIModules": {
+		"wbfacetsearch": "ProfessionalWiki\\WikibaseFacetedSearch\\EntryPoints\\ApiWikibaseFacetedSearch"
+	},
+
 	"ResourceFileModulePaths": {
 		"localBasePath": "resources",
 		"remoteExtPath": "WikibaseFacetedSearch/resources"
