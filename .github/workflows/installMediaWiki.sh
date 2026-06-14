@@ -60,9 +60,15 @@ cd extensions
 git clone https://gerrit.wikimedia.org/r/mediawiki/extensions/Elastica --depth=1  --branch=$MW_BRANCH --recurse-submodules -j8
 git clone https://gerrit.wikimedia.org/r/mediawiki/extensions/CirrusSearch --depth=1  --branch=$MW_BRANCH --recurse-submodules -j8
 
-git clone https://gerrit.wikimedia.org/r/mediawiki/extensions/Wikibase --depth=1 --branch=$MW_BRANCH -j8 && \
-  cd Wikibase && \
-  git submodule set-url view/lib/wikibase-serialization https://github.com/wmde/WikibaseSerializationJavaScript.git && \
-  git submodule set-url view/lib/wikibase-data-values https://github.com/wmde/DataValuesJavaScript.git && \
-  git submodule set-url view/lib/wikibase-data-model https://github.com/wmde/WikibaseDataModelJavaScript.git && \
-  git submodule sync && git submodule init && git submodule update --recursive
+git clone https://gerrit.wikimedia.org/r/mediawiki/extensions/Wikibase --depth=1 --branch=$MW_BRANCH -j8
+cd Wikibase
+
+# The wikibase-serialization, wikibase-data-values and wikibase-data-model submodules point at
+# Phabricator URLs that are unreliable in CI, so rewrite them to GitHub mirrors. These submodules
+# only exist on the REL branches; MediaWiki master removed them (migrated to npm), so skip silently
+# when absent instead of aborting the build.
+git submodule set-url view/lib/wikibase-serialization https://github.com/wmde/WikibaseSerializationJavaScript.git 2>/dev/null || true
+git submodule set-url view/lib/wikibase-data-values https://github.com/wmde/DataValuesJavaScript.git 2>/dev/null || true
+git submodule set-url view/lib/wikibase-data-model https://github.com/wmde/WikibaseDataModelJavaScript.git 2>/dev/null || true
+
+git submodule sync && git submodule init && git submodule update --recursive
