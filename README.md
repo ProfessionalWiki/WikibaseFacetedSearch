@@ -49,6 +49,14 @@ Commands that use Docker:
 
 ## Release Notes
 
+### Version 1.1.0 - 2026-06-15
+
+* Added support for the external identifier property type to list facets
+* Added support for the EDTF property type to list facets (range facets are not yet supported)
+* Added support for MediaWiki 1.45
+* Added support for PHP 8.5
+* Updated translations
+
 ### Version 1.0.1 - 2025-12-05
 
 * Updated translations
