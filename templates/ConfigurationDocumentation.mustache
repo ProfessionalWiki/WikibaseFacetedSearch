@@ -254,6 +254,35 @@
 }</pre>
     </section>
 
+	<section>
+		<h3 id="IndexAllProperties">Index All Properties</h3>
+
+		<p>
+			By default the extension will index only values for properties for which facets are configured.
+			Via this setting, you can make the extension index values for all properties instead.
+		</p>
+
+		<p>
+			Indexing values for all properties is useful
+			when you want to be able to run structured queries for properties not shown in the UI. It is also
+			useful to avoid having to rebuild the search index whenever you add a new property to the UI.
+		</p>
+
+		<p>
+			Downsides of indexing values for all properties include needing additional storage space for the
+			search index and increased time and CPU resources to (re)build said index.
+		</p>
+
+		<p>
+			Example configuration:
+		</p>
+
+		<pre>
+{
+	"indexAllProperties": true
+}</pre>
+	</section>
+
     <section>
         <h3 id="FullExample">{{msg-wikibase-faceted-search-config-help-example}}</h3>
 
