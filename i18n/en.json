@@ -36,5 +36,8 @@
 	"wikibase-faceted-search-facet-show-less": "Show less",
 
 	"wikibase-faceted-search-facet-range-min": "Minimum",
-	"wikibase-faceted-search-facet-range-max": "Maximum"
+	"wikibase-faceted-search-facet-range-max": "Maximum",
+	"apierror-wbfs-search-failed": "The faceted search service could not complete the request. Please try again.",
+	"apierror-wbfs-item-type-required": "Include an item type filter in the search expression.",
+	"apierror-wbfs-no-facets": "No facets are configured for the selected item type."
 }

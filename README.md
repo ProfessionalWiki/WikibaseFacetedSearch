@@ -79,3 +79,26 @@ Commands that use Docker:
 [MediaWiki Hosting]: https://pro.wiki
 [MediaWiki Development]: https://professional.wiki/en/mediawiki-development
 [MediaWiki Consulting]: https://professional.wiki/en/mediawiki-consulting-services
+
+## Facet API (fork)
+
+Use the same search expression for both requests:
+
+- Results: `action=query&list=search&srsearch=haswbfacet:P1=Q1&srnamespace=120`.
+- Facet metadata/counts: `action=wbfacetsearch&search=haswbfacet:P1=Q1&namespaces=120&format=json&formatversion=2`.
+
+The facet response is an array under `wbfacetsearch`. Each entry contains `property`, `label`, `type`, and `values`; list values contain `value`, `label`, and `count`. Range facets return metadata with an empty values array rather than aggregating individual dates. List counts use the existing upstream counter (top 100 values).
+
+The first item-type token selects the facet configuration. Repeating item-type tokens searches the union of those exact types; the extension does not traverse subclass relationships. Consumers that expand classes must keep the desired configuration type first. Configure facet properties for each concrete item type before rebuilding the index: indexing selects properties using the item's first best-ranked type statement.
+
+Missing type and missing facet configuration return `wbfs-item-type-required` and `wbfs-no-facets` API errors. Search failures return `wbfs-search-failed`; internal details are logged on the server and are not returned to callers. Empty value buckets remain a valid result. Clients must check MediaWiki's JSON `error` field even when HTTP status is 200.
+
+After configuration changes, rebuild with the upstream installation commands:
+
+```sh
+php maintenance/run.php CirrusSearch:UpdateSearchIndexConfig
+php maintenance/run.php CirrusSearch:ForceSearchIndex --skipParse
+php maintenance/run.php CirrusSearch:ForceSearchIndex --skipLinks --indexOnSkip
+```
+
+Run `make phpunit --filter ApiWikibaseFacetedSearchTest` inside the MediaWiki test environment to exercise the API error paths. The normal upstream CI suite remains required for release.
