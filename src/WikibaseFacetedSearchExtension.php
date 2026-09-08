@@ -26,6 +26,7 @@ use ProfessionalWiki\WikibaseFacetedSearch\Application\ItemPageUpdater;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\ItemTypeExtractor;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\ItemTypeLabelLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\MediaWikiMessageBuilder;
+use ProfessionalWiki\WikibaseFacetedSearch\Application\NoOpValueCounter;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\PageItemLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\QueryStringParser;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\StatementListTranslator;
@@ -54,6 +55,7 @@ use ProfessionalWiki\WikibaseFacetedSearch\Persistence\SitelinkPageItemLookup;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\ConfigDocumentationBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\DelegatingFacetHtmlBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\FacetHtmlBuilder;
+use ProfessionalWiki\WikibaseFacetedSearch\Presentation\FacetsResponseBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\FacetValueFormatter;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\FontAwesomeIconBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\IconBuilder;
@@ -62,6 +64,7 @@ use ProfessionalWiki\WikibaseFacetedSearch\Presentation\RangeFacetHtmlBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\SidebarHtmlBuilder;
 use ProfessionalWiki\WikibaseFacetedSearch\Presentation\TabsHtmlBuilder;
 use RuntimeException;
+use SearchEngine;
 use Wikibase\DataModel\Services\Lookup\LabelLookup;
 use Wikibase\DataModel\Services\Lookup\PropertyDataTypeLookup;
 use Wikibase\Lib\Store\SiteLinkStore;
@@ -281,6 +284,19 @@ class WikibaseFacetedSearchExtension {
 		return new RangeFacetHtmlBuilder(
 			parser: $this->getTemplateParser()
 		);
+	}
+
+	public function newFacetsResponseBuilder( Language $language, ?AbstractQuery $currentQuery ): FacetsResponseBuilder {
+		return new FacetsResponseBuilder(
+			config: $this->getConfig(),
+			labelLookup: $this->getLabelLookup( $language ),
+			valueCounter: $currentQuery === null ? new NoOpValueCounter() : $this->getValueCounter( $currentQuery ),
+			valueFormatter: $this->getFacetValueFormatter( $language )
+		);
+	}
+
+	public function newSearchEngine(): SearchEngine {
+		return MediaWikiServices::getInstance()->newSearchEngine();
 	}
 
 	public function getQueryStringParser(): QueryStringParser {

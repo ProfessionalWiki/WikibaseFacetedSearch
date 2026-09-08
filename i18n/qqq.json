@@ -28,5 +28,13 @@
 	"wikibase-faceted-search-facet-show-more": "Label used for the Show more button in the facet",
 	"wikibase-faceted-search-facet-show-less": "Label used for the Show less button in the facet",
 	"wikibase-faceted-search-facet-range-min": "Minimum data value label displayed on range facet",
-	"wikibase-faceted-search-facet-range-max": "Maximum data value label displayed on range facet"
+	"wikibase-faceted-search-facet-range-max": "Maximum data value label displayed on range facet",
+	"apihelp-wbfacetsearch-summary": "{{doc-apihelp-summary|wbfacetsearch}}",
+	"apihelp-wbfacetsearch-extended-description": "{{doc-apihelp-extended-description|wbfacetsearch}}",
+	"apihelp-wbfacetsearch-param-search": "{{doc-apihelp-param|wbfacetsearch|search}}",
+	"apihelp-wbfacetsearch-param-namespaces": "{{doc-apihelp-param|wbfacetsearch|namespaces}}",
+	"apihelp-wbfacetsearch-example-1": "{{doc-apihelp-example|wbfacetsearch}}",
+	"apierror-wbfs-not-configured": "{{doc-apierror}}",
+	"apierror-wbfs-item-type-required": "{{doc-apierror}}",
+	"apierror-wbfs-invalid-search": "{{doc-apierror}}"
 }
