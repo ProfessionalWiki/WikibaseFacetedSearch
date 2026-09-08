@@ -94,9 +94,17 @@ class WikibaseFacetedSearchHooks {
 			return;
 		}
 
-		if ( $textMatches instanceof CirrusSearchResultSet ) {
-			self::setCurrentQuery( $textMatches->getElasticaResultSet()->getQuery()->getQuery() );
+		if ( !( $textMatches instanceof CirrusSearchResultSet ) ) {
+			return;
 		}
+
+		$elasticaResultSet = $textMatches->getElasticaResultSet();
+
+		if ( $elasticaResultSet === null ) {
+			return;
+		}
+
+		self::setCurrentQuery( $elasticaResultSet->getQuery()->getQuery() );
 	}
 
 	private static function setCurrentQuery( AbstractQuery $query ): void {
