@@ -36,5 +36,15 @@
 	"wikibase-faceted-search-facet-show-less": "Show less",
 
 	"wikibase-faceted-search-facet-range-min": "Minimum",
-	"wikibase-faceted-search-facet-range-max": "Maximum"
+	"wikibase-faceted-search-facet-range-max": "Maximum",
+
+	"apihelp-wbfacetsearch-summary": "Get the facets configured for the item type of a search expression, with the value counts for that search.",
+	"apihelp-wbfacetsearch-extended-description": "List facets return at most the 100 most frequent values. Range facets have no values.",
+	"apihelp-wbfacetsearch-param-search": "Search expression to get the facets for. Must contain an item type filter, such as <kbd>haswbfacet:P1=Q1</kbd>.",
+	"apihelp-wbfacetsearch-param-namespaces": "Namespaces to search. Defaults to all searchable namespaces, unlike <kbd>list=search</kbd>, which defaults to the main namespace.",
+	"apihelp-wbfacetsearch-example-1": "Get the facets for items of type <kbd>Q1</kbd>.",
+
+	"apierror-wbfs-not-configured": "Faceted search is not configured on this wiki.",
+	"apierror-wbfs-item-type-required": "The search expression must contain an item type filter, such as <kbd>haswbfacet:P1=Q1</kbd>.",
+	"apierror-wbfs-invalid-search": "The search expression contains a facet filter with an invalid property ID."
 }
