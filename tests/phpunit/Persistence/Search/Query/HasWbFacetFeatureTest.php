@@ -5,6 +5,9 @@ declare( strict_types = 1 );
 namespace ProfessionalWiki\WikibaseFacetedSearch\Tests\Persistence\Search\Query;
 
 use CirrusSearch\Query\KeywordFeatureAssertions;
+use CirrusSearch\Search\SearchContext;
+use CirrusSearch\SearchConfig;
+use Elastica\Query\Terms;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\Config;
 use ProfessionalWiki\WikibaseFacetedSearch\Application\QueryStringParser;
 use ProfessionalWiki\WikibaseFacetedSearch\Persistence\Search\Query\DelegatingFacetQueryBuilder;
@@ -41,6 +44,22 @@ class HasWbFacetFeatureTest extends WikibaseFacetedSearchIntegrationTest {
 				'',
 			],
 		];
+	}
+
+	public function testFiltersOnEveryItemTypeOfAnOrValue(): void {
+		$term = 'haswbfacet:P42=Q68|Q67|Q69';
+		$context = $this->newSearchContext( $term );
+
+		$this->newHasWbFacetFeature()->apply( $context, $term );
+
+		$this->assertEquals( [ new Terms( 'wbfs_P42', [ 'Q68', 'Q67', 'Q69' ] ) ], $context->getFilters() );
+	}
+
+	// KeywordFeatureAssertions::assertFilter is not used: it requires a FilterQueryFeature and never stubs getOriginalSearchTerm().
+	private function newSearchContext( string $term ): SearchContext {
+		$context = new SearchContext( new SearchConfig() );
+		$context->setOriginalSearchTerm( $term );
+		return $context;
 	}
 
 	private function newHasWbFacetFeature(): HasWbFacetFeature {

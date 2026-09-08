@@ -103,6 +103,63 @@ class QueryStringParserTest extends TestCase {
 		$this->assertEquals( $itemTypes, $query->getItemTypes() );
 	}
 
+	public function testParsesOrValuesAsMultipleItemTypes(): void {
+		$parser = $this->newQueryStringParser( itemTypeProperty: 'P32' );
+		$query = $parser->parse( 'unrelated haswbfacet:P32=Q68|Q67|Q69 unrelated' );
+
+		$itemTypes = [
+			new ItemId( 'Q68' ),
+			new ItemId( 'Q67' ),
+			new ItemId( 'Q69' ),
+		];
+
+		$this->assertEquals( $itemTypes, $query->getItemTypes() );
+	}
+
+	public function testIgnoresInvalidOrValueItemTypes(): void {
+		$parser = $this->newQueryStringParser( itemTypeProperty: 'P32' );
+		$query = $parser->parse( 'haswbfacet:P32=Q68|invalid|Q69' );
+
+		$itemTypes = [
+			new ItemId( 'Q68' ),
+			new ItemId( 'Q69' ),
+		];
+
+		$this->assertEquals( $itemTypes, $query->getItemTypes() );
+	}
+
+	public function testIgnoresEmptyOrValueItemTypes(): void {
+		$parser = $this->newQueryStringParser( itemTypeProperty: 'P32' );
+		$query = $parser->parse( 'haswbfacet:P32=|Q68|' );
+
+		$itemTypes = [
+			new ItemId( 'Q68' ),
+		];
+
+		$this->assertEquals( $itemTypes, $query->getItemTypes() );
+	}
+
+	public function testHasNoItemTypesWhenTheValueIsEmpty(): void {
+		$parser = $this->newQueryStringParser( itemTypeProperty: 'P32' );
+		$query = $parser->parse( 'haswbfacet:P32=' );
+
+		$this->assertSame( [], $query->getItemTypes() );
+	}
+
+	public function testCombinesOrValueAndRepeatedItemTypes(): void {
+		$parser = $this->newQueryStringParser( itemTypeProperty: 'P32' );
+		$query = $parser->parse( 'haswbfacet:P32=Q68|Q67|Q66 haswbfacet:P32=Q69' );
+
+		$itemTypes = [
+			new ItemId( 'Q68' ),
+			new ItemId( 'Q67' ),
+			new ItemId( 'Q66' ),
+			new ItemId( 'Q69' ),
+		];
+
+		$this->assertEquals( $itemTypes, $query->getItemTypes() );
+	}
+
 	public function testParsesAndValues(): void {
 		$parser = $this->newQueryStringParser();
 		$query = $parser->parse( 'haswbfacet:P42=foo haswbfacet:P42=bar' );
