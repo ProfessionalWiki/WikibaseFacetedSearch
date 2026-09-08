@@ -35,6 +35,5 @@
 	"apihelp-wbfacetsearch-param-namespaces": "{{doc-apihelp-param|wbfacetsearch|namespaces}}",
 	"apihelp-wbfacetsearch-example-1": "{{doc-apihelp-example|wbfacetsearch}}",
 	"apierror-wbfs-not-configured": "{{doc-apierror}}",
-	"apierror-wbfs-item-type-required": "{{doc-apierror}}",
-	"apierror-wbfs-invalid-search": "{{doc-apierror}}"
+	"apierror-wbfs-item-type-required": "{{doc-apierror}}"
 }

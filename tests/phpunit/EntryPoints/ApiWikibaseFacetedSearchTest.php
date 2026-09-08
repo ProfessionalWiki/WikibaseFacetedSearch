@@ -69,9 +69,16 @@ class ApiWikibaseFacetedSearchTest extends ApiTestCase {
 		$this->doFacetSearch( [] );
 	}
 
-	public function testSearchWithAMalformedFacetFilterIsRejected(): void {
-		$this->expectApiErrorCode( 'wbfs-invalid-search' );
-		$this->getFacets( self::SEARCH . ' haswbfacet:notAProperty=Q2' );
+	public function testAMalformedFacetFilterIsIgnored(): void {
+		$this->useSearchEngineWithoutHits();
+
+		$this->assertSame(
+			[
+				[ 'property' => 'P1', 'label' => 'P1', 'type' => 'list', 'values' => [] ],
+				[ 'property' => 'P2', 'label' => 'P2', 'type' => 'range', 'values' => [] ]
+			],
+			$this->getFacets( self::SEARCH . ' haswbfacet:notAProperty=Q2' )
+		);
 	}
 
 	public function testSearchIsRejectedWhenTheExtensionIsNotConfigured(): void {

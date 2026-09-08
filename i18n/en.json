@@ -45,6 +45,5 @@
 	"apihelp-wbfacetsearch-example-1": "Get the facets for items of type <kbd>Q1</kbd>.",
 
 	"apierror-wbfs-not-configured": "Faceted search is not configured on this wiki.",
-	"apierror-wbfs-item-type-required": "The search expression must contain an item type filter, such as <kbd>haswbfacet:P1=Q1</kbd>.",
-	"apierror-wbfs-invalid-search": "The search expression contains a facet filter with an invalid property ID."
+	"apierror-wbfs-item-type-required": "The search expression must contain an item type filter, such as <kbd>haswbfacet:P1=Q1</kbd>."
 }
