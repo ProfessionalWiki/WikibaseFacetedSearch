@@ -17,7 +17,7 @@ class ElasticQueryRunner {
 	}
 
 	public function runQuery( array $query ): Response {
-		return $this->getIndex()->request( '_search', 'GET', $query );
+		return $this->getIndex()->request( '_search', 'GET', $query, [ 'ignore_unavailable' => 'true' ] );
 	}
 
 	/**

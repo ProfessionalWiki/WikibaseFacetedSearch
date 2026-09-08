@@ -15,6 +15,16 @@ use ProfessionalWiki\WikibaseFacetedSearch\WikibaseFacetedSearchExtension;
  */
 class ElasticQueryRunnerTest extends MediaWikiIntegrationTestCase {
 
+	/**
+	 * The test database prefix ends up in the wiki id, and thus in the index name derived from it,
+	 * for which no index exists. Point the tests at the index this wiki actually has.
+	 */
+	protected function setUp(): void {
+		parent::setUp();
+
+		$this->overrideConfigValue( 'CirrusSearchIndexBaseName', $this->getDb()->getDBname() );
+	}
+
 	public function testCanQueryElastic(): void {
 		$query = [
 			'query' => [
@@ -30,6 +40,14 @@ class ElasticQueryRunnerTest extends MediaWikiIntegrationTestCase {
 
 	private function runQuery( array $query ): Response {
 		return WikibaseFacetedSearchExtension::getInstance()->getElasticQueryRunner()->runQuery( $query );
+	}
+
+	public function testFindsNothingWhenTheIndexOfThisWikiIsMissing(): void {
+		$this->overrideConfigValue( 'CirrusSearchIndexBaseName', 'wbfs_test_missing_index' );
+
+		$resultSet = $this->runQuery( [ 'query' => [ 'match_all' => new \stdClass() ] ] )->getData();
+
+		$this->assertSame( 0, $resultSet['hits']['total']['value'] );
 	}
 
 	public function testCanQueryMediaWikiPage(): void {

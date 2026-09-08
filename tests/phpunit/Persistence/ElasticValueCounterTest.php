@@ -32,14 +32,12 @@ class ElasticValueCounterTest extends TestCase {
 
 	protected function tearDown(): void {
 		$this->foreignIndex?->delete();
-		$this->foreignIndex = null;
 
 		parent::tearDown();
 	}
 
 	public function testCanExecuteValueCountQuery(): void {
-		$counter = WikibaseFacetedSearchExtension::getInstance()->getValueCounter( new MatchAll() );
-		$counter->countValues( new PropertyConstraints( new NumericPropertyId( self::PROPERTY_ID ) ) );
+		$this->countedValues();
 		$this->assertTrue( true );
 	}
 
