@@ -6,12 +6,9 @@ namespace ProfessionalWiki\WikibaseFacetedSearch\EntryPoints;
 
 use CirrusSearch\Search\CirrusSearchResultSet;
 use Elastica\Query\AbstractQuery;
-use InvalidArgumentException;
 use MediaWiki\Api\ApiBase;
 use MediaWiki\Api\ApiResult;
 use MediaWiki\Status\Status;
-use ProfessionalWiki\WikibaseFacetedSearch\Application\Query;
-use ProfessionalWiki\WikibaseFacetedSearch\Application\QueryStringParser;
 use ProfessionalWiki\WikibaseFacetedSearch\WikibaseFacetedSearchExtension;
 use RuntimeException;
 use SearchEngine;
@@ -36,7 +33,7 @@ class ApiWikibaseFacetedSearch extends ApiBase {
 		/** @var int[] $namespaces */
 		$namespaces = $params['namespaces'];
 
-		$query = $this->parseSearch( $extension->getQueryStringParser(), $search );
+		$query = $extension->getQueryStringParser()->parse( $search );
 
 		if ( $query->getItemTypes() === [] ) {
 			$this->dieWithError( 'apierror-wbfs-item-type-required', 'wbfs-item-type-required' );
@@ -50,17 +47,6 @@ class ApiWikibaseFacetedSearch extends ApiBase {
 				$this->extractElasticsearchQuery( $resultSet )
 			)->buildFacets( $query )
 		);
-	}
-
-	/**
-	 * The parser rejects malformed facet filters such as `haswbfacet:notAProperty=Q1`.
-	 */
-	private function parseSearch( QueryStringParser $queryStringParser, string $search ): Query {
-		try {
-			return $queryStringParser->parse( $search );
-		} catch ( InvalidArgumentException ) {
-			$this->dieWithError( 'apierror-wbfs-invalid-search', 'wbfs-invalid-search' );
-		}
 	}
 
 	/**

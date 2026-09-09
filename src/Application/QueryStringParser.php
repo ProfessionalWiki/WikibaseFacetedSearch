@@ -25,7 +25,11 @@ class QueryStringParser {
 			if ( $this->isInstanceOfPart( $part ) ) {
 				$itemTypes = [ ...$itemTypes, ...$this->extractItemTypes( $part ) ];
 			} elseif ( $this->isFacetPart( $part ) ) {
-				$constraints = $constraints->withConstraint( $this->handleFacetPart( $part, $constraints ) );
+				$constraint = $this->handleFacetPart( $part, $constraints );
+
+				if ( $constraint !== null ) {
+					$constraints = $constraints->withConstraint( $constraint );
+				}
 			}
 			else {
 				$freeText[] = $part;
@@ -86,14 +90,23 @@ class QueryStringParser {
 		}
 	}
 
-	private function handleFacetPart( string $part, PropertyConstraintsList $constraintsList ): PropertyConstraints {
+	/**
+	 * Null for a part whose property id is invalid, so the part is dropped from the query.
+	 */
+	private function handleFacetPart( string $part, PropertyConstraintsList $constraintsList ): ?PropertyConstraints {
 		$isNegated = str_starts_with( $part, '-' );
 		$part = ltrim( $part, '-' );
 		$part = substr( $part, strlen( 'haswbfacet:' ) );
 
 		[ $propertyIdString, $constraintString ] = $this->splitPropertyConstraint( $part );
 
-		$propertyConstraints = $constraintsList->getOrCreateConstraints( new NumericPropertyId( $propertyIdString ) );
+		$propertyId = $this->newPropertyId( $propertyIdString );
+
+		if ( $propertyId === null ) {
+			return null;
+		}
+
+		$propertyConstraints = $constraintsList->getOrCreateConstraints( $propertyId );
 
 		if ( $constraintString === '' ) {
 			return $isNegated ? $propertyConstraints->requireNoValue() : $propertyConstraints->requireAnyValue();
@@ -121,6 +134,14 @@ class QueryStringParser {
 		}
 
 		return $propertyConstraints;
+	}
+
+	private function newPropertyId( string $serialization ): ?NumericPropertyId {
+		try {
+			return new NumericPropertyId( $serialization );
+		} catch ( InvalidArgumentException ) {
+			return null;
+		}
 	}
 
 	/**

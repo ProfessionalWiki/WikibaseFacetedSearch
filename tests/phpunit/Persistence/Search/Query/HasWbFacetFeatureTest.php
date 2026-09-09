@@ -55,6 +55,15 @@ class HasWbFacetFeatureTest extends WikibaseFacetedSearchIntegrationTest {
 		$this->assertEquals( [ new Terms( 'wbfs_P42', [ 'Q68', 'Q67', 'Q69' ] ) ], $context->getFilters() );
 	}
 
+	public function testAppliesNoFilterForAnInvalidPropertyId(): void {
+		$term = 'haswbfacet:foo=Q1';
+		$context = $this->newSearchContext( $term );
+
+		$this->newHasWbFacetFeature()->apply( $context, $term );
+
+		$this->assertSame( [], $context->getFilters() );
+	}
+
 	// KeywordFeatureAssertions::assertFilter is not used: it requires a FilterQueryFeature and never stubs getOriginalSearchTerm().
 	private function newSearchContext( string $term ): SearchContext {
 		$context = new SearchContext( new SearchConfig() );

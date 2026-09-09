@@ -160,6 +160,38 @@ class QueryStringParserTest extends TestCase {
 		$this->assertEquals( $itemTypes, $query->getItemTypes() );
 	}
 
+	/**
+	 * @dataProvider invalidPropertyIdProvider
+	 */
+	public function testIgnoresFacetPartsWithAnInvalidPropertyId( string $queryString ): void {
+		$query = ( $this->newQueryStringParser() )->parse( $queryString );
+
+		$this->assertSame( [], $query->getConstraintsPerProperty() );
+		$this->assertSame( [], $query->getItemTypes() );
+		$this->assertSame( '', $query->getFreeText() );
+	}
+
+	public function invalidPropertyIdProvider(): iterable {
+		yield 'without value' => [ 'haswbfacet:foo' ];
+		yield 'with value' => [ 'haswbfacet:foo=bar' ];
+		yield 'negated' => [ '-haswbfacet:xyz' ];
+		yield 'quoted, which keeps the opening quote' => [ 'haswbfacet:"P1=Q1"' ];
+	}
+
+	public function testKeepsTheFacetPartsAroundOneWithAnInvalidPropertyId(): void {
+		$parser = $this->newQueryStringParser();
+		$query = $parser->parse( 'haswbfacet:P42=Q1 haswbfacet:foo=Q2 haswbfacet:P43=Q3' );
+
+		$this->assertSame(
+			[ 'Q1' ],
+			$query->getConstraintsForProperty( new NumericPropertyId( 'P42' ) )->getAndSelectedValues()
+		);
+		$this->assertSame(
+			[ 'Q3' ],
+			$query->getConstraintsForProperty( new NumericPropertyId( 'P43' ) )->getAndSelectedValues()
+		);
+	}
+
 	public function testParsesAndValues(): void {
 		$parser = $this->newQueryStringParser();
 		$query = $parser->parse( 'haswbfacet:P42=foo haswbfacet:P42=bar' );
