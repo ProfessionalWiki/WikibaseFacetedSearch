@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"Administrator66",
+			"GuoPC",
 			"Lakejason0",
 			"Peterxy",
 			"Peterxy12",
@@ -28,5 +29,13 @@
 	"wikibase-faceted-search-facet-show-more": "显示更多",
 	"wikibase-faceted-search-facet-show-less": "显示更少",
 	"wikibase-faceted-search-facet-range-min": "最少",
-	"wikibase-faceted-search-facet-range-max": "最多"
+	"wikibase-faceted-search-facet-range-max": "最多",
+	"apihelp-wbfacetsearch-summary": "获取为搜索表达式的项目类型配置的分面，以及该搜索的值计数。",
+	"apihelp-wbfacetsearch-extended-description": "列出最多返回100个最常见值的分面。范围分面没有具体值。",
+	"apihelp-wbfacetsearch-param-search": "用于获取分面的搜索表达式。必须包含项目类型过滤器，例如<kbd>haswbfacet:P1=Q1</kbd>。",
+	"apihelp-wbfacetsearch-param-namespaces": "要搜索的命名空间。默认为所有可搜索的命名空间，这与<kbd>list=search</kbd>不同，后者默认为主命名空间。",
+	"apihelp-wbfacetsearch-example-1": "获取<kbd>Q1</kbd>类型项目的分面。",
+	"apierror-wbfs-not-configured": "此wiki未配置分面搜索。",
+	"apierror-wbfs-item-type-required": "搜索表达式必须包含项目类型过滤器，例如<kbd>haswbfacet:P1=Q1</kbd>。",
+	"apierror-wbfs-invalid-search": "搜索表达式中包含具有无效属性ID的分面过滤器。"
 }

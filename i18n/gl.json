@@ -24,5 +24,13 @@
 	"wikibase-faceted-search-facet-show-more": "Mostrar máis",
 	"wikibase-faceted-search-facet-show-less": "Mostrar menos",
 	"wikibase-faceted-search-facet-range-min": "Mínimo",
-	"wikibase-faceted-search-facet-range-max": "Máximo"
+	"wikibase-faceted-search-facet-range-max": "Máximo",
+	"apihelp-wbfacetsearch-summary": "Obtén as facetas configuradas para o tipo de elemento dunha expresión de busca, coas contaxes de valores para esa busca.",
+	"apihelp-wbfacetsearch-extended-description": "A lista de facetas devolve como máximo os 100 valores máis frecuentes. As facetas de rango non teñen valores.",
+	"apihelp-wbfacetsearch-param-search": "Expresión de busca para a que se deben obter as facetas. Debe conter un filtro de tipo de elemento, como <kbd>haswbfacet:P1=Q1</kbd>.",
+	"apihelp-wbfacetsearch-param-namespaces": "Espazos de nomes nos que buscar. Por defecto son todos os espazos de nomes nos que se pode buscar, a diferenza de <kbd>list=search</kbd>, que por defecto é o espazo de nomes principal.",
+	"apihelp-wbfacetsearch-example-1": "Obtén as facetas para os elementos do tipo <kbd>Q1</kbd>.",
+	"apierror-wbfs-not-configured": "A busca por facetas non está configurada neste wiki.",
+	"apierror-wbfs-item-type-required": "A expresión de busca debe conter un filtro de tipo de elemento, como por exemplo <kbd>haswbfacet:P1=Q1</kbd>.",
+	"apierror-wbfs-invalid-search": "A expresión de busca contén un filtro de facetas cun identificador de propiedade non válido."
 }

@@ -1,0 +1,36 @@
+{
+	"@metadata": {
+		"authors": [
+			"AhmedG612"
+		]
+	},
+	"wikibasefacetedsearch-description": "Waxay xoojisaa [[Special:Search]] iyada oo ku daraysa awoodaha raadinta wejiyada badan. Shaandhee natiijooyinka iyadoo lagu salaynayo nooca instance-ka ama qiimayaasha bayaannada",
+	"special-wikibase-faceted-search-config": "Habaynta raadinta wejiyada badan",
+	"wikibase-faceted-search-config-invalid": "Isbeddelladaadii lama kaydin. Waxay ka kooban yihiin {{PLURAL:$1|khaladka soo socda|khaladaadka soo socda}}:",
+	"wikibase-faceted-search-config-tab-name": "Ciwaanka tab-ka",
+	"wikibase-faceted-search-config-tab-name-missing": "Lama qeexin ciwaanka tab-ka",
+	"wikibase-faceted-search-config-tab-name-create-title": "U samee ciwaan tab $1",
+	"wikibase-faceted-search-config-tab-name-edit-title": "Wax ka beddel ciwaanka tab-ka ee $1",
+	"wikibase-faceted-search-config-help-documentation": "Waxaad [[#ConfigurationDocumentation|hoosta aagga tafatirka ka arki kartaa dukumentiyada habaynta]].",
+	"wikibase-faceted-search-config-help-example": "Tusaalaha JSON oo dhammaystiran",
+	"wikibase-faceted-search-instance-type-all": "Dhammaan",
+	"wikibase-faceted-search-filters": "Shaandho",
+	"wikibase-faceted-search-settings": "Habee",
+	"wikibase-faceted-search-facet-all-selected-values": "Dhammaan qiimayaasha la doortay",
+	"wikibase-faceted-search-facet-any-selected-values": "Mid kasta oo ka mid ah qiimayaasha la doortay",
+	"wikibase-faceted-search-facet-any-value": "Qiime kasta",
+	"wikibase-faceted-search-facet-no-value": "Qiime ma jiro",
+	"wikibase-faceted-search-facet-apply": "Codso",
+	"wikibase-faceted-search-facet-show-more": "Muuji wax badan",
+	"wikibase-faceted-search-facet-show-less": "Muuji wax yar",
+	"wikibase-faceted-search-facet-range-min": "Ugu yaraan",
+	"wikibase-faceted-search-facet-range-max": "Ugu badnaan",
+	"apihelp-wbfacetsearch-summary": "Hel wejiyada loo habeeyey nooca shayga ee weedha raadinta, oo ay la socdaan tirinta qiimayaasha ee raadintaas.",
+	"apihelp-wbfacetsearch-extended-description": "Liiska wejiyadu waxay soo celiyaan ugu badnaan 100-ka qiime ee ugu badan soo noqnoqoshada. Wejiyada kala-duwanaanshuhu ma laha qiimayaal.",
+	"apihelp-wbfacetsearch-param-search": "Weedha raadinta ee lagu helayo wejiyada. Waa inay ka koobnaataa shaandheeye nooca shayga ah, sida <kbd>haswbfacet:P1=Q1</kbd>.",
+	"apihelp-wbfacetsearch-param-namespaces": "Meelaha magaca ee la raadinayo. Sida caadiga ah waxay noqotaa dhammaan meelaha magaca ee la raadin karo, si ka duwan <kbd>list=search</kbd>, kaas oo si caadi ah ugu noqda meel magaca ugu weyn.",
+	"apihelp-wbfacetsearch-example-1": "Hel wejiyada shayada nooca <kbd>Q1</kbd>.",
+	"apierror-wbfs-not-configured": "Raadinta wejiyada badan laguma habayn wiki-kan.",
+	"apierror-wbfs-item-type-required": "Weedha raadintu waa inay ka koobnaataa shaandheeye nooca shayga ah, sida <kbd>haswbfacet:P1=Q1</kbd>.",
+	"apierror-wbfs-invalid-search": "Weedha raadintu waxay ka kooban tahay shaandheeye wejiyeed leh aqoonsi hanti oo aan sax ahayn."
+}
