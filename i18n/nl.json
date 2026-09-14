@@ -25,5 +25,7 @@
 	"wikibase-faceted-search-facet-show-more": "Meer weergeven",
 	"wikibase-faceted-search-facet-show-less": "Minder weergeven",
 	"wikibase-faceted-search-facet-range-min": "Minimum",
-	"wikibase-faceted-search-facet-range-max": "Maximum"
+	"wikibase-faceted-search-facet-range-max": "Maximum",
+	"apihelp-wbfacetsearch-summary": "Vraag de facetten op die geconfigureerd zijn voor het itemtype van een zoekexpressie, inclusief de aantallen per waarde voor die zoekopdracht.",
+	"apihelp-wbfacetsearch-extended-description": "Lijstfacetten retourneren maximaal de 100 meest voorkomende waarden. Bereikfacetten bevatten geen waarden."
 }
