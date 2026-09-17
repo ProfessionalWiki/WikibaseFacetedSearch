@@ -24,5 +24,6 @@
 	"wikibase-faceted-search-facet-show-more": "Прикажи повеќе",
 	"wikibase-faceted-search-facet-show-less": "Прикажи помалку",
 	"wikibase-faceted-search-facet-range-min": "Најмалку",
-	"wikibase-faceted-search-facet-range-max": "Највеќе"
+	"wikibase-faceted-search-facet-range-max": "Највеќе",
+	"apihelp-wbfacetsearch-summary": "Поставување на фацетите според видот на предметот за израз на пребарување, со број на вредности за тоа пребарување."
 }
