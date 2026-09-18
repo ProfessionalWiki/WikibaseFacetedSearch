@@ -15,6 +15,7 @@ class Config {
 		private readonly ?PropertyId $itemTypeProperty = null,
 		private readonly ?FacetConfigList $facets = null,
 		private readonly ?array $icons = null,
+		public readonly bool $indexAllProperties = false
 	) {
 	}
 
@@ -71,6 +72,18 @@ class Config {
 
 	public function isComplete(): bool {
 		return $this->itemTypeProperty !== null;
+	}
+
+	/**
+	 * @return PropertyId[]
+	 */
+	public function getPropertiesWithFacetsForItemType( ItemId $itemType ): array {
+		return array_values(
+			array_map(
+				fn( FacetConfig $config ) => $config->propertyId,
+				$this->getFacetConfigForItemType( $itemType )
+			)
+		);
 	}
 
 }
