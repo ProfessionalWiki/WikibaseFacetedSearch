@@ -27,5 +27,11 @@
 	"wikibase-faceted-search-facet-range-min": "Minimum",
 	"wikibase-faceted-search-facet-range-max": "Maximum",
 	"apihelp-wbfacetsearch-summary": "Vraag de facetten op die geconfigureerd zijn voor het itemtype van een zoekexpressie, inclusief de aantallen per waarde voor die zoekopdracht.",
-	"apihelp-wbfacetsearch-extended-description": "Lijstfacetten retourneren maximaal de 100 meest voorkomende waarden. Bereikfacetten bevatten geen waarden."
+	"apihelp-wbfacetsearch-extended-description": "Lijstfacetten retourneren maximaal de 100 meest voorkomende waarden. Bereikfacetten bevatten geen waarden.",
+	"apihelp-wbfacetsearch-param-search": "Zoekuitdrukking om de facetten voor op te halen. Moet een filter voor het soort item bevatten, zoals <kbd>haswbfacet:P1=Q1</kbd>.",
+	"apihelp-wbfacetsearch-param-namespaces": "De te doorzoeken naamruimten. Tenzij anders opgegeven zijn dit alle doorzoekbare naamruimten, in tegenstelling tot <kbd>list=search</kbd> waarmee normaal gesproken alleen de hoofdnaamruimte doorzocht wordt.",
+	"apihelp-wbfacetsearch-example-1": "Haal de facetten voor items van het type <kbd>Q1</kbd> op.",
+	"apierror-wbfs-not-configured": "Gefacetteerd zoeken is op deze wiki niet ingesteld.",
+	"apierror-wbfs-item-type-required": "De zoekuitdrukking moet een filter voor het soort item bevatten, zoals <kbd>haswbfacet:P1=Q1</kbd>.",
+	"apierror-wbfs-invalid-search": "De zoekuitdrukking bevat een facetfilter met een onjuiste eigenschaps-ID."
 }
