@@ -180,4 +180,25 @@ class ConfigTest extends TestCase {
 		$this->assertNull( $config->getIconForItemType( $q3 ) );
 	}
 
+	public function testGetPropertiesWithFacetsForItemType(): void {
+		$config = new Config(
+			sitelinkSiteId: 'enwiki',
+			itemTypeProperty: new NumericPropertyId( 'P42' ),
+			facets: new FacetConfigList(
+				new FacetConfig( new ItemId( 'Q100' ), new NumericPropertyId( 'P2' ), FacetType::LIST ),
+				new FacetConfig( new ItemId( 'Q200' ), new NumericPropertyId( 'P3' ), FacetType::LIST ),
+				new FacetConfig( new ItemId( 'Q100' ), new NumericPropertyId( 'P4' ), FacetType::LIST ),
+				new FacetConfig( new ItemId( 'Q200' ), new NumericPropertyId( 'P5' ), FacetType::LIST ),
+			)
+		);
+
+		$this->assertEquals(
+			[
+				new NumericPropertyId( 'P2' ),
+				new NumericPropertyId( 'P4' ),
+			],
+			$config->getPropertiesWithFacetsForItemType( new ItemId( 'Q100' ) )
+		);
+	}
+
 }
