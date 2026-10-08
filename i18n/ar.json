@@ -24,5 +24,9 @@
 	"wikibase-faceted-search-facet-show-more": "إظهار المزيد",
 	"wikibase-faceted-search-facet-show-less": "إظهار أقل",
 	"wikibase-faceted-search-facet-range-min": "الحد الأدنى",
-	"wikibase-faceted-search-facet-range-max": "الحد الأقصى"
+	"wikibase-faceted-search-facet-range-max": "الحد الأقصى",
+	"apihelp-wbfacetsearch-summary": "احصل على السمات المُهيأة لنوع العنصر الخاص بتعبير البحث، مع عدد القيم لهذا البحث.",
+	"apihelp-wbfacetsearch-extended-description": "تُعيد قوائم التصنيفات على الأكثر 100 قيمة من أكثر القيم تكرارًا. أما نطاقات التصنيفات فلا تحتوي على أي قيم.",
+	"apierror-wbfs-not-configured": "لم يتم إعداد البحث متعدد الأوجه في هذه الويكي.",
+	"apierror-wbfs-invalid-search": "يحتوي تعبير البحث على عامل تصفية ذي خاصية غير صالحة."
 }
