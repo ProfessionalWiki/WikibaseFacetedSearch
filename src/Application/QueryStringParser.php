@@ -23,7 +23,7 @@ class QueryStringParser {
 
 		foreach ( $this->splitQueryString( $queryString ) as $part ) {
 			if ( $this->isInstanceOfPart( $part ) ) {
-				$itemTypes = $this->extractItemTypes( $part, $itemTypes );
+				$itemTypes = [ ...$itemTypes, ...$this->extractItemTypes( $part ) ];
 			} elseif ( $this->isFacetPart( $part ) ) {
 				$constraints = $constraints->withConstraint( $this->handleFacetPart( $part, $constraints ) );
 			}
@@ -60,23 +60,30 @@ class QueryStringParser {
 	}
 
 	/**
-	 * @param ItemId[] $itemTypes
 	 * @return ItemId[]
 	 */
-	private function extractItemTypes( string $part, array &$itemTypes ): array {
-		$itemTypeStr = substr( $part, strlen( 'haswbfacet:' . $this->itemTypeProperty->getSerialization() . '=' ) );
+	private function extractItemTypes( string $part ): array {
+		$value = substr( $part, strlen( 'haswbfacet:' . $this->itemTypeProperty->getSerialization() . '=' ) );
 
-		if ( $itemTypeStr === '' ) {
-			return $itemTypes;
-		}
+		$itemTypes = [];
 
-		try {
-			$itemTypes[] = new ItemId( $itemTypeStr );
-		} catch ( InvalidArgumentException ) {
-			return $itemTypes;
+		foreach ( explode( '|', $value ) as $itemTypeString ) {
+			$itemType = $this->newItemId( $itemTypeString );
+
+			if ( $itemType !== null ) {
+				$itemTypes[] = $itemType;
+			}
 		}
 
 		return $itemTypes;
+	}
+
+	private function newItemId( string $serialization ): ?ItemId {
+		try {
+			return new ItemId( $serialization );
+		} catch ( InvalidArgumentException ) {
+			return null;
+		}
 	}
 
 	private function handleFacetPart( string $part, PropertyConstraintsList $constraintsList ): PropertyConstraints {
