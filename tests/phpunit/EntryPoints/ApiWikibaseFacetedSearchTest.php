@@ -6,6 +6,7 @@ namespace ProfessionalWiki\WikibaseFacetedSearch\Tests\EntryPoints;
 
 use CirrusSearch\Search\EmptySearchResultSet;
 use Elastica\Query\MatchAll;
+use MediaWiki\MainConfigNames;
 use MediaWiki\Status\Status;
 use MediaWiki\Tests\Api\ApiTestCase;
 use ProfessionalWiki\WikibaseFacetedSearch\Tests\TestDoubles\StubCirrusSearchResultSet;
@@ -29,6 +30,9 @@ class ApiWikibaseFacetedSearchTest extends ApiTestCase {
 
 		$this->overrideConfigValue( 'WikibaseFacetedSearchEnableInWikiConfig', false );
 		$this->useConfig( Valid::configJson() );
+
+		// The test database prefix ends up in the index name derived from the wiki id, for which no index exists.
+		$this->overrideConfigValue( 'CirrusSearchIndexBaseName', $this->getConfVar( MainConfigNames::DBname ) );
 	}
 
 	protected function tearDown(): void {

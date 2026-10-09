@@ -5,6 +5,7 @@ declare( strict_types = 1 );
 namespace ProfessionalWiki\WikibaseFacetedSearch\Tests\Persistence;
 
 use Elastica\Response;
+use MediaWiki\MainConfigNames;
 use MediaWikiIntegrationTestCase;
 use ProfessionalWiki\WikibaseFacetedSearch\WikibaseFacetedSearchExtension;
 
@@ -14,6 +15,16 @@ use ProfessionalWiki\WikibaseFacetedSearch\WikibaseFacetedSearchExtension;
  * @group Database
  */
 class ElasticQueryRunnerTest extends MediaWikiIntegrationTestCase {
+
+	/**
+	 * The test database prefix ends up in the wiki id, and thus in the index name derived from it,
+	 * for which no index exists. Point the tests at the index this wiki actually has.
+	 */
+	protected function setUp(): void {
+		parent::setUp();
+
+		$this->overrideConfigValue( 'CirrusSearchIndexBaseName', $this->getConfVar( MainConfigNames::DBname ) );
+	}
 
 	public function testCanQueryElastic(): void {
 		$query = [
