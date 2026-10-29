@@ -27,6 +27,10 @@
 	"wikibase-faceted-search-facet-range-max": "الحد الأقصى",
 	"apihelp-wbfacetsearch-summary": "احصل على السمات المُهيأة لنوع العنصر الخاص بتعبير البحث، مع عدد القيم لهذا البحث.",
 	"apihelp-wbfacetsearch-extended-description": "تُعيد قوائم التصنيفات على الأكثر 100 قيمة من أكثر القيم تكرارًا. أما نطاقات التصنيفات فلا تحتوي على أي قيم.",
+	"apihelp-wbfacetsearch-param-search": "عبارة البحث للحصول على الجوانب. يجب أن تحتوي على عامل تصفية لنوع العنصر، مثل <kbd>haswbfacet:P1=Q1</kbd> .",
+	"apihelp-wbfacetsearch-param-namespaces": "مساحات الأسماء المراد البحث فيها. القيمة الافتراضية هي جميع مساحات الأسماء القابلة للبحث، على عكس <kbd>list=search</kbd> ، التي تحدد مساحة الاسم الرئيسية افتراضيًا.",
+	"apihelp-wbfacetsearch-example-1": "احصل على الجوانب الخاصة بالعناصر من النوع <kbd>Q1</kbd> .",
 	"apierror-wbfs-not-configured": "لم يتم إعداد البحث متعدد الأوجه في هذه الويكي.",
+	"apierror-wbfs-item-type-required": "يجب أن يحتوي تعبير البحث على عامل تصفية لنوع العنصر، مثل <kbd>haswbfacet:P1=Q1</kbd> .",
 	"apierror-wbfs-invalid-search": "يحتوي تعبير البحث على عامل تصفية ذي خاصية غير صالحة."
 }
