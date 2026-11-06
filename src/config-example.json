@@ -1,5 +1,4 @@
 {
-	"sitelinkSiteId": "enwiki",
 	"itemTypeProperty": "P42",
 	"configPerItemType": {
 		"Q100": {
@@ -28,5 +27,7 @@
 				}
 			}
 		}
-	}
+	},
+	"sitelinkSiteId": "enwiki",
+	"indexAllProperties": true
 }

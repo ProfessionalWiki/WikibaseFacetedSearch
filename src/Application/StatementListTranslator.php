@@ -29,7 +29,7 @@ class StatementListTranslator {
 			return [];
 		}
 
-		$propertyIds = $this->getPropertiesToIndex( $itemType );
+		$propertyIds = $this->getPropertiesToIndex( $itemType, $statements );
 
 		$values = [];
 
@@ -43,13 +43,15 @@ class StatementListTranslator {
 	/**
 	 * @return PropertyId[]
 	 */
-	private function getPropertiesToIndex( ItemId $itemType ): array {
-		$properties = array_values(
-			array_map(
-				fn( FacetConfig $config ) => $config->propertyId,
-				$this->config->getFacetConfigForItemType( $itemType )
-			)
-		);
+	private function getPropertiesToIndex( ItemId $itemType, StatementList $statements ): array {
+		if ( $this->config->indexAllProperties ) {
+			// TODO: is this sufficient, or do we need to end up explicitly indexing properties not present as empty?
+			$properties = $statements->getPropertyIds();
+		}
+		else {
+			$properties = $this->config->getPropertiesWithFacetsForItemType( $itemType );
+		}
+
 		$properties[] = $this->config->getItemTypeProperty();
 
 		return $properties;
