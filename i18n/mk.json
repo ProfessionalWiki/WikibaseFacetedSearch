@@ -25,5 +25,12 @@
 	"wikibase-faceted-search-facet-show-less": "Прикажи помалку",
 	"wikibase-faceted-search-facet-range-min": "Најмалку",
 	"wikibase-faceted-search-facet-range-max": "Највеќе",
-	"apihelp-wbfacetsearch-summary": "Поставување на фацетите според видот на предметот за израз на пребарување, со број на вредности за тоа пребарување."
+	"apihelp-wbfacetsearch-summary": "Поставување на фацетите според видот на предметот за израз на пребарување, со број на вредности за тоа пребарување.",
+	"apihelp-wbfacetsearch-extended-description": "Списокот на фацети дава највеќе 100 најчести вредности. Опсежните фацети немаат вредности.",
+	"apihelp-wbfacetsearch-param-search": "За кој пребаран израз да се добијат фацети. Мора да содржи филтер за вид на предмет, како на пр. <kbd>haswbfacet:P1=Q1</kbd>.",
+	"apihelp-wbfacetsearch-param-namespaces": "Кои именски простори да се пребараат. По основно: сите пребарливи именски простори, за разлика од <kbd>list=search</kbd>, каде по основно е само главниот именски простор.",
+	"apihelp-wbfacetsearch-example-1": "Дај ги фацетите за предмети од видот <kbd>Q1</kbd>.",
+	"apierror-wbfs-not-configured": "Фацетното пребарување не е поставено на ова вики.",
+	"apierror-wbfs-item-type-required": "Пребараниот израз мора да содржи филтер за вид на предмет, како на пр. <kbd>haswbfacet:P1=Q1</kbd>.",
+	"apierror-wbfs-invalid-search": "Пребараниот израз содржи фацетен филтер со неважечка назнака на својство."
 }
